@@ -1,0 +1,130 @@
+
+.oculto{
+    display: none;
+}
+
+.hr-container {
+  position: relative;
+  text-align: center;
+  margin: 20px auto;
+/*      width: 95%;*/
+}
+
+.hr-container::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(to right, #d3d3d3, #f0f0f0); /* Degradado de gris claro a gris más claro */
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+
+.hr-container span {
+  background: white;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  font-weight: bold;
+}
+
+.degradado-border-right {
+  width: 300px;
+/*      height: 150px;*/
+  position: relative;
+  padding-right: 20px; /* Espacio para que se vea el borde */
+}
+
+.degradado-border-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px; /* Ancho del borde */
+  height: 75%;
+  background: linear-gradient(to top, #f0f0f0,#3f4254); /* Degradado de negro a gris */
+}
+
+.risk-level {
+    display: inline-block;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    display: block;
+    background-color: #e0e0e0;
+    color: #444;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.risk-color {
+/*        background-color: #f4c542;*/
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 15px;
+}
+
+
+
+.legend {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.completed-box, .remaining-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+.completed-box {
+    background-color: #6787c7; /* Color azul */
+}
+
+.remaining-box {
+    background-color: #2b9b83; /* Color verde */
+}
+
+.progress-bar2 {
+    width: 400px;
+    height: 30px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    font-weight: bold;
+}
+
+.completed {
+    background-color: #6787c7; /* Color azul */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remaining {
+    background-color: #2b9b83; /* Color verde */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contimg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

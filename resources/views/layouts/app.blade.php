@@ -28,6 +28,8 @@
     <link href="{{ asset('theme/assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('theme/assets/css/principal/formprincipal.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
 
     <!--begin::Custom Theme(used by all pages)-->
