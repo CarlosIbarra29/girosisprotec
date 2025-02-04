@@ -17,6 +17,7 @@
 		Route::get('/ver-cliente/{cliente}', [App\Http\Controllers\Cliente\ClienteController::class, 'vercliente'])->name('cliente.vercliente');
 
 	//  C L I E N T E
+		//Analisis Social
 		Route::get('/listado-analisis-riesgos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'listadoanalisis'])->name('analisis.listadoanalisis');
 		Route::get('/analisis-riesgos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisiscliente'])->name('analisis.analisiscliente');
 		Route::get('/seleccionar-analisis-riesgos/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'seleccionaanalisis'])->name('analisis.seleccionaanalisis');
@@ -24,3 +25,27 @@
 		Route::post('/obtener-alcances', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcances'])->name('analisis.obteneralcances');
 		Route::post('/guardar-riesgo', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgo'])->name('analisis.guardarriesgo');	
 		Route::get('/graficas-riesgos-sociales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficassociales'])->name('analisis.graficassociales');
+
+		//Analisis Tecnologicos
+		Route::get('/analisis-riesgos-tecnologicos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisistecnologicoscli'])->name('analisis.analisistecnologicoscli');
+		Route::get('/seleccionar-analisis-riesgos-tec/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'seleccionaanalisistec'])->name('analisis.seleccionaanalisistec');
+		Route::get('/generar-analisis-riesgos-tecnologico/{cliente}/{tipo}/{alcance}/{num}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'generaranalisistecno'])->name('analisis.generaranalisistecno');
+		Route::post('/obtener-alcances-tecnologicos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcancestecnologicos'])->name('analisis.obteneralcancestecnologicos');
+		Route::post('/guardar-riesgo-tecnologicos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgotecnologico'])->name('analisis.guardarriesgotecnologico');
+		Route::get('/graficas-riesgos-tecnologicos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficastecnologicas'])->name('analisis.graficastecnologicas');	
+
+		//Analisis Naturales
+		Route::get('/analisis-riesgos-naturales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisisnaturalescli'])->name('analisis.analisisnaturalescli');
+		Route::get('/seleccionar-analisis-riesgos-naturales/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'seleccionaanalisisnaturales'])->name('analisis.seleccionaanalisisnaturales');
+		Route::get('/generar-analisis-riesgos-naturales/{cliente}/{tipo}/{alcance}/{num}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'generaranalisisnaturales'])->name('analisis.generaranalisisnaturales');
+		Route::post('/obtener-alcances-naturales', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcancesnaturales'])->name('analisis.obteneralcancesnaturales');
+		Route::post('/guardar-riesgo-naturales', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgonaturales'])->name('analisis.guardarriesgonaturales');
+		Route::get('/graficas-riesgos-naturales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficasnaturales'])->name('analisis.graficasnaturales');	
+
+		//Analisis Otros
+		Route::get('/analisis-otros-riesgos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisisotroscli'])->name('analisis.analisisotroscli');
+		Route::get('/seleccionar-analisis-riesgos-otros/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'seleccionaanalisisotros'])->name('analisis.seleccionaanalisisotros');
+		Route::get('/generar-analisis-otros-riesgos/{cliente}/{tipo}/{alcance}/{num}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'generaranalisisotros'])->name('analisis.generaranalisisotros');
+		Route::post('/obtener-alcances-otros', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcancesotros'])->name('analisis.obteneralcancesotros');
+		Route::post('/guardar-riesgo-otros', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgootros'])->name('analisis.guardarriesgootros');
+		Route::get('/graficas-otros-riesgos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficasotros'])->name('analisis.graficasotros');	

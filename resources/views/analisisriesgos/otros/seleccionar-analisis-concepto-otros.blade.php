@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="card-toolbar">
 
-                                  <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                  <a href="{{ route('analisis.analisisotroscli', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                                     <i class="la la-arrow-left"></i>Regresar</a>
 
                                 </div>
@@ -44,7 +44,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-6 div_riesgos_sociales">
-                                        <h4>Vista previa de riesgos sociales</h4>
+                                        <h4>Vista previa de otros riesgos</h4>
                                         <table class="table table-hover table-checkable" id="kdatatable_clientes_inactivos">
                                             <thead>
                                                 <tr>
@@ -54,7 +54,7 @@
                                             </thead>
 
                                             <tbody>
-                                                @foreach($BarrerasPerimetrale as $unid)
+                                                @foreach($ConceptosOtros as $unid)
                                                 <tr>
                                                     <td>{{ $unid->alcance }}</td>
                                                     <td class="text-center">
@@ -69,8 +69,8 @@
 
                                     <div class="col-lg-6">
                                         <div class="text-center div_riesgos_sociales">
-                                            <a href="{{ route('analisis.generaranalisis', [$id_cliente, $BarrerasPerimetrale[0]->id, 0, 1]) }}" class="btn btn-light-warning font-weight-bolder mr-3 ml-3">
-                                            Crear riesgo social</a>
+                                            <a href="{{ route('analisis.generaranalisisotros', [$id_cliente, $ConceptosOtros[0]->id, 0, 1]) }}" class="btn btn-light-warning font-weight-bolder mr-3 ml-3">
+                                            Crear otro riesgo</a>
                                         </div>
 
                                         <img src="{{ asset('img/mapa_analisis.PNG') }}" class="img-responsive">

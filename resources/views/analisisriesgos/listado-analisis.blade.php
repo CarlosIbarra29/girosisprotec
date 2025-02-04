@@ -151,11 +151,11 @@
                                       <td class="text-center">
                                         <a href="{{ route('analisis.analisiscliente', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Sociales" ><i class="flaticon-users-1"></i></a>
 
-                                        <a href="" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Tecnológicos" ><i class="flaticon-profile"></i></a>
+                                        <a href="{{ route('analisis.analisistecnologicoscli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Tecnológicos" ><i class="flaticon-profile"></i></a>
 
-                                        <a href="" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos naturales" ><i class="flaticon-security"></i></a>
+                                        <a href="{{ route('analisis.analisisnaturalescli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos naturales" ><i class="flaticon-security"></i></a>
 
-                                        <a href="" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Otros riesgos" ><i class="flaticon2-gear"></i></a>
+                                        <a href="{{ route('analisis.analisisotroscli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Otros riesgos" ><i class="flaticon2-gear"></i></a>
                                       </td>
                                     </tr>
                                   @endforeach

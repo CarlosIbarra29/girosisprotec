@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('scripts')
-	<script src="{{ asset('js/LibroRiesgos/RiesgoTecnologico/AgregarRiesgoTecnologico.js') }}"></script>
+	<script src="{{ asset('js/libroriesgos/RiesgoTecnologico/AgregarRiesgoTecnologico.js') }}"></script>
 @endpush
 @section('title')
     Agregar riesgo natural

@@ -53,10 +53,7 @@ var Modulo = function() {
     };
 
     var initEvents = function() {
-        $("#id_proveedor").select2({
-            placeholder: "Seleccione una opción",
-            allowClear: true
-        });
+
     };
 
     return {

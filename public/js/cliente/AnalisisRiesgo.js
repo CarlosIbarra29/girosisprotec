@@ -21,7 +21,6 @@
 
     });
 
-
     $("#alcance_mas").click(function(){
         var paginador = document.getElementById("paginador_num").value;
         var id_cliente = document.getElementById("id_cliente").value;
@@ -52,6 +51,176 @@
         });
         window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
     });
+
+
+
+// Alcances Tecnologicos
+    $(document).on('change', 'select[id^="punto_normativo_tecnologico"]', function () {
+        var id = $(this).attr('id');
+        var idGrupo = $(this).val();
+        var idDocumento = id.replace('punto_normativo_tecnologico', '');
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        
+        var url = $('#url_alcances').val();
+        var data = {
+            id: idGrupo,
+            _token: $("[name='_token']").val()
+        };
+
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-tecnologico/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
+
+    });
+
+
+    $("#alcance_mas_tec").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) + 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-tecnologico/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
+
+    $("#alcance_menos_tec").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) - 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-tecnologico/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
+// Alcances Naturales
+
+    $(document).on('change', 'select[id^="punto_normativo_naturales"]', function () {
+        var id = $(this).attr('id');
+        var idGrupo = $(this).val();
+        var idDocumento = id.replace('punto_normativo_naturales', '');
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        
+        var url = $('#url_alcances').val();
+        var data = {
+            id: idGrupo,
+            _token: $("[name='_token']").val()
+        };
+
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-naturales/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
+
+    });
+
+    $("#alcance_mas_nat").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) + 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-naturales/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
+
+    $("#alcance_menos_nat").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) - 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-riesgos-naturales/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
+// Alcances otros
+    $(document).on('change', 'select[id^="punto_normativo_otros"]', function () {
+        var id = $(this).attr('id');
+        var idGrupo = $(this).val();
+        var idDocumento = id.replace('punto_normativo_otros', '');
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        
+        var url = $('#url_alcances').val();
+        var data = {
+            id: idGrupo,
+            _token: $("[name='_token']").val()
+        };
+
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-otros-riesgos/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
+
+    });
+
+    $("#alcance_mas_otros").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) + 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-otros-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
+
+    $("#alcance_menos_otros").click(function(){
+        var paginador = document.getElementById("paginador_num").value;
+        var id_cliente = document.getElementById("id_cliente").value;
+        var id_tipo = document.getElementById("id_tipo").value;
+        var id_alcance = document.getElementById("id_alcance").value;
+        var consecutivo = parseInt(paginador) - 1;
+        Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Espere un momento, la información esta siendo procesada",
+            showConfirmButton: false
+        });
+        window.location.href = "/cliente/generar-analisis-otros-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    });
+
 
 
     $(document).on('change', 'select[id^="nivel_control"]', function () {
