@@ -166,6 +166,9 @@ var Principal = (function () {
                 case "librootr.riesgootrosidinactivos":
                     $("#menuListadoRiesgosOtros").addClass("menu-item-open");
                     break;
+                case "librootr.listadonuevosriesgos":
+                    $("#menuListadoRiesgosOtros").addClass("menu-item-open");
+                    break;
                 
             }
         }

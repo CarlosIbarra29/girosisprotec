@@ -181,7 +181,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Agregar riesgo natural</h5>
+                    <h5 class="modal-title">Agregar alcance</h5>
 
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
                         aria-label="Close">
@@ -194,7 +194,7 @@
                         @csrf
                         <div class="row form-group">
                             <div class="col-lg-12 mt-2">
-                                <label>Nombre del riesgo</label>
+                                <label>Nombre del alcance</label>
                                 <input type="text" class="form-control" name="nombre_riesgo" id="nombre_riesgo" />
                             </div>
                         </div>
@@ -217,7 +217,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar riesgo natural</h5>
+                    <h5 class="modal-title">Editar alcance</h5>
 
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
                         aria-label="Close">
@@ -230,7 +230,7 @@
                         @csrf
                         <div class="row form-group">
                             <div class="col-lg-12 mt-2">
-                                <label>Nombre del riesgo</label>
+                                <label>Nombre del alcance</label>
                                 <input type="text" class="form-control" name="nombre_riesgo_edit" id="nombre_riesgo_edit" value=""/>
                                 <input type="hidden" name="id_riesgo_edit" id="id_riesgo_edit" value="">
                             </div>

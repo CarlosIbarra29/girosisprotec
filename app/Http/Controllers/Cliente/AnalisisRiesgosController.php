@@ -129,7 +129,7 @@ class AnalisisRiesgosController extends Controller
     public function guardarriesgo(Request $request)
     {
 
-
+        dd($request);
         $data = [
             'cliente_id' => $request->cliente,
             'libror_barreras_perimetrales_id' => $request->punto_normativo,
@@ -143,7 +143,6 @@ class AnalisisRiesgosController extends Controller
             'hd_nivel_control_id' => $request->nivel_control,
             'medidas_prevencion' => $request->medidas_prevencion,
             'contramedidas' => $request->contramedidas,
-
             'status_delete' => 1,
             'iduserCreated' =>auth()->user()->id,
             'iduserUpdated' =>auth()->user()->id,

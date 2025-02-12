@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Listado libro de riesgos tecnológicos
+    Listado libro de nuevos riesgos
 @endsection
 
 @push('scripts')
@@ -26,7 +26,7 @@
                                     <span class="card-icon">
                                         <i class="flaticon2-file text-primary"></i>
                                     </span>
-                                    <h3 class="card-label">Listado de riesgos tecnológicos</h3>
+                                    <h3 class="card-label">Listado de nuevos riesgos</h3>
                                 </div>
                                 <div class="card-toolbar">
 
@@ -112,21 +112,21 @@
                                         <thead>
                                         <tr>
                                           <th>No.</th>
-                                          <th>Alcance</th>
+                                          <th>Riesgo</th>
                                           <th class="text-center">Opciones</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                          @foreach($alcances as $unid)
+                                          @foreach($nuevo as $unid)
                                             <tr>
                                               <td>{{ $unid->id }}</td>
-                                              <td>{{ $unid->alcance }}</td>
+                                              <td>{{ $unid->nombre_riesgo }}</td>
 
                                               <td class="text-center">
-                                                <a  href="{{ route('librotec.riesgotecnologicoid', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->alcance }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->alcance }}'" ><i class="flaticon-eye"></i></a>
+                                                <a  href="{{ route('librootr.riesgootroid', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->nombre_riesgo }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->nombre_riesgo }}'" ><i class="flaticon-eye"></i></a>
 
-                                                <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  onClick="editriesgosocial({{ $unid->id }},'{{ $unid->alcance }}')" data-toggle="modal" data-target="#model_edit_riesgosocial" data-toggle="tooltip" data-theme="dark" title="Editar nombre riesgo">
+                                                <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  onClick="editriesgosocial({{ $unid->id }},'{{ $unid->nombre_riesgo }}')" data-toggle="modal" data-target="#model_edit_riesgosocial" data-toggle="tooltip" data-theme="dark" title="Editar nombre riesgo">
                                                     <i class="flaticon-edit"></i></button>
 
                                               </td>
@@ -137,7 +137,7 @@
                                         <tfoot>
                                         <tr>
                                           <th>No.</th>
-                                          <th>Alcance</th>
+                                          <th>Riesgo</th>
                                           <th class="text-center">Opciones</th>
                                         </tr>
                                         </tfoot>
@@ -181,7 +181,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Agregar alcance</h5>
+                    <h5 class="modal-title">Agregar nombre del riesgo</h5>
 
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
                         aria-label="Close">
@@ -190,11 +190,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <form action="{{ route('librotec.adnameriesgotec') }}" method="post" id="submit_nameriesgo">
+                    <form action="{{ route('librootr.guardarnuevoriesgo') }}" method="post" id="submit_nameriesgo">
                         @csrf
                         <div class="row form-group">
                             <div class="col-lg-12 mt-2">
-                                <label>Nombre del alcance</label>
+                                <label>Nombre del riesgo</label>
                                 <input type="text" class="form-control" name="nombre_riesgo" id="nombre_riesgo" />
                             </div>
                         </div>
@@ -217,7 +217,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar alcance</h5>
+                    <h5 class="modal-title">Editar nombre del riesgo</h5>
 
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
                         aria-label="Close">
@@ -226,11 +226,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <form action="{{ route('librotec.editnameriesgotec') }}" method="post" id="submit_nameriesgo_edit">
+                    <form action="{{ route('librootr.updatenuevoriesgo') }}" method="post" id="submit_nameriesgo_edit">
                         @csrf
                         <div class="row form-group">
                             <div class="col-lg-12 mt-2">
-                                <label>Nombre del alcance</label>
+                                <label>Nombre del riesgo</label>
                                 <input type="text" class="form-control" name="nombre_riesgo_edit" id="nombre_riesgo_edit" value=""/>
                                 <input type="hidden" name="id_riesgo_edit" id="id_riesgo_edit" value="">
                             </div>

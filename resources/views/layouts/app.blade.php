@@ -377,12 +377,11 @@
 
                                                         @if (in_array("5", Session::get('permisos')))
                                                             <li id="menuListadoRiesgosOtros" class="menu-item" aria-haspopup="true">
-                                                                <a href="{{ route('librootr.listadolibroriesgosotros') }}" class="menu-link">
+                                                                <a href="{{ route('librootr.listadonuevosriesgos') }}" class="menu-link">
                                                                     <i class="menu-bullet menu-bullet-dot">
                                                                         <span></span>
                                                                     </i>
                                                                     <span class="menu-text">Otros riesgos</span>
-
                                                                 </a>
                                                             </li>
                                                         @endif

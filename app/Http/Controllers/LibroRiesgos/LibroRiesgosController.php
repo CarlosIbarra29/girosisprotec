@@ -23,6 +23,7 @@ use App\Models\LibroRiesgos\ConceptosNaturales;
 
 use App\Models\LibroRiesgos\ConceptosOtros;
 use App\Models\LibroRiesgos\RiesgosOtros;
+use App\Models\LibroRiesgos\NuevoRiesgoOtros;
 
 use App\Models\User;
 use App\Models\Rol;
@@ -37,6 +38,11 @@ class LibroRiesgosController extends Controller
     {
         $this->middleware('auth');
         $this->money_format = $money_format;
+    }
+
+    public function listadolibro()
+    {
+
     }
 
     public function listadolibriesgos()
@@ -446,6 +452,45 @@ class LibroRiesgosController extends Controller
     }
 
 // ---------------------------------------------------------------------------------------------- END RIESGO NATURALES
+
+    public function listadonuevosriesgos()
+    {
+        
+        $data = user::where('id', 1)->get();
+        $nuevo = NuevoRiesgoOtros::where('status_delete', 1)->orderby('id', 'ASC')->get();
+ 
+        return view('libroriesgos.otros.listado-nuevos-riesgos', compact('data', 'nuevo'));   
+    }
+
+    public function guardarnuevoriesgo(Request $request)
+    {
+        $data = [
+            'nombre_riesgo' => $request->nombre_riesgo,
+            'status_delete' =>1,
+            'iduserCreated' =>auth()->user()->id,
+            'iduserUpdated' =>auth()->user()->id,
+            'created_at' =>date('Y-m-d H:i:s'),
+            'updated_at' =>date('Y-m-d H:i:s')
+        ];
+
+        NuevoRiesgoOtros::insert($data);
+
+        session()->flash('success', 'El riesgo se creo correctamente');
+        return redirect()->route('librootr.listadonuevosriesgos');         
+    }
+
+    public function updatenuevoriesgo(Request $request)
+    {
+        $data = [
+            'nombre_riesgo' => $request->nombre_riesgo_edit,
+            'iduserUpdated' =>auth()->user()->id,
+            'updated_at' =>date('Y-m-d H:i:s')
+        ];  
+        NuevoRiesgoOtros::where('id', $request->id_riesgo_edit)->update($data);
+
+        session()->flash('success', 'El riesgo se modifico correctamente');
+        return redirect()->route('librootr.listadonuevosriesgos');  
+    }
 
     public function listadolibriesgosotros()
     {
