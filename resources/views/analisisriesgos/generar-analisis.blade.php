@@ -347,14 +347,15 @@
 
                                     <div class="row form-group">
                                         <div class="col-lg-8">
-                                            <label for="contramedidas"><b>Contramedidas</b></label>
+                                            <label for="contramedidas"><b>Medidas de Mitigacón</b></label>
                                             @if($id_alcance != 0)
                                                 <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5">{{ $alcance_social->contramedidas }}</textarea>
                                             @else
                                                 <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
                                             @endif
 
-                                            <div class="row mt-2">
+                                            <!-- <div class="row mt-2">
+
                                                 <div class="col-lg-4 nivel_inoperante">
                                                     <label for="observaciones"><b>Factor de expocisión</b></label>
                                                     <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
@@ -432,6 +433,65 @@
                                                     <input type="text" class="form-control gray_area" disabled name="impacto/severidad" id="impacto/severidad" value="Critico"/>
                                                 </div>
 
+                                            </div> -->
+
+                                            <div class="row mt-2">
+                                                
+                                                <div class="col-lg-4 nivel_inoperante">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
+
+                                                <div class="col-lg-4 oculto nivel_sincontrol">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
+
+                                                <div class="col-lg-4 oculto nivel_deficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto regular">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto eficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto optimo">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <label><b>Factor de probabilidad</b></label>
+                                                    <div class="input-group">
+                                                        <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
+                                                            <option value="1" selected>Muy Alta</option>
+                                                            <option value="2" >Alta</option>
+                                                            <option value="3" >Media</option>
+                                                            <option value="4" >Baja</option>
+                                                            <option value="5" >Muy Baja</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-4">
+                                                    <label><b>Impacto/Severidad</b></label>
+                                                    <div class="input-group">
+                                                        <select class="form-control gray_area" id="impacto/severidad" name="impacto/severidad"  required >
+                                                            <option value="1" selected>Insignificante</option>
+                                                            <option value="2" >Leve</option>
+                                                            <option value="3" >Marginal</option>
+                                                            <option value="4" >Grave</option>
+                                                            <option value="5" >Critíco</option>
+                                                            <option value="6" >Desastroso</option>
+                                                            <option value="7" >Catastrófico</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
 
@@ -465,12 +525,12 @@
                                                 <label>Índice Potencial de daño</label>
                                             </div>
                                             <div class="contimg text-center">
-                                                <img class="nivel_inoperante" src="{{ asset('img/daño100.png') }}" width="200">
-                                                <img class="oculto nivel_sincontrol" src="{{ asset('img/daño80.png') }}" width="200">
-                                                <img class="oculto nivel_deficiente" src="{{ asset('img/daño70.png') }}" width="200">
-                                                <img class="oculto regular" src="{{ asset('img/daño50.png') }}" width="200">
-                                                <img class="oculto eficiente" src="{{ asset('img/daño30.png') }}" width="200">
-                                                <img class="oculto optimo" src="{{ asset('img/daño10.png') }}" width="200">
+                                                <img class="nivel_inoperante" src="{{ asset('img/pot100.png') }}" width="200">
+                                                <img class="oculto nivel_sincontrol" src="{{ asset('img/pot80.png') }}" width="200">
+                                                <img class="oculto nivel_deficiente" src="{{ asset('img/pot70.png') }}" width="200">
+                                                <img class="oculto regular" src="{{ asset('img/pot50.png') }}" width="200">
+                                                <img class="oculto eficiente" src="{{ asset('img/pot30.png') }}" width="200">
+                                                <img class="oculto optimo" src="{{ asset('img/pot10.png') }}" width="200">
                                             </div>
                                         </div>
                                     </div>
