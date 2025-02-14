@@ -49,7 +49,7 @@ class AnalisisRiesgoSocial extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion'];
+    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'factor_exposicion'];
 
 
     public function hdConsecuencia()

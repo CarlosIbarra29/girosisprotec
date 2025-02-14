@@ -49,7 +49,7 @@ class AnalisisRiesgoTecnologico extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_conceptos_tecnologicos_id', 'libror_tecnologicos_alcances_id', 'hd_nivel_control_id', 'status_delete', 'hd_consecuencia_id', 'hd_probabilidad_id', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion'];
+    protected $fillable = ['cliente_id', 'libror_conceptos_tecnologicos_id', 'libror_tecnologicos_alcances_id', 'hd_nivel_control_id', 'status_delete', 'hd_consecuencia_id', 'hd_probabilidad_id', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'factor_exposicion'];
 
 
     public function hdConsecuencium()
