@@ -37,7 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property AnalisisRiesgoTecnologicoDeficiencia[] $analisisRiesgoTecnologicoDeficiencias
  * @property AnalisisRiesgoTecnologicoImpacto[] $analisisRiesgoTecnologicoImpactos
  */
-class AnalisisRiesgoTecnologico extends Model
+class AnalisisRiesgo extends Model
 {
     /**
      * The table associated with the model.
@@ -51,10 +51,36 @@ class AnalisisRiesgoTecnologico extends Model
      */
     protected $fillable = ['cliente_id', 'libror_conceptos_tecnologicos_id', 'libror_tecnologicos_alcances_id', 'hd_nivel_control_id', 'status_delete', 'hd_consecuencia_id', 'hd_probabilidad_id', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function librorConceptosTecnologico()
+    {
+        return $this->belongsTo('App\Models\AnalisisRiesgos\LibrorConceptosTecnologico', 'libror_conceptos_tecnologicos_id');
+    }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function siafStatus()
+    {
+        return $this->belongsTo('App\Models\AnalisisRiesgos\SiafStatus', 'status_delete');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\AnalisisRiesgos\User', 'iduserUpdated');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function hdConsecuencium()
     {
-        return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id');
+        return $this->belongsTo('App\Models\AnalisisRiesgos\HdConsecuencium', 'hd_consecuencia_id');
     }
 
     /**
@@ -62,12 +88,7 @@ class AnalisisRiesgoTecnologico extends Model
      */
     public function hdProbabilidad()
     {
-        return $this->belongsTo('App\Models\Hd\Probabilidad');
-    }
-
-    public function hdNivelControl()
-    {
-        return $this->belongsTo('App\Models\Hd\NivelControl');
+        return $this->belongsTo('App\Models\AnalisisRiesgos\HdProbabilidad');
     }
 
     /**
@@ -75,23 +96,36 @@ class AnalisisRiesgoTecnologico extends Model
      */
     public function librorTecnologicosAlcance()
     {
-        return $this->belongsTo('App\Models\LibroRiesgos\RiesgosTecnologicos', 'libror_tecnologicos_alcances_id');
-    }
-
-
-    public function cliente()
-    {
-        return $this->belongsTo('App\Models\Cliente\Cliente');
+        return $this->belongsTo('App\Models\AnalisisRiesgos\LibrorTecnologicosAlcance', 'libror_tecnologicos_alcances_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function librorConceptosTecnologico()
+    public function user()
     {
-        return $this->belongsTo('App\Models\LibroRiesgos\ConceptosTecnologicos', 'libror_conceptos_tecnologicos_id');
+        return $this->belongsTo('App\Models\AnalisisRiesgos\User', 'iduserCreated');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cliente()
+    {
+        return $this->belongsTo('App\Models\AnalisisRiesgos\Cliente');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hdNivelControl()
+    {
+        return $this->belongsTo('App\Models\AnalisisRiesgos\HdNivelControl');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function analisisRiesgoTecnologicoDeficiencias()
     {
         return $this->hasMany('App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologicoDeficiencia');
@@ -103,21 +137,5 @@ class AnalisisRiesgoTecnologico extends Model
     public function analisisRiesgoTecnologicoImpactos()
     {
         return $this->hasMany('App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologicoImpacto');
-    }
-
-    public function userCreated()
-    {
-        return $this->belongsTo('App\Models\User', 'iduserCreated');
-    }
-    
-    public function userUpdated()
-    {
-        return $this->belongsTo('App\Models\User', 'iduserUpdated');
-    }
-
-
-    public function Statusdelete()
-    {
-        return $this->belongsTo('App\Models\SiafStatus', 'status_delete');
     }
 }

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $libror_conceptos_naturales_id
  * @property integer $libror_naturales_alcances_id
  * @property integer $hd_nivel_control_id
+ * @property integer $hd_consecuencia_id
+ * @property integer $hd_probabilidad_id
  * @property integer $status_delete
  * @property string $punto_control
  * @property string $factores_riesgo
@@ -23,13 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property integer $iduserCreated
  * @property integer $iduserUpdated
+ * @property SiafStatus $siafStatus
  * @property User $user
- * @property HdNivelControl $hdNivelControl
+ * @property HdConsecuencium $hdConsecuencium
+ * @property HdProbabilidad $hdProbabilidad
  * @property LibrorNaturalesAlcance $librorNaturalesAlcance
  * @property User $user
  * @property Cliente $cliente
+ * @property HdNivelControl $hdNivelControl
  * @property LibrorConceptosNaturale $librorConceptosNaturale
- * @property SiafStatus $siafStatus
  * @property AnalisisRiesgoNaturalesDeficiencia[] $analisisRiesgoNaturalesDeficiencias
  * @property AnalisisRiesgoNaturalesImpacto[] $analisisRiesgoNaturalesImpactos
  */
@@ -38,9 +42,21 @@ class AnalisisRiesgoNaturales extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_conceptos_naturales_id', 'libror_naturales_alcances_id', 'hd_nivel_control_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
+    protected $fillable = ['cliente_id', 'libror_conceptos_naturales_id', 'libror_naturales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
 
+    public function hdConsecuencium()
+    {
+        return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hdProbabilidad()
+    {
+        return $this->belongsTo('App\Models\Hd\Probabilidad');
+    }
 
     public function hdNivelControl()
     {
@@ -105,5 +121,4 @@ class AnalisisRiesgoNaturales extends Model
     {
         return $this->belongsTo('App\Models\SiafStatus', 'status_delete');
     }
-
 }

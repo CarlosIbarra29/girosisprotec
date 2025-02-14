@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $libror_barreras_perimetrales_id
  * @property integer $libror_sociales_alcances_id
  * @property integer $hd_nivel_control_id
+ * @property integer $hd_consecuencia_id
+ * @property integer $hd_probabilidad_id
  * @property integer $status_delete
  * @property string $punto_control
  * @property string $factores_riesgo
@@ -23,13 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $updated_at
  * @property integer $iduserCreated
  * @property integer $iduserUpdated
- * @property HdNivelControl $hdNivelControl
+ * @property User $user
+ * @property HdConsecuencium $hdConsecuencium
+ * @property HdProbabilidad $hdProbabilidad
  * @property LibrorSocialesAlcance $librorSocialesAlcance
  * @property User $user
  * @property Cliente $cliente
+ * @property HdNivelControl $hdNivelControl
  * @property LibrorBarrerasPerimetrale $librorBarrerasPerimetrale
  * @property SiafStatus $siafStatus
- * @property User $user
  * @property AnalisisRiesgoSocialDeficiencia[] $analisisRiesgoSocialDeficiencias
  * @property AnalisisRiesgoSocialImpacto[] $analisisRiesgoSocialImpactos
  */
@@ -45,8 +49,21 @@ class AnalisisRiesgoSocial extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
+    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
+
+    public function hdConsecuencia()
+    {
+        return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hdProbabilidad()
+    {
+        return $this->belongsTo('App\Models\Hd\Probabilidad');
+    }
 
     public function cliente()
     {
@@ -99,4 +116,5 @@ class AnalisisRiesgoSocial extends Model
     {
         return $this->hasMany('App\Models\AnalisisRiesgos\AnalisisRiesgoSocialImpacto');
     }
+
 }
