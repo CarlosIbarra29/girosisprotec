@@ -480,7 +480,7 @@
                                                 <div class="col-lg-4">
                                                     <label><b>Impacto/Severidad</b></label>
                                                     <div class="input-group">
-                                                        <select class="form-control gray_area" id="impacto/severidad" name="impacto/severidad"  required >
+                                                        <select class="form-control gray_area" id="impacto_severidad" name="impactos_severidad"  required >
                                                             <option value="1" selected>Insignificante</option>
                                                             <option value="2" >Leve</option>
                                                             <option value="3" >Marginal</option>
@@ -493,44 +493,50 @@
                                                 </div>
 
                                             </div>
-
-
                                         </div>
+
                                         <div class="col-lg-4 text-center">
-                                            <div class="risk-level nivel_inoperante">
+
+                                            <div class="risk-level nivelmma">
                                                 <span class="title">Nivel de Riesgo</span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
-                                            <div class="risk-level oculto nivel_sincontrol" style="display: none;">
+                                            <div class="risk-level nivelma oculto" style="display: none;">
                                                 <span class="title">Nivel de Riesgo</span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
-                                            <div class="risk-level oculto nivel_deficiente" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
-                                            </div>
-                                            <div class="risk-level oculto regular" style="display: none;">
+                                            <div class="risk-level oculto nivela" style="display: none;">
                                                 <span class="title">Nivel de Riesgo</span>
                                                 <div class="risk-color" style="background-color: #FF0000;">Alto</div>
                                             </div>
-                                            <div class="risk-level oculto eficiente" style="display: none;">
+                                            <div class="risk-level oculto nivelm" style="display: none;">
                                                 <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #f4c542;;">Medio</div>
+                                                <div class="risk-color" style="background-color: #f4c542;">Medio</div>
                                             </div>
-                                            <div class="risk-level oculto optimo" style="display: none;">
+                                            <div class="risk-level oculto nivelb" style="display: none;">
                                                 <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #32CD32;">Bueno</div>
+                                                <div class="risk-color" style="background-color: #32CD32;">Bajo</div>
+                                            </div>
+                                            <div class="risk-level oculto nivelmb" style="display: none;">
+                                                <span class="title">Nivel de Riesgo</span>
+                                                <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
+                                            </div> 
+                                            <div class="risk-level oculto nivelmmb" style="display: none;">
+                                                <span class="title">Nivel de Riesgo</span>
+                                                <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div>
                                             <div class="text-centerx">
                                                 <label>Índice Potencial de daño</label>
                                             </div>
+
                                             <div class="contimg text-center">
-                                                <img class="nivel_inoperante" src="{{ asset('img/pot100.png') }}" width="200">
-                                                <img class="oculto nivel_sincontrol" src="{{ asset('img/pot80.png') }}" width="200">
-                                                <img class="oculto nivel_deficiente" src="{{ asset('img/pot70.png') }}" width="200">
-                                                <img class="oculto regular" src="{{ asset('img/pot50.png') }}" width="200">
-                                                <img class="oculto eficiente" src="{{ asset('img/pot30.png') }}" width="200">
-                                                <img class="oculto optimo" src="{{ asset('img/pot10.png') }}" width="200">
+                                                <img class="nivelmma" src="{{ asset('img/pot90.png') }}" width="220">
+                                                <img class="oculto nivelma" src="{{ asset('img/pot70.png') }}" width="220">
+                                                <img class="oculto nivela" src="{{ asset('img/pot40.png') }}" width="220">
+                                                <img class="oculto nivelm" src="{{ asset('img/pot20.png') }}" width="220">
+                                                <img class="oculto nivelb" src="{{ asset('img/pot10.png') }}" width="220">
+                                                <img class="oculto nivelmb" src="{{ asset('img/pot0.png') }}" width="220">
+                                                <img class="oculto nivelmmb" src="{{ asset('img/pot0.png') }}" width="220">
                                             </div>
                                         </div>
                                     </div>
