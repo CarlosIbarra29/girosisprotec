@@ -42,7 +42,7 @@ class AnalisisRiesgoNaturales extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_conceptos_naturales_id', 'libror_naturales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion'];
+    protected $fillable = ['cliente_id', 'libror_conceptos_naturales_id', 'libror_naturales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'nivel_riesgo'];
 
 
     public function hdConsecuencium()
