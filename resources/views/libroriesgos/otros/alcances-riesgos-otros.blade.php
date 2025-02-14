@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="card-toolbar">
 
-                                  <a href="{{ route('librootr.listadolibroriesgosotros') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                  <a href="{{ route('librootr.listadolibroriesgosotros',$alcance_id->libror_otros_riesgos_id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                                     <i class="la la-arrow-left"></i>Regresar</a>
 
                                     <!--begin::Button-->

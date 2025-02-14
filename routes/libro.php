@@ -46,7 +46,7 @@
 		Route::get('/listado-otros-riesgo', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'listadonuevosriesgos'])->name('librootr.listadonuevosriesgos');
 		Route::post('/guardar-riesgo-nuevo', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'guardarnuevoriesgo'])->name('librootr.guardarnuevoriesgo');
 		Route::post('/update-riesgo-nuevo', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'updatenuevoriesgo'])->name('librootr.updatenuevoriesgo');
-		Route::get('/listado-libroriesgos-otros', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'listadolibriesgosotros'])->name('librootr.listadolibroriesgosotros');
+		Route::get('/listado-libroriesgos-otros/{id}', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'listadolibriesgosotros'])->name('librootr.listadolibroriesgosotros');
 		Route::get('/otros-riesgos/{alcance}', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'riesgootroid'])->name('librootr.riesgootroid');
 		Route::get('/crear-otro-riesgo/{alcance}', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'crearriesgootro'])->name('librootr.crearriesgootro');
 		Route::post('/guardar-riesgo-otro', [App\Http\Controllers\LibroRiesgos\LibroRiesgosController::class, 'guardarriesgootro'])->name('librootr.guardarriesgootro');

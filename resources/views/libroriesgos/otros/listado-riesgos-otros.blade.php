@@ -29,11 +29,12 @@
                                     <h3 class="card-label">Listado de otros riesgos</h3>
                                 </div>
                                 <div class="card-toolbar">
+                                    <a href="{{ route('librootr.listadonuevosriesgos') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                    <i class="la la-arrow-left"></i>Regresar</a>
 
-
-                                        <a href="#" class="btn btn-light-primary font-weight-bolder mr-3 ml-3"
+                                    <a href="#" class="btn btn-light-primary font-weight-bolder mr-3 ml-3"
                                         data-toggle="modal" data-target="#kt_modal_1">
-                                        <i class="la la-plus"></i>Nuevo</a>
+                                     <i class="la la-plus"></i>Nuevo</a>
 
 
                                     <!--begin::Dropdown-->
@@ -196,6 +197,7 @@
                             <div class="col-lg-12 mt-2">
                                 <label>Nombre del riesgo</label>
                                 <input type="text" class="form-control" name="nombre_riesgo" id="nombre_riesgo" />
+                                <input type="hidden" name="id_riesgo" value="{{ $id_riesgo }}">
                             </div>
                         </div>
                     </form>
@@ -233,6 +235,7 @@
                                 <label>Nombre del riesgo</label>
                                 <input type="text" class="form-control" name="nombre_riesgo_edit" id="nombre_riesgo_edit" value=""/>
                                 <input type="hidden" name="id_riesgo_edit" id="id_riesgo_edit" value="">
+                                <input type="hidden" name="id_riesgo" value="{{ $id_riesgo }}">
                             </div>
                         </div>
                     </form>

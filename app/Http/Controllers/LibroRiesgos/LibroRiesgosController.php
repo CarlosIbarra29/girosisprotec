@@ -492,18 +492,20 @@ class LibroRiesgosController extends Controller
         return redirect()->route('librootr.listadonuevosriesgos');  
     }
 
-    public function listadolibriesgosotros()
+    public function listadolibriesgosotros($id_riesgo)
     {
         $data = user::where('id', 1)->get();
-        $alcances = ConceptosOtros::where('status_delete', 1)->orderby('id', 'ASC')->get();
- 
-        return view('libroriesgos.otros.listado-riesgos-otros', compact('data', 'alcances'));             
+
+        $alcances = ConceptosOtros::where('status_delete', 1)->where('libror_otros_riesgos_id', $id_riesgo)->get();
+        // dd($alcances);
+        return view('libroriesgos.otros.listado-riesgos-otros', compact('data', 'alcances', 'id_riesgo'));             
     }
 
     public function adnameriesgootro(Request $request)
     {
         $data = [
             'alcance' => $request->nombre_riesgo,
+            'libror_otros_riesgos_id' => $request->id_riesgo,
             'status_delete' =>1,
             'iduserCreated' =>auth()->user()->id,
             'iduserUpdated' =>auth()->user()->id,
@@ -514,7 +516,7 @@ class LibroRiesgosController extends Controller
         ConceptosOtros::insert($data);
 
         session()->flash('success', 'El riesgo se creo correctamente');
-        return redirect()->route('librootr.listadolibroriesgosotros');             
+        return redirect()->route('librootr.listadolibroriesgosotros', $request->id_riesgo);             
     }
 
     public function editnameriesgootro(Request $request)
@@ -527,14 +529,16 @@ class LibroRiesgosController extends Controller
         ConceptosOtros::where('id', $request->id_riesgo_edit)->update($data);
 
         session()->flash('success', 'El riesgo se modifico correctamente');
-        return redirect()->route('librootr.listadolibroriesgosotros');         
+        return redirect()->route('librootr.listadolibroriesgosotros', $request->id_riesgo);         
     }
 
     public function riesgootroid($alcance)
     {
+
         $riesgos = RiesgosOtros::where('social_alcance_id', $alcance)->where('status_delete', 1)->get();
+
         $alcance_id = ConceptosOtros::where('id', $alcance)->first();
-        
+
         return view('libroriesgos.otros.alcances-riesgos-otros', compact('alcance', 'riesgos', 'alcance_id'));  
     }
 

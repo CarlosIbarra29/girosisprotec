@@ -124,7 +124,7 @@
                                               <td>{{ $unid->nombre_riesgo }}</td>
 
                                               <td class="text-center">
-                                                <a  href="{{ route('librootr.riesgootroid', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->nombre_riesgo }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->nombre_riesgo }}'" ><i class="flaticon-eye"></i></a>
+                                                <a  href="{{ route('librootr.listadolibroriesgosotros', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->nombre_riesgo }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->nombre_riesgo }}'" ><i class="flaticon-eye"></i></a>
 
                                                 <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  onClick="editriesgosocial({{ $unid->id }},'{{ $unid->nombre_riesgo }}')" data-toggle="modal" data-target="#model_edit_riesgosocial" data-toggle="tooltip" data-theme="dark" title="Editar nombre riesgo">
                                                     <i class="flaticon-edit"></i></button>
