@@ -538,6 +538,8 @@
                                                 <img class="oculto nivelmb" src="{{ asset('img/pot0.png') }}" width="220">
                                                 <img class="oculto nivelmmb" src="{{ asset('img/pot0.png') }}" width="220">
                                             </div>
+
+                                            <input type="hidden" name="nivel_riesgo" id="nivel_riesgo">
                                         </div>
                                     </div>
 

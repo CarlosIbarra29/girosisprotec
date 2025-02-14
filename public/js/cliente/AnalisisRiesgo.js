@@ -328,6 +328,8 @@
 
         var rIndieP = (control * probabilidad) * impacto;
 
+        document.getElementById("nivel_riesgo").value = rIndieP;
+
 
         if (rIndieP == 0){
 
