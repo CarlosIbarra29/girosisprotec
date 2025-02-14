@@ -46,7 +46,7 @@
                                           <th>Punto de control</th>
                                           <th>Factores riesgo</th>
                                           <th>Eventos riesgo</th>
-                                          <th>Contramedidas</th>
+                                          <th>Medidas de Mitigacón</th>
                                           <th class="text-center">Opciones</th>
                                         </tr>
                                         </thead>
@@ -73,7 +73,7 @@
                                           <th>Punto de control</th>
                                           <th>Factores riesgo</th>
                                           <th>Eventos riesgo</th>
-                                          <th>Contramedidas</th>
+                                          <th>Medidas de Mitigacón</th>
                                           <th class="text-center">Opciones</th>
                                         </tr>
                                         </tfoot>

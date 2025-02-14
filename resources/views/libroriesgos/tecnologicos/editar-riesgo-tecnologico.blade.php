@@ -38,7 +38,7 @@
                                 <textarea class="form-control" name="eventos_riesgo" id="eventos_riesgo" rows="3">{{ $alcance_id->eventos_riesgo }}</textarea>
                             </div>
                             <div class="col-lg-6">
-                                <label for="contramedidas">Contramedidas</label>
+                                <label for="contramedidas">Medidas de Mitigacón</label>
                                 <textarea class="form-control" name="contramedidas" id="contramedidas" rows="3">{{ $alcance_id->contramedidas }}</textarea>
                             </div>
                         </div>
