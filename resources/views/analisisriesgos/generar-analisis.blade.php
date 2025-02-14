@@ -480,7 +480,7 @@
                                                 <div class="col-lg-4">
                                                     <label><b>Impacto/Severidad</b></label>
                                                     <div class="input-group">
-                                                        <select class="form-control gray_area" id="impacto_severidad" name="impacto/severidad"  required >
+                                                        <select class="form-control gray_area" id="impacto_severidad" name="impactos_severidad"  required >
                                                             <option value="1" selected>Insignificante</option>
                                                             <option value="2" >Leve</option>
                                                             <option value="3" >Marginal</option>
