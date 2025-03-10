@@ -208,27 +208,27 @@
                                         </div>
                                         <div class="col-lg-8 mt-2 nivel_inoperante">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero no funciona</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
                                             <label><b>Descripción</b></label>
-                                            <p>Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto nivel_deficiente">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto regular">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto eficiente">
                                             <label><b>Descripción</b></label>
-                                            <p>Los criterios de aplicación son los adecuados a la instalación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto optimo">
                                             <label><b>Descripción</b></label>
-                                            <p>Excede los criterios de aplicación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
                                         </div>
                                     </div>
 

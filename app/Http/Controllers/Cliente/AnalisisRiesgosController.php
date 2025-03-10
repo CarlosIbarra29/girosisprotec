@@ -128,8 +128,7 @@ class AnalisisRiesgosController extends Controller
 
     public function guardarriesgo(Request $request)
     {
-
-        // dd($request);
+   
         $data = [
             'cliente_id' => $request->cliente,
             'libror_barreras_perimetrales_id' => $request->punto_normativo,
@@ -147,6 +146,7 @@ class AnalisisRiesgosController extends Controller
             'hd_probabilidad_id' => $request->factor_probabilidad,
             'factor_exposicion' => $request->nivel_control,
             'nivel_riesgo' => $request->nivel_riesgo,
+            'descripcion' => $request->descripcion,
             'status_delete' => 1,
             'iduserCreated' =>auth()->user()->id,
             'iduserUpdated' =>auth()->user()->id,
@@ -156,37 +156,50 @@ class AnalisisRiesgosController extends Controller
 
         $reg_id =AnalisisRiesgoSocial::insertGetId($data);
 
+        if($request->impactos_negocio != null){
+            foreach ($request->impactos_negocio as $key ) {
+                $data = [
+                    'analisis_riesgo_social_id' => $reg_id,
+                    'id_impacto' =>$key,
+                    'iduserCreated' =>auth()->user()->id,
+                    'iduserUpdated' =>auth()->user()->id,
+                    'created_at' =>date('Y-m-d H:i:s'),
+                    'updated_at' =>date('Y-m-d H:i:s')
+                ];
 
-        foreach ($request->impactos_negocio as $key ) {
-            $data = [
-                'analisis_riesgo_social_id' => $reg_id,
-                'id_impacto' =>$key,
-                'iduserCreated' =>auth()->user()->id,
-                'iduserUpdated' =>auth()->user()->id,
-                'created_at' =>date('Y-m-d H:i:s'),
-                'updated_at' =>date('Y-m-d H:i:s')
-            ];
-
-            AnalisisRiesgoSocialImpacto::insert($data);
+                AnalisisRiesgoSocialImpacto::insert($data);
+            }
         }
 
-        foreach ($request->deficiencia_medida_s as $key ) {
-            $data = [
-                'analisis_riesgo_social_id' => $reg_id,
-                'id_deficiencia' =>$key,
-                'iduserCreated' =>auth()->user()->id,
-                'iduserUpdated' =>auth()->user()->id,
-                'created_at' =>date('Y-m-d H:i:s'),
-                'updated_at' =>date('Y-m-d H:i:s')
-            ];
+        if($request->deficiencia_medida_s != null){
+            foreach ($request->deficiencia_medida_s as $key ) {
+                $data = [
+                    'analisis_riesgo_social_id' => $reg_id,
+                    'id_deficiencia' =>$key,
+                    'iduserCreated' =>auth()->user()->id,
+                    'iduserUpdated' =>auth()->user()->id,
+                    'created_at' =>date('Y-m-d H:i:s'),
+                    'updated_at' =>date('Y-m-d H:i:s')
+                ];
 
-            AnalisisRiesgoSocialDeficiencia::insert($data);
+                AnalisisRiesgoSocialDeficiencia::insert($data);
+            }
         }
 
 
-
-        session()->flash('success', 'El registro de riesgo social se creo correctamente');
-        return redirect()->route('analisis.analisiscliente',$request->cliente);
+        $alcance_social = RiesgosSociales::where('status_delete', 1)->where('social_alcance_id', $request->punto_normativo)->get();
+        $count_alcance = count($alcance_social);
+        
+        if($request->alcances== $count_alcance){
+            return redirect()->route('analisis.analisiscliente',$request->cliente);
+            session()->flash('success', 'El registro de riesgo social se creo correctamente');
+        }else{
+            $redirect = $request->alcances + 1;
+            return redirect()->route('analisis.generaranalisis',[$request->cliente, $request->tipo, $request->punto_normativo, $redirect]);
+            session()->flash('success', 'El registro de riesgo social se creo correctamente');
+        }
+        
+       
 
 
     }
