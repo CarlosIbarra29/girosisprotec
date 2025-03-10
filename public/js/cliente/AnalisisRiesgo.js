@@ -328,9 +328,13 @@
 
         var rIndieP = (control * probabilidad) * impacto;
 
+        var rIndieP2 = rIndieP.toFixed(2);
+
         document.getElementById("nivel_riesgo").value = rIndieP;
 
+        document.getElementById("nivel_riesgo2").innerText = rIndieP2;
 
+        
         if (rIndieP == 0){
 
             $(".nivelmmb").show();$(".nivelmb").hide();$(".nivelb").hide();$(".nivelm").hide();$(".nivela").hide(); $(".nivelma").hide(); $(".nivelmma").hide(); 

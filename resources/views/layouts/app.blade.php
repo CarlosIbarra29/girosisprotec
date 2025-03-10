@@ -53,7 +53,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('tablero.show') }}">
-        {{-- <img alt="Logo" class="h-55px brand-logo" src="{{ asset('img/logos/LogoSis.png') }}" /> --}}
+         <img alt="Logo" class="h-55px brand-logo" src="{{ asset('img/logos/logogiro3.png') }}" />
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->
@@ -91,7 +91,7 @@
             <div class="brand flex-column-auto" id="kt_brand" style="height: 85px; background-color: {{ Session::get('menu_color') }} !important" >
                 <!--begin::Logo-->
                 <a href="{{ route('tablero.show') }}" class="brand-logo">
-                    {{-- <img alt="Logo" class="h-55px brand-logo" src="{{ asset('img/logos/LogoSis.png') }}" /> --}}
+                     <img alt="Logo" class="h-55px brand-logo" src="{{ asset('img/logos/logogiro.png') }}" /> 
                 </a>
                 <!--end::Logo-->
                 <!--begin::Toggle-->
@@ -143,12 +143,12 @@
                                         {{-- USUARIOS --}}
                                         @if (in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )  
                                             <li id="menuUsuarios" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                <a href="{{ route('user.catalogousuarios') }}" class="menu-link menu-toggle">
                                                     <i class="flaticon-users-1 menu-icon"></i>
                                                     <span class="menu-text">Usuarios</span>
-                                                    <i class="menu-arrow"></i>
+                                                    <!-- <i class="menu-arrow"></i> -->
                                                 </a>
-                                                <div class="menu-submenu">
+                                                <!-- <div class="menu-submenu">
                                                     <i class="menu-arrow"></i>
                                                     <ul class="menu-subnav">
                                                         @if (in_array("5", Session::get('permisos')))
@@ -163,18 +163,18 @@
                                                             </li>
                                                         @endif
                                                     </ul>
-                                                </div>
+                                                </div> -->
                                             </li>
                                         @endif
                                         {{-- ROLES --}}
                                         @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) )
                                             <li id="menuRoles" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                <a href="{{ route('rol.catalogoroles') }}" class="menu-link menu-toggle">
                                                     <i class="flaticon-security menu-icon"></i>
                                                     <span class="menu-text">Paquetes</span>
-                                                    <i class="menu-arrow"></i>
+                                                    <!-- <i class="menu-arrow"></i> -->
                                                 </a>
-                                                <div class="menu-submenu">
+                                                <!-- <div class="menu-submenu">
                                                     <i class="menu-arrow"></i>
                                                     <ul class="menu-subnav">
                                                         @if (in_array("1", Session::get('permisos')))
@@ -188,7 +188,7 @@
                                                             </li>
                                                         @endif
                                                     </ul>
-                                                </div>
+                                                </div> -->
                                             </li>
                                         @endif
                                     </ul>
@@ -209,12 +209,12 @@
                                     {{-- CLIENTES --}}
                                     {{-- @if (in_array("33", Session::get('permisos')) || in_array("34", Session::get('permisos')) )  --}}
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoClientes">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
+                                            <a href="{{ route('cliente.listadocliente') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
                                                 <span class="menu-text">Catálogo de clientes</span>
-                                                <i class="menu-arrow"></i>
+                                                <!-- <i class="menu-arrow"></i> -->
                                             </a>
-                                            <div class="menu-submenu">
+                                            <!-- <div class="menu-submenu">
                                                 <i class="menu-arrow"></i>
                                                 <ul class="menu-subnav">
                                                     <li class="menu-item menu-item-parent" aria-haspopup="true">
@@ -233,16 +233,16 @@
                                                         </li>
                                                     {{-- @endif --}}
                                                 </ul>
-                                            </div>
+                                            </div> -->
                                         </li>
 
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoAnalisis">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
+                                            <a href="{{ route('analisis.listadoanalisis') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
                                                 <span class="menu-text">Analisis de riesgos</span>
-                                                <i class="menu-arrow"></i>
+                                                <!-- <i class="menu-arrow"></i> -->
                                             </a>
-                                            <div class="menu-submenu">
+                                            <!-- <div class="menu-submenu">
                                                 <i class="menu-arrow"></i>
                                                 <ul class="menu-subnav">
                                                     <li class="menu-item menu-item-parent" aria-haspopup="true">
@@ -261,7 +261,7 @@
                                                         </li>
                                                     {{-- @endif --}}
                                                 </ul>
-                                            </div>
+                                            </div> -->
                                         </li>
 
 
@@ -282,12 +282,12 @@
                                     {{-- CLIENTES --}}
                                     {{-- @if (in_array("33", Session::get('permisos')) || in_array("34", Session::get('permisos')) )  --}}
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuNivelcontrol">
-                                            <a href="javascript:;" class="menu-link menu-toggle">
+                                            <a href="{{ route('hd.catalogonivelcontrol') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
-                                                <span class="menu-text">Niveles de exposición</span>
-                                                <i class="menu-arrow"></i>
+                                                <span class="menu-text">Niveles de control</span>
+                                                <!-- <i class="menu-arrow"></i> -->
                                             </a>
-                                            <div class="menu-submenu">
+                                            <!-- <div class="menu-submenu">
                                                 <i class="menu-arrow"></i>
                                                 <ul class="menu-subnav">
                                                     <li class="menu-item menu-item-parent" aria-haspopup="true">
@@ -307,7 +307,7 @@
                                                     {{-- @endif --}}
                                                 </ul>
                                             </div>
-                                        </li>
+                                        </li> -->
                                     {{-- @endif --}}
 
 
@@ -414,14 +414,14 @@
 
                                     {{-- Area Personal --}}
                                     <li id="menuCatalogoArePersonal" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                        <a href="{{ route('area.listadoarea') }}" class="menu-link menu-toggle">
                                             <i class="menu-bullet menu-bullet-dot">
                                                 <span></span>
                                             </i>
                                             <span class="menu-text">Area Personal</span>
                                             <i class="menu-arrow"></i>
                                         </a>
-                                        <div class="menu-submenu">
+                                        <!-- <div class="menu-submenu">
                                             <i class="menu-arrow"></i>
                                             <ul class="menu-subnav">
                                     
@@ -435,7 +435,7 @@
                                                 </li>
                                     
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </li>
 
 

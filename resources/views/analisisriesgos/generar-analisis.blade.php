@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('scripts')
-	<script src="{{ asset('js/cliente/AnalisisRiesgo.js') }}"></script>
+	<script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.01') }}"></script>
 @endpush
 @section('title')
    Generar analisis de riesgos al cliente "SIS PROTEC"
@@ -113,7 +113,7 @@
                                         @if($id_alcance != 0)
                                             <div class="col-lg-6">
                                                 <label for="observaciones"><b>Punto de control</b></label>
-                                                <textarea class="form-control gray_area" name="punto_control" placeholder="" id="punto_control" rows="2"></textarea>
+                                                <textarea class="form-control gray_area" name="punto_control" placeholder="" id="punto_control" rows="2">{{ $alcance_social->criterio }}</textarea>
                                             </div>
                                 
                                         @else
@@ -245,7 +245,7 @@
                                    
                                     <div class="row form-group">
                                         <div class="col-lg-4 degradado-border-right" >
-                                            <label for="observaciones"><b style="font-size: 17px;">Deficiencia en la medidas S.</b></label><br>
+                                            <label for="observaciones"><b style="font-size: 15px;">Deficiencia medidas de seguridad</b></label><br>
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="checkbox-list">
@@ -498,35 +498,36 @@
                                         <div class="col-lg-4 text-center">
 
                                             <div class="risk-level nivelmma">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
                                             <div class="risk-level nivelma oculto" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
                                             <div class="risk-level oculto nivela" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #FF0000;">Alto</div>
                                             </div>
                                             <div class="risk-level oculto nivelm" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #f4c542;">Medio</div>
                                             </div>
                                             <div class="risk-level oculto nivelb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #32CD32;">Bajo</div>
                                             </div>
                                             <div class="risk-level oculto nivelmb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div> 
                                             <div class="risk-level oculto nivelmmb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div>
                                             <div class="text-centerx">
-                                                <label>Índice Potencial de daño</label>
+                                                <label>Índice Potencial de daño: </label>
+                                                <label style="font-weight: bolder; font-size: 15px;" id="nivel_riesgo2">0</label>
                                             </div>
 
                                             <div class="contimg text-center">
