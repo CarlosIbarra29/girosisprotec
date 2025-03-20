@@ -14,7 +14,9 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
-                    <h3 class="card-title">Generar analisis de riesgos al cliente "SIS PROTEC"</h3>
+                    <h3 class="card-title">Editar analisis de riesgos al cliente "SIS PROTEC"</h3>
+
+
 
                 </div>
                 <input type='hidden' id='url_alcances' value='{{ route('analisis.obteneralcances') }}'>
@@ -24,7 +26,7 @@
                         <div class="card card-custom gutter-b">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-8">
                                         <label><b>Punto normativo</b></label>
                                         <div class="input-group">
                                             @foreach($alcances as $alcanec)
@@ -34,42 +36,33 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <label for="observaciones"><b>Punto de control</b></label>
-                                        <p>{{ $ana_riesgo->punto_control }}</p>
+                                    <div class="col-lg-4 mt-2 text-center">
                                     </div>
 
-                                    <!-- <div class="col-lg-3 mt-2 text-center">
-                                        <label><b>Estatus</b></label>
-                                        <div class="input-group">
-                                            <div class="legend">
-                                                <span class="completed-box"></span> <span>Porcentaje Completado</span>
-                                                <br>
-                                                <span class="remaining-box"></span> <span>Porcentaje Faltante</span>
-                                            </div>
-
-                                            <div class="progress-bar2">
-                                                <div class="completed" style="width: 44%;">44</div>
-                                                <div class="remaining" style="width: 53%;">53</div>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                 {{-- ENvoiar Formulario  --}}
                 <form action="{{ route('analisis.guardarriesgo') }}" method="post" id="submit_analisis_social">  
                                 @csrf
 
+                                    <div class="row form-group">
+                                            <div class="col-lg-6">
+                                                <label for="observaciones"><b>Punto de control</b></label>
+                                                <textarea class="form-control gray_area" name="punto_control" placeholder="" id="punto_control" rows="2">{{ $ana_riesgo->punto_control }}</textarea>
+                                            </div>
+                                
+    
+                                    </div>
 
                                     <div class="row form-group">
                                             <div class="col-lg-6">
                                                 <label for="observaciones"><b>Factor de riesgo</b></label>
-                                                <p>{{ $ana_riesgo->factores_riesgo }}</p>
-                                                <input type="hidden" name="id_alcance_seleccionado" value="{{ $ana_riesgo->id }}">
+                                                <textarea class="form-control gray_area" name="factor_riesgo" placeholder="" id="factor_riesgo" rows="2">{{ $ana_riesgo->factores_riesgo }}</textarea>
+                                                {{-- <input type="hidden" name="id_alcance_seleccionado" value="{{ $alcance_social->id }}"> --}}
 
                                             </div>
                                             <div class="col-lg-6">
                                                 <label for="observaciones"><b>Evento de riesgo</b></label>
-                                                <p>{{ $ana_riesgo->eventos_riesgo }}</p>
+                                                <textarea class="form-control gray_area" name="evento_riesgo" placeholder="" id="evento_riesgo" rows="2">{{ $ana_riesgo->eventos_riesgo }}</textarea>
                                             </div>
 
                                     </div>
@@ -77,20 +70,20 @@
                                     <div class="row form-group">
                                         <div class="col-lg-4">
                                             <label for="observaciones"><b>Recursos Expuestos (Activos)</b></label>
-                                            <p>{{ $ana_riesgo->recursos_expuestos }}</p>
+                                            <input type="text" class="form-control gray_area" name="recursos_expuestos" id="recursos_expuestos" value="{{ $ana_riesgo->recursos_expuestos }}"/>
                                         </div>
                                         <div class="col-lg-4">
                                             <label for="observaciones"><b>Fuente de Riesgo</b></label>
-                                            <p>{{ $ana_riesgo->fuente_riesgo }}</p>
+                                            <input type="text" class="form-control gray_area" name="fuente_riesgo" id="fuente_riesgo" value="{{ $ana_riesgo->fuente_riesgo }}"/>
                                         </div>
                                         <div class="col-lg-4">
                                             <label for="observaciones"><b>Ubicación del riesgo</b></label>
-                                            <p>{{ $ana_riesgo->ubicacion_riesgo }}</p>
+                                            <input type="text" class="form-control gray_area" name="ubicacion_riesgo" id="ubicacion_riesgo" value="{{ $ana_riesgo->ubicacion_riesgo }}"/>
                                         </div>
                                     </div>
+
                             </div>
                         </div>
-
 
                             <div class="row  hr-container">
                                 <span><h3><b>Controles</b></h3></span>
@@ -102,68 +95,46 @@
                                         <div class="col-lg-4">
                                             <label><b>Nivel de control</b></label>
                                             <div class="input-group">
-                                                @if($ana_riesgo->hd_nivel_control_id == 1)
-                                                    <p>Inoperante</p>
-                                                @endif
-                                                @if($ana_riesgo->hd_nivel_control_id == 2)
-                                                    <p>Sin control</p>
-                                                @endif
-                                                @if($ana_riesgo->hd_nivel_control_id == 3)
-                                                    <p>Deficiente</p>
-                                                @endif
-                                                @if($ana_riesgo->hd_nivel_control_id == 4)
-                                                    <p>Regular</p>
-                                                @endif
-                                                @if($ana_riesgo->hd_nivel_control_id == 5)
-                                                    <p>Eficiente</p>
-                                                @endif
-                                                @if($ana_riesgo->hd_nivel_control_id == 6)
-                                                    <p>Optimo</p>
-                                                @endif
+                                                <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
+                                                    <option value="1" selected>Inoperante</option>
+                                                    <option value="2" >Sin control</option>
+                                                    <option value="3" >Deficiente</option>
+                                                    <option value="4" >Regular</option>
+                                                    <option value="5" >Eficiente</option>
+                                                    <option value="6" >Optimo</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        @if($ana_riesgo->hd_nivel_control_id == 1)
-                                            <div class="col-lg-8 mt-2 nivel_inoperante">
-                                                <label><b>Descripción</b></label>
-                                                <p>Cuenta con los criterios de aplicación pero no funciona.</p>
-                                            </div>
-                                        @endif
-                                        @if($ana_riesgo->hd_nivel_control_id == 2)
-                                            <div class="col-lg-8 mt-2 nivel_sincontrol">
-                                                <label><b>Descripción</b></label>
-                                                <p>Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</p>
-                                            </div>
-                                        @endif
-                                        @if($ana_riesgo->hd_nivel_control_id == 3)
-                                            <div class="col-lg-8 mt-2 nivel_deficiente">
-                                                <label><b>Descripción</b></label>
-                                                <p>Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</p>
-                                            </div>
-                                        @endif
-                                        @if($ana_riesgo->hd_nivel_control_id == 4)
-                                            <div class="col-lg-8 mt-2 regular">
-                                                <label><b>Descripción</b></label>
-                                                <p>Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</p>
-                                            </div>
-                                        @endif
-                                        @if($ana_riesgo->hd_nivel_control_id == 5)
-                                            <div class="col-lg-8 mt-2 eficiente">
-                                                <label><b>Descripción</b></label>
-                                                <p>Los criterios de aplicación son los adecuados a la instalación.</p>
-                                            </div>
-                                        @endif
-                                        @if($ana_riesgo->hd_nivel_control_id == 6)
-                                            <div class="col-lg-8 mt-2 optimo">
-                                                <label><b>Descripción</b></label>
-                                                <p>Excede los criterios de aplicación.</p>
-                                            </div>
-                                        @endif
+                                        <div class="col-lg-8 mt-2 nivel_inoperante">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto regular">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto eficiente">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto optimo">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                        </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <div class="col-lg-12">
                                             <label for="observaciones"><b>Medidas de Prevención y Protección Actuales</b></label>
-                                            <p>{{ $ana_riesgo->medidas_prevencion }}</p>
+                                            <textarea class="form-control gray_area" name="medidas_prevencion" placeholder="" id="generales_unidad" rows="5"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +161,7 @@
                                                             Pasivas
                                                         </label>
                                                         <label class="checkbox">
-                                                            <input type="checkbox" value="1"  name="deficiencia_medida_s[]" {{(in_array(1 , $array_deficiencia)) ? 'checked' : ''}}/>
+                                                            <input type="checkbox" value="1"  name="deficiencia_medida_s[]" {{(in_array(1 , $array_deficiencia)) ? 'checked' : ''}} />
                                                             <span></span>
                                                             Activas
                                                         </label>
@@ -199,12 +170,12 @@
                                                 <div class="col-lg-6">
                                                         <div class="checkbox-list">
                                                             <label class="checkbox">
-                                                                <input type="checkbox" value="2" name="deficiencia_medida_s[]" {{(in_array(2 , $array_deficiencia)) ? 'checked' : ''}}/>
+                                                                <input type="checkbox" value="2" name="deficiencia_medida_s[]" {{(in_array(2 , $array_deficiencia)) ? 'checked' : ''}} />
                                                                 <span></span>
                                                                 Humanas
                                                             </label>
                                                             <label class="checkbox">
-                                                                <input type="checkbox" value="3" name="deficiencia_medida_s[]" {{(in_array(3 , $array_deficiencia)) ? 'checked' : ''}}/>
+                                                                <input type="checkbox" value="3" name="deficiencia_medida_s[]" {{(in_array(3 , $array_deficiencia)) ? 'checked' : ''}} />
                                                                 <span></span>
                                                                 Organizativas
                                                             </label>
@@ -223,7 +194,7 @@
                                                             <div class="col-lg-3">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="0" name="impactos_negocio[]" {{(in_array(0 , $array_impacto)) ? 'checked' : ''}} />
+                                                                        <input type="checkbox" value="0" name="impactos_negocio[]" {{(in_array(0 , $array_impacto)) ? 'checked' : ''}}/>
                                                                         <span></span>
                                                                         Patrimonial
                                                                     </label>
@@ -238,12 +209,12 @@
                                                                 <div class="checkbox-list">
 
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="2" name="impactos_negocio[]" {{(in_array(2, $array_impacto)) ? 'checked' : ''}}/>
+                                                                        <input type="checkbox" value="2" name="impactos_negocio[]" {{(in_array(2 , $array_impacto)) ? 'checked' : ''}}/>
                                                                         <span></span>
                                                                         Comercial
                                                                     </label>
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="3" name="impactos_negocio[]" {{(in_array(3, $array_impacto)) ? 'checked' : ''}}/>
+                                                                        <input type="checkbox" value="3" name="impactos_negocio[]" {{(in_array(3 , $array_impacto)) ? 'checked' : ''}}/>
                                                                         <span></span>
                                                                         Reputacional
                                                                     </label>
@@ -266,7 +237,7 @@
                                                             <div class="col-lg-3">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="6" name="impactos_negocio[]" {{(in_array(6 , $array_impacto)) ? 'checked' : ''}}/>
+                                                                        <input type="checkbox" value="6" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Comunidad
                                                                     </label>
@@ -283,99 +254,64 @@
                                     <div class="row form-group">
                                         <div class="col-lg-8">
                                             <label for="contramedidas"><b>Medidas de Mitigacón</b></label>
-
-                                                <p>{{ $ana_riesgo->contramedidas }}</p>
+                                         
+                                                <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
 
 
                                             <div class="row mt-2">
                                                 
-                                                @if($ana_riesgo->hd_nivel_control_id == 1)
-                                                    <div class="col-lg-4 nivel_inoperante">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Muy Alta</p>
-                                                    </div>
-                                                @endif
+                                                <div class="col-lg-4 nivel_inoperante">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
 
-                                                @if($ana_riesgo->hd_nivel_control_id == 2)
-                                                    <div class="col-lg-4 nivel_sincontrol">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Muy Alta</p>
-                                                    </div>
-                                                @endif
+                                                <div class="col-lg-4 oculto nivel_sincontrol">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
 
-                                                @if($ana_riesgo->hd_nivel_control_id == 3)
-                                                    <div class="col-lg-4 nivel_deficiente">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Alta</p>
-                                                    </div>
-                                                @endif
-
-                                                @if($ana_riesgo->hd_nivel_control_id == 4)
-                                                    <div class="col-lg-4 regular">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Media</p>
-                                                    </div>
-                                                @endif
-
-                                                @if($ana_riesgo->hd_nivel_control_id == 5)
-                                                    <div class="col-lg-4 eficiente">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Baja</p>
-                                                    </div>
-                                                @endif
-
-                                                @if($ana_riesgo->hd_nivel_control_id == 6)
-                                                    <div class="col-lg-4 optimo">
-                                                        <label for="observaciones"><b>Factor de exposición</b></label>
-                                                        <p>Muy Baja</p>
-                                                    </div>
-                                                @endif
+                                                <div class="col-lg-4 oculto nivel_deficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto regular">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto eficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto optimo">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                </div>
 
                                                 <div class="col-lg-4">
                                                     <label><b>Factor de probabilidad</b></label>
                                                     <div class="input-group">
-                                                        @if($ana_riesgo->hd_probabilidad_id == 1)
-                                                            <p>Muy Alta</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_probabilidad_id == 2)
-                                                            <p>Alta</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_probabilidad_id == 3)
-                                                            <p>Media</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_probabilidad_id == 4)
-                                                            <p>Baja</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_probabilidad_id == 5)
-                                                            <p>Muy Baja</p>
-                                                        @endif
+                                                        <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
+                                                            <option value="1" selected>Muy Alta</option>
+                                                            <option value="2" >Alta</option>
+                                                            <option value="3" >Media</option>
+                                                            <option value="4" >Baja</option>
+                                                            <option value="5" >Muy Baja</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 
                                                 <div class="col-lg-4">
                                                     <label><b>Impacto/Severidad</b></label>
                                                     <div class="input-group">
-                                                        @if($ana_riesgo->hd_consecuencia_id == 1)
-                                                            <p>Insignificante</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 2)
-                                                            <p>Leve</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 3)
-                                                            <p>Marginal</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 4)
-                                                            <p>Grave</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 5)
-                                                            <p>Critíco</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 6)
-                                                            <p>Desastroso</p>
-                                                        @endif
-                                                        @if($ana_riesgo->hd_consecuencia_id == 7)
-                                                            <p>Catastrófico</p>
-                                                        @endif
+                                                        <select class="form-control gray_area" id="impacto_severidad" name="impacto_severidad"  required >
+                                                            <option value="1" selected>Insignificante</option>
+                                                            <option value="2" >Leve</option>
+                                                            <option value="3" >Marginal</option>
+                                                            <option value="4" >Grave</option>
+                                                            <option value="5" >Critíco</option>
+                                                            <option value="6" >Desastroso</option>
+                                                            <option value="7" >Catastrófico</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
@@ -441,7 +377,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="row text-right">
-                                <a href="{{ route('analisis.analisiscliente', $id_cliente) }}"  class="btn btn-secondary">Regresar</a>
+
+                                <div class="col-lg-12">
+                                    {{-- <button type="button"  id="btnGuardar" class="btn btn-primary mr-2">Guardar</button> --}}
+                                     <a href="{{ route('analisis.analisiscliente', $id_cliente) }}"  class="btn btn-secondary">Cancelar</a>
+                                </div>
 
                         </div>
                     </div>
