@@ -336,6 +336,7 @@ class AnalisisRiesgosController extends Controller
             'hd_probabilidad_id' => $request->factor_probabilidad,
             'factor_exposicion' => $request->nivel_control,
             'nivel_riesgo' => $request->nivel_riesgo,
+            'descripcion' => $request->descripcion,
             'status_delete' => 1,
             'iduserCreated' =>auth()->user()->id,
             'iduserUpdated' =>auth()->user()->id,
