@@ -96,45 +96,184 @@
                                             <label><b>Nivel de control</b></label>
                                             <div class="input-group">
                                                 <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
-                                                    <option value="1" selected>Inoperante</option>
-                                                    <option value="2" >Sin control</option>
-                                                    <option value="3" >Deficiente</option>
-                                                    <option value="4" >Regular</option>
-                                                    <option value="5" >Eficiente</option>
-                                                    <option value="6" >Optimo</option>
+                                                    <option value="1" @selected($ana_riesgo->hd_nivel_control_id == 1)>Inoperante</option>
+                                                    <option value="2" @selected($ana_riesgo->hd_nivel_control_id == 2)>Sin control</option>
+                                                    <option value="3" @selected($ana_riesgo->hd_nivel_control_id == 3)>Deficiente</option>
+                                                    <option value="4" @selected($ana_riesgo->hd_nivel_control_id == 4)>Regular</option>
+                                                    <option value="5" @selected($ana_riesgo->hd_nivel_control_id == 5)>Eficiente</option>
+                                                    <option value="6" @selected($ana_riesgo->hd_nivel_control_id == 6)>Optimo</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-8 mt-2 nivel_inoperante">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto nivel_deficiente">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto regular">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto eficiente">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto optimo">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
-                                        </div>
+                                        @if($ana_riesgo->hd_nivel_control_id == 1)
+                                            <div class="col-lg-8 mt-2 nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
+
+                                        @if($ana_riesgo->hd_nivel_control_id == 2)
+                                            <div class="col-lg-8 mt-2 oculto nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2  nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
+                                        @if($ana_riesgo->hd_nivel_control_id == 3)
+                                            <div class="col-lg-8 mt-2 oculto nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2  nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
+                                        @if($ana_riesgo->hd_nivel_control_id == 4)
+                                            <div class="col-lg-8 mt-2 oculto nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2  regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
+                                        @if($ana_riesgo->hd_nivel_control_id == 5)
+                                            <div class="col-lg-8 mt-2 oculto nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2  eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
+                                        @if($ana_riesgo->hd_nivel_control_id == 6)
+                                            <div class="col-lg-8 mt-2 oculto nivel_inoperante">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto nivel_deficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto regular">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2 oculto eficiente">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                            </div>
+                                            <div class="col-lg-8 mt-2  optimo">
+                                                <label><b>Descripción</b></label>
+                                                <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
+                                            </div>
+                                        @endif
+
                                     </div>
 
                                     <div class="row form-group">
                                         <div class="col-lg-12">
                                             <label for="observaciones"><b>Medidas de Prevención y Protección Actuales</b></label>
-                                            <textarea class="form-control gray_area" name="medidas_prevencion" placeholder="" id="generales_unidad" rows="5"></textarea>
+                                            <textarea class="form-control gray_area" name="medidas_prevencion" placeholder="" id="generales_unidad" rows="5">{{ $ana_riesgo->medidas_prevencion }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -255,47 +394,196 @@
                                         <div class="col-lg-8">
                                             <label for="contramedidas"><b>Medidas de Mitigacón</b></label>
                                          
-                                                <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
+                                                <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5">{{ $ana_riesgo->contramedidas }}</textarea>
 
 
                                             <div class="row mt-2">
-                                                
-                                                <div class="col-lg-4 nivel_inoperante">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
-                                                </div>
+                                                @if($ana_riesgo->hd_nivel_control_id == 1)
+                                                    <div class="col-lg-4 nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
 
-                                                <div class="col-lg-4 oculto nivel_sincontrol">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
-                                                </div>
+                                                    <div class="col-lg-4 oculto nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
 
-                                                <div class="col-lg-4 oculto nivel_deficiente">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
-                                                </div>
-                                                <div class="col-lg-4 oculto regular">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
-                                                </div>
-                                                <div class="col-lg-4 oculto eficiente">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
-                                                </div>
-                                                <div class="col-lg-4 oculto optimo">
-                                                    <label for="observaciones"><b>Factor de exposición</b></label>
-                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
-                                                </div>
+                                                    <div class="col-lg-4 oculto nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
+                                                @if($ana_riesgo->hd_nivel_control_id == 2)
+                                                    <div class="col-lg-4 oculto nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4  nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
+                                                @if($ana_riesgo->hd_nivel_control_id == 3)
+                                                    <div class="col-lg-4 oculto nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4  nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
+
+                                                @if($ana_riesgo->hd_nivel_control_id == 4)
+                                                    <div class="col-lg-4 oculto nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4  regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
+
+                                                @if($ana_riesgo->hd_nivel_control_id == 5)
+                                                    <div class="col-lg-4 oculto nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4  eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
+                                                @if($ana_riesgo->hd_nivel_control_id == 6)
+                                                    <div class="col-lg-4 oculto nivel_inoperante">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_sincontrol">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                    </div>
+
+                                                    <div class="col-lg-4 oculto nivel_deficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto regular">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                    </div>
+                                                    <div class="col-lg-4 oculto eficiente">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                    </div>
+                                                    <div class="col-lg-4  optimo">
+                                                        <label for="observaciones"><b>Factor de exposición</b></label>
+                                                        <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                    </div>
+                                                @endif
+
 
                                                 <div class="col-lg-4">
                                                     <label><b>Factor de probabilidad</b></label>
                                                     <div class="input-group">
                                                         <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
-                                                            <option value="1" selected>Muy Alta</option>
-                                                            <option value="2" >Alta</option>
-                                                            <option value="3" >Media</option>
-                                                            <option value="4" >Baja</option>
-                                                            <option value="5" >Muy Baja</option>
+                                                            <option value="1" @selected($ana_riesgo->hd_probabilidad_id == 1)>Muy Alta</option>
+                                                            <option value="2" @selected($ana_riesgo->hd_probabilidad_id == 2)>Alta</option>
+                                                            <option value="3" @selected($ana_riesgo->hd_probabilidad_id == 3)>Media</option>
+                                                            <option value="4" @selected($ana_riesgo->hd_probabilidad_id == 4)>Baja</option>
+                                                            <option value="5" @selected($ana_riesgo->hd_probabilidad_id == 5)>Muy Baja</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -304,13 +592,13 @@
                                                     <label><b>Impacto/Severidad</b></label>
                                                     <div class="input-group">
                                                         <select class="form-control gray_area" id="impacto_severidad" name="impacto_severidad"  required >
-                                                            <option value="1" selected>Insignificante</option>
-                                                            <option value="2" >Leve</option>
-                                                            <option value="3" >Marginal</option>
-                                                            <option value="4" >Grave</option>
-                                                            <option value="5" >Critíco</option>
-                                                            <option value="6" >Desastroso</option>
-                                                            <option value="7" >Catastrófico</option>
+                                                            <option value="1" @selected($ana_riesgo->hd_consecuencia_id == 1)>Insignificante</option>
+                                                            <option value="2" @selected($ana_riesgo->hd_consecuencia_id == 2)>Leve</option>
+                                                            <option value="3" @selected($ana_riesgo->hd_consecuencia_id == 3)>Marginal</option>
+                                                            <option value="4" @selected($ana_riesgo->hd_consecuencia_id == 4)>Grave</option>
+                                                            <option value="5" @selected($ana_riesgo->hd_consecuencia_id == 5)>Critíco</option>
+                                                            <option value="6" @selected($ana_riesgo->hd_consecuencia_id == 6)>Desastroso</option>
+                                                            <option value="7" @selected($ana_riesgo->hd_consecuencia_id == 7)>Catastrófico</option>
                                                         </select>
                                                     </div>
                                                 </div>
