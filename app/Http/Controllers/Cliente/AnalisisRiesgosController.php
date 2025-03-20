@@ -401,9 +401,20 @@ class AnalisisRiesgosController extends Controller
         }
 
 
+        $alcance_tecnologico = RiesgosTecnologicos::where('status_delete', 1)->where('social_alcance_id', $request->punto_normativo)->get();
+        $count_alcance = count($alcance_tecnologico);
+        
+        if($request->alcances== $count_alcance){
+            return redirect()->route('analisis.analisistecnologicoscli',$request->cliente);
+            session()->flash('success', 'El registro de riesgo tecnológico se creo correctamente');
+        }else{
+            $redirect = $request->alcances + 1;
+            return redirect()->route('analisis.generaranalisistecno',[$request->cliente, $request->tipo, $request->punto_normativo, $redirect]);
+            session()->flash('success', 'El registro de riesgo tecnológico se creo correctamente');
+        }
 
-        session()->flash('success', 'El registro de riesgo tecnologico se creo correctamente');
-        return redirect()->route('analisis.analisistecnologicoscli',$request->cliente);        
+        // session()->flash('success', 'El registro de riesgo tecnologico se creo correctamente');
+        // return redirect()->route('analisis.analisistecnologicoscli',$request->cliente);        
     }
  // ----------------------------------------------------------------------------------------------------------------------------------------------------------- Analisis Riesgos Naturales
 
@@ -498,6 +509,7 @@ class AnalisisRiesgosController extends Controller
             'hd_probabilidad_id' => $request->factor_probabilidad,
             'factor_exposicion' => $request->nivel_control,
             'nivel_riesgo' => $request->nivel_riesgo,
+            'descripcion' => $request->descripcion,
             'status_delete' => 1,
             'iduserCreated' =>auth()->user()->id,
             'iduserUpdated' =>auth()->user()->id,
@@ -534,10 +546,19 @@ class AnalisisRiesgosController extends Controller
             AnalisisRiesgoNaturalesDeficiencia::insert($data);
         }
 
+        $alcance_natural = RiesgosNaturales::where('status_delete', 1)->where('social_alcance_id', $request->punto_normativo)->get();
+        $count_alcance = count($alcance_natural);
+        
+        if($request->alcances== $count_alcance){
+            return redirect()->route('analisis.analisisnaturalescli',$request->cliente);
+            session()->flash('success', 'El registro de riesgo natural se creo correctamente');
+        }else{
+            $redirect = $request->alcances + 1;
+            return redirect()->route('analisis.generaranalisisnaturales',[$request->cliente, $request->tipo, $request->punto_normativo, $redirect]);
+            session()->flash('success', 'El registro de riesgo natural se creo correctamente');
+        }
 
-
-        session()->flash('success', 'El registro de riesgo natural se creo correctamente');
-        return redirect()->route('analisis.analisisnaturalescli',$request->cliente);         
+        
     }
  // ----------------------------------------------------------------------------------------------------------------------------------------------------------- Analisis Riesgos Otros
 

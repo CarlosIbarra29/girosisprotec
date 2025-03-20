@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('scripts')
-	<script src="{{ asset('js/cliente/AnalisisRiesgo.js') }}"></script>
+    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.01') }}"></script>
 @endpush
 @section('title')
    Generar analisis de riesgos al cliente "SIS PROTEC"
@@ -15,6 +15,13 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
                     <h3 class="card-title">Generar analisis de riesgos al cliente "SIS PROTEC"</h3>
+
+                    <div style="margin-top: 10px;">
+                        <a class="btn btn-success btn-xs disabled"  href="#">KPI's</a>
+                        <a class="btn btn-success btn-xs disabled"  href="#">Tratamiento de riesgos</a>
+
+                    </div>
+
                 </div>
                 <input type='hidden' id='url_alcances' value='{{ route('analisis.obteneralcancesnaturales') }}'>
                 <!--begin::Form-->
@@ -100,7 +107,7 @@
                                                 <h4>El punto normativo seleccionado no contiene información</h4>
 
                                                 <div class="row mt-4">
-                                                    <h5>Para continar dirigete a la sección de libros de riesgos sociales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
+                                                    <h5>Para continar dirigete a la sección de libros de riesgos naturales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,7 +120,7 @@
                                         @if($id_alcance != 0)
                                             <div class="col-lg-6">
                                                 <label for="observaciones"><b>Punto de control</b></label>
-                                                <textarea class="form-control gray_area" name="punto_control" placeholder="" id="punto_control" rows="2"></textarea>
+                                                <textarea class="form-control gray_area" name="punto_control" placeholder="" id="punto_control" rows="2">{{ $alcance_social->criterio }}</textarea>
                                             </div>
                                 
                                         @else
@@ -201,27 +208,27 @@
                                         </div>
                                         <div class="col-lg-8 mt-2 nivel_inoperante">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero no funciona</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto nivel_sincontrol">
                                             <label><b>Descripción</b></label>
-                                            <p>Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto nivel_deficiente">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto regular">
                                             <label><b>Descripción</b></label>
-                                            <p>Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto eficiente">
                                             <label><b>Descripción</b></label>
-                                            <p>Los criterios de aplicación son los adecuados a la instalación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
                                         </div>
                                         <div class="col-lg-8 mt-2 oculto optimo">
                                             <label><b>Descripción</b></label>
-                                            <p>Excede los criterios de aplicación.</p>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
                                         </div>
                                     </div>
 
@@ -245,7 +252,7 @@
                                    
                                     <div class="row form-group">
                                         <div class="col-lg-4 degradado-border-right" >
-                                            <label for="observaciones"><b style="font-size: 17px;">Deficiencia en la medidas S.</b></label><br>
+                                            <label for="observaciones"><b style="font-size: 15px;">Deficiencia medidas de seguridad</b></label><br>
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="checkbox-list">
@@ -347,14 +354,15 @@
 
                                     <div class="row form-group">
                                         <div class="col-lg-8">
-                                            <label for="contramedidas"><b>Contramedidas</b></label>
+                                            <label for="contramedidas"><b>Medidas de Mitigacón</b></label>
                                             @if($id_alcance != 0)
                                                 <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5">{{ $alcance_social->contramedidas }}</textarea>
                                             @else
                                                 <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
                                             @endif
 
-                                            <div class="row mt-2">
+                                            <!-- <div class="row mt-2">
+
                                                 <div class="col-lg-4 nivel_inoperante">
                                                     <label for="observaciones"><b>Factor de expocisión</b></label>
                                                     <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
@@ -432,46 +440,114 @@
                                                     <input type="text" class="form-control gray_area" disabled name="impacto/severidad" id="impacto/severidad" value="Critico"/>
                                                 </div>
 
+                                            </div> -->
+
+                                            <div class="row mt-2">
+                                                
+                                                <div class="col-lg-4 nivel_inoperante">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
+
+                                                <div class="col-lg-4 oculto nivel_sincontrol">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Alta"/>
+                                                </div>
+
+                                                <div class="col-lg-4 oculto nivel_deficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Alta"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto regular">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Media"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto eficiente">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Baja"/>
+                                                </div>
+                                                <div class="col-lg-4 oculto optimo">
+                                                    <label for="observaciones"><b>Factor de exposición</b></label>
+                                                    <input type="text" class="form-control gray_area" disabled name="factor_exposicion" id="factor_exposicion" value="Muy Baja"/>
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <label><b>Factor de probabilidad</b></label>
+                                                    <div class="input-group">
+                                                        <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
+                                                            <option value="1" selected>Muy Alta</option>
+                                                            <option value="2" >Alta</option>
+                                                            <option value="3" >Media</option>
+                                                            <option value="4" >Baja</option>
+                                                            <option value="5" >Muy Baja</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-4">
+                                                    <label><b>Impacto/Severidad</b></label>
+                                                    <div class="input-group">
+                                                        <select class="form-control gray_area" id="impacto_severidad" name="impacto_severidad"  required >
+                                                            <option value="1" selected>Insignificante</option>
+                                                            <option value="2" >Leve</option>
+                                                            <option value="3" >Marginal</option>
+                                                            <option value="4" >Grave</option>
+                                                            <option value="5" >Critíco</option>
+                                                            <option value="6" >Desastroso</option>
+                                                            <option value="7" >Catastrófico</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
-
-
                                         </div>
+
                                         <div class="col-lg-4 text-center">
-                                            <div class="risk-level nivel_inoperante">
-                                                <span class="title">Nivel de Riesgo</span>
+
+                                            <div class="risk-level nivelmma">
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
-                                            <div class="risk-level oculto nivel_sincontrol" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                            <div class="risk-level nivelma oculto" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
-                                            <div class="risk-level oculto nivel_deficiente" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
-                                            </div>
-                                            <div class="risk-level oculto regular" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
+                                            <div class="risk-level oculto nivela" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
                                                 <div class="risk-color" style="background-color: #FF0000;">Alto</div>
                                             </div>
-                                            <div class="risk-level oculto eficiente" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #f4c542;;">Medio</div>
+                                            <div class="risk-level oculto nivelm" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
+                                                <div class="risk-color" style="background-color: #f4c542;">Medio</div>
                                             </div>
-                                            <div class="risk-level oculto optimo" style="display: none;">
-                                                <span class="title">Nivel de Riesgo</span>
-                                                <div class="risk-color" style="background-color: #32CD32;">Bueno</div>
+                                            <div class="risk-level oculto nivelb" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
+                                                <div class="risk-color" style="background-color: #32CD32;">Bajo</div>
+                                            </div>
+                                            <div class="risk-level oculto nivelmb" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
+                                                <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
+                                            </div> 
+                                            <div class="risk-level oculto nivelmmb" style="display: none;">
+                                                <span class="title">Nivel de Riesgo </span>
+                                                <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div>
                                             <div class="text-centerx">
-                                                <label>Índice Potencial de daño</label>
+                                                <label>Índice Potencial de daño: </label>
+                                                <label style="font-weight: bolder; font-size: 15px;" id="nivel_riesgo2">0</label>
                                             </div>
+
                                             <div class="contimg text-center">
-                                                <img class="nivel_inoperante" src="{{ asset('img/daño100.png') }}" width="200">
-                                                <img class="oculto nivel_sincontrol" src="{{ asset('img/daño80.png') }}" width="200">
-                                                <img class="oculto nivel_deficiente" src="{{ asset('img/daño70.png') }}" width="200">
-                                                <img class="oculto regular" src="{{ asset('img/daño50.png') }}" width="200">
-                                                <img class="oculto eficiente" src="{{ asset('img/daño30.png') }}" width="200">
-                                                <img class="oculto optimo" src="{{ asset('img/daño10.png') }}" width="200">
+                                                <img class="nivelmma" src="{{ asset('img/pot90.png') }}" width="220">
+                                                <img class="oculto nivelma" src="{{ asset('img/pot70.png') }}" width="220">
+                                                <img class="oculto nivela" src="{{ asset('img/pot40.png') }}" width="220">
+                                                <img class="oculto nivelm" src="{{ asset('img/pot20.png') }}" width="220">
+                                                <img class="oculto nivelb" src="{{ asset('img/pot10.png') }}" width="220">
+                                                <img class="oculto nivelmb" src="{{ asset('img/pot0.png') }}" width="220">
+                                                <img class="oculto nivelmmb" src="{{ asset('img/pot0.png') }}" width="220">
                                             </div>
+
+                                            <input type="hidden" name="nivel_riesgo" id="nivel_riesgo">
                                         </div>
                                     </div>
 

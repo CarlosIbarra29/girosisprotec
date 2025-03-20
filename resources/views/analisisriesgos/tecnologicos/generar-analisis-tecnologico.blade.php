@@ -33,7 +33,7 @@
                                     <div class="col-lg-8">
                                         <label><b>Punto normativo</b></label>
                                         <div class="input-group">
-                                        <select class="form-control" id="punto_normativo" name="punto_normativo"  required >
+                                        <select class="form-control" id="punto_normativo_tecnologico" name="punto_normativo"  required >
                                             <option value="">Selecciona una opción</option>
                                             @foreach($alcances as $alcanec)
                                                 <option value="{{ $alcanec->id }}"  @selected($alcanec->id == $id_alcance)>{{ $alcanec->alcance }}</option>
@@ -49,21 +49,21 @@
                                         @else
                                             <p>{{ $num }} de {{ $count_alcance }}</p> 
                                             @if($num == 1)
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_menos" data-toggle="tooltip" data-theme="dark" title="" >
+                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_menos_tec" data-toggle="tooltip" data-theme="dark" title="" >
                                                     <i class="la la-arrow-left"></i>
                                                 </button>
                                             @else
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_menos" data-toggle="tooltip" data-theme="dark" title="" >
+                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_menos_tec" data-toggle="tooltip" data-theme="dark" title="" >
                                                     <i class="la la-arrow-circle-left"></i>
                                                 </button>
                                             @endif
 
                                             @if($num == 9)
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_mas" data-toggle="tooltip" data-theme="dark" title="" >
+                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_mas_tec" data-toggle="tooltip" data-theme="dark" title="" >
                                                     <i class="la la-arrow-right"></i>
                                                 </button>
                                             @else
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_mas" data-toggle="tooltip" data-theme="dark" title="" >
+                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_mas_tec" data-toggle="tooltip" data-theme="dark" title="" >
                                                     <i class="la la-arrow-circle-right"></i>
                                                 </button>
                                             @endif
@@ -107,7 +107,7 @@
                                                 <h4>El punto normativo seleccionado no contiene información</h4>
 
                                                 <div class="row mt-4">
-                                                    <h5>Para continar dirigete a la sección de libros de riesgos sociales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
+                                                    <h5>Para continar dirigete a la sección de libros de riesgos tecnológicos o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
                                                 </div>
                                             </div>
                                         </div>
