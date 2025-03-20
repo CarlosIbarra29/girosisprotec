@@ -96,6 +96,8 @@
 
                                         <a href="{{ route('analisis.analisisanalisissocial',[$cliente->id , $unid->id]) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"   class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1" data-toggle="tooltip" data-theme="dark" title="Editar analisis del riesgo" ><i class="flaticon-edit"></i></a>
 
+                                        <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  data-toggle="tooltip" data-theme="dark" title="Eliminar analisis del riesgo" > <span class="svg-icon svg-icon-md"> <i class="flaticon-delete"></i></span>
+                                        </button>
                                       </td>
                                     </tr>
                                   @endforeach
