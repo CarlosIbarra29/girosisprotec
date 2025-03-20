@@ -199,9 +199,6 @@ class AnalisisRiesgosController extends Controller
             session()->flash('success', 'El registro de riesgo social se creo correctamente');
         }
         
-       
-
-
     }
 
     public function graficassociales($id_cliente)
@@ -211,6 +208,41 @@ class AnalisisRiesgosController extends Controller
 
         return view('analisisriesgos.graficas-sociales-cliente', compact('data', 'id_cliente', 'cliente'));         
     }
+
+    public function detalleanalisissocial($id_cliente, $id_riesgo)
+    {
+        $alcances = BarrerasPerimetrales::where('status_delete', 1)->get();
+        $ana_riesgo = AnalisisRiesgoSocial::where('id', $id_riesgo)->first();
+        $ana_impacto = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->get();
+        $ana_impacto_if = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->first();
+        $ana_deficiencia = AnalisisRiesgoSocialDeficiencia::where('analisis_riesgo_social_id', $id_riesgo)->get();
+        $ana_deficiencia_if = AnalisisRiesgoSocialDeficiencia::where('analisis_riesgo_social_id', $id_riesgo)->first();
+
+        if($ana_impacto_if == null){
+            $array_impacto = array();
+        }else{
+            foreach($ana_impacto as $value){
+                $array_impacto [] = $value->id_impacto;
+            }
+        }
+
+        if($ana_deficiencia_if == null){
+            $array_deficiencia = array();
+        }else{
+            foreach($ana_deficiencia as $value){
+                $array_deficiencia [] = $value->id_deficiencia;
+            }
+        }
+
+
+        return view('analisisriesgos.detalle-sociales', compact('id_cliente', 'id_riesgo', 'ana_riesgo', 'ana_impacto', 'ana_deficiencia', 'alcances', 'array_impacto', 'array_deficiencia'));    
+    }
+
+    public function analisisanalisissocial($id_cliente, $id_riesgo)
+    {
+        dd($id_riesgo);
+    }
+
 
  // ----------------------------------------------------------------------------------------------------------------------------------------------------------- Analisis Riesgos Tecnologicos
     public function analisistecnologicoscli($id_cliente)

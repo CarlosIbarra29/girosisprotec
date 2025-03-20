@@ -91,7 +91,11 @@
                                       <td>{{ $unid->eventos_riesgo }}</td>
                                       <td>{{ $unid->hdNivelControl->nivel_control }}</td>
                                       <td class="text-center">
-                                        <a href="" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1" data-toggle="tooltip" data-theme="dark" title="Detalle de analisis del riesgo" ><i class="flaticon-eye"></i></a>
+                                        <a href="{{ route('analisis.detalleanalisissocial',[$cliente->id , $unid->id]) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1" data-toggle="tooltip" data-theme="dark" title="Detalle de analisis del riesgo" ><i class="flaticon-eye"></i></a>
+
+
+                                        <a href="{{ route('analisis.analisisanalisissocial',[$cliente->id , $unid->id]) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"   class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1" data-toggle="tooltip" data-theme="dark" title="Editar analisis del riesgo" ><i class="flaticon-edit"></i></a>
+
                                       </td>
                                     </tr>
                                   @endforeach
