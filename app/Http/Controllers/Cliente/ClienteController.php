@@ -260,4 +260,49 @@ class ClienteController extends Controller
         return view('cliente.ver-cliente', compact('data', 'cliente_id'));         
     }
 
+    public function nuevocliente()
+    {
+        $data= 1;
+
+        $clientes = Cliente::where('status_delete', 1)->get();
+
+        return view('cliente.nuevo-cliente', compact('data','clientes'));
+    }
+
+    public function guardarclientenuevo(Request $request)
+    {
+        $data = [
+            'organizacion' => $request->organizacion,
+            'nombre_comercial' => $request->nombre_comercial,
+            'calle' => $request->calle,
+            'no_exterior' => $request->no_exterior,
+            'no_interior' => $request->no_interior,
+            'delegacion' => $request->delegacion,
+            'giro_comercial' => $request->giro_comercial,
+            'sector' => $request->sector,
+            'no_personal' => $request->no_personal,
+            'contacto_principal' => $request->contacto_principal,
+            'cargo' => $request->cargo,
+            'telefono' => $request->telefono,
+            'mail' => $request->mail,
+            'persona_atiende' => $request->persona_atiende,
+            'cargo_atiende' => $request->cargo_atiende,
+            'telefono_atiende' => $request->telefono_atiende,
+            'mail_atiende' => $request->mail_atiende,
+            'status_delete' => 1,
+            'created_at' =>date('Y-m-d H:i:s'),
+            'updated_at' =>date('Y-m-d H:i:s'),
+            'iduserCreated' =>auth()->user()->id,
+            'iduserUpdated' =>auth()->user()->id,
+        ];
+        $id_cliente = Cliente::insertGetId($data);
+        // dd($request);
+
+        session()->flash('success', 'El cliente se añadió correctamente');
+        return redirect()->route('analisis.seleccionaanalisis',$id_cliente);   
+
+    }
+
+    
+
 }

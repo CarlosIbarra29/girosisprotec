@@ -82,6 +82,106 @@
     <!--end::Toolbar-->
 </div>
 <!--end::Header Mobile-->
+
+<!-- Bootstrap 5 Sidebar Moderno -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<!-- <div class="bg-dark text-white vh-100 p-3" style="width: 250px;">
+    <div class="mb-4">
+        <a href="{{ route('tablero.show') }}" class="d-flex align-items-center text-white text-decoration-none">
+            <img src="{{ asset('img/logos/logogiro3.png') }}" alt="Logo" class="me-2" style="height: 40px;">
+            <span class="fs-5 fw-bold">GiroApp</span>
+        </a>
+    </div>
+
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="{{ route('tablero.show') }}" class="nav-link text-white {{ Request::routeIs('tablero.show') ? 'active bg-primary' : '' }}">
+                <i class="fas fa-chart-line me-2"></i> Tablero
+            </a>
+        </li>
+
+        @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')))
+        <li>
+            <button class="btn btn-toggle align-items-center rounded text-white w-100 text-start" data-bs-toggle="collapse" data-bs-target="#adminCollapse" aria-expanded="false">
+                <i class="fas fa-user-cog me-2"></i> Administración
+            </button>
+            <div class="collapse ps-3" id="adminCollapse">
+                @if (in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')))
+                <a href="{{ route('user.catalogousuarios') }}" class="nav-link text-white {{ Request::routeIs('user.catalogousuarios') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-users me-2"></i> Usuarios
+                </a>
+                @endif
+
+                @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')))
+                <a href="{{ route('rol.catalogoroles') }}" class="nav-link text-white {{ Request::routeIs('rol.catalogoroles') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-lock me-2"></i> Paquetes
+                </a>
+                @endif
+            </div>
+        </li>
+        @endif
+
+        <li>
+            <button class="btn btn-toggle align-items-center rounded text-white w-100 text-start" data-bs-toggle="collapse" data-bs-target="#infoCollapse" aria-expanded="false">
+                <i class="fas fa-info-circle me-2"></i> Información
+            </button>
+            <div class="collapse ps-3" id="infoCollapse">
+                <a href="{{ route('cliente.listadocliente') }}" class="nav-link text-white {{ Request::routeIs('cliente.listadocliente') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-user-friends me-2"></i> Clientes
+                </a>
+                <a href="{{ route('analisis.listadoanalisis') }}" class="nav-link text-white {{ Request::routeIs('analisis.listadoanalisis') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-search me-2"></i> Análisis de riesgos
+                </a>
+            </div>
+        </li>
+
+        <li>
+            <button class="btn btn-toggle align-items-center rounded text-white w-100 text-start" data-bs-toggle="collapse" data-bs-target="#nivelesCollapse" aria-expanded="false">
+                <i class="fas fa-layer-group me-2"></i> Niveles de exposición
+            </button>
+            <div class="collapse ps-3" id="nivelesCollapse">
+                <a href="{{ route('hd.catalogonivelcontrol') }}" class="nav-link text-white {{ Request::routeIs('hd.catalogonivelcontrol') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-sliders-h me-2"></i> Niveles de control
+                </a>
+            </div>
+        </li>
+
+        @if (in_array("5", Session::get('permisos')))
+        <li>
+            <button class="btn btn-toggle align-items-center rounded text-white w-100 text-start" data-bs-toggle="collapse" data-bs-target="#libroCollapse" aria-expanded="false">
+                <i class="fas fa-book me-2"></i> Libro de riesgos
+            </button>
+            <div class="collapse ps-3" id="libroCollapse">
+                <a href="{{ route('libro.listadolibroriesgos') }}" class="nav-link text-white">Riesgos sociales</a>
+                <a href="{{ route('librotec.listadolibroriesgostec') }}" class="nav-link text-white">Riesgos tecnológicos</a>
+                <a href="{{ route('libronat.listadolibroriesgosnat') }}" class="nav-link text-white">Riesgos naturales</a>
+                <a href="{{ route('librootr.listadonuevosriesgos') }}" class="nav-link text-white">Otros riesgos</a>
+            </div>
+        </li>
+        @endif
+
+        <li>
+            <button class="btn btn-toggle align-items-center rounded text-white w-100 text-start" data-bs-toggle="collapse" data-bs-target="#catalogoCollapse" aria-expanded="false">
+                <i class="fas fa-folder-open me-2"></i> Catálogos
+            </button>
+            <div class="collapse ps-3" id="catalogoCollapse">
+                <a href="{{ route('area.listadoarea') }}" class="nav-link text-white {{ Request::routeIs('area.listadoarea') ? 'active bg-primary' : '' }}">
+                    <i class="fas fa-user-tag me-2"></i> Área personal
+                </a>
+            </div>
+        </li>
+    </ul>
+
+    <hr class="border-secondary">
+
+    <div>
+        <a href="{{ route('logout') }}" class="nav-link text-danger">
+            <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
+        </a>
+    </div>
+</div> -->
+
 <div class="d-flex flex-column flex-root">
     <!--begin::Page-->
     <div class="d-flex flex-row flex-column-fluid page">
@@ -123,13 +223,77 @@
                     @elseif(Auth::user()->tipo_usuario_id == 2)
 
                     @else
+
+                         <div class="topbar-item">
+                            <div class="menu-link menu-toggle btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3" style="color: white !important;">¡Hola! {{ Auth::user()->name }}</span>
+                                <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ route('archivo.documentoAvatar', Auth::user()->avatar) }}" alt="photo">
+                                @else
+                                    <span class="symbol-label font-size-h5 font-weight-bold" style="color: white !important;">{{ Auth::user()->name[0] }}</span>
+                                @endif
+                            </span>
+                            </div>
+                        </div>
+
+                        <!-- <hr class="border-secondary"> -->
+                        
                         <li id="menuHome" class="menu-item menu-item-active" aria-haspopup="true">
-                            <a href="{{ route('tablero.show') }}" class="menu-link">
+                            <!-- <a href="{{ route('tablero.show') }}" class="menu-link">
                                 <i class="flaticon-pie-chart-1 menu-icon"></i>
                                 <span class="menu-text">Tablero</span>
+                            </a> -->
+
+                            <a href="{{ route('tablero.show') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('tablero.show') ? 'active bg-primary' : '' }}">
+                                <i class="flaticon-pie-chart-1 menu-icon"></i> <span class="menu-text"> Tablero</span>
                             </a>
                         </li>
+
                         @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuNuevo">
+                                <a href="{{ route('cliente.nuevocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.nuevocliente') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-profile menu-icon"></i>
+                                    <span class="menu-text">Nuevo Análisis de Riesgo</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoAnalisis">
+                                <a href="{{ route('analisis.listadoanalisis') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('analisis.listadoanalisis') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-security menu-icon"></i>
+                                    <span class="menu-text">Mis Análisis</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuHd">
+                                <a href="{{ route('hd.catalogonivelcontrol') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('hd.catalogonivelcontrol') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-notepad menu-icon"></i>
+                                    <span class="menu-text">Parámetros</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoClientes">
+                                <a href="{{ route('cliente.listadocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.listadocliente') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-users-1 menu-icon"></i>
+                                    <span class="menu-text">Mis Clientes</span>
+                                </a>
+                            </li>
+
+
+                        @endif 
+
+                        <hr class="border-secondary">
+
+                        <div>
+                            <a href="{{ route('logout') }}" class="menu-link menu-toggle nav-link text-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
+                            </a>
+                        </div>
+
+                
+
+                      <!--   @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )
                             <li id="menuAdministracion" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <i class="flaticon2-user-1 menu-icon"></i>
@@ -146,24 +310,8 @@
                                                 <a href="{{ route('user.catalogousuarios') }}" class="menu-link menu-toggle">
                                                     <i class="flaticon-users-1 menu-icon"></i>
                                                     <span class="menu-text">Usuarios</span>
-                                                    <!-- <i class="menu-arrow"></i> -->
                                                 </a>
-                                                <!-- <div class="menu-submenu">
-                                                    <i class="menu-arrow"></i>
-                                                    <ul class="menu-subnav">
-                                                        @if (in_array("5", Session::get('permisos')))
-                                                            <li id="menuListadoUsuarios" class="menu-item" aria-haspopup="true">
-                                                                <a href="{{ route('user.catalogousuarios') }}" class="menu-link">
-                                                                    <i class="menu-bullet menu-bullet-dot">
-                                                                        <span></span>
-                                                                    </i>
-                                                                    <span class="menu-text">Listado de Usuarios</span>
-
-                                                                </a>
-                                                            </li>
-                                                        @endif
-                                                    </ul>
-                                                </div> -->
+        
                                             </li>
                                         @endif
                                         {{-- ROLES --}}
@@ -172,30 +320,14 @@
                                                 <a href="{{ route('rol.catalogoroles') }}" class="menu-link menu-toggle">
                                                     <i class="flaticon-security menu-icon"></i>
                                                     <span class="menu-text">Paquetes</span>
-                                                    <!-- <i class="menu-arrow"></i> -->
                                                 </a>
-                                                <!-- <div class="menu-submenu">
-                                                    <i class="menu-arrow"></i>
-                                                    <ul class="menu-subnav">
-                                                        @if (in_array("1", Session::get('permisos')))
-                                                            <li id="menuListadoRoles" class="menu-item" aria-haspopup="true">
-                                                                <a href="{{ route('rol.catalogoroles') }}" class="menu-link">
-                                                                    <i class="menu-bullet menu-bullet-dot">
-                                                                        <span></span>
-                                                                    </i>
-                                                                    <span class="menu-text">Listado de Paquetes</span>
-                                                                </a>
-                                                            </li>
-                                                        @endif
-                                                    </ul>
-                                                </div> -->
                                             </li>
                                         @endif
                                     </ul>
                                 </div>
                             </li>
                         @endif             
-        {{-- END ADMINISTRACIÓN DEL SISTEMA --}}
+                        {{-- END ADMINISTRACIÓN DEL SISTEMA --}}
 
                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuGerenciaComercial">
                             <a href="javascript:;" class="menu-link menu-toggle">
@@ -212,56 +344,18 @@
                                             <a href="{{ route('cliente.listadocliente') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
                                                 <span class="menu-text">Catálogo de clientes</span>
-                                                <!-- <i class="menu-arrow"></i> -->
+                                                
                                             </a>
-                                            <!-- <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Catálogo de clientes</span>
-                                                        </span>
-                                                    </li>
-                                                    {{-- @if (in_array("33", Session::get('permisos')))  --}}
-                                                        <li class="menu-item" aria-haspopup="true" id="menuListadoClientes">
-                                                            <a href="{{ route('cliente.listadocliente') }}" class="menu-link">
-                                                                <i class="menu-bullet menu-bullet-dot">
-                                                                    <span></span>
-                                                                </i>
-                                                                <span class="menu-text">Listado de clientes</span>
-                                                            </a>
-                                                        </li>
-                                                    {{-- @endif --}}
-                                                </ul>
-                                            </div> -->
+                                           
                                         </li>
 
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoAnalisis">
                                             <a href="{{ route('analisis.listadoanalisis') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
                                                 <span class="menu-text">Analisis de riesgos</span>
-                                                <!-- <i class="menu-arrow"></i> -->
+                                                
                                             </a>
-                                            <!-- <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Catálogo de analisis</span>
-                                                        </span>
-                                                    </li>
-                                                    {{-- @if (in_array("33", Session::get('permisos')))  --}}
-                                                        <li class="menu-item" aria-haspopup="true" id="menuListadoAnalisis">
-                                                            <a href="{{ route('analisis.listadoanalisis') }}" class="menu-link">
-                                                                <i class="menu-bullet menu-bullet-dot">
-                                                                    <span></span>
-                                                                </i>
-                                                                <span class="menu-text">Listado de analisis de riesgos</span>
-                                                            </a>
-                                                        </li>
-                                                    {{-- @endif --}}
-                                                </ul>
-                                            </div> -->
+                                            
                                         </li>
 
 
@@ -285,29 +379,9 @@
                                             <a href="{{ route('hd.catalogonivelcontrol') }}" class="menu-link menu-toggle">
                                                 <i class="flaticon-profile menu-icon"></i>
                                                 <span class="menu-text">Niveles de control</span>
-                                                <!-- <i class="menu-arrow"></i> -->
+                                                
                                             </a>
-                                            <!-- <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Catálogo de niveles de exposición</span>
-                                                        </span>
-                                                    </li>
-                                                    {{-- @if (in_array("33", Session::get('permisos')))  --}}
-                                                        <li class="menu-item" aria-haspopup="true" id="menuListadoNivelcontrol">
-                                                            <a href="{{ route('hd.catalogonivelcontrol') }}" class="menu-link">
-                                                                <i class="menu-bullet menu-bullet-dot">
-                                                                    <span></span>
-                                                                </i>
-                                                                <span class="menu-text">Listado de nivel de control</span>
-                                                            </a>
-                                                        </li>
-                                                    {{-- @endif --}}
-                                                </ul>
-                                            </div>
-                                        </li> -->
+                                        </li>
                                     {{-- @endif --}}
 
 
@@ -395,11 +469,11 @@
                                 </div>
                             </li>
                         @endif             
-        {{-- END LIBROS DE RIESGOS --}}
+                    {{-- END LIBROS DE RIESGOS --}}
 
 
-                        
-        {{-- CATÁLOGOS --}}
+                                    
+                    {{-- CATÁLOGOS --}}
                         <li id="menuCatalogos" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                             <a href="javascript:;" class="menu-link menu-toggle">
                                 <i class="flaticon2-folder menu-icon"></i>
@@ -421,21 +495,6 @@
                                             <span class="menu-text">Area Personal</span>
                                             <i class="menu-arrow"></i>
                                         </a>
-                                        <!-- <div class="menu-submenu">
-                                            <i class="menu-arrow"></i>
-                                            <ul class="menu-subnav">
-                                    
-                                                <li class="menu-item" aria-haspopup="true" id="menuListadoareapersonal">
-                                                    <a href="{{ route('area.listadoarea') }}" class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">Listado de area personal</span>
-                                                    </a>
-                                                </li>
-                                    
-                                            </ul>
-                                        </div> -->
                                     </li>
 
 
@@ -448,7 +507,7 @@
                         @endif
                         {{-- Fin de catalogos --}}
 
-                    </ul>
+                    </ul> -->
                     <!--end::Menu Nav-->
                 </div>
                 <!--end::Menu Container-->
@@ -685,18 +744,7 @@
                         <!--end::Messages-->
                         @endif
                         <!--begin::User-->
-                        <div class="topbar-item">
-                            <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ Auth::user()->name }}</span>
-                                <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-                                @if(Auth::user()->avatar)
-                                    <img src="{{ route('archivo.documentoAvatar', Auth::user()->avatar) }}" alt="photo">
-                                @else
-                                    <span class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->name[0] }}</span>
-                                @endif
-                            </span>
-                            </div>
-                        </div>
+                       
                         <!--end::User-->
                     </div>
                     <!--end::Topbar-->
@@ -728,9 +776,9 @@
                         <span class="text-muted font-weight-bold mr-2">@php echo date('Y'); @endphp©</span>
                         <a href="#" target="_blank" class="text-dark-75 text-hover-primary">
                         @if(Auth::user()->tipo_usuario_id != 1 && Auth::user()->tipo_usuario_id != 2)
-                            Gestion de rriesgos
+                            Gestion de Riesgos
                         @else
-                            Gestion de riesgos
+                            Gestion de Riesgos
                         @endif
                         </a>
                     </div>

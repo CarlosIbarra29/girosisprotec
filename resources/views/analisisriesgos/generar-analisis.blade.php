@@ -3,7 +3,7 @@
 	<script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.01') }}"></script>
 @endpush
 @section('title')
-   Generar analisis de riesgos al cliente "SIS PROTEC"
+   Generar analisis de riesgos al cliente ({{ $cliented->nombre_comercial }})
 @endsection
 @section('content')
 
@@ -14,7 +14,7 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
-                    <h3 class="card-title">Generar analisis de riesgos al cliente "SIS PROTEC"</h3>
+                    <h3 class="card-title">Generar analisis de riesgos al cliente ({{ $cliented->nombre_comercial }})</h3>
 
                     <div style="margin-top: 10px;">
                         <a class="btn btn-success btn-xs disabled"  href="#">KPI's</a>

@@ -92,6 +92,8 @@ class AnalisisRiesgosController extends Controller
     	$data = Cliente::where('status_delete', 1)->get();
         $alcances = BarrerasPerimetrales::where('status_delete', 1)->get();
 
+        $cliented = Cliente::where('id', $cliente)->first();
+
         if($id_alcance == 0)
         {
             $alcance_social = RiesgosSociales::where('status_delete', 1)->first();
@@ -112,7 +114,7 @@ class AnalisisRiesgosController extends Controller
         $nivel_control = NivelControl::where('status_delete', 1)->get();
 
 
-    	return view('analisisriesgos.generar-analisis', compact('data', 'alcances', 'cliente', 'tipo', 'id_alcance', 'alcance_social', 'count_alcance', 'num', 'nivel_control', 'nivel_control'));
+    	return view('analisisriesgos.generar-analisis', compact('data', 'cliented','alcances', 'cliente', 'tipo', 'id_alcance', 'alcance_social', 'count_alcance', 'num', 'nivel_control', 'nivel_control'));
     }
 
     public function obteneralcances(Request $request)

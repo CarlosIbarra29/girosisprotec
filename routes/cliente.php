@@ -15,6 +15,9 @@
 		Route::get('/listado-clientes-inactivos', [App\Http\Controllers\Cliente\ClienteController::class, 'listadoclienteinactivo'])->name('cliente.listadoclienteinactivo');
 		Route::post('/activar-cliente', [App\Http\Controllers\Cliente\ClienteController::class, 'activarcliente'])->name('cliente.activarcliente');
 		Route::get('/ver-cliente/{cliente}', [App\Http\Controllers\Cliente\ClienteController::class, 'vercliente'])->name('cliente.vercliente');
+		Route::get('/nuevo-cliente', [App\Http\Controllers\Cliente\ClienteController::class, 'nuevocliente'])->name('cliente.nuevocliente');
+		Route::post('/guardar-clientenuevo', [App\Http\Controllers\Cliente\ClienteController::class, 'guardarclientenuevo'])->name('cliente.guardarclientenuevo');
+
 
 	//  C L I E N T E
 		//Analisis Social
