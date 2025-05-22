@@ -237,7 +237,7 @@
                             </div>
                         </div>
 
-                        <!-- <hr class="border-secondary"> -->
+                        <hr class="border-secondary">
                         
                         <li id="menuHome" class="menu-item menu-item-active" aria-haspopup="true">
                             <!-- <a href="{{ route('tablero.show') }}" class="menu-link">
@@ -266,8 +266,15 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuHd">
+                            <!-- <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuHd">
                                 <a href="{{ route('hd.catalogonivelcontrol') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('hd.catalogonivelcontrol') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-notepad menu-icon"></i>
+                                    <span class="menu-text">Parámetros</span>
+                                </a>
+                            </li> -->
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuHd">
+                                <a href="{{ route('hd.parametros') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('hd.parametros') ? 'active bg-primary' : '' }}">
                                     <i class="flaticon-notepad menu-icon"></i>
                                     <span class="menu-text">Parámetros</span>
                                 </a>

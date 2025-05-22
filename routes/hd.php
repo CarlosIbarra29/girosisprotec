@@ -10,3 +10,4 @@
     	Route::post('/desactivar-nivelcontrol', [App\Http\Controllers\Hd\NivelControlController::class, 'eliminarNivelcontrol'])->name('hd.eliminarNivelcontrol');
     	Route::get('/catalogo-nivelcontrol-inactivos', [App\Http\Controllers\Hd\NivelControlController::class, 'catalogonivelcontrolinactivos'])->name('hd.nivelcontrolinactivos');
     	Route::post('/activar-nivelcontrol', [App\Http\Controllers\Hd\NivelControlController::class, 'activarnivelcontrol'])->name('hd.activarnivelcontrol');
+    	Route::get('/parametros', [App\Http\Controllers\Hd\NivelControlController::class, 'parametros'])->name('hd.parametros');

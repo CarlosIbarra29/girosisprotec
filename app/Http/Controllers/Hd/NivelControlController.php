@@ -170,4 +170,14 @@ class NivelControlController extends Controller
         return redirect()->route('hd.nivelcontrolinactivos');     	
     }
 
+    public function parametros()
+    {
+
+        $data= 1;
+
+        $nivel_control = NivelControl::where('status_delete', 1)->get();
+
+        return view('hd.nivelcontrol.parametros', compact('data','nivel_control'));
+    }
+
 }
