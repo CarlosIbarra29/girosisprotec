@@ -18,7 +18,6 @@
 		Route::get('/nuevo-cliente', [App\Http\Controllers\Cliente\ClienteController::class, 'nuevocliente'])->name('cliente.nuevocliente');
 		Route::post('/guardar-clientenuevo', [App\Http\Controllers\Cliente\ClienteController::class, 'guardarclientenuevo'])->name('cliente.guardarclientenuevo');
 
-
 	//  C L I E N T E
 		//Analisis Social
 		Route::get('/listado-analisis-riesgos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'listadoanalisis'])->name('analisis.listadoanalisis');
@@ -54,3 +53,8 @@
 		Route::post('/obtener-alcances-otros', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcancesotros'])->name('analisis.obteneralcancesotros');
 		Route::post('/guardar-riesgo-otros', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgootros'])->name('analisis.guardarriesgootros');
 		Route::get('/graficas-otros-riesgos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficasotros'])->name('analisis.graficasotros');	
+
+		// Matriz de Aceptibilidad
+		Route::get('/matriz-aceptabilidad', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'matriz'])->name('analisis.matrizaceptabilidad');
+
+
