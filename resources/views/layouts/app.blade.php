@@ -250,7 +250,9 @@
                             </a>
                         </li>
 
-                        <!-- @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) ) -->
+                        
+
+                        
 
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuNuevo">
                                 <a href="{{ route('cliente.nuevocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.nuevocliente') ? 'active bg-primary' : '' }}">
