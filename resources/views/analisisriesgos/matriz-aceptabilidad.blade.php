@@ -1,90 +1,14 @@
 @extends('layouts.app')
 @push('scripts')
 	<script src="{{ asset('js/cliente/NuevoCliente.js') }}"></script>
-	<!-- Bootstrap CSS -->
+	<link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
 
 @endpush
 @section('title')
     Matriz de Aceptabilidad
 @endsection
 @section('content')
-  <style>
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    table {
-      border-collapse: collapse;
-      margin: 0 auto;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    }
-    th, td {
-      border: 1px solid #ccc;
-      text-align: center;
-      padding: 12px;
-      min-width: 70px;
-    }
-    th {
-      background: #003366;
-      color: #fff;
-    }
-    .label {
-      background: #003366;
-      color: #fff;
-      font-weight: bold;
-    }
-    .green { background-color: #b6e7a1; }
-    .yellow { background-color: #fff3a1; }
-    .orange { background-color: #ffc278; }
-    .red { background-color: #ff7c7c; color: white;}
-    .red-forte{ background-color: #cd2d1a; color: white;  }
-    .legend {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .box {
-      width: 20px;
-      height: 20px;
-      border: 1px solid #999;
-    }
-    .box.green { background-color: #b6e7a1; }
-    .box.yellow { background-color: #fff3a1; }
-    .box.orange { background-color: #ffc278; }
-    .box.red { background-color: #ff7c7c; }
-    .box.red-forte{ background-color: #cd2d1a; }
-    .foot {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .text-custom-blue {
-        color: #003366;
-    }
-
-    @media (max-width: 576px) {
-    .table-sm td, 
-    .table-sm th {
-      font-size: 6px !important;
-      padding: 0.0rem !important;
-      white-space: normal;
-    }
-
-    .table-sm th[rowspan],
-    .table-sm th[colspan] {
-      font-size: 6px !important;
-    }
-  }
-  </style>
+  
 
 
     <!--begin::Card-->
