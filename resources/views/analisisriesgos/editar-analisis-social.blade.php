@@ -15,9 +15,10 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
                     <h3 class="card-title">Editar analisis de riesgos al cliente "SIS PROTEC"</h3>
-
-
-
+                     <div class="card-toolbar">
+                    <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                    <i class="la la-arrow-left"></i>Regresar</a>
+                </div>
                 </div>
                 <input type='hidden' id='url_alcances' value='{{ route('analisis.obteneralcances') }}'>
                 <!--begin::Form-->

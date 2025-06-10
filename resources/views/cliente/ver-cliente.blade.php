@@ -14,7 +14,12 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header">
                     <h3 class="card-title">Ver Cliente</h3>
+                    <div class="card-toolbar">
+                    <a href="{{ route('cliente.listadocliente') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                    <i class="la la-arrow-left"></i>Regresar</a>
                 </div>
+                    </div>
+                    
 
 
                 <!--begin::Form-->

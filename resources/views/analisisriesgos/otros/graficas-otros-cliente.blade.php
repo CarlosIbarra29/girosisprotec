@@ -225,14 +225,10 @@
                         <i class="flaticon2-file text-primary"></i>
                       </span>
                                 <h3 class="card-label">Graficas de otros riesgos ({{ $cliente->organizacion }})</h3>
-                            </div>
-                            <div class="card-toolbar">
-                                  <a href="{{ route('analisis.analisisotroscli', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                                    <i class="la la-arrow-left"></i>Regresar</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
+                             <div class="card-toolbar">
+                    <a href="{{ route('user.catalogousuarios') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                    <i class="la la-arrow-left"></i>Regresar</a>
+                </div>
                           <div class="row">
                             <div class="col-lg-6 text-center">
                               <h5>Índice de distribución de Eventos de Riesgos</h5>
