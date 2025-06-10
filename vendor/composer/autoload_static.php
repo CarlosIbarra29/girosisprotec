@@ -4,20 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit735273b3f961551a0289a5d1dd012948
+class ComposerStaticInit4b82747d800ca27a851993d2a5b3b31a
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
-        '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
+        'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
+        '662a729f963d39afe703c9d9b7ab4a8c' => __DIR__ . '/..' . '/symfony/polyfill-php83/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '3bd81c9b8fcc150b69d8b63b4d2ccf23' => __DIR__ . '/..' . '/spatie/flare-client-php/src/helpers.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
@@ -403,8 +403,8 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -687,11 +687,14 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'App\\Http\\Controllers\\Cliente\\ClienteController' => __DIR__ . '/../..' . '/app/Http/Controllers/Cliente/ClienteController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Custodio\\CustodioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Custodio/CustodioController.php',
+        'App\\Http\\Controllers\\Custodio\\DocumentacionArmaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Custodio/DocumentacionArmaController.php',
         'App\\Http\\Controllers\\Custodio\\DocumentacionCustodioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Custodio/DocumentacionCustodioController.php',
         'App\\Http\\Controllers\\Custodio\\DocumentacionVehiculoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Custodio/DocumentacionVehiculoController.php',
         'App\\Http\\Controllers\\Licitacion\\AreaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Licitacion/AreaController.php',
         'App\\Http\\Controllers\\Perfil\\PerfilController' => __DIR__ . '/../..' . '/app/Http/Controllers/Perfil/PerfilController.php',
+        'App\\Http\\Controllers\\Programacion\\ProgramacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Programacion/ProgramacionController.php',
         'App\\Http\\Controllers\\Tablero\\TableroController' => __DIR__ . '/../..' . '/app/Http/Controllers/Tablero/TableroController.php',
+        'App\\Http\\Controllers\\Tarifario\\TarifarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Tarifario/TarifarioController.php',
         'App\\Http\\Controllers\\UsuarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/UsuarioController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -712,11 +715,17 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'App\\Models\\Cliente\\Cliente' => __DIR__ . '/../..' . '/app/Models/Cliente/Cliente.php',
         'App\\Models\\Cliente\\ClienteContactoFacturacion' => __DIR__ . '/../..' . '/app/Models/Cliente/ClienteContactoFacturacion.php',
         'App\\Models\\Cliente\\ClienteContactoOperativo' => __DIR__ . '/../..' . '/app/Models/Cliente/ClienteContactoOperativo.php',
+        'App\\Models\\Custodio\\ArmaDocCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/ArmaDocCustodio.php',
         'App\\Models\\Custodio\\Custodio' => __DIR__ . '/../..' . '/app/Models/Custodio/Custodio.php',
+        'App\\Models\\Custodio\\CustodioArma' => __DIR__ . '/../..' . '/app/Models/Custodio/CustodioArma.php',
+        'App\\Models\\Custodio\\CustodioControlConfianza' => __DIR__ . '/../..' . '/app/Models/Custodio/CustodioControlConfianza.php',
         'App\\Models\\Custodio\\CustodioDocumento' => __DIR__ . '/../..' . '/app/Models/Custodio/CustodioDocumento.php',
+        'App\\Models\\Custodio\\CustodioSeleccion' => __DIR__ . '/../..' . '/app/Models/Custodio/CustodioSeleccion.php',
         'App\\Models\\Custodio\\CustodioVehiculo' => __DIR__ . '/../..' . '/app/Models/Custodio/CustodioVehiculo.php',
+        'App\\Models\\Custodio\\DocumentacionArmaCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/DocumentacionArmaCustodio.php',
         'App\\Models\\Custodio\\DocumentacionCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/DocumentacionCustodio.php',
         'App\\Models\\Custodio\\DocumentacionVehiculoCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/DocumentacionVehiculoCustodio.php',
+        'App\\Models\\Custodio\\FotografiaArmaCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/FotografiaArmaCustodio.php',
         'App\\Models\\Custodio\\FotografiaVehiculoCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/FotografiaVehiculoCustodio.php',
         'App\\Models\\Custodio\\VehiculoDocCustodio' => __DIR__ . '/../..' . '/app/Models/Custodio/VehiculoDocCustodio.php',
         'App\\Models\\Licitacion\\AreaPersonal' => __DIR__ . '/../..' . '/app/Models/Licitacion/AreaPersonal.php',
@@ -726,6 +735,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'App\\Models\\Rol' => __DIR__ . '/../..' . '/app/Models/Rol.php',
         'App\\Models\\RolPermiso' => __DIR__ . '/../..' . '/app/Models/RolPermiso.php',
         'App\\Models\\SiafEstatus' => __DIR__ . '/../..' . '/app/Models/SiafEstatus.php',
+        'App\\Models\\Tarifario\\Tarifario' => __DIR__ . '/../..' . '/app/Models/Tarifario/Tarifario.php',
         'App\\Models\\TipoUsuario' => __DIR__ . '/../..' . '/app/Models/TipoUsuario.php',
         'App\\Models\\Unidad\\AgenciaUnidad' => __DIR__ . '/../..' . '/app/Models/Unidad/AgenciaUnidad.php',
         'App\\Models\\Unidad\\AseguradoraUnidad' => __DIR__ . '/../..' . '/app/Models/Unidad/AseguradoraUnidad.php',
@@ -4402,6 +4412,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Maatwebsite\\Excel\\Concerns\\Importable' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/Importable.php',
         'Maatwebsite\\Excel\\Concerns\\MapsCsvSettings' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/MapsCsvSettings.php',
         'Maatwebsite\\Excel\\Concerns\\OnEachRow' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/OnEachRow.php',
+        'Maatwebsite\\Excel\\Concerns\\PersistRelations' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/PersistRelations.php',
         'Maatwebsite\\Excel\\Concerns\\RegistersEventListeners' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/RegistersEventListeners.php',
         'Maatwebsite\\Excel\\Concerns\\RemembersChunkOffset' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/RemembersChunkOffset.php',
         'Maatwebsite\\Excel\\Concerns\\RemembersRowNumber' => __DIR__ . '/..' . '/maatwebsite/excel/src/Concerns/RemembersRowNumber.php',
@@ -4502,6 +4513,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Maatwebsite\\Excel\\Imports\\HeadingRowFormatter' => __DIR__ . '/..' . '/maatwebsite/excel/src/Imports/HeadingRowFormatter.php',
         'Maatwebsite\\Excel\\Imports\\ModelImporter' => __DIR__ . '/..' . '/maatwebsite/excel/src/Imports/ModelImporter.php',
         'Maatwebsite\\Excel\\Imports\\ModelManager' => __DIR__ . '/..' . '/maatwebsite/excel/src/Imports/ModelManager.php',
+        'Maatwebsite\\Excel\\Imports\\Persistence\\CascadePersistManager' => __DIR__ . '/..' . '/maatwebsite/excel/src/Imports/Persistence/CascadePersistManager.php',
         'Maatwebsite\\Excel\\Jobs\\AfterImportJob' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AfterImportJob.php',
         'Maatwebsite\\Excel\\Jobs\\AppendDataToSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AppendDataToSheet.php',
         'Maatwebsite\\Excel\\Jobs\\AppendPaginatedToSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AppendPaginatedToSheet.php',
@@ -4520,7 +4532,13 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Maatwebsite\\Excel\\Middleware\\ConvertEmptyCellValuesToNull' => __DIR__ . '/..' . '/maatwebsite/excel/src/Middleware/ConvertEmptyCellValuesToNull.php',
         'Maatwebsite\\Excel\\Middleware\\TrimCellValue' => __DIR__ . '/..' . '/maatwebsite/excel/src/Middleware/TrimCellValue.php',
         'Maatwebsite\\Excel\\Mixins\\DownloadCollection' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/DownloadCollection.php',
+        'Maatwebsite\\Excel\\Mixins\\DownloadCollectionMixin' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/DownloadCollectionMixin.php',
+        'Maatwebsite\\Excel\\Mixins\\DownloadQueryMacro' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/DownloadQueryMacro.php',
+        'Maatwebsite\\Excel\\Mixins\\ImportAsMacro' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/ImportAsMacro.php',
+        'Maatwebsite\\Excel\\Mixins\\ImportMacro' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/ImportMacro.php',
         'Maatwebsite\\Excel\\Mixins\\StoreCollection' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/StoreCollection.php',
+        'Maatwebsite\\Excel\\Mixins\\StoreCollectionMixin' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/StoreCollectionMixin.php',
+        'Maatwebsite\\Excel\\Mixins\\StoreQueryMacro' => __DIR__ . '/..' . '/maatwebsite/excel/src/Mixins/StoreQueryMacro.php',
         'Maatwebsite\\Excel\\QueuedWriter' => __DIR__ . '/..' . '/maatwebsite/excel/src/QueuedWriter.php',
         'Maatwebsite\\Excel\\Reader' => __DIR__ . '/..' . '/maatwebsite/excel/src/Reader.php',
         'Maatwebsite\\Excel\\RegistersCustomConcerns' => __DIR__ . '/..' . '/maatwebsite/excel/src/RegistersCustomConcerns.php',
@@ -4588,6 +4606,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Mockery\\CountValidator\\AtLeast' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/AtLeast.php',
         'Mockery\\CountValidator\\AtMost' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/AtMost.php',
         'Mockery\\CountValidator\\CountValidatorAbstract' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/CountValidatorAbstract.php',
+        'Mockery\\CountValidator\\CountValidatorInterface' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/CountValidatorInterface.php',
         'Mockery\\CountValidator\\Exact' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/Exact.php',
         'Mockery\\CountValidator\\Exception' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/Exception.php',
         'Mockery\\Exception' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception.php',
@@ -5268,6 +5287,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'PharIo\\Manifest\\ManifestLoader' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestLoader.php',
         'PharIo\\Manifest\\ManifestLoaderException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/ManifestLoaderException.php',
         'PharIo\\Manifest\\ManifestSerializer' => __DIR__ . '/..' . '/phar-io/manifest/src/ManifestSerializer.php',
+        'PharIo\\Manifest\\NoEmailAddressException' => __DIR__ . '/..' . '/phar-io/manifest/src/exceptions/NoEmailAddressException.php',
         'PharIo\\Manifest\\PhpElement' => __DIR__ . '/..' . '/phar-io/manifest/src/xml/PhpElement.php',
         'PharIo\\Manifest\\PhpExtensionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpExtensionRequirement.php',
         'PharIo\\Manifest\\PhpVersionRequirement' => __DIR__ . '/..' . '/phar-io/manifest/src/values/PhpVersionRequirement.php',
@@ -6441,6 +6461,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'SQLite3Exception' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
         'Sabberworm\\CSS\\CSSList\\AtRuleBlockList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/AtRuleBlockList.php',
         'Sabberworm\\CSS\\CSSList\\CSSBlockList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/CSSBlockList.php',
         'Sabberworm\\CSS\\CSSList\\CSSList' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/CSSList/CSSList.php',
@@ -6704,6 +6725,11 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Spatie\\Backtrace\\Arguments\\Reducers\\SymphonyRequestArgumentReducer' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/Reducers/SymphonyRequestArgumentReducer.php',
         'Spatie\\Backtrace\\Backtrace' => __DIR__ . '/..' . '/spatie/backtrace/src/Backtrace.php',
         'Spatie\\Backtrace\\CodeSnippet' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippet.php',
+        'Spatie\\Backtrace\\CodeSnippets\\CodeSnippet' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippets/CodeSnippet.php',
+        'Spatie\\Backtrace\\CodeSnippets\\FileSnippetProvider' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippets/FileSnippetProvider.php',
+        'Spatie\\Backtrace\\CodeSnippets\\LaravelSerializableClosureSnippetProvider' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippets/LaravelSerializableClosureSnippetProvider.php',
+        'Spatie\\Backtrace\\CodeSnippets\\NullSnippetProvider' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippets/NullSnippetProvider.php',
+        'Spatie\\Backtrace\\CodeSnippets\\SnippetProvider' => __DIR__ . '/..' . '/spatie/backtrace/src/CodeSnippets/SnippetProvider.php',
         'Spatie\\Backtrace\\File' => __DIR__ . '/..' . '/spatie/backtrace/src/File.php',
         'Spatie\\Backtrace\\Frame' => __DIR__ . '/..' . '/spatie/backtrace/src/Frame.php',
         'Spatie\\FlareClient\\Api' => __DIR__ . '/..' . '/spatie/flare-client-php/src/Api.php',
@@ -6910,6 +6936,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Svg\\Tag\\Shape' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/Shape.php',
         'Svg\\Tag\\Stop' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/Stop.php',
         'Svg\\Tag\\StyleTag' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/StyleTag.php',
+        'Svg\\Tag\\Symbol' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/Symbol.php',
         'Svg\\Tag\\Text' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/Text.php',
         'Svg\\Tag\\UseTag' => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg/Tag/UseTag.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
@@ -7424,6 +7451,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Symfony\\Component\\Mailer\\Exception\\RuntimeException' => __DIR__ . '/..' . '/symfony/mailer/Exception/RuntimeException.php',
         'Symfony\\Component\\Mailer\\Exception\\TransportException' => __DIR__ . '/..' . '/symfony/mailer/Exception/TransportException.php',
         'Symfony\\Component\\Mailer\\Exception\\TransportExceptionInterface' => __DIR__ . '/..' . '/symfony/mailer/Exception/TransportExceptionInterface.php',
+        'Symfony\\Component\\Mailer\\Exception\\UnexpectedResponseException' => __DIR__ . '/..' . '/symfony/mailer/Exception/UnexpectedResponseException.php',
         'Symfony\\Component\\Mailer\\Exception\\UnsupportedSchemeException' => __DIR__ . '/..' . '/symfony/mailer/Exception/UnsupportedSchemeException.php',
         'Symfony\\Component\\Mailer\\Header\\MetadataHeader' => __DIR__ . '/..' . '/symfony/mailer/Header/MetadataHeader.php',
         'Symfony\\Component\\Mailer\\Header\\TagHeader' => __DIR__ . '/..' . '/symfony/mailer/Header/TagHeader.php',
@@ -7805,6 +7833,7 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Symfony\\Component\\VarDumper\\Cloner\\Cursor' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Cursor.php',
         'Symfony\\Component\\VarDumper\\Cloner\\Data' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Data.php',
         'Symfony\\Component\\VarDumper\\Cloner\\DumperInterface' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/DumperInterface.php',
+        'Symfony\\Component\\VarDumper\\Cloner\\Internal\\NoDefault' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Internal/NoDefault.php',
         'Symfony\\Component\\VarDumper\\Cloner\\Stub' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Stub.php',
         'Symfony\\Component\\VarDumper\\Cloner\\VarCloner' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/VarCloner.php',
         'Symfony\\Component\\VarDumper\\Command\\Descriptor\\CliDescriptor' => __DIR__ . '/..' . '/symfony/var-dumper/Command/Descriptor/CliDescriptor.php',
@@ -7843,7 +7872,9 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
         'Symfony\\Contracts\\Service\\Attribute\\Required' => __DIR__ . '/..' . '/symfony/service-contracts/Attribute/Required.php',
         'Symfony\\Contracts\\Service\\Attribute\\SubscribedService' => __DIR__ . '/..' . '/symfony/service-contracts/Attribute/SubscribedService.php',
         'Symfony\\Contracts\\Service\\ResetInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ResetInterface.php',
+        'Symfony\\Contracts\\Service\\ServiceCollectionInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceCollectionInterface.php',
         'Symfony\\Contracts\\Service\\ServiceLocatorTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceLocatorTrait.php',
+        'Symfony\\Contracts\\Service\\ServiceMethodsSubscriberTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceMethodsSubscriberTrait.php',
         'Symfony\\Contracts\\Service\\ServiceProviderInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceProviderInterface.php',
         'Symfony\\Contracts\\Service\\ServiceSubscriberInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberInterface.php',
         'Symfony\\Contracts\\Service\\ServiceSubscriberTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberTrait.php',
@@ -7981,10 +8012,10 @@ class ComposerStaticInit735273b3f961551a0289a5d1dd012948
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit735273b3f961551a0289a5d1dd012948::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit735273b3f961551a0289a5d1dd012948::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit735273b3f961551a0289a5d1dd012948::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit735273b3f961551a0289a5d1dd012948::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4b82747d800ca27a851993d2a5b3b31a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4b82747d800ca27a851993d2a5b3b31a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit4b82747d800ca27a851993d2a5b3b31a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit4b82747d800ca27a851993d2a5b3b31a::$classMap;
 
         }, null, ClassLoader::class);
     }
