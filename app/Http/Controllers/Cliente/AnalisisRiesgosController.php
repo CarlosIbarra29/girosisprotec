@@ -702,4 +702,11 @@ class AnalisisRiesgosController extends Controller
         return view('analisisriesgos.matriz-aceptabilidad', compact('data'));
     }
 
+    public function metodos()
+    {
+        $data= 1; 
+
+        return view('analisisriesgos.metodos', compact('data'));
+    }
+
 }

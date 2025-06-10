@@ -57,4 +57,6 @@
 		// Matriz de Aceptibilidad
 		Route::get('/matriz-aceptabilidad', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'matriz'])->name('analisis.matrizaceptabilidad');
 
+		Route::get('/metodos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'metodos'])->name('analisis.metodos');
+
 
