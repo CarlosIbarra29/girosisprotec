@@ -17,8 +17,9 @@
                     <h3 class="card-title">Generar analisis de riesgos al cliente ({{ $cliented->nombre_comercial }})</h3>
 
                     <div style="margin-top: 10px;">
-                        <a class="btn btn-success btn-xs disabled"  href="#">KPI's</a>
-                        <a class="btn btn-success btn-xs disabled"  href="#">Tratamiento de riesgos</a>
+                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Perfil de riesgos</a>
+                        <a href="{{ route('analisis.graficassociales', $cliente) }}" class="btn btn-success btn-xs "  href="#"><i class="la la-tachometer"></i>KPI's</a>
+                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-project-diagram"></i></i> Perfil de riesgos</a>
 
                     </div>
 

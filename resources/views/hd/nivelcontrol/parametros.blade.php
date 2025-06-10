@@ -63,11 +63,19 @@
 
 								    <div class="col-lg-4">
 								        <div class="text-center div_riesgos_sociales mb-4">
-								            <a href="{{ route('hd.catalogonivelcontrol') }}"  class="btn btn-lg btn-light-primary font-weight-bold shadow-sm disabled" style="pointer-events: none; opacity: 0.6;">
+								            <a href="{{ route('analisis.matrizaceptabilidad') }}"  class="btn btn-lg btn-light-primary font-weight-bold shadow-sm " >
 								                <i class="fas fa-table mr-2"></i> Matriz de Aceptibilidad
 								            </a>
 								        </div>
 								    </div>
+<!-- 
+                                    <div class="col-lg-4">
+                                        <div class="text-center div_riesgos_sociales mb-4">
+                                            <a href="{{ route('hd.catalogonivelcontrol') }}"  class="btn btn-lg btn-light-primary font-weight-bold shadow-sm disabled" style="pointer-events: none; opacity: 0.6;">
+                                                <i class="fas fa-table mr-2"></i> Matriz de Aceptibilidad
+                                            </a>
+                                        </div>
+                                    </div> -->
 								</div>
 
                             </div>

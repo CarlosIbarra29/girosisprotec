@@ -250,7 +250,9 @@
                             </a>
                         </li>
 
-                        @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )
+                        
+
+                        
 
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuNuevo">
                                 <a href="{{ route('cliente.nuevocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.nuevocliente') ? 'active bg-primary' : '' }}">
@@ -280,6 +282,8 @@
                                 </a>
                             </li>
 
+                        @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )
+
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuCatalogoClientes">
                                 <a href="{{ route('cliente.listadocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.listadocliente') ? 'active bg-primary' : '' }}">
                                     <i class="flaticon-users-1 menu-icon"></i>
@@ -287,13 +291,28 @@
                                 </a>
                             </li>
 
+                            <hr class="border-secondary">
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuUsuarios">
+                                <a href="{{ route('user.catalogousuarios') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('user.catalogousuarios') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-network menu-icon"></i>
+                                    <span class="menu-text">Usuarios</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuRoles">
+                                <a href="{{ route('rol.catalogoroles') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('rol.catalogoroles') ? 'active bg-primary' : '' }}">
+                                    <i class="flaticon-tabs menu-icon"></i>
+                                    <span class="menu-text">Roles</span>
+                                </a>
+                            </li>
 
                         @endif 
 
-                        <hr class="border-secondary">
+                        
 
                         <div>
-                            <a href="{{ route('logout') }}" class="menu-link menu-toggle nav-link text-danger">
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" class="menu-link menu-toggle nav-link text-danger">
                                 <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
                             </a>
                         </div>

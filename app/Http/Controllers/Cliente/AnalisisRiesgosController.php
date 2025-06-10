@@ -693,4 +693,13 @@ class AnalisisRiesgosController extends Controller
         return redirect()->route('analisis.analisisotroscli',$request->cliente);   
     }
 
+    /////////////////////// Matriz de aceptabilidad
+
+    public function matriz()
+    {
+        $data= 1; 
+
+        return view('analisisriesgos.matriz-aceptabilidad', compact('data'));
+    }
+
 }
