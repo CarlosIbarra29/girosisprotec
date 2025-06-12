@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td>Muy Bajo</td>
-                    <td style="background-color: #c8e6c9;">0.8</td>
+                    <td style="background-color: #c8e6c9;">0.0</td>
                     <td style="background-color: #c8e6c9;">1.4</td>
                     <td>Tolerable</td>
                     <td>Monitorear</td>
@@ -105,11 +105,11 @@
                 <tbody>
                     @php
                         $valores = [
-                            ['label' => 'Muy Alta', 'valor' => 3.162, 'color' => 'text-danger fw-bold'],
-                            ['label' => 'Alta', 'valor' => 2.530, 'color' => 'text-warning fw-bold'],
-                            ['label' => 'Media', 'valor' => 1.897, 'color' => 'text-warning'],
-                            ['label' => 'Baja', 'valor' => 1.265, 'color' => 'text-success'],
-                            ['label' => 'Muy Baja', 'valor' => 0.632, 'color' => 'text-success-emphasis']
+                            ['label' => 'Muy Alta', 'valor' => 36.10, 'color' => 'text-danger fw-bold'],
+                            ['label' => 'Alta', 'valor' => 16.10, 'color' => 'text-warning fw-bold'],
+                            ['label' => 'Media', 'valor' => 6.50, 'color' => 'text-warning'],
+                            ['label' => 'Baja', 'valor' => 1.50, 'color' => 'text-success'],
+                            ['label' => 'Muy Baja', 'valor' => 0.00, 'color' => 'text-success-emphasis']
                         ];
                     @endphp
 
