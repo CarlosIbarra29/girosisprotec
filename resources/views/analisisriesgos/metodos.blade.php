@@ -1,16 +1,222 @@
 @extends('layouts.app')
-@push('scripts')
-	<script src="{{ asset('js/cliente/NuevoCliente.js') }}"></script>
-	<link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
 
+@push('scripts')
+    <script src="{{ asset('js/cliente/NuevoCliente.js') }}"></script>
+    <link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
 @endpush
+
 @section('title')
     Métodos
 @endsection
+
 @section('content')
-  
 
-<!--end::Card-->
+<div class="card shadow-sm mb-5">
+    <div class="card-header bg-white">
+        <h3 class="card-title fw-bold text-dark">Clasificación de Riesgos</h3>
+    </div>
+    
+    <div class="card-body">
 
+        // Primera tabla: Clasificación
+        <h5 class="fw-bold mb-3">Tabla de Clasificación</h5>
+        <table class="table table-bordered text-center align-middle mb-5">
+            <thead style="background-color: #003366; color: white;">
+                <tr>
+                    <th>Clasificación</th>
+                    <th>Valor Mínimo</th>
+                    <th>Valor Máximo</th>
+                    <th>Consideración</th>
+                    <th>Respuesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Muy Alto</td>
+                    <td style="background-color: #c62828; color: white;">36.1</td>
+                    <td style="background-color: #c62828; color: white;">100</td>
+                    <td>Inaceptable</td>
+                    <td>Acción fundamental inmediata</td>
+                </tr>
+                <tr>
+                    <td>Alto</td>
+                    <td style="background-color: #ef5350; color: white;">16.1</td>
+                    <td style="background-color: #ef5350; color: white;">36</td>
+                    <td>Inaceptable</td>
+                    <td>Acción fundamental a corto plazo</td>
+                </tr>
+                <tr>
+                    <td>Medio</td>
+                    <td style="background-color: #fff176;">6.5</td>
+                    <td style="background-color: #fff176;">16</td>
+                    <td>Inaceptable</td>
+                    <td>Acción fundamental a mediano plazo</td>
+                </tr>
+                <tr>
+                    <td>Bajo</td>
+                    <td style="background-color: #aed581;">1.5</td>
+                    <td style="background-color: #aed581;">6.4</td>
+                    <td>Tolerable</td>
+                    <td>Monitorear</td>
+                </tr>
+                <tr>
+                    <td>Muy Bajo</td>
+                    <td style="background-color: #c8e6c9;">0.8</td>
+                    <td style="background-color: #c8e6c9;">1.4</td>
+                    <td>Tolerable</td>
+                    <td>Monitorear</td>
+                </tr>
+            </tbody>
+        </table>
 
+    <div class="d-flex justify-content-center flex-wrap my-4">
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #a5d6a7; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Muy Bajo</span>
+        </div>
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #63b971; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Bajo</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #fff59d; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Medio</span>
+        </div>
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #ef9a9a; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Alto</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #c62828; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Muy Alto</span>
+         </div>
+    </div>
+
+        // Segunda tabla: Factor de exposición y probabilidad
+        <h5 class="fw-bold mb-3">Tabla de Factor de Exposición y Probabilidad</h5>
+        <div class="table-responsive mb-5">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th colspan="2">Factor de Exposición</th>
+                        <th colspan="2">Probabilidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $valores = [
+                            ['label' => 'Muy Alta', 'valor' => 3.162, 'color' => 'text-danger fw-bold'],
+                            ['label' => 'Alta', 'valor' => 2.530, 'color' => 'text-warning fw-bold'],
+                            ['label' => 'Media', 'valor' => 1.897, 'color' => 'text-warning'],
+                            ['label' => 'Baja', 'valor' => 1.265, 'color' => 'text-success'],
+                            ['label' => 'Muy Baja', 'valor' => 0.632, 'color' => 'text-success-emphasis']
+                        ];
+                    @endphp
+
+                    @foreach ($valores as $item)
+                        <tr>
+                            <td class="{{ $item['color'] }}">{{ $item['label'] }}</td>
+                            <td>{{ $item['valor'] }}</td>
+                            <td class="{{ $item['color'] }}">{{ $item['label'] }}</td>
+                            <td>{{ $item['valor'] }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    <div class="d-flex justify-content-center flex-wrap my-4">
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #000; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Muy Bajo</span>
+        </div>
+            <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #29eeb9; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Bajo</span>
+            </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #eea529; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Medio</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #f2c50e; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Alto</span>
+        </div>
+            <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+                <div style="width: 24px; height: 24px; background-color: #c62828; border: 1px solid #ccc; margin-right: 10px;"></div>
+                    <span>Muy Alto</span>
+            </div>
+    </div>
+
+        // Tercera tabla: Nivel de Amenaza y Consecuencia
+        <h5 class="fw-bold mb-3">Tabla de Nivel de Amenaza y Consecuencia</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                    <thead class="bg-dark text-white">
+                    <tr>
+                        <th colspan="2">Nivel de Amenaza</th>
+                        <th colspan="2">Consecuencia</th>
+                    </tr>
+                    </thead>
+        <tbody>
+            @php
+                $datos = [
+                    ['amenaza' => 'Improbable', 'valor_a' => 0.4, 'consecuencia' => 'Insignificante', 'valor_c' => 0.4],
+                    ['amenaza' => 'Remoto', 'valor_a' => 1.2, 'consecuencia' => 'Leve', 'valor_c' => 1.2],
+                    ['amenaza' => 'Esporádico', 'valor_a' => 2, 'consecuencia' => 'Marginal', 'valor_c' => 2],
+                    ['amenaza' => 'Ocasional', 'valor_a' => 4, 'consecuencia' => 'Grave', 'valor_c' => 4],
+                    ['amenaza' => 'Frecuente', 'valor_a' => 6, 'consecuencia' => 'Crítico', 'valor_c' => 6],
+                    ['amenaza' => 'Habitual', 'valor_a' => 8, 'consecuencia' => 'Desastroso', 'valor_c' => 8],
+                    ['amenaza' => 'Constante', 'valor_a' => 10, 'consecuencia' => 'Catastrófico', 'valor_c' => 10],
+                ];
+
+                function getTextColor($value) {
+                    if ($value >= 8) return 'text-danger fw-bold';
+                    if ($value >= 4) return 'text-warning fw-semibold';
+                    return 'text-success fw-medium';
+                }
+            @endphp
+
+            @foreach ($datos as $item)
+                <tr>
+                    <td class="{{ getTextColor($item['valor_a']) }}">{{ $item['amenaza'] }}</td>
+                    <td>{{ $item['valor_a'] }}</td>
+                    <td class="{{ getTextColor($item['valor_c']) }}">{{ $item['consecuencia'] }}</td>
+                    <td>{{ $item['valor_c'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+                </table>
+            </div>
+
+    <div class="d-flex justify-content-center flex-wrap my-4">
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #49e7c8; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Improbable/Remoto/Esporádico</span>
+        </div>
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #edb441; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Frecuente/Ocasional</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #c62828; border: 1px solid #ccc; margin-right: 10px;"></div>
+        <span>Desastroso/Catastrofico</span>
+    </div>
+    </div>
+
+    <div class="d-flex justify-content-center flex-wrap my-4">
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #49e7c8; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Insignificante/Leve/Marginal</span>
+        </div>
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #edb441; border: 1px solid #ccc; margin-right: 10px;"></div>
+        <span>Grave/Crítico</span>
+    </div>
+</div>
+
+    </div>
+</div>
 @endsection
+
+
