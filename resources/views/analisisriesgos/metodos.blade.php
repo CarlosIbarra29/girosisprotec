@@ -214,9 +214,204 @@
         <span>Grave/Crítico</span>
     </div>
 </div>
+    // Cuarta Tabla: Matriz Frecuencia e Impacto
+<h5 class="fw-bold mb-3">Matriz de Frecuencia vs Impacto</h5>
+<div class="table-responsive">
+    <table class="table table-bordered text-center align-middle">
+        <thead>
+            <tr>
+                <th rowspan="2" class="align-middle">Frecuencia</th>
+                <th colspan="5">Impacto / Consecuencia</th>
+            </tr>
+            <tr>
+                <th>Insignificante</th>
+                <th>Bajo</th>
+                <th>Moderado</th>
+                <th>Grave</th>
+                <th>Catastrófico</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Probabilidad Compr.</td>
+                <td style="background-color: white;">10</td>
+                <td style="background-color: #ffff00;">25</td>
+                <td style="background-color: #ffcc00;">50</td>
+                <td style="background-color: #ff0000; color: white;">75</td>
+                <td style="background-color: #c00000; color: white;">100</td>
+            </tr>
+            <tr>
+                <td>Frecuente</td>
+                <td style="background-color: white;">8</td>
+                <td style="background-color: #ffff00;">20</td>
+                <td style="background-color: #ffcc00;">40</td>
+                <td style="background-color: #ff0000; color: white;">60</td>
+                <td style="background-color: #c00000; color: white;">80</td>
+            </tr>
+            <tr>
+                <td>Posible</td>
+                <td style="background-color: white;">6</td>
+                <td style="background-color: #c6efce;">15</td>
+                <td style="background-color: #ffff00;">30</td>
+                <td style="background-color: #ff9900;">45</td>
+                <td style="background-color: #ff0000; color: white;">60</td>
+            </tr>
+            <tr>
+                <td>Raro</td>
+                <td style="background-color: white;">4</td>
+                <td style="background-color: white;">10</td>
+                <td style="background-color: #c6efce;">20</td>
+                <td style="background-color: #ffff00;">30</td>
+                <td style="background-color: #ffc000;">40</td>
+            </tr>
+            <tr>
+                <td>Improbable</td>
+                <td style="background-color: white;">2</td>
+                <td style="background-color: white;">5</td>
+                <td style="background-color: white;">10</td>
+                <td style="background-color: #d9ead3;">15</td>
+                <td style="background-color: #c6efce;">20</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center flex-wrap my-4">
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #fff; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Insignificante</span>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #93f476; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Muy Bajo</span>
+        </div>
+            <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #f9c700; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Bajo</span>
+            </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #eea529; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Medio</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: red; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Alto</span>
+        </div>
+            <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+                <div style="width: 24px; height: 24px; background-color: #c62828; border: 1px solid #ccc; margin-right: 10px;"></div>
+                    <span>Muy Alto</span>
+            </div>
+    </div>
+
+
+    //Quinta Tabla: Matriz de Clasificacion de riesgo
+<h5 class="fw-bold mb-3">Matriz de Clasificación de Riesgo</h5>
+<div class="table-responsive">
+    <table class="table table-bordered text-center align-middle">
+        <thead style="background-color: #003366; color: white;">
+            <tr>
+                <th>Nivel</th>
+                <th>Código</th>
+                <th>Probabilidad Baja</th>
+                <th>Probabilidad Alta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Catastófico</td>
+                <td>A</td>
+                <td style="background-color: #ff0000; color: white;">50.1%</td>
+                <td style="background-color: #ff0000; color: white;">100%</td>
+            </tr>
+            <tr>
+                <td>Grave</td>
+                <td>B</td>
+                <td style="background-color: #ffc000;">20.1%</td>
+                <td style="background-color: #ffff00;">50%</td>
+            </tr>
+            <tr>
+                <td>Moderado</td>
+                <td>C</td>
+                <td style="background-color: #92d050;">10.1%</td>
+                <td style="background-color: #92d050;">20%</td>
+            </tr>
+            <tr>
+                <td>Bajo</td>
+                <td>D</td>
+                <td>0.1%</td>
+                <td>10%</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-center flex-wrap my-4">
+    <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #fff; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Insignificante</span>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #93f476; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Muy Bajo</span>
+        </div>
+            <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: #f9c700; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Bajo</span>
+            </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+            <div style="width: 24px; height: 24px; background-color: #eea529; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Medio</span>
+    </div>
+        <div class="mx-4 mb-3 d-flex align-items-center" style="font-size: 1.1rem;">
+        <div style="width: 24px; height: 24px; background-color: red; border: 1px solid #ccc; margin-right: 10px;"></div>
+                <span>Alto</span>
+        </div>
+    </div>
+</div>
+
+
+    //Sexta Tabla: Nivel Control y Exposicion
+<h5 class="fw-bold mb-3">Nivel de Control vs Exposición</h5>
+<div class="table-responsive">
+    <table class="table table-bordered text-center align-middle">
+        <thead style="background-color: #003366; color: white;">
+            <tr>
+                <th>Nivel de Control</th>
+                <th>Exposición</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Inoperante</td>
+                <td>Muy Alta</td>
+            </tr>
+            <tr>
+                <td>Sin control</td>
+                <td>Muy Alta</td>
+            </tr>
+            <tr>
+                <td>Deficiente</td>
+                <td>Alta</td>
+            </tr>
+            <tr>
+                <td>Regular</td>
+                <td>Media</td>
+            </tr>
+            <tr>
+                <td>Eficiente</td>
+                <td>Baja</td>
+            </tr>
+            <tr>
+                <td>Óptimo</td>
+                <td>Muy Baja</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
 
     </div>
 </div>
 @endsection
 
 
+ 
