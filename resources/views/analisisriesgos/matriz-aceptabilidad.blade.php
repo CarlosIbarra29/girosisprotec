@@ -20,6 +20,9 @@
                     <h3 class="card-title">Matriz de Aceptabilidad</h3>
                     <div class="card-toolbar">
 
+                        <a href="{{  route('analisis.metodos') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                        <i class="la la-calculator"></i></i>Calculos</a>
+
                         <a href="{{  route('hd.parametros') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                         <i class="la la-arrow-left"></i>Regresar</a>
 

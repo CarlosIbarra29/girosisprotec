@@ -36,7 +36,10 @@
                                 </div>
                                 <div class="card-toolbar">
 
-                                  <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                 <!--  <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                    <i class="la la-arrow-left"></i>Regresar</a> -->
+
+                                    <a href="{{ route('cliente.nuevocliente') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                                     <i class="la la-arrow-left"></i>Regresar</a>
 
                                 </div>

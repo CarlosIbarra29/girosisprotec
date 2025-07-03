@@ -42,6 +42,21 @@
                         </div>
                         <div class="card-body">
 
+                          <div class="text-center">
+                            <a href="{{ route('analisis.analisiscliente', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                <i class="fas fa-exclamation-triangle"></i>Riesgos Sociales
+                            </a>
+                            
+                            <a href="{{ route('analisis.analisistecnologicoscli', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                <i class="la la-laptop"></i>Riesgos Técnologicos
+                            </a>
+                              
+                            <a href="{{ route('analisis.analisisnaturalescli', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                                <i class="fas fa-mountain"></i>Riesgos Naturales
+                            </a>
+                          
+                          </div>
+
                           <div class="collapse" id="collapseExample">
                               <div class="card card-body">
                                 <!--begin: Search Form-->

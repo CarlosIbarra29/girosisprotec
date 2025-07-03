@@ -54,6 +54,7 @@
                                     <div class="col-lg-6">
                                         <label>Organización</label>
                                         <div class="input-group">
+                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion }}" id="organizacion" required/> -->
                                             <input type="text" class="form-control" name="organizacion" id="organizacion" required/>
                                         </div>
                                     </div>

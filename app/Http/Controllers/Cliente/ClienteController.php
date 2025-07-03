@@ -266,7 +266,12 @@ class ClienteController extends Controller
 
         $clientes = Cliente::where('status_delete', 1)->get();
 
-        return view('cliente.nuevo-cliente', compact('data','clientes'));
+        // $datacl = Cliente::where('id', $cliente_id)->first();
+
+        $datacl = Cliente::where('id', 1)->first();
+
+
+        return view('cliente.nuevo-cliente', compact('data','clientes','datacl'));
     }
 
     public function guardarclientenuevo(Request $request)
