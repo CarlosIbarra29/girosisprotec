@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <title>{{ config('app.name', 'Gestion de riesgos') }} login</title>
-    <meta name="description" content="Sistrack for SISPROTEC Sistema de Administración" />
+    <meta name="description" content="GIRO for SISPROTEC Sistema de Gestión de Riesgos" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow" />
@@ -177,7 +177,7 @@
                     <!--end::Aside body-->
                     <!--begin: Aside footer for desktop-->
                     <div class="text-center">
-                        Sistrack for SISPROTEC Sistema de Administración @php echo date('Y'); @endphp
+                        GIRO for SISPROTEC Sistema de Gestión de Riesgos @php echo date('Y'); @endphp
                     </div>
                     <!--end: Aside footer for desktop-->
                 </div>

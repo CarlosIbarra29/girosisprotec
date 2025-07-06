@@ -2,9 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <!--begin::Head-->
 <head>
-    <title>@yield('title') | {{ config('app.name', 'Sistema Integral de Administración') }}</title>
+    <title>@yield('title') | {{ config('app.name', 'Gestor de Riesgos') }}</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Sistrack for SISPROTEC" />
+    <meta name="description" content="GIRO for SISPROTEC Sistema de Gestión de Riesgos" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="shortcut icon" href="{{ asset('theme/assets/media/logos/favicon.ico') }}" />

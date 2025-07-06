@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Sistrack for SISPROTEC Sistema de Administración'),
+    'name' => env('APP_NAME', 'GIRO for SISPROTEC Sistema de Gestión de Riesgos'),
 
     /*
     |--------------------------------------------------------------------------
