@@ -709,4 +709,20 @@ class AnalisisRiesgosController extends Controller
         return view('analisisriesgos.metodos', compact('data'));
     }
 
+        public function riesgoperfil()
+    {
+       $datos = collect([
+        (object)['escenario' => 'E.1', 'ipd' => 14.4, 'perfil' => '(3-4)'],
+        (object)['escenario' => 'E.2', 'ipd' => 19.2, 'perfil' => '(4-4)'],
+        (object)['escenario' => 'E.3', 'ipd' => 14.4, 'perfil' => '(3-5)'],
+        (object)['escenario' => 'E.4', 'ipd' => 19.2, 'perfil' => '(4-4)'],
+        (object)['escenario' => 'E.5', 'ipd' => 9.6,  'perfil' => '(2-5)'],
+        (object)['escenario' => 'E.6', 'ipd' => 21.6, 'perfil' => '(3-5)'],
+    ]);
+
+
+        return view('analisisriesgos.riesgoperfil', compact('datos'));
+    }
+
+
 }

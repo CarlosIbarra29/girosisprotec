@@ -58,5 +58,6 @@
 		Route::get('/matriz-aceptabilidad', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'matriz'])->name('analisis.matrizaceptabilidad');
 
 		Route::get('/metodos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'metodos'])->name('analisis.metodos');
+		Route::get('/riesgoperfil', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'riesgoperfil'])->name('analisis.riesgos');
 
 
