@@ -724,5 +724,18 @@ class AnalisisRiesgosController extends Controller
         return view('analisisriesgos.riesgoperfil', compact('datos'));
     }
 
+    public function kpis()
+    {
+        $data= 1; 
+
+        return view('analisisriesgos.kpis', compact('data'));
+    }
+
+        public function diegofut()
+    {
+        $data= 1; 
+
+        return view('analisisriesgos.diegofut', compact('data'));
+    }
 
 }

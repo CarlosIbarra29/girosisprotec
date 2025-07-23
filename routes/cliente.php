@@ -59,5 +59,8 @@
 
 		Route::get('/metodos', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'metodos'])->name('analisis.metodos');
 		Route::get('/riesgoperfil', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'riesgoperfil'])->name('analisis.riesgos');
+		Route::get('/kpis', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'kpis'])->name('analisis.kpis');	
 
 
+		// PruebaDiego-Futbol
+		Route::get('/diegofut', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'diegofut'])->name('analisis.diegofut');
