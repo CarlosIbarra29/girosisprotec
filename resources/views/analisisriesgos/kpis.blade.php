@@ -1,272 +1,215 @@
 @extends('layouts.app')
 
-@push('scripts')
-    <script src="{{ asset('js/cliente/NuevoCliente.js') }}"></script>
-    <link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
+@push('styles')
+    <style>
+        .tabla-encabezado {
+            background-color: #003366;
+            color: white;
+        }
+        .leyenda-color {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .leyenda-color span {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+        .leyenda-color div {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border: 1px solid #333;
+        }
+    </style>
 @endpush
 
-@section('title')
-    Métodos
-@endsection
+    @section('title')
+        Clasificación de Riesgos
+    @endsection
 
-@section('content')
-<div class="row">
-    <div class="col-lg-12">
-
-        <div class="card card-custom gutter-b">
-            <div class="card-header bg-white">
-                <h3 class="card-title fw-bold text-dark">Clasificación de Riesgos</h3>
-
-                <div class="card-toolbar">
-
-                    <a href="{{  route('analisis.listadoanalisis') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                    <i class="la la-arrow-left"></i>Regresar</a>
-
-                </div>
-
-            </div>
-            <div class="card-body">
-
-                <div class="mb-15">
-
-
-        <!-- Indice de Distribucion  -->
-        <div class="table-responsive text-center" style="background: linear-gradient(to bottom, #ffffff 70%, #d9d9d9 100%); border-radius: 6px; padding: 20px; box-shadow: inset -10px 0px 20px rgba(0,0,0,0.2);">
-            <h5 class="fw-bold mb-4">Índice de distribución de Eventos de Riesgos</h5>
-            <div class="d-flex justify-content-around align-items-end" style="height: 200px;">
-                <!-- Muy Bajo -->
-                <div class="d-flex flex-column align-items-center" style="width: 70px;">
-                    <span class="fw-bold">0</span>
-                    <div style="width: 40px; height: 5px; background-color: #cccccc; margin-top: auto;"></div>
-                    <span class="fw-bold text-primary mt-2">Muy Bajo</span>
-                </div>
-                <!-- Bajo -->
-                <div class="d-flex flex-column align-items-center" style="width: 70px;">
-                    <span class="fw-bold">1</span>
-                    <div style="width: 40px; height: 120px; background-color: #99cc66;"></div>
-                    <span class="fw-bold text-primary mt-2">Bajo</span>
-                </div>
-                <!-- Medio -->
-                <div class="d-flex flex-column align-items-center" style="width: 70px;">
-                    <span class="fw-bold">1</span>
-                    <div style="width: 40px; height: 120px; background-color: #ffcc33;"></div>
-                    <span class="fw-bold text-primary mt-2">Medio</span>
-                </div>
-                <!-- Alto -->
-                <div class="d-flex flex-column align-items-center" style="width: 70px;">
-                    <span class="fw-bold">1</span>
-                    <div style="width: 40px; height: 120px; background-color: #ff3333;"></div>
-                    <span class="fw-bold text-primary mt-2">Alto</span>
-                </div>
-                <!-- Muy Alto -->
-                <div class="d-flex flex-column align-items-center" style="width: 70px;">
-                    <span class="fw-bold">0</span>
-                    <div style="width: 40px; height: 5px; background-color: #b3b3b3; margin-top: auto;"></div>
-                    <span class="fw-bold text-primary mt-2">Muy Alto</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Daño potencial vs Patron Estandar -->
-        <div class="table-responsive" style="background: linear-gradient(to bottom, #ffffff 60%, #d9d9d9); border-radius: 6px; padding: 20px; box-shadow: inset -10px 0px 20px rgba(0,0,0,0.2); text-align: center;">
-            <h5 class="fw-bold mb-3">Daño Potencial vs Patrón Estándar</h5>
-            
-            <!-- Simulación de gráfico -->
-            <div class="position-relative mb-4" style="height: 250px; background: linear-gradient(to bottom, #f2f2f2, #cccccc); border: 1px solid #999; border-radius: 4px;">
-                <!-- Líneas y puntos -->
-                <svg width="100%" height="100%" viewBox="0 0 600 250">
-                    <!-- Línea roja (Riesgo Potencial) -->
-                    <polyline fill="none" stroke="red" stroke-width="2" 
-                        points="0,230 100,160 200,150 300,145 400,155 500,230" />
-                    <!-- Puntos Riesgo Potencial -->
-                    <circle cx="0" cy="230" r="4" fill="blue" />
-                    <circle cx="100" cy="160" r="4" fill="blue" />
-                    <circle cx="200" cy="150" r="4" fill="blue" />
-                    <circle cx="300" cy="145" r="4" fill="blue" />
-                    <circle cx="400" cy="155" r="4" fill="blue" />
-                    <circle cx="500" cy="230" r="4" fill="blue" />
-                    
-                    <!-- Línea negra punteada (Riesgo Estándar) -->
-                    <path d="M0,80 L100,110 L200,140 L300,180 L400,210 L500,230" 
-                          stroke="black" stroke-width="2" fill="none" stroke-dasharray="6,4" />
-                    <!-- Puntos Riesgo Estándar -->
-                    <circle cx="0" cy="80" r="4" fill="red" />
-                    <circle cx="100" cy="110" r="4" fill="red" />
-                    <circle cx="200" cy="140" r="4" fill="red" />
-                    <circle cx="300" cy="180" r="4" fill="red" />
-                    <circle cx="400" cy="210" r="4" fill="red" />
-                    <circle cx="500" cy="230" r="4" fill="red" />
-                </svg>
-            </div>
-
-            <!-- Leyenda -->
-            <div class="d-flex justify-content-center mb-2 gap-4">
-                <div>
-                    <span style="color: red;">●</span> <span style="border-bottom: 2px solid red;">Riesgo Potencial</span>
-                </div>
-                <div>
-                    <span style="color: black;">◆</span> <span style="border-bottom: 2px dashed black;">Riesgo Estándar</span>
-                </div>
-            </div>
-
-            <!-- Tabla de valores -->
-            <table class="table table-bordered mb-0 text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th class="text-primary">Muy Bajo</th>
-                        <th class="text-primary">Bajo</th>
-                        <th class="text-primary">Medio</th>
-                        <th class="text-primary">Alto</th>
-                        <th class="text-primary">Muy Alto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>0.00%</td>
-                        <td>33.33%</td>
-                        <td>33.33%</td>
-                        <td>33.33%</td>
-                        <td>0.00%</td>
-                    </tr>
-                    <tr>
-                        <td>60.0%</td>
-                        <td>30.0%</td>
-                        <td>10.0%</td>
-                        <td>0.0%</td>
-                        <td>0.0%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-            @php
-        $valores = [
-            ['categoria' => 'Barreras Perimetrales', 'valor' => 5.2],
-            ['categoria' => 'Seguridad de la Información', 'valor' => 4.8],
-        ];
-
+    @section('content')
+    @php
         $niveles = [
-            ['label' => 'Óptimo', 'color' => '#1b5e20', 'rango' => [9, 10]],
-            ['label' => 'Eficiente', 'color' => '#66bb6a', 'rango' => [8, 8.9]],
-            ['label' => 'Regular', 'color' => '#ffca28', 'rango' => [6, 7.9]],
-            ['label' => 'Deficiente', 'color' => '#ec407a', 'rango' => [4, 5.9]],
-            ['label' => 'Sin Control', 'color' => '#c62828', 'rango' => [0, 3.9]],
+            ['nombre' => 'Muy Alto', 'min' => 36.1, 'max' => 100, 'consideracion' => 'Inaceptable', 'respuesta' => 'Acción fundamental inmediata', 'color' => '#d32f2f'],
+            ['nombre' => 'Alto', 'min' => 16.1, 'max' => 36, 'consideracion' => 'Inaceptable', 'respuesta' => 'Acción fundamental a corto plazo', 'color' => '#ef5350'],
+            ['nombre' => 'Medio', 'min' => 6.5, 'max' => 16, 'consideracion' => 'Inaceptable', 'respuesta' => 'Acción fundamental a mediano plazo', 'color' => '#fff176'],
+            ['nombre' => 'Bajo', 'min' => 1.5, 'max' => 6.4, 'consideracion' => 'Tolerable', 'respuesta' => 'Monitorear', 'color' => '#aed581'],
+            ['nombre' => 'Muy Bajo', 'min' => 0, 'max' => 1.4, 'consideracion' => 'Tolerable', 'respuesta' => 'Monitorear', 'color' => '#c8e6c9'],
+        ];
+    @endphp
+
+<!-- Clasificación -->
+<div class="card mt-5 shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold mb-4">Tabla de Clasificación</h5>
+        <table class="table table-bordered text-center">
+            <thead class="tabla-encabezado">
+                <tr>
+                    <th>Clasificación</th>
+                    <th>Valor Mínimo</th>
+                    <th>Valor Máximo</th>
+                    <th>Consideración</th>
+                    <th>Respuesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($niveles as $n)
+                    <tr style="background-color: {{ $n['color'] }}">
+                        <td>{{ $n['nombre'] }}</td>
+                        <td>{{ $n['min'] }}</td>
+                        <td>{{ $n['max'] }}</td>
+                        <td>{{ $n['consideracion'] }}</td>
+                        <td>{{ $n['respuesta'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Leyenda -->
+        <div class="leyenda-color">
+            @foreach ($niveles as $n)
+                <span><div style="background-color: {{ $n['color'] }}"></div>{{ $n['nombre'] }}</span>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<!-- Factor de Exposición y Probabilidad -->
+<div class="card mt-5 shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold mb-4">Tabla de Factor de Exposición y Probabilidad</h5>
+        <table class="table table-bordered text-center">
+            <thead class="tabla-encabezado">
+                <tr>
+                    <th>Factor de Exposición</th>
+                    <th></th>
+                    <th>Probabilidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($niveles as $n)
+                    <tr class="{{ $loop->odd ? 'table-light' : '' }}">
+                        <td style="color: {{ $n['color'] }}">{{ $n['nombre'] }}</td>
+                        <td>{{ $n['min'] }}</td>
+                        <td style="color: {{ $n['color'] }}">{{ $n['nombre'] }}</td>
+                        <td>{{ $n['min'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="leyenda-color">
+            @foreach ($niveles as $n)
+                <span><div style="background-color: {{ $n['color'] }}"></div>{{ $n['nombre'] }}</span>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+    <!-- Niveles de Riesgo por Escenario -->
+    @php
+        $escenarios = [
+            ['escenario' => 'E.1', 'ipd' => 14.4, 'perfil' => '(3-4)', 'nivel' => 'Medio'],
+            ['escenario' => 'E.2', 'ipd' => 19.2, 'perfil' => '(4-4)', 'nivel' => 'Alto'],
+            ['escenario' => 'E.3', 'ipd' => 14.4, 'perfil' => '(3-5)', 'nivel' => 'Medio'],
+            ['escenario' => 'E.4', 'ipd' => 19.2, 'perfil' => '(4-4)', 'nivel' => 'Alto'],
+            ['escenario' => 'E.5', 'ipd' => 9.6, 'perfil' => '(2-5)', 'nivel' => 'Medio'],
+            ['escenario' => 'E.6', 'ipd' => 21.6, 'perfil' => '(3-5)', 'nivel' => 'Alto'],
+        ];
+    @endphp
+
+<div class="card mt-5 shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold mb-4">Niveles de Riesgo por Escenario</h5>
+        <table class="table table-bordered text-center">
+            <thead class="tabla-encabezado">
+                <tr>
+                    <th>Escenario</th>
+                    <th>IPD</th>
+                    <th>Perfil</th>
+                    <th>Nivel de R.</th>
+                    <th>Nvo. Perfil</th>
+                    <th>Nivel de R.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($escenarios as $e)
+                    @php
+                        $colorNivel = collect($niveles)->firstWhere('nombre', $e['nivel'])['color'] ?? '#fff';
+                    @endphp
+                    <tr>
+                        <td>{{ $e['escenario'] }}</td>
+                        <td>{{ $e['ipd'] }}</td>
+                        <td>{{ $e['perfil'] }}</td>
+                        <td style="background-color: {{ $colorNivel }}">{{ $e['nivel'] }}</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="leyenda-color">
+            @foreach ($niveles as $n)
+                <span><div style="background-color: {{ $n['color'] }}"></div>{{ $n['nombre'] }}</span>
+            @endforeach
+        </div>
+    </div>
+</div>
+    @php
+
+        // Distribucion por Item
+        $distribucionRiesgos = [
+            'Muy Alto' => 1,
+            'Alto' => 0,
+            'Medio' => 0,
+            'Bajo' => 0,
+            'Muy Bajo' => 0,
         ];
 
-        function getNivelColor($valor, $niveles) {
-            foreach ($niveles as $nivel) {
-                if ($valor >= $nivel['rango'][0] && $valor <= $nivel['rango'][1]) {
-                    return $nivel;
-                }
-            }
-            return end($niveles);
-        }
-        @endphp
+        $coloresDistribucion = [
+            'Muy Alto' => '#d32f2f',
+            'Alto' => '#ef5350',
+            'Medio' => '#fff176',
+            'Bajo' => '#aed581',
+            'Muy Bajo' => '#c8e6c9',
+        ];
 
-        <style>
-            .grafica-vuln-wrapper {
-                overflow-x: auto;
-                padding-bottom: 20px;
-            }
+        $valorMaxDistribucion = max($distribucionRiesgos) ?: 1;
+    @endphp
 
-            .grafica-vuln {
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-around;
-                height: 300px;
-                border-left: 2px solid #000;
-                position: relative;
-                padding-left: 40px;
-                min-width: 600px;
-                max-width: 100%;
-                margin: auto;
-            }
+<div class="card mt-5 shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold text-center mb-4">Distribución de los riesgos por ítem</h5>
 
-            .barra {
-                width: 80px;
-                background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
-                margin: 0 10px;
-                border-radius: 4px;
-            }
-
-            .linea-nivel {
-                position: absolute;
-                left: 0;
-                width: 100%;
-                height: 1px;
-            }
-
-            .etiquetas-nivel {
-                position: absolute;
-                right: 10px;
-                text-align: left;
-                font-size: 13px;
-                font-weight: bold;
-            }
-
-            .flecha {
-                position: absolute;
-                right: 40px;
-                top: 0;
-                width: 20px;
-                height: 100%;
-                background: linear-gradient(to top, black, red, orange, yellow, #66bb6a, #1b5e20);
-                border-radius: 4px;
-            }
-
-            .flecha::after {
-                content: "";
-                position: absolute;
-                top: -20px;
-                left: 3px;
-                border-left: 8px solid transparent;
-                border-right: 8px solid transparent;
-                border-bottom: 20px solid #1b5e20;
-            }
-
-            .etiqueta-x {
-                text-align: center;
-                font-size: 13px;
-                margin-top: 6px;
-            }
-        </style>
-
-        <div class="card shadow-sm mb-5">
-            <div class="card-header text-center bg-white">
-                <h4 class="fw-bold">Análisis de Vulnerabilidad</h4>
-            </div>
-
-            <div class="card-body">
-                <div class="grafica-vuln-wrapper">
-                    <div class="grafica-vuln">
-                        {{-- Líneas horizontales + etiquetas --}}
-                        @foreach ($niveles as $index => $nivel)
-                            @php
-                                $top = ($index * 20) + ($index * 40); // espaciado relativo a 300px total
-                            @endphp
-                            <div class="linea-nivel" style="top: {{ $top }}px; border-top: 2px solid {{ $nivel['color'] }};"></div>
-                            <div class="etiquetas-nivel" style="top: {{ $top - 8 }}px; color: {{ $nivel['color'] }};">
-                                {{ $nivel['label'] }}
-                            </div>
-                        @endforeach
-
-                        {{-- Barras verticales --}}
-                        @foreach ($valores as $item)
-                            @php
-                                $altura = ($item['valor'] / 10) * 300;
-                            @endphp
-                            <div>
-                                <div class="barra" style="height: {{ $altura }}px;"></div>
-                                <div class="etiqueta-x">{{ $item['categoria'] }}</div>
-                            </div>
-                        @endforeach
-
-                        {{-- Flecha tipo escala a la derecha --}}
-                        <div class="flecha"></div>
-                    </div>
+        <div class="d-flex justify-content-center align-items-end" style="height: 200px; gap: 20px;">
+            @foreach ($distribucionRiesgos as $nivel => $cantidad)
+                @php
+                    $altura = ($cantidad / $valorMaxDistribucion) * 160;
+                    $color = $coloresDistribucion[$nivel] ?? '#ccc';
+                @endphp
+                <div class="text-center">
+                    <!-- Barra -->
+                    <div style="width: 40px; height: {{ $altura }}px; background-color: {{ $color }}; margin: 0 auto; border-top-left-radius: 5px; border-top-right-radius: 5px;"></div>
+                    <!-- Valor -->
+                    <div style="margin-top: 5px;">{{ $cantidad }}</div>
                 </div>
-            </div>
+            @endforeach
         </div>
 
+        <div class="text-center mt-2 fw-bold">Barreras Perimetrales</div>
+
+        <!-- Leyenda -->
+        <div class="leyenda-color mt-3">
+            @foreach ($distribucionRiesgos as $nivel => $cantidad)
+                <span><div style="background-color: {{ $coloresDistribucion[$nivel] }}"></div>{{ $nivel }}</span>
+            @endforeach
+        </div>
+    </div>
+</div>
 
 @endsection
