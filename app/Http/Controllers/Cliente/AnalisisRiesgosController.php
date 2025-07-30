@@ -738,4 +738,12 @@ class AnalisisRiesgosController extends Controller
         return view('analisisriesgos.diegofut', compact('data'));
     }
 
+            public function diegores()
+    {
+        $data= 1; 
+
+        return view('analisisriesgos.diegores', compact('data'));
+    }
+
+
 }
