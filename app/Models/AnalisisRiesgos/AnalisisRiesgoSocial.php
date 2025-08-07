@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property HdConsecuencium $hdConsecuencium
  * @property HdProbabilidad $hdProbabilidad
  * @property LibrorSocialesAlcance $librorSocialesAlcance
+ * @property factorExp $factorExp
  * @property User $user
  * @property Cliente $cliente
  * @property HdNivelControl $hdNivelControl
@@ -54,7 +55,7 @@ class AnalisisRiesgoSocial extends Model
 
     public function hdConsecuencia()
     {
-        return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id');
+        return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id','id');
     }
 
     /**
@@ -65,6 +66,17 @@ class AnalisisRiesgoSocial extends Model
         return $this->belongsTo('App\Models\Hd\Probabilidad');
     }
 
+    public function hdProbabilidadif()
+    {
+        return $this->belongsTo('App\Models\Hd\Probabilidad','hd_probabilidad_id', 'id');
+    }
+
+    public function hdAmenaza()
+    {
+        return $this->belongsTo('App\Models\Hd\Amenaza','hd_consecuencia_id', 'id');
+    }
+
+
     public function cliente()
     {
         return $this->belongsTo('App\Models\Cliente\Cliente');
@@ -74,12 +86,28 @@ class AnalisisRiesgoSocial extends Model
     {
         return $this->belongsTo('App\Models\LibroRiesgos\RiesgosSociales', 'libror_sociales_alcances_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+
+    public function factorExp()
+    {
+        return $this->belongsTo('App\Models\LibroRiesgos\FactoresExposicion', 'factor_exposicion', 'id');
+    }
+
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function BarrerasPerimetrales()
     {
         return $this->belongsTo('App\Models\LibroRiesgos\BarrerasPerimetrales', 'libror_barreras_perimetrales_id');
+    }
+
+    public function ImpactosSocial()
+    {
+        return $this->belongsTo('App\Models\LibroRiesgos\Impactos','id','analisis_riesgo_social_id');
     }
 
     public function userCreated()

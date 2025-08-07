@@ -19,7 +19,7 @@
                     <div style="margin-top: 10px;">
                         <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Perfil de riesgos</a>
                         <a href="{{ route('analisis.graficassociales', $cliente) }}" class="btn btn-success btn-xs "  href="#"><i class="la la-tachometer"></i>KPI's</a>
-                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-project-diagram"></i></i> Perfil de riesgos</a>
+                        <a class="btn btn-success btn-xs"  href="{{ route('analisis.analisiscliente', $cliente ) }}"><i class="la la-project-diagram"></i></i> Analisis de Escenarios</a>
 
                     </div>
 
@@ -296,12 +296,12 @@
                                                             <div class="col-lg-3">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="0" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="1" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Patrimonial
                                                                     </label>
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="1"  name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="2"  name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Operacional
                                                                     </label>
@@ -311,12 +311,12 @@
                                                                 <div class="checkbox-list">
 
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="2" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="3" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Comercial
                                                                     </label>
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="3" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="4" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Reputacional
                                                                     </label>
@@ -325,12 +325,12 @@
                                                             <div class="col-lg-3">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="4" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="5" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Humano
                                                                     </label>
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="5" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="6" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Ambiental
                                                                     </label>
@@ -339,7 +339,7 @@
                                                             <div class="col-lg-3">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="6" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="7" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Comunidad
                                                                     </label>
