@@ -268,8 +268,6 @@
                                       
                                       <td>
                                           @php
-                                              $impactosFiltrados = $unid->ImpactosSocial->where('analisis_riesgo_social_id', $unid->id);
-
                                               $tiposImpacto = [
                                                   1 => 'Patrimonial',
                                                   2 => 'Operacional',
@@ -280,12 +278,17 @@
                                                   7 => 'Comunidad'
                                               ];
 
-                                              $nombresImpactos = $impactosFiltrados->pluck('id_impacto')->map(function ($valor) use ($tiposImpacto) {
-                                                  return $tiposImpacto[$valor] ?? 'Desconocido';
-                                              });
+                                              $nombresImpactos = collect(); // colección vacía por defecto
+
+                                              if (!empty($unid->ImpactosSocial)) {
+                                                  $impactosFiltrados = $unid->ImpactosSocial->where('analisis_riesgo_social_id', $unid->id);
+                                                  $nombresImpactos = $impactosFiltrados->pluck('id_impacto')->map(function ($valor) use ($tiposImpacto) {
+                                                      return $tiposImpacto[$valor] ?? 'Desconocido';
+                                                  });
+                                              }
                                           @endphp
 
-                                          @if ($nombresImpactos->count())
+                                          @if ($nombresImpactos->isNotEmpty())
                                               {{ $nombresImpactos->implode(', ') }}
                                           @else
                                               <span>Sin registros</span>
