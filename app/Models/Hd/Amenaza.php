@@ -28,7 +28,7 @@ class Amenaza extends Model
     /**
      * @var array
      */
-    protected $fillable = ['niven_amenaza', 'calculo_nivel_amenaza', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
+    protected $fillable = ['nivel_amenaza', 'calculo_nivel_amenaza', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
     public function userCreated()
     {

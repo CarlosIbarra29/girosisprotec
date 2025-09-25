@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property User $user
  * @property User $user
  */
-class NivelControl extends Model
+class NivelRiesgo extends Model
 {
     /**
      * The table associated with the model.

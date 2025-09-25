@@ -47,15 +47,28 @@ class AnalisisRiesgoSocial extends Model
      */
     protected $table = 'analisis_riesgo_social';
 
+    protected $primaryKey = 'id';         // por si acaso
+    public $timestamps = true;            // o false si no usas created_at/updated_at
+    protected $casts = ['nivel_control2' => 'integer'];
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'nivel_riesgo', 'descripcion'];
+    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'nivel_riesgo', 'descripcion','nivel_control2','probabilidad_id2','sev2','indice_reduccion','aceptabilidad','sol_eficaz','observaciones','plan','responsable','fecha_inicio','fecha_fin','estatus_riesgo','seg_control','fac2','costo_sol','estrategias'];
 
 
     public function hdConsecuencia()
     {
         return $this->belongsTo('App\Models\Hd\Consecuencia', 'hd_consecuencia_id','id');
+    }
+
+    public function hdConsecuencia2()
+    {
+        return $this->belongsTo('App\Models\Hd\Consecuencia');
+    }
+
+    public function hdConsecuencia3()
+    {
+        return $this->belongsTo('App\Models\Hd\Consecuencia','sev2','id');
     }
 
     /**
@@ -77,6 +90,11 @@ class AnalisisRiesgoSocial extends Model
     }
 
 
+    public function hdAmenaza2()
+    {
+        return $this->belongsTo('App\Models\Hd\Amenaza');
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Models\Cliente\Cliente');
@@ -96,6 +114,17 @@ class AnalisisRiesgoSocial extends Model
         return $this->belongsTo('App\Models\LibroRiesgos\FactoresExposicion', 'factor_exposicion', 'id');
     }
 
+
+    public function NivelExp2()
+    {
+        return $this->belongsTo('App\Models\Hd\NivelControl', 'nivel_control2', 'id');
+    }
+
+
+    public function NivelPr2()
+    {
+        return $this->belongsTo('App\Models\Hd\Probabilidad', 'probabilidad_id2', 'id');
+    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -143,6 +172,11 @@ class AnalisisRiesgoSocial extends Model
     public function analisisRiesgoSocialImpactos()
     {
         return $this->hasMany('App\Models\AnalisisRiesgos\AnalisisRiesgoSocialImpacto');
+    }
+
+    public function hdNivelRiesgo()
+    {
+        return $this->belongsTo('App\Models\Hd\NivelRiesgo');
     }
 
 }
