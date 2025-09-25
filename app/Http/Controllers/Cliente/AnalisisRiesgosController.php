@@ -26,7 +26,7 @@ use App\Models\LibroRiesgos\ConceptosNaturales;
 
 use App\Models\LibroRiesgos\ConceptosOtros;
 use App\Models\LibroRiesgos\RiesgosOtros;
-
+use App\Models\Hd\Consecuencia;
 
 use App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologico;
 use App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologicoDeficiencia;
@@ -40,12 +40,18 @@ use App\Models\AnalisisRiesgos\AnalisisRiesgoOtros;
 use App\Models\AnalisisRiesgos\AnalisisRiesgoOtrosDeficiencia;
 use App\Models\AnalisisRiesgos\AnalisisRiesgoOtrosImpacto;
 
+
+use App\Models\Hd\NivelRiesgo;
+
+
 use App\Models\Hd\NivelControl;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\RolPermiso;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
+use Illuminate\Support\Facades\Log;
 
 class AnalisisRiesgosController extends Controller
 {
@@ -745,5 +751,232 @@ class AnalisisRiesgosController extends Controller
         return view('analisisriesgos.diegores', compact('data'));
     }
 
+
+
+    public function updateCell(Request $request)
+    {
+        $request->validate([
+            'id'    => 'required|integer|exists:analisis_riesgo_social,id',
+            'field' => 'required|string',
+            'value' => 'nullable',
+        ]);
+
+        $field = $request->input('field');
+
+        $fillable = [
+            'medidas_prevencion',
+            'contramedidas',
+            'observaciones',
+            'plan',
+            'responsable',
+            'fecha_inicio',
+            'fecha_fin',
+            'estatus_riesgo',
+            'seg_control',
+            'nivel_control2',
+            'probabilidad_id2',
+            'sev2',
+            'estrategias',
+            'costo_sol',
+        ];
+
+        if (!in_array($field, $fillable, true)) {
+            return response()->json(['ok' => false, 'message' => 'Campo no permitido'], 422);
+        }
+
+        try {
+            /** @var \App\Models\AnalisisRiesgos\AnalisisRiesgoSocial $row */
+            $row = \App\Models\AnalisisRiesgos\AnalisisRiesgoSocial::findOrFail((int)$request->input('id'));
+
+            // --- Escritura del campo recibido ---
+            if ($field === 'nivel_control2') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 6)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-6)'], 422);
+                }
+            } elseif ($field === 'estatus_riesgo') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 3)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-3)'], 422);
+                }
+            } elseif ($field === 'seg_control') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 2)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-2)'], 422);
+                }
+            } elseif ($field === 'probabilidad_id2') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 5)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-5)'], 422);
+                }
+            } elseif ($field === 'sev2') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 7)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-7)'], 422);
+                }
+            } else {
+                $val = trim((string)($request->input('value') ?? ''));
+                $row->$field = ($val === '') ? null : $val;
+            }
+
+            // --- Dependencias / calculados ---
+            $fac2     = $row->fac2;   // puede venir previamente calculado
+            $fac3     = null;
+            $ipd2     = null;
+            $amzLabel = null;
+
+            // Recalcular FAC2 si cambian NC2 o Prob2
+            if (in_array($field, ['nivel_control2', 'probabilidad_id2'], true)) {
+                $pesoNC   = [1=>3.162, 2=>3.162, 3=>2.530, 4=>1.897, 5=>1.265, 6=>0.632];
+                $pesoProb = [1=>3.162, 2=>2.530, 3=>1.897, 4=>1.265, 5=>0.632];
+
+                $nc2 = (int)($row->nivel_control2 ?? 0);
+                $p2  = (int)($row->probabilidad_id2 ?? 0);
+
+                if (isset($pesoNC[$nc2]) && isset($pesoProb[$p2])) {
+                    $fac2 = (float)$pesoNC[$nc2] * (float)$pesoProb[$p2];
+                    $row->fac2 = $fac2;
+                } else {
+                    $row->fac2 = $fac2 = null;
+                }
+
+                // Etiqueta Amenaza más cercana a fac2
+                if ($fac2 !== null) {
+                    $amenazas = [
+                        0.4  => 'Improbable',
+                        1.2  => 'Remoto',
+                        2.0  => 'Esporádico',
+                        4.0  => 'Ocasional',
+                        6.0  => 'Frecuente',
+                        9.0  => 'Habitual',
+                        10.0 => 'Constante',
+                    ];
+                    $closestVal = null; $closestDiff = null;
+                    foreach (array_keys($amenazas) as $val) {
+                        $diff = abs($fac2 - (float)$val);
+                        if ($closestDiff === null || $diff < $closestDiff) {
+                            $closestDiff = $diff;
+                            $closestVal  = (float)$val;
+                        }
+                    }
+                    if ($closestVal !== null) $amzLabel = $amenazas[$closestVal];
+                }
+            }
+
+            // FAC3 desde sev2
+            if ($row->sev2) {
+                if ($c = \App\Models\Hd\Consecuencia::find($row->sev2)) {
+                    $fac3 = (float)$c->calculo_consecuencia;
+                }
+            }
+
+            // IPD2 si hay fac2 y fac3
+            if (in_array($field, ['sev2', 'nivel_control2', 'probabilidad_id2'], true)) {
+                if ($fac2 === null) $fac2 = $row->fac2;
+                if ($fac3 === null && $row->sev2) {
+                    if ($c = \App\Models\Hd\Consecuencia::find($row->sev2)) $fac3 = (float)$c->calculo_consecuencia;
+                }
+                if ($fac2 !== null && $fac3 !== null) {
+                    $ipd2 = $fac2 * $fac3;
+                }
+            }
+
+            // #3 y Exp.3
+            $nc3  = null;
+            $exp3 = null;
+            if ($row->nivel_control2) {
+                if ($nc = \App\Models\Hd\NivelControl::find($row->nivel_control2)) {
+                    $nc3  = $nc->nc_calculo;
+                    $exp3 = $nc->exposicion;
+                }
+            }
+
+            // Riesgo Marginal 2
+            $rm2 = null;
+            if ($ipd2 !== null) {
+                $diff = $ipd2 - 6.4;
+                $rm2  = ($diff < 6.4) ? 0.0 : $diff;
+            }
+
+            // IPD base (IPD1)
+            $ipd1 = (round(($row->factorExp?->factor_dato ?? 0) * ($row->hdProbabilidadif?->calculo_probabilidad ?? 0)))
+                    * ($row->hdConsecuencia?->calculo_consecuencia ?? 0);
+
+            // Índice Reducción (IR) = IPD1 - IPD2
+            $indiceReduccion = null;
+            if ($ipd2 !== null) {
+                $indiceReduccion = round($ipd1 - $ipd2, 1);
+            }
+            $row->indice_reduccion = $indiceReduccion;
+
+            // % Índice Reducción = (1 - (IPD2 / IPD1)) * 100
+            $indiceReduccionPct = null;
+            if ($ipd2 !== null && $ipd1 > 0) {
+                $indiceReduccionPct = round((1 - ($ipd2 / $ipd1)) * 100, 1);
+            }
+
+            // ===== Nivel Riesgo2, Aceptabilidad y Solución Eficaz =====
+            $nivelRiesgo2  = null;
+            $aceptabilidad = null;
+            $solEficaz     = null;
+
+            if ($ipd2 !== null) {
+                $nivel = \App\Models\Hd\NivelRiesgo::where('min', '<=', $ipd2)
+                            ->where('max', '>=', $ipd2)
+                            ->first();
+                if ($nivel) {
+                    $nivelRiesgo2  = $nivel->nivel_riesgo;   // "Medio", "Alto", etc.
+                    $aceptabilidad = $nivel->aceptabilidad;  // "Aceptables" / "No aceptables"
+
+                    // Persistimos aceptabilidad
+                    $row->aceptabilidad = $aceptabilidad;
+
+                    // Solución Eficaz (SI/NO)
+                    $accLower = mb_strtolower($aceptabilidad, 'UTF-8');
+                    if ($accLower === 'aceptables') {
+                        $solEficaz = 'SI';
+                    } elseif ($accLower === 'no aceptables') {
+                        $solEficaz = 'NO';
+                    }
+                    $row->sol_eficaz = $solEficaz;
+                } else {
+                    $row->aceptabilidad = null;
+                    $row->sol_eficaz   = null;
+                }
+            } else {
+                $row->aceptabilidad = null;
+                $row->sol_eficaz   = null;
+            }
+
+            $row->save();
+
+            return response()->json([
+                'ok'             => true,
+                'saved'          => [$field => $row->$field],
+                'fac2'           => $row->fac2,
+                'amz2_label'     => $amzLabel,
+                'fac3'           => $fac3,
+                'ipd2'           => $ipd2,
+                'rm2'            => $rm2,
+                'nc3'            => $nc3,
+                'exp3'           => $exp3,
+                'ipd1'           => $ipd1,
+                'ir'             => $indiceReduccion,
+                'irp_pct'        => $indiceReduccionPct,
+                'nivel_riesgo2'  => $nivelRiesgo2,
+                'aceptabilidad'  => $aceptabilidad,
+                'sol_eficaz'     => $solEficaz, // <-- para pintar en el front
+            ]);
+
+        } catch (\Throwable $e) {
+            \Log::error('updateCell error', ['e' => $e->getMessage()]);
+            return response()->json(['ok' => false, 'message' => 'Error interno al guardar'], 500);
+        }
+    }
 
 }

@@ -65,3 +65,7 @@
 		// PruebaDiego-Futbol
 		Route::get('/diegofut', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'diegofut'])->name('analisis.diegofut');
 		Route::get('/diegores', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'diegores'])->name('analisis.diegores');
+
+		//Actiualizar tabla
+
+		Route::post('/update-cell', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'updateCell'])->name('analisis.updateCell');
