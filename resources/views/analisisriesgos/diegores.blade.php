@@ -2,7 +2,7 @@
 
 
 @push('scripts')
-    <link href="{{ asset('css/tables.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/tables.css') }}" rel="stylesheet" />  
 @section('content')
 <div class="container mt-5">
     <div class="row">

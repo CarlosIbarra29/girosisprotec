@@ -28,7 +28,7 @@
     .triangle-row {
         display: flex;
         justify-content: center;
-        gap: 80px;
+        gap: 250px;
     }
 
     .triangle-button {

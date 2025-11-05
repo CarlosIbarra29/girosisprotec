@@ -184,7 +184,7 @@
 
         <h4 class="section-title">🚩Copa Mundial de Clubes🏆</h4>
 
-        <div class="bracket">
+        <div class="bracket">P
             @php
                 $bracket = [
                     'Octavos' => [
