@@ -1,3 +1,26 @@
+    // $(document).on('change', 'select[id^="punto_normativo"]', function () {
+    //     var id = $(this).attr('id');
+    //     var idGrupo = $(this).val();
+    //     var idDocumento = id.replace('punto_normativo', '');
+    //     var id_cliente = document.getElementById("id_cliente").value;
+    //     var id_tipo = document.getElementById("id_tipo").value;
+        
+    //     var url = $('#url_alcances').val();
+    //     var data = {
+    //         id: idGrupo,
+    //         _token: $("[name='_token']").val()
+    //     };
+
+    //     Swal.fire({
+    //         position: "top-center",
+    //         icon: "success",
+    //         title: "Espere un momento, la información esta siendo procesada",
+    //         showConfirmButton: false
+    //     });
+    //     window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
+
+    // });
+
     $(document).on('change', 'select[id^="punto_normativo"]', function () {
         var id = $(this).attr('id');
         var idGrupo = $(this).val();
@@ -11,45 +34,130 @@
             _token: $("[name='_token']").val()
         };
 
+        // Adapta la ruta a tu imagen (puede ser relativa o absoluta)
+        var rutaImagen = "/img/spinner_girp.webp";
+
+        // Duración en milisegundos
+        var duracionMs = 1000;
+
+        // Muestra el alert y redirige cuando se cierre por el timer
         Swal.fire({
-            position: "top-center",
-            icon: "success",
-            title: "Espere un momento, la información esta siendo procesada",
-            showConfirmButton: false
+            position: "top", // Nota: en SweetAlert2 "top-center" no existe; usa "top"
+            // icon: "success",
+            title: "Espere un momento",
+            html: "La información está siendo procesada…",
+            imageUrl: rutaImagen,
+            imageWidth: 200,        // opcional: ajusta tamaño
+            imageAlt: "Procesando", // texto alternativo
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            backdrop: true,
+            timer: duracionMs,
+            timerProgressBar: true
+        }).then(function () {
+            window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
         });
-        window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+idGrupo+"/1";
 
     });
 
-    $("#alcance_mas").click(function(){
-        var paginador = document.getElementById("paginador_num").value;
-        var id_cliente = document.getElementById("id_cliente").value;
-        var id_tipo = document.getElementById("id_tipo").value;
-        var id_alcance = document.getElementById("id_alcance").value;
-        var consecutivo = parseInt(paginador) + 1;
-        Swal.fire({
-            position: "top-center",
-            icon: "success",
-            title: "Espere un momento, la información esta siendo procesada",
-            showConfirmButton: false
-        });
-        window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    // $("#alcance_mas").click(function(){
+    //     var paginador = document.getElementById("paginador_num").value;
+    //     var id_cliente = document.getElementById("id_cliente").value;
+    //     var id_tipo = document.getElementById("id_tipo").value;
+    //     var id_alcance = document.getElementById("id_alcance").value;
+    //     var consecutivo = parseInt(paginador) + 1;
+    //     Swal.fire({
+    //         position: "top-center",
+    //         icon: "success",
+    //         title: "Espere un momento, la información esta siendo procesada",
+    //         showConfirmButton: false
+    //     });
+    //     window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    // });
+
+    $("#alcance_mas").click(function () {
+      var paginador   = document.getElementById("paginador_num").value;
+      var id_cliente  = document.getElementById("id_cliente").value;
+      var id_tipo     = document.getElementById("id_tipo").value;
+      var id_alcance  = document.getElementById("id_alcance").value;
+      var consecutivo = parseInt(paginador) + 1;
+
+      // Adapta la ruta a tu imagen (puede ser relativa o absoluta)
+      var rutaImagen = "/img/spinner_girp.webp";
+
+      // Duración en milisegundos
+      var duracionMs = 1200;
+
+      // Muestra el alert y redirige cuando se cierre por el timer
+      Swal.fire({
+        position: "top", // Nota: en SweetAlert2 "top-center" no existe; usa "top"
+        // icon: "success",
+        title: "Espere un momento",
+        html: "La información está siendo procesada…",
+        imageUrl: rutaImagen,
+        imageWidth: 200,        // opcional: ajusta tamaño
+        imageAlt: "Procesando", // texto alternativo
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        backdrop: true,
+        timer: duracionMs,
+        timerProgressBar: true
+      }).then(function () {
+        window.location.href = "/cliente/generar-analisis-riesgos/"
+          + id_cliente + "/" + id_tipo + "/" + id_alcance + "/" + consecutivo;
+      });
     });
 
 
-    $("#alcance_menos").click(function(){
-        var paginador = document.getElementById("paginador_num").value;
-        var id_cliente = document.getElementById("id_cliente").value;
-        var id_tipo = document.getElementById("id_tipo").value;
-        var id_alcance = document.getElementById("id_alcance").value;
-        var consecutivo = parseInt(paginador) - 1;
-        Swal.fire({
-            position: "top-center",
-            icon: "success",
-            title: "Espere un momento, la información esta siendo procesada",
-            showConfirmButton: false
-        });
-        window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    // $("#alcance_menos").click(function(){
+    //     var paginador = document.getElementById("paginador_num").value;
+    //     var id_cliente = document.getElementById("id_cliente").value;
+    //     var id_tipo = document.getElementById("id_tipo").value;
+    //     var id_alcance = document.getElementById("id_alcance").value;
+    //     var consecutivo = parseInt(paginador) - 1;
+    //     Swal.fire({
+    //         position: "top-center",
+    //         icon: "success",
+    //         title: "Espere un momento, la información esta siendo procesada",
+    //         showConfirmButton: false
+    //     });
+    //     window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
+    // });
+
+    $("#alcance_menos").click(function () {
+      var paginador   = document.getElementById("paginador_num").value;
+      var id_cliente  = document.getElementById("id_cliente").value;
+      var id_tipo     = document.getElementById("id_tipo").value;
+      var id_alcance  = document.getElementById("id_alcance").value;
+      var consecutivo = parseInt(paginador, 10) - 1;
+
+      // Adapta la ruta a tu imagen (puede ser relativa o absoluta)
+      var rutaImagen = "/img/spinner_girp.webp";
+
+      // Duración en milisegundos
+      var duracionMs = 1200;
+
+      // Muestra el alert y redirige cuando se cierre por el timer
+      Swal.fire({
+        position: "top", // Nota: en SweetAlert2 "top-center" no existe; usa "top"
+        // icon: "success",
+        title: "Espere un momento",
+        html: "La información está siendo procesada…",
+        imageUrl: rutaImagen,
+        imageWidth: 200,        // opcional: ajusta tamaño
+        imageAlt: "Procesando", // texto alternativo
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        backdrop: true,
+        timer: duracionMs,
+        timerProgressBar: true
+      }).then(function () {
+        window.location.href = "/cliente/generar-analisis-riesgos/"
+          + id_cliente + "/" + id_tipo + "/" + id_alcance + "/" + consecutivo;
+      });
     });
 
 
@@ -368,12 +476,40 @@
 
     });
 
-$("#btnGuardar").click(function(){
-    Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "Espere un momento, la información esta siendo procesada",
-        showConfirmButton: false
+// $("#btnGuardar").click(function(){
+//     Swal.fire({
+//         position: "top-center",
+//         icon: "success",
+//         title: "Espere un momento, la información esta siendo procesada",
+//         showConfirmButton: false
+//     });
+//     document.getElementById("submit_analisis_social").submit();
+// });
+
+
+ $("#btnGuardar").click(function () {
+      // Adapta la ruta a tu imagen (puede ser relativa o absoluta)
+      var rutaImagen = "/img/spinner_girp.webp";
+
+      // Duración en milisegundos
+      var duracionMs = 1200;
+
+      // Muestra el alert y redirige cuando se cierre por el timer
+      Swal.fire({
+        position: "top", // Nota: en SweetAlert2 "top-center" no existe; usa "top"
+        // icon: "success",
+        title: "Espere un momento",
+        html: "La información está siendo procesada…",
+        imageUrl: rutaImagen,
+        imageWidth: 200,        // opcional: ajusta tamaño
+        imageAlt: "Procesando", // texto alternativo
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        backdrop: true,
+        timer: duracionMs,
+        timerProgressBar: true
+      }).then(function () {
+        document.getElementById("submit_analisis_social").submit();
+      });
     });
-    document.getElementById("submit_analisis_social").submit();
-});

@@ -30,6 +30,8 @@ class Amenaza extends Model
      */
     protected $fillable = ['nivel_amenaza', 'calculo_nivel_amenaza', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
+    protected $casts   = ['calculo_nivel_amenaza' => 'float'];
+
     public function userCreated()
     {
         return $this->belongsTo('App\Models\User', 'iduserCreated');

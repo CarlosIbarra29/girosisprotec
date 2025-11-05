@@ -28,6 +28,8 @@ use App\Models\LibroRiesgos\ConceptosOtros;
 use App\Models\LibroRiesgos\RiesgosOtros;
 use App\Models\Hd\Consecuencia;
 
+use App\Models\Hd\Amenaza;
+
 use App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologico;
 use App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologicoDeficiencia;
 use App\Models\AnalisisRiesgos\AnalisisRiesgoTecnologicoImpacto;
@@ -74,7 +76,11 @@ class AnalisisRiesgosController extends Controller
         $data = AnalisisRiesgoSocial::where('cliente_id', $id_cliente)->get();
         $cliente = Cliente::where('id', $id_cliente)->first();
 
-        return view('analisisriesgos.analisis-cliente', compact('data', 'id_cliente', 'cliente'));   
+        $nivelesAmenaza = Amenaza::select('id','nivel_amenaza','calculo_nivel_amenaza')
+        ->orderBy('calculo_nivel_amenaza')
+        ->get();
+
+        return view('analisisriesgos.analisis-cliente', compact('data', 'id_cliente', 'cliente','nivelesAmenaza'));   
     }
 
     public function seleccionaanalisis($id_cliente)
@@ -136,7 +142,30 @@ class AnalisisRiesgosController extends Controller
 
     public function guardarriesgo(Request $request)
     {
-   
+        
+         
+
+        if ($request->nivel_control == 2 || $request->nivel_control == 1) {
+            $fac_exp = 1;    
+        } else if ($request->nivel_control == 3) {
+
+            $fac_exp = 2;
+
+        }else if ($request->nivel_control == 4) {
+
+            $fac_exp = 3;
+
+        }else if ($request->nivel_control == 5) {
+
+            $fac_exp = 4;
+
+        }else if ($request->nivel_control == 6) {
+
+            $fac_exp = 5;
+
+        }
+
+
         $data = [
             'cliente_id' => $request->cliente,
             'libror_barreras_perimetrales_id' => $request->punto_normativo,
@@ -152,7 +181,7 @@ class AnalisisRiesgosController extends Controller
             'contramedidas' => $request->contramedidas,
             'hd_consecuencia_id' => $request->impacto_severidad,
             'hd_probabilidad_id' => $request->factor_probabilidad,
-            'factor_exposicion' => $request->nivel_control,
+            'factor_exposicion' => $fac_exp,
             'nivel_riesgo' => $request->nivel_riesgo,
             'descripcion' => $request->descripcion,
             'status_delete' => 1,
@@ -978,5 +1007,6 @@ class AnalisisRiesgosController extends Controller
             return response()->json(['ok' => false, 'message' => 'Error interno al guardar'], 500);
         }
     }
+
 
 }

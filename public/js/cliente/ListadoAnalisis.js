@@ -154,6 +154,8 @@ jQuery(document).ready(function () {
   var minWidthPx = 1400;
   $("#kdatatable_clientes_inactivos").css("min-width", minWidthPx + "px");
 
+  
+
   // DataTable con scroll X/Y; con scrollY, el header queda siempre visible
   var DT_INACTIVOS = $("#kdatatable_clientes_inactivos").DataTable({
     language: {

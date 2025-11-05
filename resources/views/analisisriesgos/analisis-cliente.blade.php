@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css">
 <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
 
+<!-- <link href="{{ asset('css/newversion.css') }}" rel="stylesheet" type="text/css" /> -->
+
 @endpush
 
 @section('title')
@@ -12,6 +14,279 @@
 @endsection
 
 @section('content')
+
+<style>
+  /* ==== vista css BLACK / WHITE / CAMEL =================== */
+  :root{
+    --camel:      #C2A476;  /* camel base */
+    --camel-700:  #9B7C4E;  /* más oscuro */
+    --camel-800:  #7F653F;  /* hover intenso */
+    --ink:        #121212;  /* negro */
+    --paper:      #ffffff;  /* blanco */
+    --muted:      #F5F1EA;  /* camel muy suave para fondos */
+    --line:       rgba(0,0,0,.08);
+  }
+
+  .dataTables_wrapper .dataTables_paginate .pagination .page-item.active > .page-link {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  background: var(--camel-800) !important;
+    border-color: var(--camel) !important;
+    color: #fff !important;
+  } 
+  .dataTables_wrapper .dataTables_paginate .pagination .page-item.active > .page-link > i {
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    color: #ffffff !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .pagination .page-item:hover:not(.disabled) > .page-link {
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      background: var(--camel) !important;
+      color: #fff !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .pagination .page-item:hover:not(.disabled) > .page-link > i {
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    color: #ffffff;
+  }
+
+  /* Card */
+  .card.card-custom{
+    border: 1px solid var(--line) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.06); !important
+    overflow: hidden !important;
+  }
+  .card.card-custom .card-header{
+    background: var(--paper) !important;
+    border-bottom: 1px solid var(--line) !important;
+    padding-top: 1rem; padding-bottom: 1rem !important;
+  }
+  .card.card-custom .card-title .card-icon i{ color: var(--camel) !important; }
+  .card.card-custom .card-title h3{ color: var(--ink); }
+
+  /* Botones principales (reusa tus clases actuales) */
+  .btn-light-primary{
+    background: var(--muted) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--camel-700) !important;
+    border-radius: 12px !important;
+    transition: all .2s ease !important;
+  }
+  .btn-light-primary:hover,
+  .btn-light-primary:focus{
+    background: var(--camel) !important;
+    border-color: var(--camel-800) !important;
+    color: #fff !important;
+  }
+
+  /* Modo edición (no tocamos tu JS que alterna warning/success) */
+  .btn-warning{
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
+    color:#fff !important;
+    border-radius: 12px !important;
+  }
+  .btn-warning:hover{ background:#000; border-color:#000; color:#fff !important; }
+
+  .btn-success{
+    background: var(--camel) !important;
+    border-color: var(--camel-800) !important;
+    color:#fff !important;
+    border-radius: 12px !important;
+  }
+  .btn-success:hover{ background: var(--camel-800); border-color: var(--camel-800) !important; }
+
+  /* Botones secundarios del buscador */
+  .btn-primary{
+    background: var(--camel) !important;
+    border-color: var(--camel-800) !important;
+  }
+  .btn-primary:hover{ background: var(--camel-800); border-color: var(--camel-800) !important; }
+
+  .btn-secondary{
+    background: #fff !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--ink) !important;
+  }
+  .btn-secondary:hover{ background: var(--ink); color:#fff !important; }
+
+  /* Icon buttons en Acciones (resalta al hover en camel) */
+  .btn-hover-icon-success:hover i,
+  .btn-hover-icon-success:hover .svg-icon{
+    color: var(--camel) !important;
+    fill: var(--camel) !important;
+  }
+
+  .btn.btn-light-primary i {
+     color: var(--camel) !important;
+
+  }
+
+  .btn-light-primary:hover i,
+  .btn-light-primary:focus i{
+    border-color: var(--camel-800) !important;
+    color: #fff !important;
+  }
+
+  /* Inputs y selects */
+  .form-control{
+    border-radius: 12px !important;
+    border-color: var(--camel-700) !important;
+    background: #fff !important;
+  }
+  .form-control:focus{
+    border-color: var(--camel) !important;
+    box-shadow: 0 0 0 .2rem rgba(194,164,118,.25) !important;
+  }
+  .gray_area:disabled{
+    background: #f3f0ea !important; color:#6b6b6b !important; border-color:#e8e1d6 !important;
+  }
+
+  /* Tabla */
+  #tbl-scroll{ scrollbar-color: var(--camel) #e9e7e3; }
+  .table thead th{
+    position: sticky; top: 0; z-index: 2;
+    background: var(--ink) !important;
+    color: #fff !important;
+    text-transform: uppercase;
+    font-size: .78rem;
+    letter-spacing: .02em;
+    border-bottom: 2px solid var(--camel-700) !important;
+  }
+  .table tbody tr:nth-child(even){ background:#faf9f6; } /* sutil */
+  .table tbody tr:hover{ background: rgba(194,164,118,.08) !important; }
+
+  /* “Ver más” link */
+  a.toggle-more{ color: var(--camel); font-weight: 600; }
+  a.toggle-more:hover{ color: var(--camel-800); text-decoration: underline; }
+
+  /* Celdas editables (mismo comportamiento, nuevos colores) */
+  .cell-edit[contenteditable="true"]{
+    outline: 2px dashed var(--camel);
+    background: #fffaf3;
+    border-radius: 8px;
+    padding: 2px 6px;
+  }
+  @keyframes flashok { from{ background: rgba(194,164,118,.35);} to{ background: transparent;} }
+  .cell-edit.saved{ animation: flashok 1s ease; }
+  /* Mantén rojo para error */
+  @keyframes flashred{ from{background:#f8d7da;} to{background:transparent;} }
+  .cell-edit.error{ animation: flashred 1.2s ease; }
+
+  /* Paginación DataTables */
+  .page-item.active .page-link{
+    background: var(--camel); border-color: var(--camel);
+  }
+  .page-link{ color: var(--ink); }
+  .page-link:hover{ color: var(--camel-800); }
+
+  /* Chips de “Riesgo Gestionado / No Gestionado” (si quieres quitar inline) */
+  td[style*="background-color: green"] p,
+  td[style*="background-color: red"]   p{ margin: 0; font-weight: 700; letter-spacing:.2px; }
+
+  /* Títulos de sección (arriba de los 3 botones) */
+  .text-center .btn{ margin-bottom: .4rem; }
+
+
+
+  /* ==== Anchos personalizados de columnas (thead + tbody) ==== */
+
+  /* 5: Factor de riesgo */
+  #kdatatable_clientes_inactivos th:nth-child(5),
+  #kdatatable_clientes_inactivos td:nth-child(5){ min-width: 220px !important; }
+  /* Ajusta el contenedor interno que ya limita a 360px */
+  /*#kdatatable_clientes_inactivos td:nth-child(5).text-long .clamp-3{ max-width: 520px !important; }*/
+
+  /* 6: Eventos de riesgo */
+  #kdatatable_clientes_inactivos th:nth-child(6),
+  #kdatatable_clientes_inactivos td:nth-child(6){ min-width: 220 !important; }
+  /*#kdatatable_clientes_inactivos td:nth-child(6).text-long .clamp-3{ max-width: 520px !important; }*/
+
+  /* 43: Observaciones */
+  #kdatatable_clientes_inactivos th:nth-child(43),
+  #kdatatable_clientes_inactivos td:nth-child(43){ min-width: 150px !important; }
+  /*#kdatatable_clientes_inactivos td:nth-child(43).text-long .clamp-3{ max-width: 560px !important; }*/
+
+  /* 44: Plan de Contingencia */
+  #kdatatable_clientes_inactivos th:nth-child(44),
+  #kdatatable_clientes_inactivos td:nth-child(44){ min-width: 150px !important; }
+  /*#kdatatable_clientes_inactivos td:nth-child(44).text-long .clamp-3{ max-width: 520px !important; }*/
+
+  #kdatatable_clientes_inactivos th:nth-child(25),
+  #kdatatable_clientes_inactivos td:nth-child(25){ min-width: 230px !important; }
+
+  /* 27: Nivel de control2 (select) */
+  #kdatatable_clientes_inactivos th:nth-child(27),
+  #kdatatable_clientes_inactivos td:nth-child(27){ min-width: 140px !important; }
+  /*#kdatatable_clientes_inactivos td:nth-child(27) select{ min-width: 170px; }*/
+
+  /* Prob (hay dos: 12 y 30) */
+  #kdatatable_clientes_inactivos th:nth-child(30),
+  #kdatatable_clientes_inactivos td:nth-child(30){ min-width: 100px !important; }
+
+  /* Sev. (también hay dos: 15 y 33) */
+  #kdatatable_clientes_inactivos th:nth-child(33),
+  #kdatatable_clientes_inactivos td:nth-child(33){ min-width: 140px !important; }
+
+  /* 48: Estatus */
+  #kdatatable_clientes_inactivos th:nth-child(48),
+  #kdatatable_clientes_inactivos td:nth-child(48){ min-width: 100px !important; }
+
+  /* 49: Controles asegurados */
+  #kdatatable_clientes_inactivos th:nth-child(49),
+  #kdatatable_clientes_inactivos td:nth-child(49){ min-width: 100px !important; }
+
+  /* (Opcional) Un poquito más de espacio para 23/24/25 si lo necesitas
+  #kdatatable_clientes_inactivos th:nth-child(23),
+  #kdatatable_clientes_inactivos td:nth-child(23),
+  #kdatatable_clientes_inactivos th:nth-child(24),
+  #kdatatable_clientes_inactivos td:nth-child(24),
+  #kdatatable_clientes_inactivos th:nth-child(25),
+  #kdatatable_clientes_inactivos td:nth-child(25){ min-width: 360px !important; }
+  */
+
+
+
+  /*/////////////////Edicion de table////////////////////////*/
+  .table td.text-long { max-width: 360px; vertical-align: top; }
+  .clamp-3{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .nowrap-num{ white-space: nowrap; }
+  .col-actions{ width:120px; white-space:nowrap; text-align:center; }
+  .table thead th{ position:sticky; top:0; background:#fff; z-index:2; }
+  .table tbody tr:nth-child(even){ background:#fafafa; }
+
+  /* Edición visual */
+  .cell-edit[contenteditable="true"]{
+    outline:2px dashed #ffc107; background:#fff8e1; border-radius:6px; padding:2px 4px;
+  }
+  .cell-edit.saving{ opacity:.6; }
+  @keyframes flashgreen{ from{background:#d4edda;} to{background:transparent;} }
+  @keyframes flashred{ from{background:#f8d7da;} to{background:transparent;} }
+  .cell-edit.saved{ animation:flashgreen 1.2s ease; }
+  .cell-edit.error{ animation:flashred 1.2s ease; }
+
+  /* Select de Nivel de control2 (deshabilitado por defecto) */
+  .sel-nivel-control2:disabled{ background:#f5f5f5; color:#555; }
+
+  .sel-nivel-probabilidad2:disabled{ background:#f5f5f5; color:#555; }
+
+  .sel-nivel-sev2:disabled{ background:#f5f5f5; color:#555; }
+
+  .cell-money{ font-weight: 700; }
+  .cell-money.has-value::before{ content: "$ "; }
+
+  /* === Colores Nivel Riesgo2 === */
+  .td-nr2 { text-align:center; }
+  .risk2-bajo    { background:#99ff99; }      /* verde claro */
+  .risk2-medio   { background:#ffe0b2; }      /* naranja claro */
+  .risk2-alto    { background:#ff9999; }      /* rojo claro  */
+  .risk2-muyalto { background:#cc0000; color:#fff; } /* rojo fuerte oscuro */
+
+  /* === Colores Aceptabilidad === */
+  .td-acept { text-align:center; }
+  .acc-acept   { background:#28a745; color:#fff; } /* Aceptables: verde */
+  .acc-noacept { background:#dc3545; color:#fff; } /* No aceptables: rojo */
+
+</style>
 <div class="d-flex flex-row">
   <!--begin::List-->
   <div class="flex-row-fluid">
@@ -81,50 +356,6 @@
                   </form>
                 </div>
               </div>
-
-              {{-- ===== Estilos tabla, truncado y edición ===== --}}
-              <style>
-                .table td.text-long { max-width: 360px; vertical-align: top; }
-                .clamp-3{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-                .nowrap-num{ white-space: nowrap; }
-                .col-actions{ width:120px; white-space:nowrap; text-align:center; }
-                .table thead th{ position:sticky; top:0; background:#fff; z-index:2; }
-                .table tbody tr:nth-child(even){ background:#fafafa; }
-
-                /* Edición visual */
-                .cell-edit[contenteditable="true"]{
-                  outline:2px dashed #ffc107; background:#fff8e1; border-radius:6px; padding:2px 4px;
-                }
-                .cell-edit.saving{ opacity:.6; }
-                @keyframes flashgreen{ from{background:#d4edda;} to{background:transparent;} }
-                @keyframes flashred{ from{background:#f8d7da;} to{background:transparent;} }
-                .cell-edit.saved{ animation:flashgreen 1.2s ease; }
-                .cell-edit.error{ animation:flashred 1.2s ease; }
-
-                /* Select de Nivel de control2 (deshabilitado por defecto) */
-                .sel-nivel-control2:disabled{ background:#f5f5f5; color:#555; }
-
-                .sel-nivel-probabilidad2:disabled{ background:#f5f5f5; color:#555; }
-
-                .sel-nivel-sev2:disabled{ background:#f5f5f5; color:#555; }
-
-                .cell-money{ font-weight: 700; }
-                .cell-money.has-value::before{ content: "$ "; }
-
-                /* === Colores Nivel Riesgo2 === */
-                .td-nr2 { text-align:center; }
-                .risk2-bajo    { background:#99ff99; }      /* verde claro */
-                .risk2-medio   { background:#ffe0b2; }      /* naranja claro */
-                .risk2-alto    { background:#ff9999; }      /* rojo claro  */
-                .risk2-muyalto { background:#cc0000; color:#fff; } /* rojo fuerte oscuro */
-
-                /* === Colores Aceptabilidad === */
-                .td-acept { text-align:center; }
-                .acc-acept   { background:#28a745; color:#fff; } /* Aceptables: verde */
-                .acc-noacept { background:#dc3545; color:#fff; } /* No aceptables: rojo */
-
-              </style>
-
 
 
               <!--begin: Datatable-->
@@ -266,14 +497,39 @@
                         <td class="nowrap-num">
                           @if($unid->hdProbabilidadif) {{ $unid->hdProbabilidadif->probabilidad }} @else <span>Sin asignar</span> @endif
                         </td>
+
+                        @php
+                          // Fac.1 = Exposición × Probabilidad, 1 decimal (float real)
+                          $fac1 = round(
+                              (float)($unid->factorExp?->factor_dato ?? 0)
+                            * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
+                            1
+                          );
+
+                          // Amz.1 = nivel de hd_nivel_amenaza más cercano a Fac.1
+                          $amz1Label = 'Sin Registro';
+                          if(isset($nivelesAmenaza) && $nivelesAmenaza->count()){
+                              $closest = $nivelesAmenaza->sortBy(function($n) use ($fac1){
+                                  return abs((float)$n->calculo_nivel_amenaza - (float)$fac1);
+                              })->first();
+                              if ($closest) $amz1Label = $closest->nivel_amenaza;
+                          }
+                        @endphp
+
                         <td class="nowrap-num">
-                          @if($unid->hdAmenaza) {{ $unid->hdAmenaza->nivel_amenaza }} @else <span>Sin asignar</span> @endif
+                          <span class="amz1-val" data-id="{{ $unid->id }}">{{ $amz1Label }}</span>
                         </td>
 
                         <td class="nowrap-num">
-                          {{ round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) }}
+                          <span class="fac1-val" data-id="{{ $unid->id }}">{{ number_format($fac1, 1, '.', '') }}</span>
                         </td>
 
+
+                        <!-- <td class="nowrap-num">
+                          {{ sprintf('%.1f', (int)( ( ($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0) ) * 10 ) / 10) }}
+                        </td> -->
+
+                        
                         <td class="nowrap-num">
                           @if($unid->hdConsecuencia) {{ $unid->hdConsecuencia->consecuencia }} @else <span>Sin asignar</span> @endif
                         </td>
@@ -282,8 +538,9 @@
                         </td>
 
                         @php
-                          $ipdBase = (round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)))
-                                     * ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+                            $ipdBase = ((int)(( ( $unid->factorExp?->factor_dato ?? 0 )
+                                            * ( $unid->hdProbabilidadif?->calculo_probabilidad ?? 0 ) ) * 10) / 10)
+                                     * ( $unid->hdConsecuencia?->calculo_consecuencia ?? 0 );
                         @endphp
 
                         <td class="nowrap-num">
@@ -292,8 +549,17 @@
 
                         <td class="nowrap-num">
                           {{
-                            ((($calc = (round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0))) *
-                            ($unid->hdConsecuencia?->calculo_consecuencia ?? 0)) - 6.4) < 6.4) ? 0 : $calc - 6.4
+                            (
+                              (
+                                ($calc =
+                                  ( (int)( ( ( $unid->factorExp?->factor_dato ?? 0 )
+                                           * ( $unid->hdProbabilidadif?->calculo_probabilidad ?? 0 ) ) * 10 ) / 10 )
+                                  * ( $unid->hdConsecuencia?->calculo_consecuencia ?? 0 )
+                                ) - 6.4
+                              ) < 6.4
+                            )
+                            ? 0
+                            : $calc - 6.4
                           }}
                         </td>
 
@@ -436,21 +702,24 @@
                             9.0  => 'Habitual',
                             10.0 => 'Constante',
                           ];
-                          $amzLabel = 'Sin Registro';
+                          $amzLabel2 = 'Sin Registro';
                           if ($unid->fac2 !== null) {
-                            $closestVal = null; $closestDiff = null;
-                            foreach (array_keys($amenazas) as $val) {
-                              $diff = abs((float)$unid->fac2 - (float)$val);
-                              if ($closestDiff === null || $diff < $closestDiff) {
-                                $closestDiff = $diff;
-                                $closestVal  = (float)$val;
+                              $v = (float) $unid->fac2;
+                              // Recorremos en orden y nos quedamos con el último umbral <= $v
+                              $label = null;
+                              foreach ($amenazas as $th => $lbl) {
+                                  if ($v < (float) $th) break;
+                                  $label = $lbl;
                               }
-                            }
-                            if ($closestVal !== null) $amzLabel = $amenazas[$closestVal];
+                              // Si era menor al mínimo, forzamos el mínimo (opcional)
+                              if ($label === null) {
+                                  $label = reset($amenazas); // 'Improbable'
+                              }
+                              $amzLabel2 = $label;
                           }
                         @endphp
                         <td class="nowrap-num">
-                          <span class="amz2-val" data-id="{{ $unid->id }}">{{ $amzLabel }}</span>
+                          <span class="amz2-val" data-id="{{ $unid->id }}">{{ $amzLabel2 }}</span>
                         </td>
 
 
