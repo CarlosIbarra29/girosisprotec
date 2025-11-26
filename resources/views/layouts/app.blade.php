@@ -7,9 +7,17 @@
     <meta name="description" content="GIRO for SISPROTEC Sistema de Gestión de Riesgos" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="shortcut icon" href="{{ asset('theme/assets/media/logos/favicon.ico') }}" />
+    <link rel="shortcut icon" href="{{ asset('theme/assets/media/logos/logogiro2.png') }}" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+
+    <!-- Favicon básico -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('theme/assets/media/logos/logogiro2.png') }}">
+
+    <!-- Opcional: PNG para navegadores modernos -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme/assets/media/logos/logogiro2.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('theme/assets/media/logos/logogiro2.png') }}">
+
     <!--end::Fonts-->
 
     <!--begin::Page Vendor Stylesheets-->

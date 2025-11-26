@@ -11,7 +11,7 @@
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/tablero.css?v=1.0.1') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/tablero.css?v=1.0.2') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
