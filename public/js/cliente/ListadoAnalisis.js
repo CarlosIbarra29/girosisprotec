@@ -105,6 +105,7 @@ var Tabla = (function () {
     $("#kt_search").on("click", function (e) {
       e.preventDefault();
       var params = {};
+
       $(".datatable-input").each(function () {
         var i = $(this).data("col-index");
         if (params[i]) {
@@ -113,25 +114,31 @@ var Tabla = (function () {
           params[i] = $(this).val();
         }
       });
+
       $.each(params, function (i, val) {
         table.column(i).search(val ? val : "", false, false);
       });
+
       table.table().draw();
     });
 
     $("#kt_reset").on("click", function (e) {
       e.preventDefault();
+
       $(".datatable-input").each(function () {
         $(this).val("");
         table.column($(this).data("col-index")).search("", false, false);
       });
+
       table.table().draw();
     });
   };
 
   return {
     init: function () {
-      if ($("#kdatatable_usuarios").length) initTable1();
+      if ($("#kdatatable_usuarios").length) {
+        initTable1();
+      }
     },
   };
 })();
@@ -142,72 +149,173 @@ jQuery(document).ready(function () {
 
 /* ===========================================
  * Tabla de ANALISIS (#kdatatable_clientes_inactivos)
- * con scroll horizontal + vertical y cabecera fija
+ * Scroll X/Y + cabecera visible + filtros por columna ARRIBA
  * =========================================== */
 (function () {
-  if (!$.fn.DataTable) return;
+  if (!jQuery || !jQuery.fn || !jQuery.fn.DataTable) return;
 
-  // Inicializa DataTable solo si existe la tabla
-  if (!$("#kdatatable_clientes_inactivos").length) return;
+  var $ = jQuery;
+  var $tabla = $("#kdatatable_clientes_inactivos");
 
-  // Opcional: ancho mínimo para activar scroll horizontal
+  if (!$tabla.length) return;
+
+  // Ancho mínimo para activar scroll horizontal
   var minWidthPx = 1400;
-  $("#kdatatable_clientes_inactivos").css("min-width", minWidthPx + "px");
+  $tabla.css("min-width", minWidthPx + "px");
 
-  
+  /* --------------------------------------------------
+   * 1) Crear fila de filtros en EL ENCABEZADO (thead)
+   * -------------------------------------------------- */
+  var $thead = $tabla.find("thead");
+  var $headerRow = $thead.find("tr").first(); // fila de títulos
+  var $filterRow = $headerRow.clone(false);   // clonamos estructura
 
-  // DataTable con scroll X/Y; con scrollY, el header queda siempre visible
-  var DT_INACTIVOS = $("#kdatatable_clientes_inactivos").DataTable({
+  $filterRow
+    .addClass("filters-row")
+    .find("th")
+    .each(function (index) {
+      var title = $(this).text().trim();
+
+      // Sin filtro en "Acciones" o columnas sin título
+      if (!title || title.toLowerCase() === "acciones") {
+        $(this).html(""); // celda vacía
+        return;
+      }
+
+      // Input de búsqueda por columna
+      $(this).html(
+        '<input type="text" class="form-control form-control-sm column-filter" ' +
+        'placeholder="' +
+        title +
+        '" />'
+      );
+    });
+
+  // Añadimos la segunda fila de encabezado
+  $thead.append($filterRow);
+
+  /* --------------------------------------------------
+   * 2) Inicializar DataTable
+   * -------------------------------------------------- */
+  var DT_INACTIVOS = $tabla.DataTable({
     language: {
       lengthMenu: "Display _MENU_",
       url: $("#datatable_i18n").val(),
     },
-    // Estructura con contenedor scroll de DataTables
     dom:
-      "<'row'<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+      "<'row'<'col-sm-6 d-flex align-items-center justify-content-start'l>" +
       "<'col-sm-6 d-flex align-items-center justify-content-end'f>>" +
-      "<'dataTables_scroll'<'dataTables_scrollHead'>'t'<'dataTables_scrollFoot'>>" +
+      "rt" +
       "<'row'<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
       "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>>",
-
     scrollX: true,
     scrollY: "60vh",
     scrollCollapse: true,
     paging: true,
     deferRender: true,
     autoWidth: false,
-    responsive: false, // evitamos que esconda columnas; usamos scrollX
+    responsive: false,
     ordering: true,
     order: [],
-
-    // Si necesitas fijar columnas del lado izquierdo, descomenta:
-    // fixedColumns: { leftColumns: 1 }, // requiere el plugin FixedColumns
+    orderCellsTop: true, // usa la PRIMERA fila del thead para ordenar
   });
 
-  // <<< AQUÍ va el ajuste que me pediste >>>
-  // Recalcular anchos en el siguiente ciclo del event loop,
-  // para que tome los estilos/anchos definitivos de la página.
-  if (window.DT_INACTIVOS) {
+  // --- Estado inicial: filtros ocultos ---
+  // Usamos un pequeño delay para asegurarnos de que el wrapper ya existe
+  setTimeout(function () {
+    var $wrapper = $("#kdatatable_clientes_inactivos_wrapper");
+    if (!$wrapper.length) return;
+
+    // Marcar como ocultos
+    $wrapper.addClass("filters-hidden");
+
+    // Esconder la fila de filtros en todos los thead
+    $wrapper.find("thead tr.filters-row").hide();
+
+    // Poner el botón en estado "apagado" y con título "Mostrar filtros"
+    $wrapper
+      .find(".btn-filters-toggle")
+      .addClass("filters-off")
+      .attr("title", "Mostrar filtros");
+  }, 0);
+
+  /* --------------------------------------------------
+   * Botón "Filtros" junto a ESC.
+   * Usa delegación sobre el documento, para que funcione
+   * aunque el wrapper/thead se generen después.
+   * -------------------------------------------------- */
+  $(document).on(
+    "click",
+    "#kdatatable_clientes_inactivos_wrapper .btn-filters-toggle",
+    function (e) {
+      e.preventDefault();
+
+      var $wrapper = $("#kdatatable_clientes_inactivos_wrapper");
+      if (!$wrapper.length) return;
+
+      var ocultos = $wrapper.hasClass("filters-hidden");
+      var ahoraOcultos = !ocultos;
+
+      $wrapper.toggleClass("filters-hidden", ahoraOcultos);
+
+      // Mostrar / ocultar todas las filas de filtros en todos los thead
+      var $filterRows = $wrapper.find("thead tr.filters-row");
+      if (ahoraOcultos) {
+        $filterRows.hide();
+      } else {
+        $filterRows.show();
+      }
+
+      // Actualizar TODOS los botones de filtros del wrapper
+      var nuevoTitle = ahoraOcultos ? "Mostrar filtros" : "Ocultar filtros";
+      $wrapper
+        .find(".btn-filters-toggle")
+        .toggleClass("filters-off", ahoraOcultos)
+        .attr("title", nuevoTitle);
+
+      // Ajustar columnas
+      try {
+        DT_INACTIVOS.columns().adjust().draw(false);
+      } catch (err) {}
+    }
+  );
+
+  // Lo dejamos global por si tu Blade lo usa en otro lado
+  window.DT_INACTIVOS = DT_INACTIVOS;
+
+  /* --------------------------------------------------
+   * 3) Conectar inputs con la búsqueda de su columna
+   * -------------------------------------------------- */
+  DT_INACTIVOS.columns().eq(0).each(function (colIdx) {
+    var th = $thead.find("tr.filters-row th").eq(colIdx);
+
+    $("input", th).on("keyup change clear", function () {
+      var val = this.value;
+
+      if (DT_INACTIVOS.column(colIdx).search() !== val) {
+        // Búsqueda simple (sin regex, sin smart)
+        DT_INACTIVOS
+          .column(colIdx)
+          .search(val || "", false, false)
+          .draw();
+      }
+    });
+  });
+
+  /* --------------------------------------------------
+   * 4) Ajustar columnas cuando cambie el layout
+   * -------------------------------------------------- */
+  function ajustaColumnas() {
     try {
-      setTimeout(function () {
-        window.DT_INACTIVOS.columns.adjust().draw(false);
-      }, 0);
+      DT_INACTIVOS.columns().adjust().draw(false);
     } catch (e) {}
-  } else {
-    // Si no existe global aún, lo exponemos y ajustamos
-    window.DT_INACTIVOS = DT_INACTIVOS;
-    setTimeout(function () {
-      DT_INACTIVOS.columns.adjust().draw(false);
-    }, 0);
   }
 
-  // Ajusta al redimensionar ventana o cuando cambias tabs/colapsables
-  $(window).on("resize", function () {
-    DT_INACTIVOS.columns.adjust().draw(false);
-  });
-  $(document).on("shown.bs.tab shown.bs.collapse", function () {
-    DT_INACTIVOS.columns.adjust().draw(false);
-  });
+  // un pequeño delay para que tome bien los anchos
+  setTimeout(ajustaColumnas, 0);
+
+  $(window).on("resize", ajustaColumnas);
+  $(document).on("shown.bs.tab shown.bs.collapse", ajustaColumnas);
 })();
 
 /* ============================
@@ -224,12 +332,14 @@ function deletecliente(nombre, id) {
   }).then(function (result) {
     if (result.value) {
       document.getElementById("id_cliente_delete").value = id;
+
       Swal.fire({
         position: "top-center",
         icon: "success",
         title: "Espere un momento, la información esta siendo procesada",
         showConfirmButton: false,
       });
+
       document.getElementById("cliente_delete_form").submit();
     } else if (result.dismiss === "cancel") {
       Swal.fire("Cancelada", "La acción fue cancelada", "error");
@@ -251,12 +361,14 @@ $(document).on("click", ".activar-cliente", function () {
   }).then(function (result) {
     if (result.value) {
       document.getElementById("id_delete").value = id;
+
       Swal.fire({
         position: "top-center",
         icon: "success",
         title: "Espere un momento, la información esta siendo procesada",
         showConfirmButton: false,
       });
+
       document.getElementById("cliente_act_form").submit();
     } else if (result.dismiss === "cancel") {
       Swal.fire("Cancelada", "La acción fue cancelada", "error");

@@ -289,7 +289,7 @@
                             </li> -->
 
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuHd">
-                                <a href="{{ route('hd.parametros') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('hd.parametros') ? 'active bg-primary' : '' }}">
+                                <a href="{{ route('hd.parametros') }}" class="menu-link menu-toggle nav-link text-white {{ (Request::routeIs('hd.parametros') || request()->is('cliente/matriz-aceptabilidad') || request()->is('cliente/metodos') || request()->is('libro/*')  ) ? 'active bg-primary' : '' }}">
                                     <i class="flaticon-notepad menu-icon"></i>
                                     <span class="menu-text">Parámetros</span>
                                 </a>

@@ -37,7 +37,7 @@
                                     <div class="col-lg-8 fl">
                                         <label><b>Punto normativo</b></label>
                                         <select class="form-control" id="punto_normativo" name="punto_normativo"  required >
-                                            <option value="" >Selecciona una opción</option>
+                                            <option value="" disabled selected>Selecciona una opción</option>
                                             @foreach($alcances as $alcanec)
                                                 <option value="{{ $alcanec->id }}"  @selected($alcanec->id == $id_alcance)>{{ $alcanec->alcance }}</option>
                                             @endforeach
