@@ -1,0 +1,222 @@
+/* ====== THEME (sin cambiar tu paleta) ====== */
+:root{
+  --camel:      #C2A476;
+  --camel-700:  #9B7C4E;
+  --camel-800:  #7F653F;
+  --ink:        #121212;
+  --paper:      #ffffff;
+  --muted:      #F5F1EA;
+  --line:       rgba(0,0,0,.08);
+
+  /* placeholder de etiqueta tenue */
+  --label-muted: #9ca3af;
+}
+
+/* ====== CONTENEDOR GENERAL ====== */
+.gi-form {
+  background: linear-gradient(180deg, #fff, #faf8f4 60%, #faf8f4);
+  padding: 1rem;
+}
+@media (min-width: 992px){
+  .gi-form { padding: 1.25rem 1.5rem; }
+}
+
+/* ====== CARD ====== */
+.card.gi-card {
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06) !important;
+  overflow: hidden;
+}
+.gi-card .card-header {
+  border-bottom: 1px solid var(--line) !important;
+  background: var(--paper) !important;
+  padding: 1rem 1.25rem !important;
+}
+.gi-card .card-title {
+  display:flex; align-items:center; gap:.6rem;
+  color: var(--ink);
+  font-weight: 700;
+}
+.gi-card .card-title .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--camel-800);
+  box-shadow: 0 0 0 6px rgba(194,164,118,.18);
+}
+
+/* ====== TABS ====== */
+.gi-tabs .nav-tabs {
+  border-bottom: 1px solid var(--line);
+}
+.gi-tabs .nav-link {
+  border: none !important;
+  color: #6b6b6b;
+  font-weight: 600;
+  margin-right: .75rem;
+  padding: .65rem .9rem;
+  border-radius: 10px 10px 0 0;
+}
+.gi-tabs .nav-link.active {
+  color: var(--ink);
+  background: linear-gradient(180deg, #fff, #fff);
+  box-shadow: 0 -4px 0 0 var(--camel) inset;
+}
+.gi-tabs .nav-link.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ====== GRUPOS / SECCIONES ====== */
+.gi-section-title{
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: var(--ink);
+  margin: 1rem 0 .5rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.gi-section-title::before{
+  content:""; width: 6px; height: 18px; border-radius: 3px; background: var(--camel-700);
+}
+.gi-row-gap .form-group{ margin-bottom: .9rem; }
+
+/* ====== INPUTS / LABELS (base) ====== */
+.form-label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: .35rem;
+}
+.form-control,
+.form-control[disabled],
+.form-control[readonly],
+.custom-select {
+  border-radius: 12px !important;
+  border: 1px solid #E8E1D6 !important;
+  background: #fff !important;
+  transition: box-shadow .2s ease, border-color .2s ease, transform .1s ease;
+}
+.form-control:focus, .custom-select:focus {
+  border-color: var(--camel) !important;
+  box-shadow: 0 0 0 .20rem rgba(194,164,118,.25) !important;
+}
+.form-control.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.15) !important;
+}
+.form-control[disabled],
+.custom-select[disabled]{
+  background: #f7f4ef !important;
+  color: #666 !important;
+}
+
+/* Icono dentro del input (opcional) */
+.input-icon { position: relative; }
+.input-icon i, .input-icon .la, .input-icon .fas {
+  position: absolute; left: .75rem; top: 50%; transform: translateY(-50%);
+  opacity: .6;
+}
+.input-icon .form-control { padding-left: 2.2rem; }
+
+/* ====== SISTEMA DE ETIQUETA FLOTANTE ======
+   - Usa: .f-group > input.f-control + label.f-label
+*/
+.f-group{
+  position: relative;
+  margin-bottom: 1rem;
+}
+.f-control{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #E8E1D6;
+  background: #fff;
+  padding: 0.85rem 0.95rem;
+  transition: box-shadow .2s, border-color .2s, background-color .2s;
+  /* Necesario para :placeholder-shown */
+  caret-color: var(--ink);
+}
+.f-control::placeholder{
+  color: transparent; /* escondemos el placeholder real */
+}
+.f-control:focus{
+  outline: 0;
+  border-color: var(--camel);
+  box-shadow: 0 0 0 .20rem rgba(194,164,118,.25);
+}
+.f-label{
+  position: absolute;
+  top: 50%;
+  left: .9rem;
+  transform: translateY(-50%);
+  padding: 0 .35rem;
+  border-radius: 6px;
+  background: transparent;
+  pointer-events: none;
+  transition: all .18s ease;
+  font-weight: 600;
+  line-height: 1;
+  /* apariencia “placeholder” por defecto */
+  color: var(--label-muted);
+  opacity: .95;
+}
+
+/* Flotar al enfocar o cuando hay contenido */
+.f-control:focus + .f-label,
+.f-control:not(:placeholder-shown) + .f-label,
+.f-control.filled + .f-label{
+  top: 0;
+  transform: translateY(-50%) scale(.92);
+  background: #fff;                 /* puente blanco sobre el borde */
+  color: var(--camel-700);          /* camel activo */
+  box-shadow: 0 0 0 6px #fff;       /* recorta el borde por detrás */
+}
+
+/* Estados deshabilitado / lectura */
+.f-control[disabled]{
+  background: #f7f4ef !important;
+  color: #666 !important;
+}
+.f-group.is-disabled .f-label{
+  color: #9b9b9b; opacity: .75;
+}
+
+/* Validación */
+.f-control.is-invalid{
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.15) !important;
+}
+
+/* ====== BOTONES ====== */
+.btn-primary {
+  background: var(--camel) !important;
+  border-color: var(--camel-800) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  padding: .6rem 1rem;
+  font-weight: 700;
+}
+.btn-primary:hover { background: var(--camel-800) !important; }
+.btn-primary[disabled],
+.btn-primary.disabled{
+  opacity: .6; cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #fff !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+  border-radius: 12px !important;
+  font-weight: 700;
+}
+.btn-secondary:hover { background: var(--ink) !important; color: #fff !important; }
+
+/* ====== FOOTER FIJO EN CARD ====== */
+.gi-footer {
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, #fff, #fff);
+  position: sticky; bottom: 0; z-index: 5;
+  padding: .8rem 1rem;
+}
+
+/* ====== DETALLES ====== */
+hr.gi-hr { border: none; height: 1px; background: var(--line); margin: 1rem 0; }
+.small-hint { font-size: .8rem; color: #6b6b6b; }
