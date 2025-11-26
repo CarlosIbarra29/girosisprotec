@@ -274,6 +274,39 @@ class ClienteController extends Controller
         return view('cliente.nuevo-cliente', compact('data','clientes','datacl'));
     }
 
+
+    public function showJson($id)
+    {
+        $cliente = \App\Models\Cliente\Cliente::where('status_delete', 1)->find($id);
+        if (!$cliente) {
+            return response()->json(['ok' => false, 'message' => 'Cliente no encontrado'], 404);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'data' => [
+                'organizacion'       => $cliente->organizacion,
+                'nombre_comercial'   => $cliente->nombre_comercial,
+                'calle'              => $cliente->calle,
+                'no_exterior'        => $cliente->no_exterior,
+                'no_interior'        => $cliente->no_interior,
+                'delegacion'         => $cliente->delegacion,
+                'giro_comercial'     => $cliente->giro_comercial,
+                'sector'             => $cliente->sector,
+                'no_personal'        => $cliente->no_personal,
+                'contacto_principal' => $cliente->contacto_principal,
+                'cargo'              => $cliente->cargo,
+                'telefono'           => $cliente->telefono,
+                'mail'               => $cliente->mail,
+                'persona_atiende'    => $cliente->persona_atiende,
+                'cargo_atiende'      => $cliente->cargo_atiende,
+                'telefono_atiende'   => $cliente->telefono_atiende,
+                'mail_atiende'       => $cliente->mail_atiende,
+            ],
+        ]);
+    }
+
+
     public function guardarclientenuevo(Request $request)
     {
         $data = [

@@ -6567,7 +6567,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #3699FF !important;
+  background-color: #3f4254  !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
@@ -80236,5 +80236,34 @@ body {
     left: 70px;
   }
 }
+
+/* === Sidebar colapsado: solo iconos/avatares, sin textos ================== */
+/* Aplica cuando el body tenga la clase "aside-minimize" (Metronic) */
+.aside-minimize:not(.aside-minimize-hover) #kt_aside .menu-text {
+  display: none !important;
+}
+
+/* Centra el contenido de cada item cuando no hay texto */
+.aside-minimize:not(.aside-minimize-hover) #kt_aside .menu-item > .menu-link {
+  justify-content: center;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+/* Los iconos pegados al centro */
+.aside-minimize:not(.aside-minimize-hover) #kt_aside .menu-icon {
+  margin-right: 0 !important;
+}
+
+/* Avatar: mantener solo la foto cuando está minimizado */
+.aside-minimize:not(.aside-minimize-hover) #kt_aside .sidebar-user .symbol {
+  margin: 0 auto; /* centrado */
+}
+
+/* Logout: asegura que SOLO quede el ícono en modo minimizado */
+.aside-minimize:not(.aside-minimize-hover) #kt_aside .menu-item.logout .menu-text {
+  display: none !important;
+}
+
 
 /*# sourceMappingURL=style.bundle.css.map*/

@@ -1,145 +1,8 @@
 @extends('layouts.app')
 
-@push('styles')
-<style>
-/* ====== THEME corporativo ====== */
-:root{
-  --brand:#B7954B;   /* dorado / camel */
-  --brand-2:#8E7435; /* dorado más oscuro */
-  --ink:#0B0B0B;     /* negro */
-  --ink-2:#6B7280;   /* gris secundaria */
-  --panel:#ffffff;
-  --line:#E9E3D7;
-  --shadow:0 10px 30px rgba(0,0,0,.08);
-  --r:16px;
-  --h-ctl:54px;
-  --pad-x:16px;
-}
-body{ background:#F7F7F6; color:var(--ink) }
-
-/* Card */
-.card.card-custom{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow) }
-.card-header{ border-bottom:1px solid var(--line); background:linear-gradient(180deg,#fff,#FBFAF7); padding:18px 20px }
-.card-header .card-title{ font-weight:800; letter-spacing:.2px; color:var(--ink) }
-
-/* Botones */
-.btn{ border-radius:999px; font-weight:700; letter-spacing:.2px }
-.btn-xs{ padding:.5rem 1rem; font-size:1.05rem }
-.btn-primary{ background:linear-gradient(90deg,var(--ink),#2a2a2a); border:0 }
-.btn-secondary{ background:#fff; color:var(--ink); border:1px solid #D9D1C1 }
-.btn-success{ background:linear-gradient(90deg,var(--brand),var(--brand-2)); border:0; color:#fff }
-
-/* Flechas (sin verde) */
-.btn-outline-success{ border:2px solid var(--brand) !important; color:var(--brand) !important; background:#fff !important; box-shadow:0 4px 10px rgba(183,149,75,.12) }
-.btn-outline-success:hover{ background:linear-gradient(90deg,var(--brand),var(--brand-2)) !important; color:#fff !important }
-.btn-outline-success.disabled,.btn-outline-success:disabled{ color:#D6C6A6 !important; border-color:#D6C6A6 !important }
-.btn-clean.btn-icon{ border-radius:14px; padding:10px 12px }
-.btn-clean.btn-icon i{ color:inherit !important; font-size:18px }
-
-/* Floating label “chip” */
-.fl{ position:relative; padding-top:8px }
-.fl>label{ margin:0 }
-.fl>label b{
-  position:absolute; left:18px; top:17px; z-index:2; height:26px; padding:0 12px;
-  border-radius:999px; background:#fff; color:#19212A; font-weight:800; font-size:13px;
-  border:1px solid rgba(183,149,75,.55); box-shadow:0 1px 0 rgba(183,149,75,.22);
-}
-
-/* Inputs / selects */
-.form-control, .gray_area, select.form-control{
-  height:var(--h-ctl); min-height:var(--h-ctl);
-  border:2px solid #E6E0D6 !important; border-radius:14px !important;
-  padding:12px var(--pad-x) !important; background:#fff !important; color:var(--ink) !important;
-  box-shadow:0 1px 0 rgba(0,0,0,.02) !important; transition:border-color .2s, box-shadow .2s;
-}
-textarea.form-control{ min-height:120px; padding-top:14px !important }
-.form-control:focus, .gray_area:focus, select.form-control:focus{
-  outline:0 !important; border-color:#D2C3A1 !important; box-shadow:0 0 0 4px rgba(183,149,75,.22) !important;
-}
-.form-control.ui-validated, select.form-control.ui-validated{
-  border-color:var(--brand) !important;
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23B7954B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>');
-  background-repeat:no-repeat; background-position:right 12px center; background-size:18px; padding-right:46px !important;
-}
-
-/* Select visible siempre + caret negro */
-select.form-control, select{
-  -webkit-appearance:none; -moz-appearance:none; appearance:none;
-  background:#fff !important; color:var(--ink) !important; padding-right:48px !important; line-height:normal; cursor:pointer;
-}
-select.form-control{
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="18" height="18" fill="%230B0B0B"><path d="M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/></svg>') !important;
-  background-repeat:no-repeat !important; background-position:right 14px center !important;
-}
-select.form-control option{ color:#111 !important; background:#fff !important }
-select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !important }
-
-/* Check chips */
-.checkbox-list .checkbox{ display:inline-flex; align-items:center; gap:10px; margin:6px 6px 0 0; padding:8px 12px; border:1px solid #E5E1D8; border-radius:999px; background:#fff; cursor:pointer; transition:.2s }
-.checkbox-list .checkbox:hover{ border-color:#D8D3C7; background:#fbf8f2 }
-.checkbox-list .checkbox input{ position:absolute; opacity:0 }
-.checkbox-list .checkbox span{ width:10px; height:10px; border-radius:999px; border:2px solid #D0C7B6; display:inline-block }
-.checkbox-list .checkbox input:checked + span{ background:var(--brand); border-color:var(--brand); box-shadow:0 0 0 6px rgba(183,149,75,.18) }
-.checkbox-list .checkbox input:checked ~ *{ color:#6c5526; font-weight:700 }
-
-/* Panel de nivel de riesgo */
-.risk-level{ background:#fff; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:14px; margin-bottom:12px }
-.risk-level .title{ font-weight:900 !important; color:#374151; padding:5px 30px; border-radius:14px !important; }
-.risk-level .risk-color{ display:inline-block; color:#fff; font-weight:800; padding:7px 18px; border-radius:999px }
-
-/* Separadores */
-.hr-container{ position:relative; display:flex; align-items:center; gap:10px; margin:26px 6px 12px }
-.hr-container::before,.hr-container::after{ content:""; height:1px; background:var(--line); flex:1 }
-.hr-container span{ background:#fff; padding:0 10px }
-.hr-container h3{ margin:0; font-size:1.1rem; color:var(--ink) }
-
-.card-body .row.form-group{ margin-bottom:14px }
-.degradado-border-right{ padding-right:18px; border-right:1px dashed var(--line) }
-@media (max-width:992px){ .degradado-border-right{ border-right:0; border-bottom:1px dashed var(--line); padding-bottom:16px; margin-bottom:12px } }
-
-/* ==== GAUGE (0=izq, 100=der) ==== */
-.gauge2{ display:flex; align-items:center; justify-content:center; padding:8px 0 }
-.gauge2 svg{ width:360px; max-width:100%; height:auto }
-.gauge2 text{ user-select:none }
-
-.gauge2 .track{ fill:none; stroke:#EFE8DB; stroke-width:28; stroke-linecap:round; opacity:.55 }
-
-/* Segmentos por rango */
-/* —— Gauge corporativo (no toca tus otros estilos) —— */
-.gauge2 svg{ width:380px; height:150px; display:block; }
-.gauge2 .track{
-  fill:none; stroke:#EFEAE1; stroke-width:28; stroke-linecap:round;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.05));
-}
-.gauge2 .seg{
-  fill:none; stroke-width:28; stroke-linecap:round;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.07));
-}
-.gauge2 .tick{ stroke:#E9E3D7; stroke-width:3; stroke-linecap:round; opacity:.9 }
-.gauge2 .cap{ font-weight:800; fill:#1f2937; font-size:14px }
-.gauge2 .value{ font-weight:900; fill:#111; font-size:18px }
-.gauge2 .needle line{ stroke:#2b2b2b; stroke-width:8; stroke-linecap:round; }
-.gauge2 .needle polygon{ fill:#2b2b2b; opacity:.9 }
-.gauge2 .hub{ fill:#2b2b2b; }
-
-/* Oculta los PNG antiguos del medidor si aún están en el DOM */
-.contimg img{ display:none !important }
-
-
-
-/* Banda del gauge con degradado continuo y un poco más gruesa */
-.gauge2 .band{
-  fill:none;
-  stroke-width:30;     /* más ancho, pero sutil */
-  stroke-linecap:round;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.07));
-}
-
-</style>
-@endpush
-
 @push('scripts')
-    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.0.9') }}"></script>
+    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.1') }}"></script>
+    <link href="{{ asset('/css/version2/gnranalisis.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -173,14 +36,12 @@ select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !i
                                 <div class="row form-group">
                                     <div class="col-lg-8 fl">
                                         <label><b>Punto normativo</b></label>
-                                        <div class="input-group">
                                         <select class="form-control" id="punto_normativo" name="punto_normativo"  required >
-                                            <option value="">Selecciona una opción</option>
+                                            <option value="" >Selecciona una opción</option>
                                             @foreach($alcances as $alcanec)
                                                 <option value="{{ $alcanec->id }}"  @selected($alcanec->id == $id_alcance)>{{ $alcanec->alcance }}</option>
                                             @endforeach
                                         </select>
-                                        </div>
                                     </div>
                                     <div class="col-lg-4 mt-2 text-center">
                                         <label><b>Opciones</b></label>
@@ -334,16 +195,15 @@ select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !i
                                     <div class="row form-group">
                                         <div class="col-lg-4 fl">
                                             <label><b>Nivel de control</b></label>
-                                            <div class="input-group">
-                                                <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
-                                                    <option value="1" selected>Inoperante</option>
-                                                    <option value="2" >Sin control</option>
-                                                    <option value="3" >Deficiente</option>
-                                                    <option value="4" >Regular</option>
-                                                    <option value="5" >Eficiente</option>
-                                                    <option value="6" >Optimo</option>
-                                                </select>
-                                            </div>
+                                            <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
+                                                <option value="" disabled selected>Selecciona una opción</option>
+                                                <option value="1">Inoperante</option>
+                                                <option value="2" >Sin control</option>
+                                                <option value="3" >Deficiente</option>
+                                                <option value="4" >Regular</option>
+                                                <option value="5" >Eficiente</option>
+                                                <option value="6" >Optimo</option>
+                                            </select>
                                         </div>
                                         <div class="col-lg-8 mt-2 nivel_inoperante fl">
                                             <label><b>Descripción</b></label>
@@ -415,7 +275,7 @@ select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !i
                                                         <label class="checkbox">
                                                             <input type="checkbox" value="3" name="deficiencia_medida_s[]"/>
                                                             <span></span>
-                                                            Organizativas
+                                                            Documentales
                                                         </label>
                                                     </div>
                                                 </div>
@@ -530,30 +390,28 @@ select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !i
 
                                                 <div class="col-lg-4 fl">
                                                     <label><b>Factor de probabilidad</b></label>
-                                                    <div class="input-group">
-                                                        <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
-                                                            <option value="1" selected>Muy Alta</option>
-                                                            <option value="2" >Alta</option>
-                                                            <option value="3" >Media</option>
-                                                            <option value="4" >Baja</option>
-                                                            <option value="5" >Muy Baja</option>
-                                                        </select>
-                                                    </div>
+                                                    <select class="form-control gray_area" id="factor_probabilidad" name="factor_probabilidad"  required >
+                                                        <option value="" disabled selected>Selecciona una opción</option>
+                                                        <option value="1">Muy Alta</option>
+                                                        <option value="2" >Alta</option>
+                                                        <option value="3" >Media</option>
+                                                        <option value="4" >Baja</option>
+                                                        <option value="5" >Muy Baja</option>
+                                                    </select>
                                                 </div>
                                                 
                                                 <div class="col-lg-4 fl">
                                                     <label><b>Impacto/Severidad</b></label>
-                                                    <div class="input-group">
-                                                        <select class="form-control gray_area" id="impacto_severidad" name="impacto_severidad"  required >
-                                                            <option value="1" selected>Insignificante</option>
-                                                            <option value="2" >Leve</option>
-                                                            <option value="3" >Marginal</option>
-                                                            <option value="4" >Grave</option>
-                                                            <option value="5" >Critíco</option>
-                                                            <option value="6" >Desastroso</option>
-                                                            <option value="7" >Catastrófico</option>
-                                                        </select>
-                                                    </div>
+                                                    <select class="form-control gray_area" id="impacto_severidad" name="impacto_severidad"  required >
+                                                        <option value="" disabled selected>Selecciona una opción</option>
+                                                        <option value="1">Insignificante</option>
+                                                        <option value="2" >Leve</option>
+                                                        <option value="3" >Marginal</option>
+                                                        <option value="4" >Grave</option>
+                                                        <option value="5" >Critíco</option>
+                                                        <option value="6" >Desastroso</option>
+                                                        <option value="7" >Catastrófico</option>
+                                                    </select>
                                                 </div>
 
                                             </div>

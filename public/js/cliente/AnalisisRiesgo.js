@@ -61,6 +61,39 @@
 
     });
 
+    // ===== Helper agregado: valida los 3 selects requeridos =====
+    function validarTresSelects() {
+      // Si en esta pantalla no existen (cuando el punto normativo está vacío), no bloqueamos
+      var sc = document.getElementById('nivel_control');
+      var sp = document.getElementById('factor_probabilidad');
+      var si = document.getElementById('impacto_severidad');
+      if (!sc || !sp || !si) return true;
+
+      var ok = true;
+
+      // quitar marcas previas
+      $('#nivel_control, #factor_probabilidad, #impacto_severidad').removeClass('is-invalid');
+
+      if (!$('#nivel_control').val())       { ok = false; $('#nivel_control').addClass('is-invalid'); }
+      if (!$('#factor_probabilidad').val()) { ok = false; $('#factor_probabilidad').addClass('is-invalid'); }
+      if (!$('#impacto_severidad').val())   { ok = false; $('#impacto_severidad').addClass('is-invalid'); }
+
+      if (!ok) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Faltan datos',
+          html: 'Selecciona <b>Nivel de control</b>, <b>Factor de probabilidad</b> e <b>Impacto/Severidad</b> para continuar.',
+          confirmButtonText: 'Entendido',
+          allowOutsideClick: true
+        }).then(function(){
+          var $primero = $('#nivel_control.is-invalid, #factor_probabilidad.is-invalid, #impacto_severidad.is-invalid').first();
+          if ($primero.length) $primero.trigger('focus');
+        });
+      }
+
+      return ok;
+    }
+
     // $("#alcance_mas").click(function(){
     //     var paginador = document.getElementById("paginador_num").value;
     //     var id_cliente = document.getElementById("id_cliente").value;
@@ -76,7 +109,10 @@
     //     window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
     // });
 
-    $("#alcance_mas").click(function () {
+    $("#alcance_mas").off('click').on('click', function () {
+      // Validación obligatoria para avanzar
+      if (!validarTresSelects()) return;
+
       var paginador   = document.getElementById("paginador_num").value;
       var id_cliente  = document.getElementById("id_cliente").value;
       var id_tipo     = document.getElementById("id_tipo").value;
@@ -126,7 +162,10 @@
     //     window.location.href = "/cliente/generar-analisis-riesgos/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
     // });
 
-    $("#alcance_menos").click(function () {
+    $("#alcance_menos").off('click').on('click', function () {
+      // Si NO quieres validar para regresar, comenta la siguiente línea:
+      if (!validarTresSelects()) return;
+
       var paginador   = document.getElementById("paginador_num").value;
       var id_cliente  = document.getElementById("id_cliente").value;
       var id_tipo     = document.getElementById("id_tipo").value;
@@ -162,7 +201,7 @@
 
 
 
-// Alcances Tecnologicos
+    // Alcances Tecnologicos
     $(document).on('change', 'select[id^="punto_normativo_tecnologico"]', function () {
         var id = $(this).attr('id');
         var idGrupo = $(this).val();
@@ -218,7 +257,7 @@
         window.location.href = "/cliente/generar-analisis-riesgos-tecnologico/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
     });
 
-// Alcances Naturales
+    // Alcances Naturales
 
     $(document).on('change', 'select[id^="punto_normativo_naturales"]', function () {
         var id = $(this).attr('id');
@@ -274,7 +313,7 @@
         window.location.href = "/cliente/generar-analisis-riesgos-naturales/"+id_cliente+"/"+id_tipo+"/"+id_alcance+"/"+consecutivo;
     });
 
-// Alcances otros
+    // Alcances otros
     $(document).on('change', 'select[id^="punto_normativo_otros"]', function () {
         var id = $(this).attr('id');
         var idGrupo = $(this).val();
@@ -334,6 +373,9 @@
     // $(document).on('change', 'select[id^="nivel_control"]', function () {
 
     $(document).on('change', 'select#nivel_control, select#factor_probabilidad, select#impacto_severidad', function () {
+
+        // quitar marca inválida cuando el usuario selecciona
+        $(this).removeClass('is-invalid');
 
         var nivel_control = document.getElementById("nivel_control").value
 
@@ -476,18 +518,21 @@
 
     });
 
-// $("#btnGuardar").click(function(){
-//     Swal.fire({
-//         position: "top-center",
-//         icon: "success",
-//         title: "Espere un momento, la información esta siendo procesada",
-//         showConfirmButton: false
-//     });
-//     document.getElementById("submit_analisis_social").submit();
-// });
+    // $("#btnGuardar").click(function(){
+    //     Swal.fire({
+    //         position: "top-center",
+    //         icon: "success",
+    //         title: "Espere un momento, la información esta siendo procesada",
+    //         showConfirmButton: false
+    //     });
+    //     document.getElementById("submit_analisis_social").submit();
+    // });
 
 
- $("#btnGuardar").click(function () {
+    $("#btnGuardar").off('click').on('click', function () {
+      // Validación obligatoria antes de guardar
+      if (!validarTresSelects()) return;
+
       // Adapta la ruta a tu imagen (puede ser relativa o absoluta)
       var rutaImagen = "/img/spinner_girp.webp";
 

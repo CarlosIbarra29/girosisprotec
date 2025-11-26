@@ -20,7 +20,7 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{ asset('theme/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/style.bundle.css?v=1.0.2') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
 
     <!--begin::Layout Themes(used by all pages)-->
@@ -224,9 +224,9 @@
 
                     @else
 
-                         <div class="topbar-item">
+                        <!--  <div class="topbar-item">
                             <div class="menu-link menu-toggle btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3" style="color: white !important;">¡Hola! {{ Auth::user()->name }}</span>
+                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3 menu-text" style="color: white !important;">¡Hola! {{ Auth::user()->name }}</span>
                                 <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
                                 @if(Auth::user()->avatar)
                                     <img src="{{ route('archivo.documentoAvatar', Auth::user()->avatar) }}" alt="photo">
@@ -235,7 +235,20 @@
                                 @endif
                             </span>
                             </div>
-                        </div>
+                        </div> -->
+
+                        <li class="menu-item sidebar-user" aria-haspopup="true">
+                          <a href="javascript:;" class="menu-link menu-toggle nav-link text-white btn btn-icon-mobile w-auto d-flex align-items-center">
+                            <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+                              @if(Auth::user()->avatar)
+                                <img src="{{ route('archivo.documentoAvatar', Auth::user()->avatar) }}" alt="photo">
+                              @else
+                                <span class="symbol-label font-size-h5 font-weight-bold">{{ Auth::user()->name[0] }}</span>
+                              @endif
+                            </span>
+                            <span class="menu-text ml-3">¡Hola! {{ Auth::user()->name }}</span>
+                          </a>
+                        </li>
 
                         <hr class="border-secondary">
                         
@@ -255,7 +268,7 @@
                         
 
                             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" id="menuNuevo">
-                                <a href="{{ route('cliente.nuevocliente') }}" class="menu-link menu-toggle nav-link text-white {{ Request::routeIs('cliente.nuevocliente') ? 'active bg-primary' : '' }}">
+                                <a href="{{ route('cliente.nuevocliente') }}" class="menu-link menu-toggle nav-link text-white {{ (Request::routeIs('cliente.nuevocliente') || request()->is('cliente/generar-analisis-riesgos/*') ) ? 'active bg-primary' : '' }}">
                                     <i class="flaticon-profile menu-icon"></i>
                                     <span class="menu-text">Nuevo Análisis de Riesgo</span>
                                 </a>
@@ -309,14 +322,20 @@
 
                         @endif 
 
-                        
+                        <li class="menu-item logout" aria-haspopup="true">
+                          <a href="#" onclick="event.preventDefault(); document.getElementById('formLogout').submit();"
+                             class="menu-link menu-toggle nav-link text-danger">
+                            <i class="fas fa-sign-out-alt menu-icon me-2" style="color: red !important;"></i>
+                            <span class="menu-text">Cerrar sesión</span>
+                          </a>
+                        </li>
 
-                        <div>
+                        <!-- <div>
                             <a href="#" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" class="menu-link menu-toggle nav-link text-danger">
                                 <i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión
                             </a>
                         </div>
-
+ -->
                 
 
                       <!--   @if (in_array("1", Session::get('permisos')) || in_array("2", Session::get('permisos')) || in_array("5", Session::get('permisos')) || in_array("6", Session::get('permisos')) )

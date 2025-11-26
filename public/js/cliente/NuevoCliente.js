@@ -53,7 +53,9 @@ var Modulo = function() {
         } else {
             
             KTUtil.btnWait(btnGuardar, 'spinner spinner-right spinner-white pr-15', 'Espere...', true);
-            window.location.href = "/cliente/seleccionar-analisis-riesgos/"+selectedValue;
+            // window.location.href = "/cliente/seleccionar-analisis-riesgos/"+selectedValue;
+
+            window.location.href = "/cliente/generar-analisis-riesgos/"+selectedValue+"/1/0/1";
 
         }
     });
@@ -278,56 +280,143 @@ jQuery(document).ready(function() {
 //     });
 // });
 
+// $(document).ready(function () {
+//     // Manejo del clic en pestañas deshabilitadas
+//     $('.nav-tabs .nav-link').on('click', function (e) {
+//         if ($(this).hasClass('disabled')) {
+//             e.preventDefault();
+//         }
+//     });
+
+//     $('#cliente_select').on('change', function () {
+//         var selectedValue = $(this).val();
+
+//         // Lista de IDs de inputs a habilitar/deshabilitar
+//         var inputs = [
+//             '#organizacion',
+//             '#nombre_comercial',
+//             '#calle',
+//             '#no_exterior',
+//             '#no_interior',
+//             '#delegacion',
+//             '#giro_comercial',
+//             '#sector',
+//             '#no_personal',
+//             '#contacto_principal',
+//             '#cargo',
+//             '#telefono',
+//             '#mail',
+//             '#persona_atiende',
+//             '#cargo_atiende',
+//             '#telefono_atiende',
+//             '#mail_atiende'
+//         ];
+
+//         if (selectedValue === "0") {
+//             // Habilita pestañas
+//             $('.nav-tabs .nav-link').removeClass('disabled');
+
+//             // Habilita inputs
+//             inputs.forEach(function (id) {
+//                 $(id).prop('disabled', false);
+//             });
+//         } else {
+//             // Deshabilita pestañas (excepto la activa)
+//             $('.nav-tabs .nav-link').addClass('disabled');
+//             $('.nav-tabs .nav-link.active').removeClass('disabled');
+
+//             // Deshabilita inputs
+//             inputs.forEach(function (id) {
+//                 $(id).prop('disabled', true);
+//             });
+//         }
+//     });
+// });
+
 $(document).ready(function () {
-    // Manejo del clic en pestañas deshabilitadas
-    $('.nav-tabs .nav-link').on('click', function (e) {
-        if ($(this).hasClass('disabled')) {
-            e.preventDefault();
-        }
-    });
+  // Permite navegar tabs cuando existen datos precargados (aunque inputs estén bloqueados)
+  $('.nav-tabs .nav-link').off('click').on('click', function (e) {
+    if ($(this).hasClass('disabled')) e.preventDefault();
+  });
 
-    $('#cliente_select').on('change', function () {
-        var selectedValue = $(this).val();
+  const inputs = [
+    '#organizacion','#nombre_comercial','#calle','#no_exterior','#no_interior',
+    '#delegacion','#giro_comercial','#sector','#no_personal',
+    '#contacto_principal','#cargo','#telefono','#mail',
+    '#persona_atiende','#cargo_atiende','#telefono_atiende','#mail_atiende'
+  ];
 
-        // Lista de IDs de inputs a habilitar/deshabilitar
-        var inputs = [
-            '#organizacion',
-            '#nombre_comercial',
-            '#calle',
-            '#no_exterior',
-            '#no_interior',
-            '#delegacion',
-            '#giro_comercial',
-            '#sector',
-            '#no_personal',
-            '#contacto_principal',
-            '#cargo',
-            '#telefono',
-            '#mail',
-            '#persona_atiende',
-            '#cargo_atiende',
-            '#telefono_atiende',
-            '#mail_atiende'
-        ];
+  function setDisabled(disabled){
+    inputs.forEach(id => $(id).prop('disabled', disabled));
+  }
+  function clearForm(){
+    inputs.forEach(id => $(id).val(''));
+  }
+  function fillForm(data){
+    $('#organizacion').val(data.organizacion || '');
+    $('#nombre_comercial').val(data.nombre_comercial || '');
+    $('#calle').val(data.calle || '');
+    $('#no_exterior').val(data.no_exterior || '');
+    $('#no_interior').val(data.no_interior || '');
+    $('#delegacion').val(data.delegacion || '');
+    $('#giro_comercial').val(data.giro_comercial || '');
+    $('#sector').val(data.sector || '');
+    $('#no_personal').val(data.no_personal || '');
+    $('#contacto_principal').val(data.contacto_principal || '');
+    $('#cargo').val(data.cargo || '');
+    $('#telefono').val(data.telefono || '');
+    $('#mail').val(data.mail || '');
+    $('#persona_atiende').val(data.persona_atiende || '');
+    $('#cargo_atiende').val(data.cargo_atiende || '');
+    $('#telefono_atiende').val(data.telefono_atiende || '');
+    $('#mail_atiende').val(data.mail_atiende || '');
+  }
 
-        if (selectedValue === "0") {
-            // Habilita pestañas
-            $('.nav-tabs .nav-link').removeClass('disabled');
+  $('#cliente_select').off('change').on('change', async function () {
+    const selectedValue = $(this).val();
 
-            // Habilita inputs
-            inputs.forEach(function (id) {
-                $(id).prop('disabled', false);
-            });
-        } else {
-            // Deshabilita pestañas (excepto la activa)
-            $('.nav-tabs .nav-link').addClass('disabled');
-            $('.nav-tabs .nav-link.active').removeClass('disabled');
+    if (selectedValue === "0") {
+      // NUEVO CLIENTE: habilitar captura en ambas pestañas
+      clearForm();
+      setDisabled(false);
+      $('.nav-tabs .nav-link').removeClass('disabled'); // permitir navegar
+      return;
+    }
 
-            // Deshabilita inputs
-            inputs.forEach(function (id) {
-                $(id).prop('disabled', true);
-            });
-        }
-    });
+    // EXISTENTE: traer datos, precargar y bloquear inputs (solo visualización)
+    try {
+      // Tabs visibles para ver ambas secciones
+      $('.nav-tabs .nav-link').removeClass('disabled');
+
+      // Limpia mientras carga
+      clearForm(); setDisabled(true);
+
+      const resp = await fetch('/api/clientes/' + selectedValue);
+      const json = await resp.json();
+      if (!resp.ok || !json.ok) throw new Error(json.message || 'No se pudo obtener el cliente');
+
+      fillForm(json.data);
+      setDisabled(true); // bloquear edición al ser existente
+    } catch (err) {
+      console.error(err);
+      toastr.error('No fue posible cargar los datos del cliente seleccionado.');
+      // Regrésalo a "Selecciona una opción" y resetea
+      $(this).val('0');
+      clearForm(); setDisabled(false);
+      $('.nav-tabs .nav-link').removeClass('disabled');
+    }
+  });
 });
 
+(function () {
+  function habilitaSiguiente() {
+    const v = $('#cliente_select').val();
+    // Habilita si hay un valor numérico (incluye "0")
+    const ok = v !== null && v !== '' && !isNaN(Number(v));
+    $('#btnGuardar').prop('disabled', !ok);
+  }
+
+  // Inicial y en cada cambio
+  $(document).ready(habilitaSiguiente);
+  $(document).on('change', '#cliente_select', habilitaSiguiente);
+})();

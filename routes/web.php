@@ -36,6 +36,10 @@ Route::get('/tablero', [App\Http\Controllers\Tablero\TableroController::class, '
 
 Route::get('/tablero/{licitacion}', [App\Http\Controllers\Tablero\TableroController::class, 'vernotconcurso'])->name('tablero.vernotconcurso');
 
+use App\Http\Controllers\Cliente\ClienteController;
+
+Route::get('/api/clientes/{id}', [ClienteController::class, 'showJson'])
+     ->name('cliente.showJson');
 
 
 require __DIR__.'/auth.php';
