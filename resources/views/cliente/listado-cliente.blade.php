@@ -1,9 +1,14 @@
 @extends('layouts.app')
 @push('scripts')
 
-  <script src="{{ asset('js/cliente/CatalogoClientes.js') }}"></script>
+  <script src="{{ asset('js/cliente/CatalogoClientesNew.js?v=1.0.3') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
   Inventario de clientes
 @endsection
@@ -70,15 +75,15 @@
                                                 </span>
                                                 <span class="navi-text">Excel</span>
                                               </a>
-                                            </li>
-{{--                                             <li class="navi-item">
+                                            </li>                                             
+                                            <li class="navi-item">
                                               <a href="#" class="navi-link" id="export-pdf">
                                                 <span class="navi-icon">
                                                   <i class="la la-file-pdf-o"></i>
                                                 </span>
                                                 <span class="navi-text">PDF</span>
                                               </a>
-                                            </li> --}}
+                                            </li>
                                             <li class="navi-item">
                                               <a href="#" class="navi-link" id="export-csv">
                                                 <span class="navi-icon">
@@ -131,13 +136,15 @@
                               </div>
                           </div>
 
+                          <div class="table-responsive table-surface">
+                            
                             <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_usuarios">
+                            <table class="table table-hover table-brand table-checkable" id="kdatatable_usuarios">
                                 <thead>
                                 <tr>
                                   <th>No.</th>
-                                  <th>Organización</th>
                                   <th>Nombre comercial</th>
+                                  <th>Razón Social</th>
                                   <th>Contacto</th>
                                   <th>Telefono</th>
                                   <th>Email</th>
@@ -147,8 +154,8 @@
                                 <tfoot>
                                 <tr>
                                   <th>No.</th>
-                                  <th>Organización</th>
                                   <th>Nombre comercial</th>
+                                  <th>Razón Social</th>
                                   <th>Contacto</th>
                                   <th>Email</th>
                                   <th>Telefono</th>
@@ -158,9 +165,10 @@
 
                             </table>
                             <!--end: Datatable-->
-
-                            <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
-                            <input type="hidden" id="clientedatatable" value="{{ route('cliente.clientelistadodatatable') }}">
+                          
+                          </div>
+                          <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
+                          <input type="hidden" id="clientedatatable" value="{{ route('cliente.clientelistadodatatable') }}">
 
                         </div>
                     </div>

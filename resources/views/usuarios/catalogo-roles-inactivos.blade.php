@@ -3,6 +3,11 @@
 {{-- <script src="{{ asset('js/Usuarios.js') }}"></script> --}}
 <script src="{{ asset('js/roles/CatalogoRoles.js') }}"></script>
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.3') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
     Inventario de roles inactivos
 @endsection
@@ -36,40 +41,42 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_rol_inactivo">
-                                <thead>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Nombre</th>
-                                  <th class="text-center">Acciones</th>
-                                </tr>
-                                </thead>
 
-                                <tbody>
-                                  @foreach($rol as $unid)
+                            <div class="table-responsive table-surface">
+                                <!--begin: Datatable-->
+                                <table class="table table-hover table-brand table-checkable" id="kdatatable_rol_inactivo">
+                                    <thead>
                                     <tr>
-                                      <td>{{ $unid->id }}</td>
-                                      <td>{{ $unid->name }}</td>
-
-                                      <td class="text-center">
-                                        <button class="btn btn-sm btn-clean btn-icon activar-rol" data-id="{{ $unid->id }}" data-nombre="{{ $unid->name }}" data-toggle="tooltip" data-theme="dark" title="Activar rol"><i class="flaticon2-reply "></i></button>
-                                      </td>
+                                      <th>No.</th>
+                                      <th>Nombre</th>
+                                      <th class="text-center">Acciones</th>
                                     </tr>
-                                  @endforeach
-                                </tbody>
+                                    </thead>
 
-                                <tfoot>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Nombre</th>
-                                  <th class="text-center">Acciones</th>
-                                </tr>
-                                </tfoot>
+                                    <tbody>
+                                      @foreach($rol as $unid)
+                                        <tr>
+                                          <td>{{ $unid->id }}</td>
+                                          <td>{{ $unid->name }}</td>
 
-                            </table>
-                            <!--end: Datatable-->
+                                          <td class="text-center">
+                                            <button class="btn btn-sm btn-clean btn-icon activar-rol" data-id="{{ $unid->id }}" data-nombre="{{ $unid->name }}" data-toggle="tooltip" data-theme="dark" title="Activar rol"><i class="flaticon2-reply "></i></button>
+                                          </td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
 
+                                    <tfoot>
+                                    <tr>
+                                      <th>No.</th>
+                                      <th>Nombre</th>
+                                      <th class="text-center">Acciones</th>
+                                    </tr>
+                                    </tfoot>
+
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
                             <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
 
                         </div>

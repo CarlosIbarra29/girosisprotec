@@ -6,6 +6,11 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.1.3') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
     Inventario de roles
 @endsection
@@ -195,8 +200,10 @@
                               </div>
                           </div>
 
+
+                          <div class="table-responsive table-surface">
                             <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_roles">
+                            <table class="table table-hover table-brand  table-checkable" id="kdatatable_roles">
                                 <thead>
                                 <tr>
                                   <th>No.</th>
@@ -214,7 +221,7 @@
 
                             </table>
                             <!--end: Datatable-->
-
+                          </div>
                             <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
                             <input type="hidden" id="rolesdatatable" value="{{ route('rol.rolesdatatable') }}">
 

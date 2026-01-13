@@ -5,6 +5,13 @@ var Tabla = function() {
         return $(this.header()).text().trim();
     });
 
+    // === Helper para "Sin dato" (agregado) ===
+    const safeVal = (v) => {
+        if (v === null || v === undefined) return '<span class="sin-dato">Sin dato</span>';
+        const s = String(v).trim();
+        return s.length ? s : '<span class="sin-dato">Sin dato</span>';
+    };
+
     var initTable1 = function() {
         // begin first table
         var table = $('#kdatatable_usuarios').DataTable({
@@ -49,6 +56,24 @@ var Tabla = function() {
             ],
 
             columnDefs: [
+                // === Renders para "Sin dato" y formateo de tel/mail (agregado) ===
+                { targets: 1, render: function(data){ return safeVal(data); } }, // Nombre comercial
+                { targets: 2, render: function(data){ return safeVal(data); } }, // Razón Social
+                { targets: 3, render: function(data){ return safeVal(data); } }, // Contacto
+                { targets: 4, render: function(data){                                  // Teléfono
+                    if (data && String(data).trim()) {
+                        const t = String(data).trim();
+                        return `<a href="tel:${t}">${t}</a>`;
+                    }
+                    return '<span class="sin-dato">Sin dato</span>';
+                }},
+                { targets: 5, render: function(data){                                  // Email
+                    if (data && String(data).trim()) {
+                        const m = String(data).trim();
+                        return `<a href="mailto:${m}">${m}</a>`;
+                    }
+                    return '<span class="sin-dato">Sin dato</span>';
+                }},
                 {
                     targets: -1,
                     title: 'Acciones',
@@ -56,17 +81,17 @@ var Tabla = function() {
                     render: function(data, type, full, meta) {
 
                            return `
-                                <a href="/cliente/ver-cliente/`+full.id+`" class="btn btn-sm btn-outline-success btn-icon mr-2" title="Ver cliente" data-theme="dark" data-toggle="tooltip" data-placement="top">
+                                <a href="/cliente/ver-cliente/${full.id}" class="btn btn-sm btn-outline-success btn-icon mr-2" title="Ver cliente" data-theme="dark" data-toggle="tooltip" data-placement="top">
                                     <span class="svg-icon svg-icon-md">
                                         <i class="flaticon-eye"></i>
                                     </span>
                                 </a>
-                                <a href="/cliente/editar-cliente/`+full.id+`" class="btn btn-sm btn-outline-success btn-icon mr-2" title="Editar cliente" data-theme="dark" data-toggle="tooltip" data-placement="top">
+                                <a href="/cliente/editar-cliente/${full.id}" class="btn btn-sm btn-outline-success btn-icon mr-2" title="Editar cliente" data-theme="dark" data-toggle="tooltip" data-placement="top">
                                     <span class="svg-icon svg-icon-md">
                                         <i class="flaticon-edit"></i>
                                     </span>
                                 </a>
-                                <button class="btn btn-clean btn-sm btn-icon btn-outline-success mt-1" onClick="deletecliente(`+ full.id +`,`+full.id+`)" data-toggle="modal" data-target="#model_delete_user" data-toggle="tooltip" data-theme="dark" title="Desactivar cliente">
+                                <button class="btn btn-clean btn-sm btn-icon btn-outline-success mt-1" onClick="deletecliente(${full.id},${full.id})" data-toggle="modal" data-target="#model_delete_user" data-toggle="tooltip" data-theme="dark" title="Desactivar cliente">
                                     <span class="svg-icon svg-icon-md">
                                         <i class="flaticon-delete"></i>
                                     </span>

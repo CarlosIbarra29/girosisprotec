@@ -3,6 +3,11 @@
 {{-- <script src="{{ asset('js/Usuarios.js') }}"></script> --}}
 <script src="{{ asset('js/usuarios/CatalogoUsuarios.js') }}"></script>
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.3') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
   Inventario de usuarios inactivos
 @endsection
@@ -37,7 +42,7 @@
                         </div>
                         <div class="card-body">
                             <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_user_inactivo">
+                            <table class="table table-hover table-brand table-checkable" id="kdatatable_user_inactivo">
                                 <thead>
                                 <tr>
                                   <th>No.</th>

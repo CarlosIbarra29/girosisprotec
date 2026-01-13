@@ -367,3 +367,196 @@ td[style*="background-color: red"] p {
 .dataTables_wrapper.filters-hidden thead tr.filters-row {
   display: none !important;
 }
+
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_length select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:var(--paper);
+  border:1.5px solid var(--camel);
+  border-radius:12px;
+  height:36px; line-height:36px;
+  width:72px;
+  padding:0 .75rem;
+  text-align:center; color:var(--ink); font-weight:700;
+}
+
+/* ===== Pistas visuales de campos editables ===== */
+
+/* Leyenda */
+.edit-legend {
+  background: #fff;
+  border-color: var(--line) !important;
+  border-radius: 12px;
+  color: var(--ink);
+}
+.edit-legend .legend-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: .9rem;
+}
+.edit-legend .legend-icon {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; margin-right:.35rem;
+  border:1px solid var(--camel-700);
+  border-radius:50%;
+  font-size:.8rem; line-height:1; color:var(--camel-700);
+}
+
+/* Texto editable (.cell-edit) – muestra ✎ cuando NO está en edición */
+.cell-edit {
+  position: relative;
+  padding-right: 18px;
+  cursor: text;
+}
+.cell-edit[contenteditable="false"]::after {
+  content: "✎";
+  position: absolute;
+  right: 4px; top: 4px;
+  font-size: 11px;
+  color: var(--camel-700);
+  opacity: .55;
+  pointer-events: none;
+}
+.cell-edit[contenteditable="false"]:hover {
+  background: #fffaf3 !important;
+  outline: 1px dashed rgba(194,164,118,.6) !important;
+  border-radius: 8px !important;
+}
+/* Cuando SI está en edición mantenemos tu estilo actual y ocultamos el icono */
+.cell-edit[contenteditable="true"]::after { content: none; }
+
+/* Selects editables (clic en la celda) – usa :has() */
+td:has(select.sel-nivel-control2),
+td:has(select.sel-estatus),
+td:has(select.sel-seg-control),
+td:has(select.sel-nivel-probabilidad2),
+td:has(select.sel-nivel-sev2) {
+  position: relative;
+  cursor: pointer;
+}
+td:has(select.sel-nivel-control2)::after,
+td:has(select.sel-estatus)::after,
+td:has(select.sel-seg-control)::after,
+td:has(select.sel-nivel-probabilidad2)::after,
+td:has(select.sel-nivel-sev2)::after {
+  content: "▾";
+  position: absolute;
+  right: 6px; top: 6px;
+  font-size: 12px;
+  color: var(--camel-700);
+  opacity: .6;
+  pointer-events: none;
+}
+td:has(select.sel-nivel-control2):hover,
+td:has(select.sel-estatus):hover,
+td:has(select.sel-seg-control):hover,
+td:has(select.sel-nivel-probabilidad2):hover,
+td:has(select.sel-nivel-sev2):hover {
+  background: #fffaf3 !important;
+  outline: 1px dashed rgba(194,164,118,.6) !important;
+  border-radius: 8px !important;
+}
+
+/* Fechas editables (clic) – icono 📅 y hover */
+.date-cell {
+  position: relative;
+  cursor: pointer;
+}
+.date-cell::after {
+  content: "📅";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: var(--camel-700);
+  opacity: .65;
+  pointer-events: none;
+}
+.date-cell:hover {
+  background: #fffaf3 !important;
+  outline: 1px dashed rgba(194,164,118,.6) !important;
+  border-radius: 8px !important;
+}
+
+/* Accesibilidad: foco visible en celdas editables */
+.cell-edit:focus,
+.date-cell:focus-within,
+td:has(select.sel-nivel-control2):focus-within,
+td:has(select.sel-estatus):focus-within,
+td:has(select.sel-seg-control):focus-within,
+td:has(select.sel-nivel-probabilidad2):focus-within,
+td:has(select.sel-nivel-sev2):focus-within {
+  box-shadow: 0 0 0 .2rem rgba(194,164,118,.25) !important;
+  border-radius: 8px !important;
+}
+
+
+/* ===== Indicador permanente de "editable" (puntito dorado) ===== */
+/* Aplica a: texto editable (.cell-edit), selects y fechas (.date-cell) */
+
+/* 1) Reservar espacio a la izquierda para el puntito */
+#kdatatable_clientes_inactivos td:has(.cell-edit),
+#kdatatable_clientes_inactivos td:has(.date-cell),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2),
+#kdatatable_clientes_inactivos td:has(select.sel-estatus),
+#kdatatable_clientes_inactivos td:has(select.sel-seg-control),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
+  position: relative !important;
+  padding-left: 18px !important; /* espacio para el punto */
+}
+
+/* 2) Dibujar el puntito */
+#kdatatable_clientes_inactivos td:has(.cell-edit)::before,
+#kdatatable_clientes_inactivos td:has(.date-cell)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-estatus)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-seg-control)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2)::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--camel-700);      /* color dorado consistente con tu paleta */
+  box-shadow: 0 0 0 2px #fff;        /* halo blanco para que resalte en filas zebra */
+  opacity: .9;
+  pointer-events: none;
+}
+
+/* 3) Un poquito más de “remarque” al pasar el mouse o cuando hay foco dentro */
+#kdatatable_clientes_inactivos td:has(.cell-edit:hover),
+#kdatatable_clientes_inactivos td:has(.date-cell:hover),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2:hover),
+#kdatatable_clientes_inactivos td:has(select.sel-estatus:hover),
+#kdatatable_clientes_inactivos td:has(select.sel-seg-control:hover),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2:hover),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2:hover),
+#kdatatable_clientes_inactivos td:has(.cell-edit:focus),
+#kdatatable_clientes_inactivos td:has(.date-cell:focus-within),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2:focus),
+#kdatatable_clientes_inactivos td:has(select.sel-estatus:focus),
+#kdatatable_clientes_inactivos td:has(select.sel-seg-control:focus),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2:focus),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2:focus) {
+  outline: 1px dashed rgba(194,164,118,.65) !important;
+  outline-offset: 2px !important;
+  background: #fffaf3 !important; /* igual a tu hover editable */
+  border-radius: 8px !important;
+}
+
+/* 4) (Opcional) Línea tenue a la izquierda para remarcar aún más */
+#kdatatable_clientes_inactivos td:has(.cell-edit),
+#kdatatable_clientes_inactivos td:has(.date-cell),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2),
+#kdatatable_clientes_inactivos td:has(select.sel-estatus),
+#kdatatable_clientes_inactivos td:has(select.sel-seg-control),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
+  box-shadow: inset 3px 0 0 0 rgba(194,164,118,.12) !important; /* barrita muy sutil */
+}
+

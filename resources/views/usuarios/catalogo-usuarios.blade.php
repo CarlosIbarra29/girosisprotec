@@ -4,6 +4,11 @@
   <script src="{{ asset('js/usuarios/CatalogoUsuarios.js') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.3') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
   Inventario de usuarios
 @endsection
@@ -152,8 +157,11 @@
                               </div>
                           </div>
 
+
+                          <div class="table-responsive table-surface">
+                          
                             <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_usuarios">
+                            <table class="table table-hover table-brand table-checkable" id="kdatatable_usuarios">
                                 <thead>
                                 <tr>
                                   <th>No.</th>
@@ -179,9 +187,11 @@
 
                             </table>
                             <!--end: Datatable-->
-
-                            <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
-                            <input type="hidden" id="usuariosdatatable" value="{{ route('user.usuariosdatatable') }}">
+                          
+                          </div>
+                           
+                          <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
+                          <input type="hidden" id="usuariosdatatable" value="{{ route('user.usuariosdatatable') }}">
 
                         </div>
                     </div>

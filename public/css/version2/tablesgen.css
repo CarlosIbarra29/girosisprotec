@@ -1,0 +1,185 @@
+/* ===== Paleta GIRO ===== */
+:root{
+  --camel:      #C2A476;   /* camel base */
+  --camel-700:  #9B7C4E;   /* camel oscuro */
+  --camel-800:  #7F653F;   /* hover intenso */
+  --ink:        #121212;   /* negro */
+  --ink-2:      #1A1A1A;   /* negro para gradientes/bordes */
+  --paper:      #ffffff;   /* blanco */
+  --muted:      #F5F1EA;   /* fondo suave */
+  --line:       rgba(0,0,0,.08);
+  --camel-rgb:  194 164 118;  /* helper para alfas */
+  --radius-table: 14px;       /* radio de tabla */
+}
+
+/* ===== Card / Header ===== */
+.card.card-custom{
+  border:1px solid var(--ink-2);
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
+  background:var(--paper);
+}
+.card.card-custom .card-header{
+  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  border-bottom:3px solid var(--camel);
+}
+.card.card-custom .card-title .card-label,
+.card.card-custom .card-title .card-icon i{
+  color:#fff !important;
+}
+
+/* ===== Superficie redondeada de la tabla ===== */
+.table-surface{
+  border-radius: var(--radius-table);
+  overflow: hidden;                     /* recorta thead/hover dentro del radio */
+  border:1px solid var(--line);
+  background: var(--paper);
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+/* Si usas .table-responsive, también recorta */
+.table-responsive.table-surface{
+  border-radius: var(--radius-table);
+  overflow:hidden;
+}
+
+/* ===== Tabla GIRO ===== */
+.table-brand{
+  border-collapse: separate !important; /* radios fiables */
+  border-spacing: 0;
+  margin-bottom: 0;                     /* evita doble borde con wrapper */
+}
+.table-brand thead th{
+  background:var(--ink);
+  color:var(--paper) !important;
+  border-bottom:2px solid var(--camel) !important;
+}
+/* fallback de radios por si algún navegador no respeta el overflow del wrapper */
+.table-brand thead th:first-child{ border-top-left-radius: var(--radius-table); }
+.table-brand thead th:last-child{  border-top-right-radius: var(--radius-table); }
+
+.table-brand td,.table-brand th{ vertical-align:middle; }
+.table-brand tbody td{ border-top:1px solid var(--line); }
+.table-brand tbody tr:hover{ background:var(--muted); }
+
+/* radios inferiores en la última fila (soporte extra) */
+.table-brand tbody tr:last-child td:first-child{ border-bottom-left-radius: var(--radius-table); }
+.table-brand tbody tr:last-child td:last-child{  border-bottom-right-radius: var(--radius-table); }
+
+/* Badge de análisis */
+.badge-analisis{
+  background:transparent;
+  color:var(--camel)!important;
+  border:1px solid var(--camel)!important;
+  font-weight:700; font-size:14px;
+  padding:.2rem .5rem; border-radius:8px;
+}
+
+/* “Sin dato” */
+.sin-dato{ color:#97A1A9; font-style:italic; }
+
+/* Botones de icono (estilo base, fuera de la columna Acciones mantenemos tu look) */
+.btn.btn-clean.btn-icon{ color:#8b9096; border-radius:8px; }
+.btn.btn-clean.btn-icon:hover{
+  color:var(--camel);
+  background:rgb(var(--camel-rgb) / 12%);
+}
+
+/* ===== Paginación DataTables ===== */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+  background:var(--camel)!important;
+  color:var(--ink)!important;
+  border:none!important;
+}
+
+/* ====== DataTables: “Mostrar N registros” y “Buscar” (scoped) ====== */
+#kdatatable_clientes_inactivos_wrapper .dataTables_length label,
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter label{
+  display:flex; align-items:center; gap:.5rem;
+  color:#5a5f71; font-weight:600;
+}
+
+/* SELECT “Mostrar N” */
+#kdatatable_clientes_inactivos_wrapper .dataTables_length select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:var(--paper);
+  border:1.5px solid var(--camel);
+  border-radius:12px;
+  height:36px; line-height:36px;
+  width:72px;
+  padding:0 .75rem;
+  text-align:center; color:var(--ink); font-weight:700;
+}
+#kdatatable_clientes_inactivos_wrapper .dataTables_length select:focus{
+  outline:none; border-color:var(--camel);
+  box-shadow:0 0 0 3px rgb(var(--camel-rgb) / 22%);
+}
+
+/* INPUT “Buscar” */
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter input{
+  border:1.5px solid var(--camel);
+  border-radius:12px;
+  height:36px; line-height:36px;
+  min-width:340px;
+  padding:0 .75rem;
+  color:var(--ink);
+  background:var(--paper);
+}
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter input::placeholder{
+  color:#7C7F8A; opacity:1;
+}
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter input:focus{
+  outline:none; border-color:var(--camel);
+  box-shadow:0 0 0 3px rgb(var(--camel-rgb) / 22%);
+}
+
+/* Posición clásica */
+#kdatatable_clientes_inactivos_wrapper .dataTables_length{ float:left; }
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter{ float:right; }
+
+/* Responsive */
+@media (max-width: 768px){
+  #kdatatable_clientes_inactivos_wrapper .dataTables_length,
+  #kdatatable_clientes_inactivos_wrapper .dataTables_filter{
+    float:none; margin-bottom:.5rem;
+  }
+  #kdatatable_clientes_inactivos_wrapper .dataTables_filter input{
+    min-width:unset; width:100%;
+  }
+}
+
+/* ===== HOVER GIRO SOLO EN LA COLUMNA ACCIONES (sin cambiar estado base) ===== */
+/* a) Cambia el color del LINK en hover/focus (sin fondo extra) */
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:hover,
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:focus {
+  color: var(--camel-800) !important;
+  background: transparent !important;
+  outline: none !important;
+}
+
+/* b) Cambia el color del ICONO <i> en hover/focus (rompe el azul de Metronic) */
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:hover i,
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:focus i {
+  color: var(--camel-800) !important;
+}
+
+/* c) Neutraliza los colores de clases estilo btn-hover-icon-* (success/primary/etc.) en hover */
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon[class*="btn-hover-icon-"]:hover,
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon[class*="btn-hover-icon-"]:focus {
+  color: var(--camel-800) !important;
+  background: transparent !important;
+}
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon[class*="btn-hover-icon-"]:hover i,
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon[class*="btn-hover-icon-"]:focus i {
+  color: var(--camel-800) !important;
+}
+
+/* d) Fallback extra: reglas globales de Metronic tipo .btn.btn-clean:hover i */
+#kdatatable_clientes_inactivos_wrapper .btn.btn-clean:hover i,
+#kdatatable_clientes_inactivos_wrapper .btn.btn-clean:focus i {
+  color: var(--camel-800) !important;
+}
+
+/* e) Si algún icono fuese SVG, hereda bien el color */
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:hover svg,
+#kdatatable_clientes_inactivos_wrapper td.text-center a.btn.btn-clean.btn-icon:focus svg {
+  fill: currentColor !important;
+}

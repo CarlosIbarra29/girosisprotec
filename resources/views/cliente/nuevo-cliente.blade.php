@@ -57,15 +57,15 @@
                                 <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion }}" id="organizacion" required/> -->
-                                            <input type="text" class="form-control f-control" name="organizacion" id="organizacion" placeholder=" " required>
-                                            <label for="organizacion" class="f-label">Organización</label>
+                                            <input type="text" class="form-control f-control" name="nombre_comercial" id="nombre_comercial" placeholder=" " required>
+                                            <label for="nombre_comercial" class="f-label">Nombre comercial</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <input type="text" class="form-control f-control" name="nombre_comercial" id="nombre_comercial" placeholder=" " required>
-                                            <label for="nombre_comercial" class="f-label">Nombre comercial</label>
+                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion }}" id="organizacion" required/> -->
+                                            <input type="text" class="form-control f-control" name="organizacion" id="organizacion" placeholder=" " required>
+                                            <label for="organizacion" class="f-label">Razón Social</label>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     <div class="col-lg-6">
                                         <div class="f-field">
                                             <input type="text" class="form-control f-control" name="sector" id="sector" placeholder=" ">
-                                            <label for="sector" class="f-label">Sector</label>
+                                            <label for="sector" class="f-label">Creación de valor</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">

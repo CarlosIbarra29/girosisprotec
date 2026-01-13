@@ -664,4 +664,81 @@ document.addEventListener('DOMContentLoaded', function(){
 })();
 </script>
 
+<script>
+/* ===== Persistencia por Punto Normativo + Reset al salir =====
+   - Mantiene: #recursos_expuestos, #fuente_riesgo, #ubicacion_riesgo entre opciones 1..9 del MISMO PN.
+   - Al cambiar de PN, limpia.
+   - Si sales de la vista y regresas más tarde, se reinicia (no se arrastran valores).
+   - Solo conserva al ir a Siguiente/Anterior o Guardar dentro del mismo PN.
+*/
+(function persistTresCamposPorAlcance(){
+  const $idCli = document.getElementById('id_cliente');
+  const $idTip = document.getElementById('id_tipo');
+  const $idAlc = document.getElementById('id_alcance'); // hidden con el alcance actual
+  if(!$idCli || !$idTip || !$idAlc) return;
+
+  const idCliente = $idCli.value, idTipo = $idTip.value, idAlcance = $idAlc.value;
+
+  // Claves de sessionStorage
+  const KEY      = `resfields:${idCliente}:${idTipo}:${idAlcance}`;       // valores de los 3 campos
+  const KEEP_KEY = `resfields:keep:${idCliente}:${idTipo}:${idAlcance}`;  // bandera de navegación interna (1..9/guardar)
+
+  const $re = document.getElementById('recursos_expuestos');
+  const $fr = document.getElementById('fuente_riesgo');
+  const $ur = document.getElementById('ubicacion_riesgo');
+  if(!$re || !$fr || !$ur) return; // en pantallas “Vacío” no existen
+
+  // 1) Restaurar si hay guardado para ESTE PN (opciones 1..9)
+  try{
+    const raw = sessionStorage.getItem(KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      if(typeof data.re === 'string') $re.value = data.re;
+      if(typeof data.fr === 'string') $fr.value = data.fr;
+      if(typeof data.ur === 'string') $ur.value = data.ur;
+    }
+  }catch(_){}
+
+  // 2) Guardar en cada cambio/tecleo
+  const save = () => {
+    const data = {
+      re: ($re.value || '').trim(),
+      fr: ($fr.value || '').trim(),
+      ur: ($ur.value || '').trim(),
+    };
+    sessionStorage.setItem(KEY, JSON.stringify(data));
+  };
+  [$re,$fr,$ur].forEach(el=>{
+    el.addEventListener('input', save);
+    el.addEventListener('change', save);
+  });
+
+  // 3) Navegación interna (Siguiente/Anterior/Guardar) => marcar "KEEP" para NO limpiar al salir
+  const markKeep = () => sessionStorage.setItem(KEEP_KEY, '1');
+  document.getElementById('alcance_mas')?.addEventListener('click',  () => { save(); markKeep(); });
+  document.getElementById('alcance_menos')?.addEventListener('click',() => { save(); markKeep(); });
+  document.getElementById('btnGuardar')?.addEventListener('click',   () => { save(); markKeep(); });
+
+  // 4) Al cambiar de Punto normativo: limpiar lo guardado y los inputs
+  const selPN = document.getElementById('punto_normativo');
+  if(selPN){
+    selPN.addEventListener('change', function(){
+      try { sessionStorage.removeItem(KEY); } catch(_){}
+      $re.value = ''; $fr.value = ''; $ur.value = '';
+    });
+  }
+
+  // 5) Al SALIR de esta vista: si NO fue navegación interna, borrar lo guardado
+  window.addEventListener('pagehide', function(){
+    if (!sessionStorage.getItem(KEEP_KEY)) {
+      try { sessionStorage.removeItem(KEY); } catch(_){}
+    }
+  });
+
+  // 6) Limpiar la bandera KEEP al iniciar la vista (para futuros abandonos)
+  try { sessionStorage.removeItem(KEEP_KEY); } catch(_){}
+})();
+</script>
+
+
 @endpush
