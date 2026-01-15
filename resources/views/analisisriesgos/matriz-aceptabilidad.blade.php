@@ -4,6 +4,11 @@
 	<link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
 
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('title')
     Matriz de Aceptabilidad
 @endsection

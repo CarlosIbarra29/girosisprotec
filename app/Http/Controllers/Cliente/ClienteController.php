@@ -337,7 +337,7 @@ class ClienteController extends Controller
         // dd($request);
 
         session()->flash('success', 'El cliente se añadió correctamente');
-        return redirect()->route('analisis.seleccionaanalisis',$id_cliente);   
+        return redirect()->route('analisis.generaranalisis',[$id_cliente,1,0,1]);   
 
     }
 

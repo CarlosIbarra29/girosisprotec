@@ -5,6 +5,11 @@
     <link href="{{ asset('css/tables.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
+
 @section('title')
     Métodos
 @endsection
@@ -15,7 +20,7 @@
 
         <div class="card card-custom gutter-b">
             <div class="card-header bg-white">
-                <h3 class="card-title fw-bold text-dark">Clasificación de Riesgos</h3>
+                <h3 class="card-title fw-bold text-dark" style="color: white !important;">Clasificación de Riesgos</h3>
 
                 <div class="card-toolbar">
 

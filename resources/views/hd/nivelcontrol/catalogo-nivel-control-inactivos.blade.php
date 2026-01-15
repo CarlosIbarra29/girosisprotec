@@ -7,6 +7,10 @@
   <script src="{{ asset('js/h_d/NivelControl.js') }}"></script> 
 @endpush
 
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('content')
     <div class="d-flex flex-row">
 
@@ -37,49 +41,50 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_nivelcontrol_inactivos">
-                                <thead>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Nivel control</th>
-                                  <th>Exposición</th>
-                                  <th>Detalle</th>
-                                  <th>Calculo</th>
-                                  <th class="text-center">Opciones</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                  @foreach($nivel_control as $unid)
+                            <div class="table-responsive table-surface">
+                                <!--begin: Datatable-->
+                                <table class="table table-hover table-brand table-checkable" id="kdatatable_nivelcontrol_inactivos">
+                                    <thead>
                                     <tr>
-                                      <td>{{ $unid->id }}</td>
-                                      <td>{{ $unid->nivel_control }}</td>
-                                      <td>{{ $unid->exposicion }}</td>
-                                      <td>{{ $unid->detalle }}</td>
-                                      <td>{{ $unid->nc_calculo }}</td>
-
-                                      <td class="text-center">
-                                        <a class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar_nivelcontrol" data-id="{{ $unid->id }}" data-nombre="{{ $unid->nivel_control }}" data-toggle="tooltip" data-theme="dark" title="Activar nivel de control" ><i class="flaticon2-reply "></i></a>
-                                      </td>
+                                      <th>No.</th>
+                                      <th>Nivel control</th>
+                                      <th>Exposición</th>
+                                      <th>Detalle</th>
+                                      <th>Calculo</th>
+                                      <th class="text-center">Opciones</th>
                                     </tr>
-                                  @endforeach
-                                </tbody>
+                                    </thead>
 
-                                <tfoot>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Nivel control</th>
-                                  <th>Exposición</th>
-                                  <th>Detalle</th>
-                                  <th>Calculo</th>
-                                  <th class="text-center">Opciones</th>
-                                </tr>
-                                </tfoot>
+                                    <tbody>
+                                      @foreach($nivel_control as $unid)
+                                        <tr>
+                                          <td>{{ $unid->id }}</td>
+                                          <td>{{ $unid->nivel_control }}</td>
+                                          <td>{{ $unid->exposicion }}</td>
+                                          <td>{{ $unid->detalle }}</td>
+                                          <td>{{ $unid->nc_calculo }}</td>
 
-                            </table>
-                            <!--end: Datatable-->
+                                          <td class="text-center">
+                                            <a class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar_nivelcontrol" data-id="{{ $unid->id }}" data-nombre="{{ $unid->nivel_control }}" data-toggle="tooltip" data-theme="dark" title="Activar nivel de control" ><i class="flaticon2-reply "></i></a>
+                                          </td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
 
+                                    <tfoot>
+                                    <tr>
+                                      <th>No.</th>
+                                      <th>Nivel control</th>
+                                      <th>Exposición</th>
+                                      <th>Detalle</th>
+                                      <th>Calculo</th>
+                                      <th class="text-center">Opciones</th>
+                                    </tr>
+                                    </tfoot>
+
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
                             <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
 
                         </div>

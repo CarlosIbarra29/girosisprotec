@@ -2,6 +2,7 @@
 @push('scripts')
   {{-- <script src="{{ asset('js/Usuarios.js') }}"></script> --}}
   <script src="{{ asset('js/roles/PermisosRol.js') }}"></script>
+  <link href="{{ asset('/css/version2/cliente2.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('title')
     Editar rol
@@ -22,7 +23,7 @@
   @endphp
 
 
-<div class="card card-custom">
+<div class="card card-custom gi-float-skin">
     <div class="card-header">
         <h3 class="card-title">Editar rol</h3>
     </div>
@@ -64,5 +65,36 @@
     </div>
 
 </div>
+
+<script>
+        (function () {
+          function giFloatInit() {
+            document.querySelectorAll('.form-group > [class*="col-"]').forEach(function (col) {
+              const label = col.querySelector(':scope > label');
+              const control = col.querySelector('.form-control, textarea.form-control, select.form-control');
+              if (!label || !control) return;
+
+              col.classList.add('ff');                       // activa flotante
+              if (!control.hasAttribute('placeholder'))      // placeholder “espaciador”
+                control.setAttribute('placeholder', ' ');
+
+              const sync = () => col.classList.toggle('is-filled', (control.value || '').trim().length > 0);
+              control.addEventListener('input',  sync);
+              control.addEventListener('change', sync);
+              control.addEventListener('blur',   sync);
+
+              setTimeout(sync, 0);                 // valores precargados/autofill
+              window.addEventListener('pageshow', sync, { once: true }); // bfcache / back nav
+            });
+          }
+
+          // <- clave: ejecuta aunque DOMContentLoaded ya haya pasado
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', giFloatInit);
+          } else {
+            giFloatInit();
+          }
+        })();
+    </script>
 
 @endsection

@@ -9,6 +9,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @section('content')
     <div class="d-flex flex-row">
         <!--begin::List-->
@@ -113,43 +117,44 @@
 
 
                                 <div class="card-body">
-                                    <!--begin: Datatable-->
-                                    <table class="table table-hover table-checkable" id="kdatatable_libro_riesgos_sociales">
-                                        <thead>
-                                        <tr>
-                                          <th>No.</th>
-                                          <th>Alcance</th>
-                                          <th class="text-center">Opciones</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                          @foreach($alcances as $unid)
+                                    <div class="table-responsive table-surface">
+                                        <!--begin: Datatable-->
+                                        <table class="table table-hover table-brand table-checkable" id="kdatatable_libro_riesgos_sociales">
+                                            <thead>
                                             <tr>
-                                              <td>{{ $unid->id }}</td>
-                                              <td>{{ $unid->alcance }}</td>
-
-                                              <td class="text-center">
-                                                <a  href="{{ route('libro.riesgosocialid', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->alcance }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->alcance }}'" ><i class="flaticon-eye"></i></a>
-
-                                                <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  onClick="editriesgosocial({{ $unid->id }},'{{ $unid->alcance }}')" data-toggle="modal" data-target="#model_edit_riesgosocial" data-toggle="tooltip" data-theme="dark" title="Editar nombre riesgo">
-                                                    <i class="flaticon-edit"></i></button>
-                                              </td>
+                                              <th>No.</th>
+                                              <th>Alcance</th>
+                                              <th class="text-center">Opciones</th>
                                             </tr>
-                                          @endforeach
-                                        </tbody>
+                                            </thead>
 
-                                        <tfoot>
-                                        <tr>
-                                          <th>No.</th>
-                                          <th>Alcance</th>
-                                          <th class="text-center">Opciones</th>
-                                        </tr>
-                                        </tfoot>
+                                            <tbody>
+                                              @foreach($alcances as $unid)
+                                                <tr>
+                                                  <td>{{ $unid->id }}</td>
+                                                  <td>{{ $unid->alcance }}</td>
 
-                                    </table>
-                                    <!--end: Datatable-->
+                                                  <td class="text-center">
+                                                    <a  href="{{ route('libro.riesgosocialid', $unid->id) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon activar-emisor" data-id="{{ $unid->id }}" data-nombre="{{ $unid->alcance }}" data-toggle="tooltip" data-theme="dark" title="Ver '{{ $unid->alcance }}'" ><i class="flaticon-eye"></i></a>
 
+                                                    <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon edit-riesgo"  onClick="editriesgosocial({{ $unid->id }},'{{ $unid->alcance }}')" data-toggle="modal" data-target="#model_edit_riesgosocial" data-toggle="tooltip" data-theme="dark" title="Editar nombre riesgo">
+                                                        <i class="flaticon-edit"></i></button>
+                                                  </td>
+                                                </tr>
+                                              @endforeach
+                                            </tbody>
+
+                                            <tfoot>
+                                            <tr>
+                                              <th>No.</th>
+                                              <th>Alcance</th>
+                                              <th class="text-center">Opciones</th>
+                                            </tr>
+                                            </tfoot>
+
+                                        </table>
+                                        <!--end: Datatable-->
+                                    </div>
 
                                 </div>
                                 <!--end: Datatable-->

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @push('scripts')
 	<script src="{{ asset('js/cliente/EditarCliente.js') }}"></script>
+
+    <link href="{{ asset('/css/version2/cliente2.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('title')
     Editar cliente
@@ -11,7 +13,7 @@
     <div class="row">
         <div class="col-lg-12">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
+            <div class="card card-custom gutter-b gi-float-skin">
                 <div class="card-header">
                     <h3 class="card-title">Editar Cliente</h3>
                     <div class="card-toolbar">
@@ -43,15 +45,16 @@
                             <div class="tab-pane fade show active mt-10" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
                                 <div class="form-group row">
                                     <div class="col-lg-6">
-                                        <label>Organización</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="organizacion" id="organizacion" value="{{ $data->organizacion }}" required/>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
                                         <label>Nombre comercial</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="nombre_comercial" id="nombre_comercial" value="{{ $data->nombre_comercial }}" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label>Razón Social</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="organizacion" id="organizacion" value="{{ $data->organizacion }}" required/>
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +199,36 @@
         </div>
     </div>
     <!--end::Card-->
+<script>
+(function () {
+  function giFloatInit() {
+    document.querySelectorAll('.form-group > [class*="col-"]').forEach(function (col) {
+      const label = col.querySelector(':scope > label');
+      const control = col.querySelector('.form-control, textarea.form-control, select.form-control');
+      if (!label || !control) return;
 
+      col.classList.add('ff');                       // activa flotante
+      if (!control.hasAttribute('placeholder'))      // placeholder “espaciador”
+        control.setAttribute('placeholder', ' ');
+
+      const sync = () => col.classList.toggle('is-filled', (control.value || '').trim().length > 0);
+      control.addEventListener('input',  sync);
+      control.addEventListener('change', sync);
+      control.addEventListener('blur',   sync);
+
+      setTimeout(sync, 0);                 // valores precargados/autofill
+      window.addEventListener('pageshow', sync, { once: true }); // bfcache / back nav
+    });
+  }
+
+  // <- clave: ejecuta aunque DOMContentLoaded ya haya pasado
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', giFloatInit);
+  } else {
+    giFloatInit();
+  }
+})();
+</script>
 
 
 @endsection

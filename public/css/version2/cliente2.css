@@ -1,0 +1,225 @@
+:root {
+  --camel:      #C2A476;  /* camel base */
+  --camel-700:  #9B7C4E;  /* más oscuro */
+  --camel-800:  #7F653F;  /* hover intenso */
+  --ink:        #121212;  /* negro */
+  --paper:      #ffffff;  /* blanco */
+  --muted:      #F5F1EA;  /* fondo suave */
+  --line:       rgba(0,0,0,.08);
+  --camel-rgb: 194 164 118; 
+}
+
+/* =========================================================
+   SKIN LOCAL PARA ESTA VISTA (scope: .gi-float-skin)
+   Pon la clase gi-float-skin EN LA MISMA CARD:
+   <div class="card card-custom gutter-b gi-float-skin">
+   ========================================================= */
+
+/* Card */
+.gi-float-skin.card,
+.gi-float-skin.card.card-custom {
+  border: 0 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, .06) !important;
+}
+
+/* Header */
+.gi-float-skin .card-header {
+  background: var(--paper) !important;
+  border-bottom: 1px solid #efe7dc !important;
+  padding: 20px 24px !important;
+}
+
+/* Tabs */
+.gi-float-skin .nav-tabs-line {
+  border-bottom: 1px solid #ede7dd !important;
+}
+.gi-float-skin .nav-tabs-line .nav-link {
+  color: #6b7280 !important;
+  border: 0 !important;
+  margin-right: 8px !important;
+  padding-bottom: 12px !important;
+}
+.gi-float-skin .nav-tabs-line .nav-link.active {
+  color: #1f2937 !important;
+  font-weight: 600 !important;
+  border-bottom: 3px solid var(--camel) !important;
+}
+
+/* Controles */
+.gi-float-skin .form-control {
+  height: 46px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e8dfd3 !important;
+  background: var(--paper) !important;
+  transition: all .15s ease !important;
+}
+.gi-float-skin .form-control:focus {
+  /* Fallback para navegadores sin color-mix */
+  box-shadow: 0 0 0 3px rgba(194, 164, 118, .30) !important;
+  border-color: var(--camel) !important;
+  /* Si hay soporte, esto sobreescribe el fallback */
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--camel) 30%, transparent) !important;
+}
+
+/* Footer / HR */
+.gi-float-skin .card-footer {
+  background: linear-gradient(to bottom, var(--paper), #fbf7f2) !important;
+  border-top: 1px solid #efe7dc !important;
+  border-bottom-left-radius: 18px !important;
+  border-bottom-right-radius: 18px !important;
+}
+.gi-float-skin hr {
+  border: 0 !important;
+  border-top: 1px solid #efe7dc !important;
+}
+
+/* Botones */
+.gi-float-skin .btn {
+  border-radius: 12px !important;
+  padding: .6rem 1.1rem !important;
+  font-weight: 600 !important;
+}
+.gi-float-skin .btn-primary {
+  background: var(--camel) !important;
+  border-color: var(--camel) !important;
+  color: var(--ink) !important;
+}
+.gi-float-skin .btn-primary:hover,
+.gi-float-skin .btn-primary:focus-visible {
+  background: var(--camel-800) !important;
+  border-color: var(--camel-800) !important;
+  color: #ffffff !important;      /* <- texto blanco al hover */
+}
+.gi-float-skin .btn-secondary {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
+  border: 1px solid #e5d7c2 !important;
+}
+.gi-float-skin .btn-secondary:hover,
+.gi-float-skin .btn-secondary:focus-visible {
+  background: #f9f6f1 !important;
+  border-color: #d9c7aa !important;
+}
+
+/* =========================================================
+   LABEL FLOTANTE (aislado a esta vista)
+   Tu JS añade .ff a cada columna (col-*) con label + input.
+   ========================================================= */
+
+/* Wrapper de campo flotante */
+.gi-float-skin .form-group > [class*="col-"].ff {
+  position: relative !important;
+}
+
+/* Evitar recortes del label */
+.gi-float-skin .form-group > [class*="col-"].ff .input-group {
+  position: relative !important;
+  overflow: visible !important;
+  z-index: 1 !important;
+}
+
+/* Ocultar placeholder “espaciador” */
+.gi-float-skin .form-control::placeholder {
+  color: transparent !important;
+}
+
+/* Label “dentro” del input */
+.gi-float-skin .form-group > [class*="col-"].ff > label {
+  position: absolute !important;
+  left: 16px !important;
+  top: 14px !important;
+  margin: 0 !important;
+  padding: 0 .45rem !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  color: #6b7280 !important;
+  background: transparent !important;
+  transform-origin: left top !important;
+  transform: translateY(0) scale(1) !important;
+  transition: transform .16s ease, top .16s ease, color .16s ease !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
+}
+
+/* Parche: “cortar” el borde del input bajo el texto del label */
+.gi-float-skin .form-group > [class*="col-"].ff > label::before {
+  content: "" !important;
+  position: absolute !important;
+  left: -6px !important;
+  right: -6px !important;
+  top: 50% !important;
+  height: 1.2em !important;
+  transform: translateY(-50%) !important;
+  background: var(--paper) !important;
+  border-radius: 6px !important;
+  z-index: -1 !important;
+}
+
+/* Dar aire al control para que “quepa” el label */
+.gi-float-skin .form-group > [class*="col-"].ff .input-group .form-control,
+.gi-float-skin .form-group > [class*="col-"].ff > .form-control,
+.gi-float-skin .form-group > [class*="col-"].ff textarea.form-control {
+  padding-top: 18px !important;
+  padding-bottom: 10px !important;
+}
+
+/* Flotar al enfocar o cuando hay valor (tu JS pone .is-filled) */
+.gi-float-skin .form-group > [class*="col-"].ff.is-filled > label,
+.gi-float-skin .form-group > [class*="col-"].ff:focus-within > label {
+  top: -8px !important;
+  transform: scale(.88) !important;
+  color: var(--camel-700) !important;
+}
+
+/* Realce del control al enfocar */
+.gi-float-skin .form-group > [class*="col-"].ff:focus-within .form-control {
+  border-color: var(--camel) !important;
+  /* Fallback + versión con color-mix */
+  box-shadow: 0 0 0 3px rgba(194, 164, 118, .30) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--camel) 30%, transparent) !important;
+}
+
+/* Separación vertical entre filas */
+.gi-float-skin .form-group.row {
+  row-gap: 10px !important;
+}
+
+/* ====== Botón "Regresar" en el header (scope a esta card) ====== */
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary{
+  background: var(--muted) !important;
+  color: #000 !important;
+  border: 1px solid var(--camel) !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;           /* espacio entre ícono y texto */
+  padding: .65rem 1rem !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary i{
+  color: var(--camel) !important;   /* ícono camel */
+  font-size: 1.3rem !important;
+  line-height: 0 !important;
+}
+
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary:hover{
+  background: var(--camel-700) !important;
+  border-color: var(--camel-700) !important;
+  color: var(--paper) !important;   /* texto blanco */
+}
+
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary:hover i{
+  color: var(--paper) !important;   /* ícono blanco en hover */
+}
+
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary:focus,
+.gi-float-skin.card.card-custom .card-header .card-toolbar .btn-light-primary:focus-visible{
+  outline: none !important;
+  /* fallback + con color-mix si está disponible */
+  box-shadow: 0 0 0 3px rgba(194,164,118,.24) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--camel) 24%, transparent) !important;
+}

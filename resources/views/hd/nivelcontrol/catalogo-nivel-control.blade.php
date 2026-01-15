@@ -8,7 +8,9 @@
   <script src="{{ asset('js/h_d/NivelControl.js') }}"></script> 
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
-
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
 
 @section('content')
     <div class="d-flex flex-row">
@@ -131,36 +133,35 @@
                               </form>
                             </div>
                           </div>
+                          <div class="table-responsive table-surface">
+                                <!--begin: Datatable-->
+                              <table class="table table-hover table-brand table-checkable" id="kdatatable_nivel_control">
+                                <thead>
+                                  <tr>
+                                    <th>No.</th>
+                                    <th>Nivel control</th>
+                                    <th>Exposición</th>
+                                    <th>Detalle</th>
+                                    <th>Calculo</th>
+                                    <th class="text-center">Opciones</th>
+                                  </tr>
+                                </thead>
+                                <tfoot>
+                                  <tr>
+                                    <th>No.</th>
+                                    <th>Nivel control</th>
+                                    <th>Exposición</th>
+                                    <th>Detalle</th>
+                                    <th>Calculo</th>
+                                    <th class="text-center">Opciones</th>
+                                  </tr>
+                                </tfoot>
 
-
-                        <!--begin: Datatable-->
-                          <table class="table table-hover table-checkable" id="kdatatable_nivel_control">
-                            <thead>
-                              <tr>
-                                <th>No.</th>
-                                <th>Nivel control</th>
-                                <th>Exposición</th>
-                                <th>Detalle</th>
-                                <th>Calculo</th>
-                                <th class="text-center">Opciones</th>
-                              </tr>
-                            </thead>
-                            <tfoot>
-                              <tr>
-                                <th>No.</th>
-                                <th>Nivel control</th>
-                                <th>Exposición</th>
-                                <th>Detalle</th>
-                                <th>Calculo</th>
-                                <th class="text-center">Opciones</th>
-                              </tr>
-                            </tfoot>
-
-                          </table>
-                          <!--end: Datatable-->
-                          <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
-                          <input type="hidden" id="nivelcontroldatatable" value="{{ route('hd.nivelcontroldatatable') }}">
-
+                              </table>
+                              <!--end: Datatable-->
+                              <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
+                              <input type="hidden" id="nivelcontroldatatable" value="{{ route('hd.nivelcontroldatatable') }}">
+                          </div>
                         </div>
                     </div>
                     <!--end::Card-->

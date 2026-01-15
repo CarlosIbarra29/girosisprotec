@@ -9,6 +9,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 
 @section('content')
     <div class="d-flex flex-row">
@@ -40,51 +44,53 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <!--begin: Datatable-->
-                            <table class="table table-hover table-checkable" id="kdatatable_clientes_inactivos">
-                                <thead>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Organización</th>
-                                  <th>Nombre comercial</th>
-                                  <th>Contacto</th>
-                                  <th>Telefono</th>
-                                  <th>Email</th>
-                                  <th class="text-center">Acciones</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                  @foreach($data as $unid)
+                            <div class="table-responsive table-surface">
+                                <!--begin: Datatable-->
+                                <table class="table table-hover  table-brand table-checkable" id="kdatatable_clientes_inactivos">
+                                    <thead>
                                     <tr>
-                                      <td>{{ $unid->id }}</td>
-                                      <td>{{ $unid->organizacion }}</td>
-                                      <td>{{ $unid->nombre_comercial }}</td>
-                                      <td>{{ $unid->contacto_principal }}</td>
-                                      <td>{{ $unid->telefono }}</td>
-                                      <td>{{ $unid->mail }}</td>
-
-                                      <td class="text-center">
-                                        <button class="btn btn-clean btn-icon btn-outline-success mt-1 activar-cliente" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Activar Cliente" ><i class="flaticon2-reply "></i></button>
-                                      </td>
+                                      <th>No.</th>
+                                      <th>Organización</th>
+                                      <th>Nombre comercial</th>
+                                      <th>Contacto</th>
+                                      <th>Telefono</th>
+                                      <th>Email</th>
+                                      <th class="text-center">Acciones</th>
                                     </tr>
-                                  @endforeach
-                                </tbody>
+                                    </thead>
 
-                                <tfoot>
-                                <tr>
-                                  <th>No.</th>
-                                  <th>Organización</th>
-                                  <th>Nombre comercial</th>
-                                  <th>Contacto</th>
-                                  <th>Telefono</th>
-                                  <th>Email</th>
-                                  <th class="text-center">Acciones</th>
-                                </tr>
-                                </tfoot>
+                                    <tbody>
+                                      @foreach($data as $unid)
+                                        <tr>
+                                          <td>{{ $unid->id }}</td>
+                                          <td>{{ $unid->organizacion }}</td>
+                                          <td>{{ $unid->nombre_comercial }}</td>
+                                          <td>{{ $unid->contacto_principal }}</td>
+                                          <td>{{ $unid->telefono }}</td>
+                                          <td>{{ $unid->mail }}</td>
 
-                            </table>
-                            <!--end: Datatable-->
+                                          <td class="text-center">
+                                            <button class="btn btn-clean btn-icon btn-outline-success mt-1 activar-cliente" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Activar Cliente" ><i class="flaticon2-reply "></i></button>
+                                          </td>
+                                        </tr>
+                                      @endforeach
+                                    </tbody>
+
+                                    <tfoot>
+                                    <tr>
+                                      <th>No.</th>
+                                      <th>Organización</th>
+                                      <th>Nombre comercial</th>
+                                      <th>Contacto</th>
+                                      <th>Telefono</th>
+                                      <th>Email</th>
+                                      <th class="text-center">Acciones</th>
+                                    </tr>
+                                    </tfoot>
+
+                                </table>
+                                <!--end: Datatable-->
+                            </div>
 
                             <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
 
