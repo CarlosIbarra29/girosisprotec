@@ -202,6 +202,10 @@
 
 </script>
 @endpush
+
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
+@endpush
 @section('title')
   Graficas de riesgos sociales
 @endsection
