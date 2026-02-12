@@ -560,3 +560,22 @@ td:has(select.sel-nivel-sev2):focus-within {
   box-shadow: inset 3px 0 0 0 rgba(194,164,118,.12) !important; /* barrita muy sutil */
 }
 
+/* Placeholder visual para celdas editables vacías */
+.cell-edit.is-empty::before{
+  content: "Sin Datos";
+  font-weight: 800;
+  color: #111827;                 /* negro elegante */
+  opacity: .85;
+}
+
+/* Mantener espacio clickeable aunque esté vacío */
+.cell-edit{
+  min-height: 22px;               /* evita “colapso” */
+}
+
+/* Si está en edición, no muestres placeholder */
+.cell-edit[contenteditable="true"].is-empty::before{
+  content: "";
+}
+
+

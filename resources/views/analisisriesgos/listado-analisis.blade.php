@@ -6,7 +6,7 @@
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/tablesgen.css?v=1.0.3') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/tablesgen3.css?v=1.0.3') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -34,7 +34,7 @@
                                     <span class="card-icon">
                                       <i class="flaticon2-file" style="color: var(--camel)"></i>
                                     </span>
-                                    <h3 class="card-label">Inventario de clientes</h3>
+                                    <h3 class="card-label">Analisis de Riesgos por cliente</h3>
                                 
                                 </div>
 
@@ -139,13 +139,13 @@
                                           <th>Contacto</th>
                                           <th>Telefono</th>
                                           <th>Email</th>
-                                          <th class="text-center">Acciones</th>
+                                          <!-- <th class="text-center">Acciones</th> -->
                                         </tr>
                                         </thead>
 
                                         <tbody>
                                           @foreach($data as $unid)
-                                            <tr>
+                                            <tr class="tr-clickable"data-href="{{ route('analisis.analisiscliente', $unid->id ) }}">
                                               <td>{{ $unid->id }}</td>
 
                                               <td>
@@ -188,17 +188,17 @@
                                                 @endif
                                               </td>
 
-                                              <td class="text-center">
-                                                <a href="{{ route('analisis.analisiscliente', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Sociales"><i class="flaticon-users-1"></i></a>
+                                              <!-- <td class="text-center"> -->
+                                                <!-- <a href="{{ route('analisis.analisiscliente', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Sociales"><i class="flaticon-users-1"></i></a> -->
 
-                                                <span class="badge-analisis">2</span>
+                                                <!-- <span class="badge-analisis">2</span> -->
 
                                                 <!-- <a href="{{ route('analisis.analisistecnologicoscli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos Tecnológicos"><i class="flaticon-profile"></i></a>
 
                                                 <a href="{{ route('analisis.analisisnaturalescli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Riesgos naturales"><i class="flaticon-security"></i></a>
 
                                                 <a href="{{ route('analisis.analisisotroscli', $unid->id ) }}" class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" data-id="{{ $unid->id }}" data-nombre="{{ $unid->organizacion }}" data-toggle="tooltip" data-theme="dark" title="Otros riesgos"><i class="flaticon2-gear"></i></a> -->
-                                              </td>
+                                              <!-- </td> -->
                                             </tr>
                                           @endforeach
                                         </tbody>
@@ -211,7 +211,7 @@
                                           <th>Contacto</th>
                                           <th>Telefono</th>
                                           <th>Email</th>
-                                          <th class="text-center">Acciones</th>
+                                          <!-- <th class="text-center">Acciones</th> -->
                                         </tr>
                                         </tfoot>
 
@@ -236,3 +236,21 @@
     <input type="hidden" id="datatable_i18n" value="{{ asset('/js/datatables/i18n/es-mx.json') }}">
 
 @endsection
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.tr-clickable').forEach(function(row) {
+        row.addEventListener('click', function(e) {
+
+            // Evita que afecte si algún día vuelves a poner botones dentro
+            if (e.target.closest('a, button, input')) {
+                return;
+            }
+
+            window.location.href = this.dataset.href;
+        });
+    });
+
+});
+</script>

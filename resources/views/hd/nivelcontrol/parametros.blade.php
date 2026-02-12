@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 @endpush
 
+@push('styles')
+  <link href="{{ asset('/css/version2/tablesgen2.css?v=1.1.3') }}" rel="stylesheet" type="text/css" />
+@endpush
+
+
 @section('content')
 
 <style type="text/css">

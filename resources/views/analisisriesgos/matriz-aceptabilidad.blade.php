@@ -22,7 +22,7 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header">
-                    <h3 class="card-title">Matriz de Aceptabilidad</h3>
+                    <h3 class="card-title" style="color: white !important;">Matriz de Aceptabilidad</h3>
                     <div class="card-toolbar">
 
                         <a href="{{  route('analisis.metodos') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
