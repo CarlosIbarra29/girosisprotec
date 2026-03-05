@@ -1,0 +1,405 @@
+/* ===== Paleta GIRO ===== */
+:root{
+  --camel:      #C2A476;   /* camel base */
+  --camel-700:  #9B7C4E;   /* camel oscuro */
+  --camel-800:  #7F653F;   /* hover intenso */
+  --ink:        #121212;   /* negro */
+  --ink-2:      #1A1A1A;   /* negro para gradientes/bordes */
+  --paper:      #ffffff;   /* blanco */
+  --muted:      #F5F1EA;   /* fondo suave */
+  --line:       rgba(0,0,0,.08);
+  --camel-rgb:  194 164 118;  /* helper para alfas */
+  --radius-table: 14px;       /* radio de tabla */
+}
+
+/* ===== Card / Header ===== */
+.card.card-custom{
+  border:1px solid var(--ink-2);
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
+  background:var(--paper);
+}
+.card.card-custom .card-header{
+  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  border-bottom:3px solid var(--camel);
+}
+.card.card-custom .card-title .card-label,
+.card.card-custom .card-title .card-icon i{
+  color:#fff !important;
+}
+
+/* “Sin dato” */
+.sin-dato{ color:#97A1A9; font-style:italic; }
+
+/* Botones de icono (estilo base global) */
+.btn.btn-clean.btn-icon{ color:#8b9096; border-radius:8px; }
+.btn.btn-clean.btn-icon:hover{
+  color:var(--camel);
+  background:rgb(var(--camel-rgb) / 12%);
+}
+
+/* ===== Paginación DataTables ===== */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+  background:var(--camel)!important;
+  color:var(--ink)!important;
+  border:none!important;
+}
+
+/* ===== Carta ===== */
+.card.card-custom .card-header .card-toolbar .btn-link-primary{
+  color: var(--camel) !important;
+  font-weight: 700 !important;
+}
+.card.card-custom .card-header .card-toolbar .btn-link-primary:hover{
+  color: var(--paper) !important;
+  text-decoration: none;
+}
+
+/* Botón claro tipo primario -> camel */
+.card.card-custom .card-header .card-toolbar .btn-light-primary{
+  background: var(--muted) !important;
+  color: #000 !important;
+  border: 1px solid var(--camel) !important;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.card.card-custom .card-header .card-toolbar .btn-light-primary:hover{
+  background: var(--camel-700) !important;
+  border-color: var(--camel-700) !important;
+  color: var(--paper) !important; ;
+}
+.card.card-custom .card-header .card-toolbar .btn-light-primary:focus{
+  box-shadow: 0 0 0 3px rgb(var(--camel-rgb) / 24%) !important;
+  outline: none !important;
+}
+.card.card-custom .card-header .card-toolbar .btn-light-primary i{
+  color: var(--camel) !important;
+  font-size: 1.3rem;
+}
+.card.card-custom .card-header .card-toolbar .btn-light-primary:hover i{
+  color: var(--paper) !important; ;
+}
+
+
+/* ===== Badge compacta de análisis (si la usas aquí) ===== */
+.badge-analisis{
+  background:transparent;
+  color:var(--camel)!important;
+  border:1px solid var(--camel)!important;
+  font-weight:700; font-size:14px;
+  padding:.2rem .5rem; border-radius:8px;
+}
+
+
+
+/* ===== KPIs GIRO: barra de gráficas ===== */
+.giro-kpi-tabs{
+  display:flex;
+  gap:.65rem;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  padding:.25rem .1rem .8rem;
+  margin-bottom:1.25rem;
+  border-bottom:2px solid rgb(var(--camel-rgb) / 20%);
+  scrollbar-width:thin;
+  scrollbar-color: var(--camel) transparent;
+}
+
+.giro-kpi-tabs::-webkit-scrollbar{
+  height:8px;
+}
+.giro-kpi-tabs::-webkit-scrollbar-thumb{
+  background: rgb(var(--camel-rgb) / 55%);
+  border-radius:999px;
+}
+.giro-kpi-tabs::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.giro-kpi-tab{
+  border:1px solid rgb(var(--camel-rgb) / 28%);
+  background: linear-gradient(180deg, #fff 0%, var(--muted) 100%);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: .7rem 1rem;
+  font-weight: 700;
+  font-size: .92rem;
+  line-height: 1.1;
+  white-space: normal;
+  min-width: 150px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  outline: none !important;
+}
+
+.giro-kpi-tab:hover{
+  border-color: var(--camel);
+  color: var(--camel-800);
+  box-shadow: 0 4px 14px rgb(var(--camel-rgb) / 18%);
+}
+
+.giro-kpi-tab.is-active{
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  color: var(--paper);
+  border-color: var(--camel);
+  box-shadow: inset 0 -3px 0 var(--camel), 0 6px 16px rgba(0,0,0,.14);
+}
+
+.giro-chart-stage{
+  min-height: 470px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.giro-chart-panel{
+  display:none;
+  width:100%;
+}
+
+.giro-chart-panel.is-active{
+  display:block;
+}
+
+.giro-chart-card{
+  background: linear-gradient(180deg, #fff 0%, #fcfaf7 100%);
+  border:1px solid rgb(var(--camel-rgb) / 20%);
+  border-radius: 18px;
+  padding: 1.2rem 1.2rem 1rem;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.giro-chart-title{
+  text-align:center;
+  color: var(--ink-2);
+  font-weight: 800;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.giro-chart-canvas-wrap{
+  position: relative;
+  height: 360px;
+}
+
+.giro-chart-placeholder{
+  height: 360px;
+  border: 2px dashed rgb(var(--camel-rgb) / 38%);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgb(var(--camel-rgb) / 8%) 0%, rgba(255,255,255,1) 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 1.5rem;
+  color: var(--camel-800);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px){
+  .giro-kpi-tab{
+    min-width: 135px;
+    font-size: .84rem;
+    padding: .65rem .85rem;
+  }
+
+  .giro-chart-card{
+    padding: 1rem;
+  }
+
+  .giro-chart-canvas-wrap,
+  .giro-chart-placeholder{
+    height: 300px;
+  }
+}
+
+/* ===== Vulnerabilidad: mejora desktop/mobile ===== */
+/* ===== Vulnerabilidad: desktop contenido / mobile con scroll ===== */
+.giro-chart-canvas-wrap--vuln{
+  position: relative;
+  height: 470px;
+  overflow: hidden;
+}
+
+.giro-chart-canvas-inner--vuln{
+  position: relative;
+  width: 100%;
+  height: 470px;
+  min-width: 100%;
+}
+
+#myanalisisvulnerabilidad{
+  display: block;
+  width: 100% !important;
+  height: 470px !important;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 768px){
+  .giro-chart-canvas-wrap--vuln{
+    height: 360px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .giro-chart-canvas-inner--vuln{
+    width: 900px;
+    min-width: 900px;
+    height: 360px;
+  }
+
+  #myanalisisvulnerabilidad{
+    width: 900px !important;
+    min-width: 900px;
+    max-width: none;
+    height: 360px !important;
+  }
+}
+
+
+/* ===== Riesgos por criterio ===== */
+.giro-chart-canvas-wrap--security{
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+}
+
+.giro-chart-canvas-inner--security{
+  position: relative;
+  width: 100%;
+  height: 420px;
+  min-width: 100%;
+}
+
+#myriesgosporcriterio{
+  display: block;
+  width: 100% !important;
+  height: 420px !important;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 768px){
+  .giro-chart-canvas-wrap--security{
+    height: 360px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .giro-chart-canvas-inner--security{
+    width: 900px;
+    min-width: 900px;
+    height: 360px;
+  }
+
+  #myriesgosporcriterio{
+    width: 900px !important;
+    min-width: 900px;
+    max-width: none;
+    height: 360px !important;
+  }
+}
+
+/* ===== Distribución % de escenarios ===== */
+.giro-escenarios-wrap{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.giro-escenarios-table{
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  color: #1A1A1A;
+}
+
+.giro-escenarios-table th,
+.giro-escenarios-table td{
+  border-bottom: 2px solid #8aa0c7;
+  padding: .55rem .6rem;
+  text-align: center;
+  font-size: .95rem;
+}
+
+.giro-escenarios-table th{
+  font-weight: 700;
+}
+
+.giro-escenarios-table td{
+  font-weight: 100;
+}
+
+.giro-escenarios-left,
+.giro-escenarios-label{
+  text-align: left !important;
+  white-space: nowrap;
+  font-weight: 100;
+}
+
+
+.giro-th-group{
+  color: #fff;
+  font-size: .95rem;
+}
+
+.giro-th-group--ok{
+  background: #7f7f7f;
+}
+
+.giro-th-group--risk{
+  background: #8c8c8c;
+}
+
+.giro-th-muy-bajo,
+.giro-td-muy-bajo{
+  background: #FCFBF7;
+}
+
+.giro-th-bajo,
+.giro-td-bajo{
+  background: #92D050;
+}
+
+.giro-th-medio,
+.giro-td-medio{
+  background: #FFC000;
+}
+
+.giro-th-alto,
+.giro-td-alto{
+  background: #FF0000;
+  color: #fff;
+}
+
+.giro-th-muy-alto,
+.giro-td-muy-alto{
+  background: #C00000;
+  color: #fff;
+}
+
+.giro-th-total,
+.giro-td-total{
+  background: #ffffff;
+}
+
+.giro-row-total td,
+.giro-row-percent td{
+  background: #fff !important;
+  color: #121212 !important;
+  font-weight: 700;
+}
+
+@media (max-width: 768px){
+  .giro-escenarios-table th,
+  .giro-escenarios-table td{
+    font-size: .84rem;
+    padding: .4rem .5rem;
+  }
+}

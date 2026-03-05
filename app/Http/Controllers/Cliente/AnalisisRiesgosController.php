@@ -240,11 +240,214 @@ class AnalisisRiesgosController extends Controller
 
     public function graficassociales($id_cliente)
     {
-        $data = AnalisisRiesgoSocial::where('cliente_id', $id_cliente)->get();
+        $data = AnalisisRiesgoSocial::with(['BarrerasPerimetrales', 'hdNivelControl'])
+            ->where('cliente_id', $id_cliente)
+            ->get();
+
         $cliente = Cliente::where('id', $id_cliente)->first();
 
-        return view('analisisriesgos.graficas-sociales-cliente', compact('data', 'id_cliente', 'cliente'));         
+        $conteoIndice = [
+            'muy_bajo' => 0,
+            'bajo'     => 0,
+            'medio'    => 0,
+            'alto'     => 0,
+            'muy_alto' => 0,
+        ];
+
+        foreach ($data as $item) {
+            $riesgo = $item->nivel_riesgo ?? 0;
+
+            if ($riesgo >= 36.10) {
+                $conteoIndice['muy_alto']++;
+            } elseif ($riesgo >= 16.10) {
+                $conteoIndice['alto']++;
+            } elseif ($riesgo >= 6.50) {
+                $conteoIndice['medio']++;
+            } elseif ($riesgo >= 1.50) {
+                $conteoIndice['bajo']++;
+            } else {
+                $conteoIndice['muy_bajo']++;
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Análisis de vulnerabilidad
+        |--------------------------------------------------------------------------
+        */
+        $vulnerabilidadTmp = [];
+
+        foreach ($data as $item) {
+            $criterioId = $item->libror_barreras_perimetrales_id ?? 'sin_criterio';
+            $criterioNombre = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+            $nivelControl = (float) (optional($item->hdNivelControl)->nc_calculo ?? 0);
+
+            if (!isset($vulnerabilidadTmp[$criterioId])) {
+                $vulnerabilidadTmp[$criterioId] = [
+                    'label' => $criterioNombre,
+                    'total_registros' => 0,
+                    'suma_nc' => 0,
+                ];
+            }
+
+            $vulnerabilidadTmp[$criterioId]['total_registros']++;
+            $vulnerabilidadTmp[$criterioId]['suma_nc'] += $nivelControl;
+        }
+
+        $vulnerabilidadLabels = [];
+        $vulnerabilidadPromedios = [];
+
+        foreach ($vulnerabilidadTmp as $grupo) {
+            $total = (int) $grupo['total_registros'];
+            $promedio = $total > 0 ? round($grupo['suma_nc'] / $total, 2) : 0;
+
+            $vulnerabilidadLabels[] = $grupo['label'];
+            $vulnerabilidadPromedios[] = $promedio;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Distribución de riesgos por criterio
+        |--------------------------------------------------------------------------
+        */
+        $riesgosPorCriterioTmp = [];
+
+        foreach ($data as $item) {
+            $criterioId = $item->libror_barreras_perimetrales_id ?? 'sin_criterio';
+            $criterioNombre = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+            $riesgo = $item->nivel_riesgo ?? 0;
+
+            if (!isset($riesgosPorCriterioTmp[$criterioId])) {
+                $riesgosPorCriterioTmp[$criterioId] = [
+                    'label'     => $criterioNombre,
+                    'muy_alto'  => 0,
+                    'alto'      => 0,
+                    'medio'     => 0,
+                    'bajo'      => 0,
+                    'muy_bajo'  => 0,
+                ];
+            }
+
+            if ($riesgo >= 36.10) {
+                $riesgosPorCriterioTmp[$criterioId]['muy_alto']++;
+            } elseif ($riesgo >= 16.10) {
+                $riesgosPorCriterioTmp[$criterioId]['alto']++;
+            } elseif ($riesgo >= 6.50) {
+                $riesgosPorCriterioTmp[$criterioId]['medio']++;
+            } elseif ($riesgo >= 1.50) {
+                $riesgosPorCriterioTmp[$criterioId]['bajo']++;
+            } else {
+                $riesgosPorCriterioTmp[$criterioId]['muy_bajo']++;
+            }
+        }
+
+        $riesgosPorCriterioLabels = [];
+        $riesgosPorCriterioMuyAlto = [];
+        $riesgosPorCriterioAlto = [];
+        $riesgosPorCriterioMedio = [];
+        $riesgosPorCriterioBajo = [];
+        $riesgosPorCriterioMuyBajo = [];
+
+        foreach ($riesgosPorCriterioTmp as $grupo) {
+            $riesgosPorCriterioLabels[]   = $grupo['label'];
+            $riesgosPorCriterioMuyAlto[]  = $grupo['muy_alto'];
+            $riesgosPorCriterioAlto[]     = $grupo['alto'];
+            $riesgosPorCriterioMedio[]    = $grupo['medio'];
+            $riesgosPorCriterioBajo[]     = $grupo['bajo'];
+            $riesgosPorCriterioMuyBajo[]  = $grupo['muy_bajo'];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Distribución % de escenarios (tabla)
+        |--------------------------------------------------------------------------
+        */
+        $escenariosFilas = [];
+        $totalesEscenarios = [
+            'muy_bajo' => 0,
+            'bajo'     => 0,
+            'medio'    => 0,
+            'alto'     => 0,
+            'muy_alto' => 0,
+            'total'    => 0,
+        ];
+
+        foreach ($data as $item) {
+            $criterioId = $item->libror_barreras_perimetrales_id ?? 'sin_criterio';
+            $criterioNombre = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+            $riesgo = $item->nivel_riesgo ?? 0;
+
+            if (!isset($escenariosFilas[$criterioId])) {
+                $escenariosFilas[$criterioId] = [
+                    'label'     => $criterioNombre,
+                    'muy_bajo'  => 0,
+                    'bajo'      => 0,
+                    'medio'     => 0,
+                    'alto'      => 0,
+                    'muy_alto'  => 0,
+                    'total'     => 0,
+                ];
+            }
+
+            if ($riesgo >= 36.10) {
+                $escenariosFilas[$criterioId]['muy_alto']++;
+                $totalesEscenarios['muy_alto']++;
+            } elseif ($riesgo >= 16.10) {
+                $escenariosFilas[$criterioId]['alto']++;
+                $totalesEscenarios['alto']++;
+            } elseif ($riesgo >= 6.50) {
+                $escenariosFilas[$criterioId]['medio']++;
+                $totalesEscenarios['medio']++;
+            } elseif ($riesgo >= 1.50) {
+                $escenariosFilas[$criterioId]['bajo']++;
+                $totalesEscenarios['bajo']++;
+            } else {
+                $escenariosFilas[$criterioId]['muy_bajo']++;
+                $totalesEscenarios['muy_bajo']++;
+            }
+
+            $escenariosFilas[$criterioId]['total']++;
+            $totalesEscenarios['total']++;
+        }
+
+        $distribucionEscenarios = [
+            'muy_bajo' => 0,
+            'bajo'     => 0,
+            'medio'    => 0,
+            'alto'     => 0,
+            'muy_alto' => 0,
+            'total'    => 0,
+        ];
+
+        if ($totalesEscenarios['total'] > 0) {
+            $distribucionEscenarios['muy_bajo'] = round(($totalesEscenarios['muy_bajo'] / $totalesEscenarios['total']) * 100, 2);
+            $distribucionEscenarios['bajo']     = round(($totalesEscenarios['bajo'] / $totalesEscenarios['total']) * 100, 2);
+            $distribucionEscenarios['medio']    = round(($totalesEscenarios['medio'] / $totalesEscenarios['total']) * 100, 2);
+            $distribucionEscenarios['alto']     = round(($totalesEscenarios['alto'] / $totalesEscenarios['total']) * 100, 2);
+            $distribucionEscenarios['muy_alto'] = round(($totalesEscenarios['muy_alto'] / $totalesEscenarios['total']) * 100, 2);
+            $distribucionEscenarios['total']    = 100;
+        }
+
+
+        return view('analisisriesgos.graficas-sociales-cliente', compact(
+            'data',
+            'id_cliente',
+            'cliente',
+            'conteoIndice',
+            'vulnerabilidadLabels',
+            'vulnerabilidadPromedios',
+            'riesgosPorCriterioLabels',
+            'riesgosPorCriterioMuyAlto',
+            'riesgosPorCriterioAlto',
+            'riesgosPorCriterioMedio',
+            'riesgosPorCriterioBajo',
+            'riesgosPorCriterioMuyBajo',
+            'escenariosFilas',
+            'totalesEscenarios',
+            'distribucionEscenarios'
+        ));
     }
+
 
     public function detalleanalisissocial($id_cliente, $id_riesgo)
     {
