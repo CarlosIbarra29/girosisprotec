@@ -376,30 +376,106 @@
 
       /* ========= 4. Distribución de riesgos por criterio (AGRUPADO) ========= */
       var canvasRiesgos = document.getElementById('myriesgosporcriterio');
+
       if (canvasRiesgos) {
         var ctx4 = canvasRiesgos.getContext('2d');
 
-        /* plugin: números arriba de cada barra solo para esta gráfica */
+        function makeGrad(ctx, c1, c2) {
+          var g = ctx.createLinearGradient(0, 0, 0, 380);
+          g.addColorStop(0, c1);
+          g.addColorStop(1, c2);
+          return g;
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+          ctx.beginPath();
+          ctx.moveTo(x + r, y);
+          ctx.lineTo(x + w - r, y);
+          ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+          ctx.lineTo(x + w, y + h - r);
+          ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+          ctx.lineTo(x + r, y + h);
+          ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+          ctx.lineTo(x, y + r);
+          ctx.quadraticCurveTo(x, y, x + r, y);
+          ctx.closePath();
+        }
+
+        var gradMuyBajo = makeGrad(ctx4, 'rgba(255,255,255,0.98)', 'rgba(236,236,236,0.96)');
+        var gradBajo    = makeGrad(ctx4, 'rgba(179, 244, 182, 0.98)', 'rgba(123, 223, 129, 0.96)');
+        var gradMedio   = makeGrad(ctx4, 'rgba(255, 232, 92, 0.98)', 'rgba(255, 205, 0, 0.96)');
+        var gradAlto    = makeGrad(ctx4, 'rgba(255, 90, 90, 0.98)', 'rgba(255, 18, 18, 0.96)');
+        var gradMuyAlto = makeGrad(ctx4, 'rgba(228, 40, 40, 0.98)', 'rgba(176, 0, 0, 0.98)');
+
+        /* Fondo suave del área de trazado */
+        Chart.plugins.register({
+          beforeDraw: function(chart) {
+            if (chart.canvas.id !== 'myriesgosporcriterio') return;
+            var area = chart.chartArea;
+            if (!area) return;
+
+            var ctx = chart.ctx;
+            ctx.save();
+
+            roundRect(
+              ctx,
+              area.left - 8,
+              area.top - 6,
+              (area.right - area.left) + 16,
+              (area.bottom - area.top) + 12,
+              18
+            );
+
+            var bg = ctx.createLinearGradient(0, area.top, 0, area.bottom);
+            bg.addColorStop(0, 'rgba(255,255,255,0.92)');
+            bg.addColorStop(1, 'rgba(249,246,240,0.90)');
+
+            ctx.fillStyle = bg;
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        /* Etiquetas tipo “badge” arriba de cada barra */
         Chart.plugins.register({
           afterDatasetsDraw: function(chart) {
             if (chart.canvas.id !== 'myriesgosporcriterio') return;
 
             var ctx = chart.ctx;
             ctx.save();
-            ctx.font = "bold 12px Poppins, Arial, sans-serif";
-            ctx.fillStyle = "#222";
+            ctx.font = "700 12px Poppins, Arial, sans-serif";
             ctx.textAlign = "center";
-            ctx.textBaseline = "bottom";
+            ctx.textBaseline = "middle";
 
             chart.data.datasets.forEach(function(dataset, datasetIndex) {
               var meta = chart.getDatasetMeta(datasetIndex);
 
               meta.data.forEach(function(bar, index) {
-                var value = dataset.data[index];
-                var x = bar._model.x;
-                var y = value > 0 ? (bar._model.y - 4) : (bar._model.base - 2);
+                var value = Number(dataset.data[index] || 0);
+                var text = String(value);
 
-                ctx.fillText(value, x, y);
+                var x = bar._model.x;
+                var y = value > 0 ? (bar._model.y - 12) : (bar._model.base - 12);
+
+                var tw = ctx.measureText(text).width;
+                var bw = tw + 16;
+                var bh = 22;
+
+                roundRect(ctx, x - (bw / 2), y - bh, bw, bh, 8);
+                ctx.fillStyle = 'rgba(255,255,255,0.97)';
+                ctx.shadowColor = 'rgba(0,0,0,0.10)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 3;
+                ctx.fill();
+
+                ctx.shadowColor = 'transparent';
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(194,164,118,0.24)';
+                ctx.stroke();
+
+                ctx.fillStyle = '#121212';
+                ctx.fillText(text, x, y - (bh / 2));
               });
             });
 
@@ -415,76 +491,106 @@
               {
                 label: 'Muy Bajo',
                 data: riesgosPorCriterioMuyBajo,
-                backgroundColor: 'rgba(255, 255, 255, 0.98)',
-                borderColor: 'rgba(180, 180, 180, 1)',
+                backgroundColor: gradMuyBajo,
+                borderColor: 'rgba(188, 188, 188, 1)',
                 borderWidth: 2,
-                categoryPercentage: 0.62,
-                barPercentage: 0.78
+                hoverBackgroundColor: 'rgba(245,245,245,1)',
+                hoverBorderColor: 'rgba(160,160,160,1)',
+                categoryPercentage: 0.58,
+                barPercentage: 0.76
               },
               {
                 label: 'Bajo',
                 data: riesgosPorCriterioBajo,
-                backgroundColor: 'rgba(153, 255, 153, 0.95)',
-                borderColor: 'rgba(122, 214, 122, 1)',
+                backgroundColor: gradBajo,
+                borderColor: 'rgba(108, 204, 114, 1)',
                 borderWidth: 2,
-                categoryPercentage: 0.62,
-                barPercentage: 0.78
+                hoverBackgroundColor: 'rgba(146,235,152,1)',
+                hoverBorderColor: 'rgba(96,188,102,1)',
+                categoryPercentage: 0.58,
+                barPercentage: 0.76
               },
               {
                 label: 'Medio',
                 data: riesgosPorCriterioMedio,
-                backgroundColor: 'rgba(255, 215, 0, 0.95)',
-                borderColor: 'rgba(214, 181, 0, 1)',
+                backgroundColor: gradMedio,
+                borderColor: 'rgba(220, 180, 0, 1)',
                 borderWidth: 2,
-                categoryPercentage: 0.62,
-                barPercentage: 0.78
+                hoverBackgroundColor: 'rgba(255,221,45,1)',
+                hoverBorderColor: 'rgba(206,168,0,1)',
+                categoryPercentage: 0.58,
+                barPercentage: 0.76
               },
               {
                 label: 'Alto',
                 data: riesgosPorCriterioAlto,
-                backgroundColor: 'rgba(255, 0, 0, 0.95)',
+                backgroundColor: gradAlto,
                 borderColor: 'rgba(220, 0, 0, 1)',
                 borderWidth: 2,
-                categoryPercentage: 0.62,
-                barPercentage: 0.78
+                hoverBackgroundColor: 'rgba(255,55,55,1)',
+                hoverBorderColor: 'rgba(190,0,0,1)',
+                categoryPercentage: 0.58,
+                barPercentage: 0.76
               },
               {
                 label: 'Muy Alto',
                 data: riesgosPorCriterioMuyAlto,
-                backgroundColor: 'rgba(204, 0, 0, 0.95)',
-                borderColor: 'rgba(170, 0, 0, 1)',
+                backgroundColor: gradMuyAlto,
+                borderColor: 'rgba(150, 0, 0, 1)',
                 borderWidth: 2,
-                categoryPercentage: 0.62,
-                barPercentage: 0.78
+                hoverBackgroundColor: 'rgba(200, 0, 0, 1)',
+                hoverBorderColor: 'rgba(120, 0, 0, 1)',
+                categoryPercentage: 0.58,
+                barPercentage: 0.76
               }
-              
-              
-              
             ]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+              duration: 1200,
+              easing: 'easeOutQuart'
+            },
+            layout: {
+              padding: {
+                top: 32,
+                right: 12,
+                bottom: 32,
+                left: 12
+              }
+            },
             legend: {
               display: true,
               position: 'bottom',
               labels: {
-                boxWidth: 10,
+                boxWidth: 12,
+                fontSize: 13,
                 fontStyle: 'bold',
                 fontColor: '#121212',
-                padding: 14
+                padding: 20,
+                usePointStyle: true
               }
             },
             tooltips: {
               mode: 'index',
               intersect: false,
-              backgroundColor: 'rgba(18,18,18,0.92)',
+              backgroundColor: 'rgba(18,18,18,0.94)',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 10,
               callbacks: {
                 label: function(tooltipItem, data) {
                   var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                  return label + ': ' + tooltipItem.yLabel;
+                  return ' ' + label + ': ' + tooltipItem.yLabel;
                 }
               }
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: false
             },
             scales: {
               xAxes: [{
@@ -493,12 +599,14 @@
                   autoSkip: false,
                   maxRotation: 0,
                   minRotation: 0,
-                  fontColor: '#4A6FA5',
+                  fontColor: '#48699b',
                   fontStyle: 'bold',
-                  fontSize: 11
+                  fontSize: 11,
+                  padding: 8
                 },
                 gridLines: {
-                  display: false
+                  display: false,
+                  drawBorder: false
                 }
               }],
               yAxes: [{
@@ -507,11 +615,16 @@
                   beginAtZero: true,
                   precision: 0,
                   stepSize: 1,
-                  fontColor: '#4A4A4A',
-                  fontStyle: 'bold'
+                  fontColor: '#4a4a4a',
+                  fontStyle: 'bold',
+                  fontSize: 12,
+                  padding: 8
                 },
                 gridLines: {
-                  color: 'rgba(0,0,0,0.06)'
+                  color: 'rgba(0,0,0,0.055)',
+                  zeroLineColor: 'rgba(0,0,0,0.12)',
+                  drawBorder: false,
+                  borderDash: [4, 4]
                 }
               }]
             }
@@ -781,7 +894,7 @@
                     </div>
                   </div>
                 </div>
-                
+
               </div>
 
             </div>
