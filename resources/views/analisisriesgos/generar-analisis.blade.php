@@ -254,12 +254,12 @@
                                                 <div class="col-lg-6">
                                                     <div class="checkbox-list">
                                                         <label class="checkbox">
-                                                            <input type="checkbox" value="0" name="deficiencia_medida_s[]"/>
+                                                            <input type="checkbox" value="1" name="deficiencia_medida_s[]"/>
                                                             <span></span>
                                                             Pasivas
                                                         </label>
                                                         <label class="checkbox">
-                                                            <input type="checkbox" value="1"  name="deficiencia_medida_s[]"/>
+                                                            <input type="checkbox" value="2"  name="deficiencia_medida_s[]"/>
                                                             <span></span>
                                                             Activas
                                                         </label>
@@ -268,12 +268,12 @@
                                                 <div class="col-lg-6">
                                                     <div class="checkbox-list">
                                                         <label class="checkbox">
-                                                            <input type="checkbox" value="2" name="deficiencia_medida_s[]"/>
+                                                            <input type="checkbox" value="3" name="deficiencia_medida_s[]"/>
                                                             <span></span>
                                                             Humanas
                                                         </label>
                                                         <label class="checkbox">
-                                                            <input type="checkbox" value="3" name="deficiencia_medida_s[]"/>
+                                                            <input type="checkbox" value="4" name="deficiencia_medida_s[]"/>
                                                             <span></span>
                                                             Documentales
                                                         </label>

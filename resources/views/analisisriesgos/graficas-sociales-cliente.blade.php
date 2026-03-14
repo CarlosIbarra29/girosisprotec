@@ -28,6 +28,25 @@
     const riesgosPorCriterioBajo = {!! json_encode($riesgosPorCriterioBajo ?? []) !!};
     const riesgosPorCriterioMuyBajo = {!! json_encode($riesgosPorCriterioMuyBajo ?? []) !!};
 
+    const medDebLabels = {!! json_encode($medDebLabels ?? []) !!};
+    const medDebData   = {!! json_encode($medDebData ?? []) !!};
+    const medForLabels = {!! json_encode($medForLabels ?? []) !!};
+    const medForData   = {!! json_encode($medForData ?? []) !!};
+
+    const medDebDetalle = {!! json_encode($medDebDetalle ?? []) !!};
+    const medForDetalle = {!! json_encode($medForDetalle ?? []) !!};
+
+    const paretoLabels = {!! json_encode($paretoLabels ?? []) !!};
+    const paretoIPD    = {!! json_encode($paretoIPD ?? []) !!};
+    const paretoCrit   = {!! json_encode($paretoCrit ?? []) !!};
+    const paretoAcum   = {!! json_encode($paretoAcum ?? []) !!};
+
+    // ======= MATRIZ (DATA DESDE CONTROLLER) =======
+    // Espera:
+    // matrixPoints: [{id,label,x,y,ipd,perfil,nivel}, ...]
+    // matrixRows:   [{label,ipd,perfil,nivel}, ...] para la tabla
+    const matrixPoints = {!! json_encode($matrixPoints ?? []) !!};
+
     document.addEventListener('DOMContentLoaded', function () {
 
       /* ========= Tabs / mostrar solo una gráfica ========= */
@@ -178,205 +197,323 @@
 
       /* ========= 1. Índice de distribución ========= */
       var canvasIndice = document.getElementById('myindicedistribucion');
-      var ctx1 = canvasIndice.getContext('2d');
+      if (canvasIndice) {
+        var ctx1 = canvasIndice.getContext('2d');
 
-      function crearGradientesIndice(ctx) {
-        var g1 = ctx.createLinearGradient(0, 0, 0, 320);
-        g1.addColorStop(0, 'rgba(255,255,255,1)');
-        g1.addColorStop(1, 'rgba(235,235,235,0.95)');
+        function crearGradientesIndice(ctx) {
+          var g1 = ctx.createLinearGradient(0, 0, 0, 320);
+          g1.addColorStop(0, 'rgba(255,255,255,1)');
+          g1.addColorStop(1, 'rgba(235,235,235,0.95)');
 
-        var g2 = ctx.createLinearGradient(0, 0, 0, 320);
-        g2.addColorStop(0, 'rgba(153,255,153,1)');
-        g2.addColorStop(1, 'rgba(110,230,110,0.90)');
+          var g2 = ctx.createLinearGradient(0, 0, 0, 320);
+          g2.addColorStop(0, 'rgba(153,255,153,1)');
+          g2.addColorStop(1, 'rgba(110,230,110,0.90)');
 
-        var g3 = ctx.createLinearGradient(0, 0, 0, 320);
-        g3.addColorStop(0, 'rgba(255,255,120,1)');
-        g3.addColorStop(1, 'rgba(255,215,0,0.92)');
+          var g3 = ctx.createLinearGradient(0, 0, 0, 320);
+          g3.addColorStop(0, 'rgba(255,255,120,1)');
+          g3.addColorStop(1, 'rgba(255,215,0,0.92)');
 
-        var g4 = ctx.createLinearGradient(0, 0, 0, 320);
-        g4.addColorStop(0, 'rgba(255,80,80,1)');
-        g4.addColorStop(1, 'rgba(255,0,0,0.92)');
+          var g4 = ctx.createLinearGradient(0, 0, 0, 320);
+          g4.addColorStop(0, 'rgba(255,80,80,1)');
+          g4.addColorStop(1, 'rgba(255,0,0,0.92)');
 
-        var g5 = ctx.createLinearGradient(0, 0, 0, 320);
-        g5.addColorStop(0, 'rgba(230,40,40,1)');
-        g5.addColorStop(1, 'rgba(204,0,0,0.95)');
+          var g5 = ctx.createLinearGradient(0, 0, 0, 320);
+          g5.addColorStop(0, 'rgba(230,40,40,1)');
+          g5.addColorStop(1, 'rgba(204,0,0,0.95)');
 
-        return [g1, g2, g3, g4, g5];
+          return [g1, g2, g3, g4, g5];
+        }
+
+        var gradientesIndice = crearGradientesIndice(ctx1);
+
+        new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: ['Muy Bajo','Bajo','Medio','Alto','Muy Alto'],
+            datasets: [{
+              label: 'Cantidad de registros',
+              data: indiceDistribucionData,
+              backgroundColor: gradientesIndice,
+              borderColor: [
+                'rgba(180,180,180,1)',
+                'rgba(153,255,153,1)',
+                'rgba(210,210,0,1)',
+                'rgba(255,0,0,1)',
+                'rgba(204,0,0,1)'
+              ],
+              borderWidth: 3,
+              hoverBackgroundColor: gradientesIndice,
+              hoverBorderWidth: 5,
+              categoryPercentage: 0.62,
+              barPercentage: 0.82
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              duration: 1200,
+              easing: 'easeOutQuart'
+            },
+            legend: { display: false },
+            tooltips: {
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              displayColors: false,
+              callbacks: {
+                label: function(tooltipItem) {
+                  return 'Registros: ' + tooltipItem.yLabel;
+                }
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                  stepSize: 1,
+                  fontColor: '#121212',
+                  fontStyle: 'bold'
+                },
+                gridLines: {
+                  color: 'rgba(0,0,0,0.08)',
+                  zeroLineColor: 'rgba(0,0,0,0.14)'
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  fontColor: '#121212',
+                  fontStyle: 'bold'
+                },
+                gridLines: { display: false }
+              }]
+            }
+          }
+        });
       }
 
-      var gradientesIndice = crearGradientesIndice(ctx1);
+      /* ========= 2. Daño potencial vs Patrón estándar ========= */
+      var canvasDano = document.getElementById('mydanopotencial');
+      if (canvasDano) {
+        var ctx2 = canvasDano.getContext('2d');
 
-      new Chart(ctx1, {
-        type: 'bar',
-        data: {
-          labels: ['Muy Bajo','Bajo','Medio','Alto','Muy Alto'],
-          datasets: [{
-            label: 'Cantidad de registros',
-            data: indiceDistribucionData,
-            backgroundColor: gradientesIndice,
-            borderColor: [
-              'rgba(180,180,180,1)',
-              'rgba(153,255,153,1)',
-              'rgba(210,210,0,1)',
-              'rgba(255,0,0,1)',
-              'rgba(204,0,0,1)'
-            ],
-            borderWidth: 3,
-            hoverBackgroundColor: gradientesIndice,
-            hoverBorderWidth: 5,
-            categoryPercentage: 0.62,
-            barPercentage: 0.82
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            duration: 1200,
-            easing: 'easeOutQuart'
-          },
-          legend: { display: false },
-          tooltips: {
-            backgroundColor: 'rgba(18,18,18,0.92)',
-            titleFontStyle: 'bold',
-            bodyFontStyle: 'bold',
-            displayColors: false,
-            callbacks: {
-              label: function(tooltipItem) {
-                return 'Registros: ' + tooltipItem.yLabel;
+        var xLabels = ['Muy Bajo','Bajo','Medio','Alto','Muy Alto'];
+
+        var danoPotencialY = [
+          Number({!! json_encode($distribucionEscenarios['muy_bajo'] ?? 0) !!}),
+          Number({!! json_encode($distribucionEscenarios['bajo'] ?? 0) !!}),
+          Number({!! json_encode($distribucionEscenarios['medio'] ?? 0) !!}),
+          Number({!! json_encode($distribucionEscenarios['alto'] ?? 0) !!}),
+          Number({!! json_encode($distribucionEscenarios['muy_alto'] ?? 0) !!})
+        ];
+
+        var riesgoEstandarY = [60, 30, 10, 0, 0];
+
+        function toXY(arrY){
+          return arrY.map(function(y, i){ return { x: i, y: Number(y || 0) }; });
+        }
+
+        var pointPctPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mydanopotencial') return;
+
+            var ctx = chart.ctx;
+            ctx.save();
+            ctx.font = "700 11px Poppins, Arial, sans-serif";
+            ctx.fillStyle = "rgba(18,18,18,0.78)";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+
+            chart.data.datasets.forEach(function(ds, di){
+              var meta = chart.getDatasetMeta(di);
+              if (meta.hidden) return;
+
+              meta.data.forEach(function(pt, i){
+                var v = Number((ds.data[i] && ds.data[i].y) || 0);
+                if (v === 0) return;
+
+                var x = pt._model.x;
+                var y = pt._model.y;
+                ctx.fillText(v.toFixed(1) + "%", x, y - 8);
+              });
+            });
+
+            ctx.restore();
+          }
+        };
+
+        new Chart(ctx2, {
+          type: 'line',
+          plugins: [pointPctPlugin],
+          data: {
+            labels: xLabels,
+            datasets: [
+              {
+                label: 'Riesgo Potencial',
+                data: toXY(danoPotencialY),
+                borderColor: 'rgba(255, 0, 0, 0.92)',
+                backgroundColor: 'rgba(255, 0, 0, 0.10)',
+                pointBackgroundColor: 'rgba(255, 0, 0, 0.95)',
+                pointBorderColor: 'rgba(255,255,255,1)',
+                pointRadius: 4,
+                pointHoverRadius: 5,
+                borderWidth: 3,
+                fill: true,
+                lineTension: 0.28
+              },
+              {
+                label: 'Riesgo Estándar',
+                data: toXY(riesgoEstandarY),
+                borderColor: 'rgba(18,18,18,0.70)',
+                backgroundColor: 'transparent',
+                pointBackgroundColor: 'rgba(18,18,18,0.70)',
+                pointBorderColor: 'rgba(255,255,255,1)',
+                pointStyle: 'rectRot',
+                pointRadius: 4,
+                pointHoverRadius: 5,
+                borderWidth: 2,
+                borderDash: [6, 5],
+                fill: false,
+                lineTension: 0.28
               }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 1000, easing: 'easeOutQuart' },
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { fontStyle: 'bold', boxWidth: 12, usePointStyle: true }
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              callbacks: {
+                title: function(items){
+                  var x = items && items[0] ? Math.round(items[0].xLabel) : 0;
+                  return xLabels[x] || '';
+                },
+                label: function(t, d){
+                  var label = d.datasets[t.datasetIndex].label || '';
+                  return ' ' + label + ': ' + Number(t.yLabel).toFixed(2) + '%';
+                }
+              }
+            },
+            hover: { mode: 'nearest', intersect: false },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 100,
+                  callback: function(v){ return v + '%'; },
+                  fontStyle: 'bold'
+                },
+                gridLines: {
+                  color: 'rgba(0,0,0,0.06)',
+                  zeroLineColor: 'rgba(0,0,0,0.12)'
+                }
+              }],
+              xAxes: [{
+                type: 'linear',
+                ticks: {
+                  min: -0.08,
+                  max: 4,
+                  stepSize: 1,
+                  fontStyle: 'bold',
+                  padding: 10,
+                  callback: function(value){
+                    var i = Math.round(value);
+                    return (Number.isInteger(value) && xLabels[i]) ? xLabels[i] : '';
+                  }
+                },
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                }
+              }]
             }
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                precision: 0,
-                stepSize: 1,
-                fontColor: '#121212',
-                fontStyle: 'bold'
-              },
-              gridLines: {
-                color: 'rgba(0,0,0,0.08)',
-                zeroLineColor: 'rgba(0,0,0,0.14)'
-              }
-            }],
-            xAxes: [{
-              ticks: {
-                fontColor: '#121212',
-                fontStyle: 'bold'
-              },
-              gridLines: { display: false }
-            }]
           }
-        }
-      });
-
-      /* ========= 2. Daño potencial ========= */
-      var ctx2 = document.getElementById('mydapotencial').getContext('2d');
-      new Chart(ctx2, {
-        type: 'line',
-        data: {
-          labels: ['Muy Bajo','Bajo','Medio','Alto','Muy Alto'],
-          datasets: [{
-            label: 'Documentación',
-            data: [75, 55, 35, 15, 5],
-            backgroundColor: 'rgba(194, 164, 118, 0.20)',
-            borderColor: 'rgba(194, 164, 118, 1)',
-            pointBackgroundColor: 'rgba(127, 101, 63, 1)',
-            pointBorderColor: 'rgba(255,255,255,1)',
-            pointRadius: 4,
-            borderWidth: 2,
-            fill: true,
-            lineTension: 0.25
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: { display: true, position: 'top' },
-          scales: {
-            yAxes: [{
-              ticks: { beginAtZero: true },
-              gridLines: { color: 'rgba(0,0,0,0.06)' }
-            }],
-            xAxes: [{
-              gridLines: { color: 'rgba(0,0,0,0.03)' }
-            }]
-          }
-        }
-      });
+        });
+      }
 
       /* ========= 3. Análisis de Vulnerabilidad ========= */
-      var ctx3 = document.getElementById('myanalisisvulnerabilidad').getContext('2d');
+      var cVul = document.getElementById('myanalisisvulnerabilidad');
+      if (cVul) {
+        var ctx3 = cVul.getContext('2d');
 
-      var gradVul = ctx3.createLinearGradient(0, 0, 0, 320);
-      gradVul.addColorStop(0, 'rgba(24, 40, 62, 1)');
-      gradVul.addColorStop(1, 'rgba(56, 92, 140, 0.95)');
+        var gradVul = ctx3.createLinearGradient(0, 0, 0, 320);
+        gradVul.addColorStop(0, 'rgba(24, 40, 62, 1)');
+        gradVul.addColorStop(1, 'rgba(56, 92, 140, 0.95)');
 
-      new Chart(ctx3, {
-        type: 'bar',
-        data: {
-          labels: vulnerabilidadLabels,
-          datasets: [{
-            label: 'Promedio de nivel de control',
-            data: vulnerabilidadPromedios,
-            backgroundColor: gradVul,
-            borderColor: 'rgba(18, 26, 38, 0.95)',
-            borderWidth: 2,
-            hoverBackgroundColor: 'rgba(36, 66, 102, 0.95)',
-            categoryPercentage: 0.65,
-            barPercentage: 0.78
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: { display: false },
-          tooltips: {
-            backgroundColor: 'rgba(18,18,18,0.92)',
-            displayColors: false,
-            callbacks: {
-              label: function(tooltipItem) {
-                return 'Indice: ' + tooltipItem.yLabel;
-              }
-            }
-          },
-          layout: {
-            padding: {
-              right: window.innerWidth <= 768 ? 120 : 190
-            }
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                max: 10,
-                min: 0,
-                stepSize: 1,
-                fontColor: '#4A4A4A',
-                fontStyle: 'bold'
-              },
-              gridLines: { color: 'rgba(0,0,0,0.06)' }
-            }],
-            xAxes: [{
-              ticks: {
-                autoSkip: false,
-                maxRotation: 0,
-                minRotation: 0,
-                fontColor: '#4A6FA5',
-                fontStyle: 'bold',
-                fontSize: 11
-              },
-              gridLines: { display: false }
+        new Chart(ctx3, {
+          type: 'bar',
+          data: {
+            labels: vulnerabilidadLabels,
+            datasets: [{
+              label: 'Promedio de nivel de control',
+              data: vulnerabilidadPromedios,
+              backgroundColor: gradVul,
+              borderColor: 'rgba(18, 26, 38, 0.95)',
+              borderWidth: 2,
+              hoverBackgroundColor: 'rgba(36, 66, 102, 0.95)',
+              categoryPercentage: 0.65,
+              barPercentage: 0.78
             }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { display: false },
+            tooltips: {
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              displayColors: false,
+              callbacks: {
+                label: function(tooltipItem) {
+                  return 'Indice: ' + tooltipItem.yLabel;
+                }
+              }
+            },
+            layout: {
+              padding: {
+                right: window.innerWidth <= 768 ? 120 : 190
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  max: 10,
+                  min: 0,
+                  stepSize: 1,
+                  fontColor: '#4A4A4A',
+                  fontStyle: 'bold'
+                },
+                gridLines: { color: 'rgba(0,0,0,0.06)' }
+              }],
+              xAxes: [{
+                ticks: {
+                  autoSkip: false,
+                  maxRotation: 0,
+                  minRotation: 0,
+                  fontColor: '#4A6FA5',
+                  fontStyle: 'bold',
+                  fontSize: 11
+                },
+                gridLines: { display: false }
+              }]
+            }
           }
-        }
-      });
+        });
+      }
 
       /* ========= 4. Distribución de riesgos por criterio (AGRUPADO) ========= */
       var canvasRiesgos = document.getElementById('myriesgosporcriterio');
-
       if (canvasRiesgos) {
         var ctx4 = canvasRiesgos.getContext('2d');
 
@@ -632,6 +769,542 @@
         });
       }
 
+      /* ========= 5. Distribución de Medidas de Seguridad ========= */
+      function safeCanvas(id){
+        var el = document.getElementById(id);
+        return el ? el.getContext('2d') : null;
+      }
+
+      function makePie(ctx, title, labels, data, colors){
+        var piePercentPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.config.type !== 'doughnut') return;
+
+            var ctx = chart.chart.ctx;
+            var dataset = chart.data.datasets[0];
+            var meta = chart.getDatasetMeta(0);
+            var total = dataset.data.reduce(function(a,b){ return a + (Number(b)||0); }, 0);
+
+            if (!total) return;
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            meta.data.forEach(function(arc, i){
+              var val = Number(dataset.data[i] || 0);
+              if (!val) return;
+
+              var pct = (val / total) * 100;
+              if (pct < 3) return;
+
+              var model = arc._model;
+              var angle = (model.startAngle + model.endAngle) / 2;
+              var r = (model.innerRadius + model.outerRadius) / 2;
+
+              var x = model.x + Math.cos(angle) * r;
+              var y = model.y + Math.sin(angle) * r;
+
+              var isMobile = window.innerWidth <= 480;
+              ctx.font = (isMobile ? '700 10px' : '800 11px') + " Poppins, Arial, sans-serif";
+
+              var text = pct.toFixed(0) + '%';
+              var tw = ctx.measureText(text).width;
+              var padX = isMobile ? 5 : 6;
+              var bw = tw + padX * 2;
+              var bh = (isMobile ? 16 : 18);
+
+              ctx.fillStyle = 'rgba(18,18,18,0.65)';
+              ctx.beginPath();
+              ctx.moveTo(x - bw/2 + 6, y - bh/2);
+              ctx.lineTo(x + bw/2 - 6, y - bh/2);
+              ctx.quadraticCurveTo(x + bw/2, y - bh/2, x + bw/2, y - bh/2 + 6);
+              ctx.lineTo(x + bw/2, y + bh/2 - 6);
+              ctx.quadraticCurveTo(x + bw/2, y + bh/2, x + bw/2 - 6, y + bh/2);
+              ctx.lineTo(x - bw/2 + 6, y + bh/2);
+              ctx.quadraticCurveTo(x - bw/2, y + bh/2, x - bw/2, y + bh/2 - 6);
+              ctx.lineTo(x - bw/2, y - bh/2 + 6);
+              ctx.quadraticCurveTo(x - bw/2, y - bh/2, x - bw/2 + 6, y - bh/2);
+              ctx.closePath();
+              ctx.fill();
+
+              ctx.fillStyle = '#fff';
+              ctx.fillText(text, x, y);
+            });
+
+            ctx.restore();
+          }
+        };
+
+        var isMobile = window.innerWidth <= 480;
+
+        return new Chart(ctx, {
+          type: 'doughnut',
+          plugins: [piePercentPlugin],
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: colors,
+              borderColor: 'rgba(255,255,255,0.95)',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutoutPercentage: 62,
+            animation: { duration: 900, easing: 'easeOutQuart' },
+            legend: {
+              position: 'bottom',
+              labels: {
+                fontStyle: 'bold',
+                boxWidth: isMobile ? 9 : 10,
+                fontSize: isMobile ? 10 : 12,
+                padding: isMobile ? 8 : 12,
+                usePointStyle: true
+              }
+            },
+            tooltips: {
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              displayColors: true,
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  var l = data.labels[tooltipItem.index] || '';
+                  var v = Number(data.datasets[0].data[tooltipItem.index] || 0);
+                  var total = data.datasets[0].data.reduce(function(a,b){ return a + (Number(b)||0); }, 0);
+                  var pct = total ? ((v/total)*100).toFixed(1) : '0.0';
+                  return ' ' + l + ': ' + v + ' (' + pct + '%)';
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function makeHBar(ctx, labels, data, fill, border, maxX){
+        var isMobile = window.innerWidth <= 480;
+
+        return new Chart(ctx, {
+          type: 'horizontalBar',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: fill,
+              borderColor: border,
+              borderWidth: 2,
+              barThickness: isMobile ? 12 : 14
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { display: false },
+            layout: { padding: { left: isMobile ? 18 : 10, right: 10, top: 6, bottom: 6 } },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                  stepSize: 1,
+                  fontColor: 'rgba(255,255,255,0.88)',
+                  fontStyle: 'bold',
+                  suggestedMax: (typeof maxX === 'number' ? maxX : undefined)
+                },
+                gridLines: { color: 'rgba(255,255,255,0.10)' }
+              }],
+              yAxes: [{
+                gridLines: { display: false },
+                ticks: {
+                  fontColor: 'rgba(255,255,255,0.92)',
+                  fontStyle: 'bold',
+                  fontSize: isMobile ? 10 : 11,
+                  padding: isMobile ? 6 : 4
+                }
+              }]
+            },
+            tooltips: {
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              displayColors: false,
+              callbacks: {
+                label: function(t) { return ' ' + t.yLabel + ': ' + t.xLabel; }
+              }
+            }
+          }
+        });
+      }
+
+      /* --- Pies --- */
+      var pieDebCtx = safeCanvas('pieDebilidades');
+      if (pieDebCtx) {
+        makePie(
+          pieDebCtx,
+          'Debilidades',
+          medDebLabels,
+          medDebData,
+          [
+            'rgba(255, 90, 90, 0.95)',
+            'rgba(255, 0, 0, 0.92)',
+            'rgba(255, 180, 0, 0.92)',
+            'rgba(255, 110, 110, 0.55)'
+          ]
+        );
+      }
+
+      var pieForCtx = safeCanvas('pieFortalezas');
+      if (pieForCtx) {
+        makePie(
+          pieForCtx,
+          'Fortalezas',
+          medForLabels,
+          medForData,
+          [
+            'rgba(120, 170, 60, 0.95)',
+            'rgba(155, 220, 85, 0.92)',
+            'rgba(100, 170, 120, 0.92)',
+            'rgba(180, 240, 120, 0.70)'
+          ]
+        );
+      }
+
+      /* ===== Pintar mini bars ===== */
+      function debBarData(key){
+        var d = (medDebDetalle && medDebDetalle[key]) ? medDebDetalle[key] : {};
+        return [ d['Regular']||0, d['Deficiente']||0, d['Sin control']||0, d['Inoperante']||0 ];
+      }
+      var debLabels = ['Regular','Deficiente','Sin control','Inoperante'];
+
+      function forBarData(key){
+        var d = (medForDetalle && medForDetalle[key]) ? medForDetalle[key] : {};
+        return [ d['Óptimo']||0, d['Eficiente']||0 ];
+      }
+      var forLabels = ['Óptimo','Eficiente'];
+
+      var ctxDebPas = safeCanvas('barDebPasivas');
+      var ctxDebAct = safeCanvas('barDebActivas');
+      var ctxDebDoc = safeCanvas('barDebDoc');
+      var ctxDebHum = safeCanvas('barDebHumanas');
+
+      var ctxForPas = safeCanvas('barForPasivas');
+      var ctxForAct = safeCanvas('barForActivas');
+      var ctxForDoc = safeCanvas('barForDoc');
+      var ctxForHum = safeCanvas('barForHumanas');
+
+      if (ctxDebPas) makeHBar(ctxDebPas, debLabels, debBarData('pasivas'),      'rgba(255, 90, 90, 0.65)',   'rgba(255, 90, 90, 0.95)');
+      if (ctxDebAct) makeHBar(ctxDebAct, debLabels, debBarData('activas'),      'rgba(255, 0, 0, 0.65)',     'rgba(255, 0, 0, 0.92)');
+      if (ctxDebHum) makeHBar(ctxDebHum, debLabels, debBarData('humanas'),      'rgba(255, 180, 0, 0.60)',   'rgba(255, 180, 0, 0.92)');
+      if (ctxDebDoc) makeHBar(ctxDebDoc, debLabels, debBarData('documentales'), 'rgba(255, 110, 110, 0.45)', 'rgba(255, 110, 110, 0.55)');
+
+      if (ctxForPas) makeHBar(ctxForPas, forLabels, forBarData('pasivas'),      'rgba(120, 170, 60, 0.55)',   'rgba(120, 170, 60, 0.95)');
+      if (ctxForAct) makeHBar(ctxForAct, forLabels, forBarData('activas'),      'rgba(155, 220, 85, 0.55)',   'rgba(155, 220, 85, 0.92)');
+      if (ctxForHum) makeHBar(ctxForHum, forLabels, forBarData('humanas'),      'rgba(100, 170, 120, 0.55)',  'rgba(100, 170, 120, 0.92)');
+      if (ctxForDoc) makeHBar(ctxForDoc, forLabels, forBarData('documentales'), 'rgba(180, 240, 120, 0.55)',  'rgba(180, 240, 120, 0.70)');
+
+      /* ========= 7. Pareto (80-20) ========= */
+      var canvasPareto = document.getElementById('mypareto');
+      if (canvasPareto) {
+        var ctxP = canvasPareto.getContext('2d');
+
+        var pl = (paretoLabels || []);
+        var pi = (paretoIPD || []);
+        var pa = (paretoAcum || []);
+
+        function barGradient(ctx) {
+          var g = ctx.createLinearGradient(0, 0, 0, 320);
+          g.addColorStop(0, 'rgba(74, 111, 165, 0.90)');
+          g.addColorStop(1, 'rgba(205, 220, 240, 0.95)');
+          return g;
+        }
+        var gradBar = barGradient(ctxP);
+
+        var paretoPointPctPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mypareto') return;
+
+            var meta = chart.getDatasetMeta(1);
+            if (!meta || meta.hidden) return;
+
+            var ctx = chart.ctx;
+            var area = chart.chartArea;
+
+            ctx.save();
+            ctx.font = "800 11px Poppins, Arial, sans-serif";
+            ctx.fillStyle = "rgba(18,18,18,0.78)";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+
+            meta.data.forEach(function(pt, i){
+              var v = Number(chart.data.datasets[1].data[i] || 0);
+              if (!v) return;
+
+              var x = pt._model.x;
+              var y = pt._model.y - 10;
+              var safeTop = area.top + 14;
+              if (y < safeTop) y = safeTop;
+
+              ctx.fillText(v.toFixed(0) + "%", x, y);
+            });
+
+            ctx.restore();
+          }
+        };
+
+        function renderParetoLegend(chart){
+          var el = document.getElementById('paretoLegend');
+          if (!el) return;
+
+          var d0 = chart.data.datasets[0];
+          var d1 = chart.data.datasets[1];
+
+          el.innerHTML = `
+            <div class="giro-pareto-legend__inner">
+              <div class="giro-pareto-legend__item">
+                <span class="giro-pareto-legend__swatch giro-pareto-legend__swatch--bar"></span>
+                <span class="giro-pareto-legend__text">${d0.label}</span>
+              </div>
+              <div class="giro-pareto-legend__item">
+                <span class="giro-pareto-legend__swatch giro-pareto-legend__swatch--line"></span>
+                <span class="giro-pareto-legend__text">${d1.label}</span>
+              </div>
+            </div>
+          `;
+        }
+
+        var paretoLineFrontPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mypareto') return;
+            var meta = chart.getDatasetMeta(1);
+            if (!meta || meta.hidden) return;
+            meta.controller.draw();
+          }
+        };
+
+        var isMobile = window.innerWidth <= 480;
+
+        var paretoChart = new Chart(ctxP, {
+          type: 'bar',
+          plugins: [paretoPointPctPlugin, paretoLineFrontPlugin],
+          data: {
+            labels: pl,
+            datasets: [
+              {
+                type: 'bar',
+                label: 'IPD',
+                data: pi,
+                backgroundColor: gradBar,
+                borderColor: 'rgba(18,18,18,0.45)',
+                borderWidth: 2,
+                barThickness: isMobile ? 14 : 20,
+                maxBarThickness: isMobile ? 16 : 24,
+                categoryPercentage: 0.70,
+                barPercentage: 0.62,
+                order: 1
+              },
+              {
+                type: 'line',
+                label: 'Riesgo Acumulado',
+                data: pa,
+                yAxisID: 'yPct',
+                borderColor: 'rgba(255,0,0,0.92)',
+                backgroundColor: 'transparent',
+                borderWidth: 3,
+                pointRadius: 4,
+                pointHoverRadius: 5,
+                pointBackgroundColor: 'rgba(255,255,255,1)',
+                pointBorderColor: 'rgba(255,0,0,0.92)',
+                pointBorderWidth: 2,
+                fill: false,
+                lineTension: 0.25,
+                order: 99
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 900, easing: 'easeOutQuart' },
+            legend: { display: false },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+              backgroundColor: 'rgba(18,18,18,0.92)',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              callbacks: {
+                label: function(t, d){
+                  var label = d.datasets[t.datasetIndex].label || '';
+                  if (t.datasetIndex === 1) return ' ' + label + ': ' + Number(t.yLabel).toFixed(2) + '%';
+                  return ' ' + label + ': ' + t.yLabel;
+                }
+              }
+            },
+            hover: { mode: 'nearest', intersect: false },
+            layout: { padding: { top: 22, right: 16, bottom: 6, left: 10 } },
+            scales: {
+              yAxes: [
+                {
+                  id: 'yIPD',
+                  position: 'left',
+                  ticks: { beginAtZero: true, precision: 0, fontStyle: 'bold' },
+                  gridLines: { color: 'rgba(0,0,0,0.06)' }
+                },
+                {
+                  id: 'yPct',
+                  position: 'right',
+                  ticks: { beginAtZero: true, max: 100, callback: function(v){ return v + '%'; }, fontStyle: 'bold' },
+                  gridLines: { drawOnChartArea: false }
+                }
+              ],
+              xAxes: [
+                {
+                  ticks: { fontStyle: 'bold', maxRotation: 0, minRotation: 0, padding: 10 },
+                  gridLines: { display: false }
+                }
+              ]
+            }
+          }
+        });
+
+        renderParetoLegend(paretoChart);
+
+        window.addEventListener('resize', function(){
+          renderParetoLegend(paretoChart);
+          paretoChart.update(0);
+        });
+      }
+
+
+      /* ========= 8. Matriz de evaluación de riesgos (puntos sobre matriz HTML/CSS) ========= */
+    var canvasMatrix = document.getElementById('mymatrizriesgos');
+    if (canvasMatrix) {
+      var ctxM = canvasMatrix.getContext('2d');
+
+      var steps = [0.4, 1.2, 2, 4, 6, 8, 10];
+
+      var scatterData = (matrixPoints || []).map(function(p){
+        return {
+          x: Number(p.x || 0),
+          y: Number(p.y || 0),
+          id: p.id,
+          label: p.label,
+          ipd: p.ipd,
+          perfil: p.perfil,
+          nivel: p.nivel
+        };
+      });
+
+      var matrixPointLabelPlugin = {
+        afterDatasetsDraw: function(chart) {
+          if (!chart || chart.canvas.id !== 'mymatrizriesgos') return;
+
+          var ctx = chart.ctx;
+          var meta = chart.getDatasetMeta(0);
+          if (!meta || meta.hidden) return;
+
+          ctx.save();
+          ctx.font = "900 10px Poppins, Arial, sans-serif";
+          ctx.fillStyle = "#ffffff";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+
+          meta.data.forEach(function(pt, i) {
+            var d = chart.data.datasets[0].data[i];
+            if (!d) return;
+            ctx.fillText(String(d.id || ''), pt._model.x, pt._model.y);
+          });
+
+          ctx.restore();
+        }
+      };
+
+      new Chart(ctxM, {
+        type: 'scatter',
+        plugins: [matrixPointLabelPlugin],
+        data: {
+          datasets: [{
+            label: 'Escenarios',
+            data: scatterData,
+            pointRadius: 13,
+            pointHoverRadius: 14,
+            pointBackgroundColor: 'rgba(0,0,0,0.96)',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: { display: false },
+          animation: {
+            duration: 700
+          },
+          layout: {
+            padding: {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0
+            }
+          },
+          tooltips: {
+            backgroundColor: 'rgba(25,25,25,0.88)',
+            titleFontStyle: 'bold',
+            bodyFontStyle: 'bold',
+            displayColors: false,
+            xPadding: 14,
+            yPadding: 12,
+            cornerRadius: 12,
+            caretSize: 8,
+            callbacks: {
+              title: function(items, data){
+                var i = items && items[0] ? items[0].index : 0;
+                var p = data.datasets[0].data[i] || {};
+                return (p.label || 'Escenario');
+              },
+              label: function(item, data){
+                var p = data.datasets[0].data[item.index] || {};
+                return [
+                  'IPD: ' + Number(p.ipd || 0).toFixed(2),
+                  'Perfil: ' + (p.perfil || ''),
+                  'Nivel: ' + (p.nivel || ''),
+                  'Amenaza: ' + Number(p.y || 0).toFixed(1),
+                  'Impacto: ' + Number(p.x || 0).toFixed(1)
+                ];
+              }
+            }
+          },
+          scales: {
+            xAxes: [{
+              type: 'linear',
+              position: 'bottom',
+              ticks: {
+                min: 0.0,
+                max: 10.8,
+                display: false
+              },
+              gridLines: {
+                display: false,
+                drawBorder: false
+              }
+            }],
+            yAxes: [{
+              type: 'linear',
+              ticks: {
+                min: 0.0,
+                max: 10.8,
+                display: false
+              },
+              gridLines: {
+                display: false,
+                drawBorder: false
+              }
+            }]
+          }
+        }
+      });
+    }
+
 
     });
   </script>
@@ -639,60 +1312,6 @@
 
 @push('styles')
   <link href="{{ asset('/css/version2/kpis.css') }}?v={{ date('YmdHis') }}" rel="stylesheet" type="text/css" />
-
-  <style>
-    /* ===== Fix overflow en web (no barra) + wrap especial ===== */
-    .giro-chart-canvas-wrap--vuln,
-    .giro-chart-canvas-wrap--security{
-      position: relative;
-      overflow: hidden; /* en web NO scroll */
-      width: 100%;
-    }
-
-    .giro-chart-canvas-inner--vuln,
-    .giro-chart-canvas-inner--security{
-      position: relative;
-      width: 100%;
-      height: 430px;
-    }
-
-    #myanalisisvulnerabilidad,
-    #myriesgosporcriterio{
-      display: block;
-      width: 100% !important;
-      height: 430px !important;
-      max-width: 100%;
-    }
-
-    /* ===== Mobile: permitir scroll horizontal si hay muchas etiquetas ===== */
-    @media (max-width: 768px){
-      .giro-chart-canvas-wrap--vuln,
-      .giro-chart-canvas-wrap--security{
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .giro-chart-canvas-inner--vuln{
-        width: 900px;
-        min-width: 900px;
-        height: 360px;
-      }
-
-      .giro-chart-canvas-inner--security{
-        width: 900px;
-        min-width: 900px;
-        height: 360px;
-      }
-
-      #myanalisisvulnerabilidad,
-      #myriesgosporcriterio{
-        width: 900px !important;
-        height: 360px !important;
-        max-width: none;
-      }
-    }
-  </style>
 @endpush
 
 @section('title')
@@ -741,7 +1360,7 @@
                   Distr. de<br>Medidas de S
                 </button>
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-origen">
-                  Distr. Riesgos<br>por Origen
+                  Matriz de evaluación<br>de riesgos
                 </button>
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-security">
                   Distr. Riesgos<br> por criterio
@@ -769,11 +1388,47 @@
 
                 {{-- 2. Daño potencial --}}
                 <div class="giro-chart-panel" id="chart-dano">
-                  <div class="giro-chart-card">
+                  <div class="giro-chart-card giro-chart-card--dano">
                     <h5 class="giro-chart-title">Daño Potencial vs Patrón Estándar</h5>
-                    <div class="giro-chart-canvas-wrap">
-                      <canvas id="mydapotencial"></canvas>
+
+                    <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--dano">
+                      <canvas id="mydanopotencial"></canvas>
                     </div>
+
+                    {{-- Tabla  --}}
+                    <div class="giro-dano-table-wrap">
+                      <table class="giro-dano-table">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Muy Bajo</th>
+                            <th>Bajo</th>
+                            <th>Medio</th>
+                            <th>Alto</th>
+                            <th>Muy Alto</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><span class="giro-dano-dot giro-dano-dot--pot"></span> Riesgo Potencial</td>
+                            <td>{{ number_format($distribucionEscenarios['muy_bajo'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['bajo'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['medio'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['alto'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['muy_alto'] ?? 0, 2) }}%</td>
+                          </tr>
+                          <tr>
+                            <td><span class="giro-dano-dot giro-dano-dot--std"></span> Riesgo Estándar</td>
+                            <td>60.00%</td>
+                            <td>30.00%</td>
+                            <td>10.00%</td>
+                            <td>0.00%</td>
+                            <td>0.00%</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
                   </div>
                 </div>
 
@@ -789,23 +1444,212 @@
                   </div>
                 </div>
 
-                {{-- 4. Placeholder --}}
+                {{-- 4. Medidas --}}
                 <div class="giro-chart-panel" id="chart-medidas">
                   <div class="giro-chart-card">
                     <h5 class="giro-chart-title">Distribución de Medidas de Seguridad</h5>
-                    <div class="giro-chart-placeholder">
-                      Aquí irá la gráfica de <strong>Distribución de Medidas de Seguridad</strong>
+
+                    <div class="giro-medidas-grid">
+
+                      {{-- ===================== DEBILIDADES ===================== --}}
+                      <div class="giro-medidas-block">
+                        <div class="giro-medidas-head giro-medidas-head--bad">
+                          <span>DEBILIDADES DEL SISTEMA DE SEGURIDAD</span>
+                        </div>
+
+                        <div class="giro-medidas-pie">
+                          <canvas id="pieDebilidades"></canvas>
+                        </div>
+
+                        <div class="giro-medidas-mini">
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Pasivas</div>
+                            <canvas id="barDebPasivas"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Activas</div>
+                            <canvas id="barDebActivas"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Documentales</div>
+                            <canvas id="barDebDoc"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Humanas</div>
+                            <canvas id="barDebHumanas"></canvas>
+                          </div>
+                        </div>
+                      </div>
+
+                      {{-- ===================== FORTALEZAS ===================== --}}
+                      <div class="giro-medidas-block">
+                        <div class="giro-medidas-head giro-medidas-head--good">
+                          <span>FORTALEZAS DEL SISTEMA DE SEGURIDAD</span>
+                        </div>
+
+                        <div class="giro-medidas-pie">
+                          <canvas id="pieFortalezas"></canvas>
+                        </div>
+
+                        <div class="giro-medidas-mini">
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Pasivas</div>
+                            <canvas id="barForPasivas"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Activas</div>
+                            <canvas id="barForActivas"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Documentales</div>
+                            <canvas id="barForDoc"></canvas>
+                          </div>
+
+                          <div class="giro-mini-card">
+                            <div class="giro-mini-title">Humanas</div>
+                            <canvas id="barForHumanas"></canvas>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
 
-                {{-- 5. Placeholder --}}
+                {{-- 5. Matriz de evaluación de riesgos --}}
+                {{-- 5. Matriz de evaluación de riesgos --}}
                 <div class="giro-chart-panel" id="chart-origen">
-                  <div class="giro-chart-card">
-                    <h5 class="giro-chart-title">Distribución de Riesgos por Origen</h5>
-                    <div class="giro-chart-placeholder">
-                      Aquí irá la gráfica de <strong>Distribución de Riesgos por Origen</strong>
+                  <div class="giro-chart-card giro-chart-card--matrix">
+                    <h5 class="giro-chart-title">Matriz de evaluación de riesgos</h5>
+
+                    <div class="giro-matrix-wrap giro-matrix-wrap--vertical">
+                      <div class="giro-matrix-left giro-matrix-left--full">
+
+                        <div class="giro-matrix-stage">
+                          {{-- Eje Y categorías --}}
+                          <div class="giro-matrix-ylabels">
+                            <div class="y10">Constante</div>
+                            <div class="y8">Habitual</div>
+                            <div class="y6">Frecuente</div>
+                            <div class="y4">Ocasional</div>
+                            <div class="y2">Esporádico</div>
+                            <div class="y12">Remoto</div>
+                            <div class="y04">Improbable</div>
+                          </div>
+
+                          {{-- Eje Y valores --}}
+                          <div class="giro-matrix-yvals">
+                            <div class="y10">10.0</div>
+                            <div class="y8">8.0</div>
+                            <div class="y6">6.0</div>
+                            <div class="y4">4.0</div>
+                            <div class="y2">2.0</div>
+                            <div class="y12">1.2</div>
+                            <div class="y04">0.4</div>
+                          </div>
+
+                          {{-- Área principal --}}
+                          <div class="giro-matrix-main">
+                            <div class="giro-matrix-grid">
+                              {{-- fila 1 --}}
+                              <div class="c g"></div><div class="c y"></div><div class="c r"></div><div class="c d"></div><div class="c d"></div><div class="c d"></div><div class="c d"></div>
+                              {{-- fila 2 --}}
+                              <div class="c g"></div><div class="c y"></div><div class="c y"></div><div class="c r"></div><div class="c d"></div><div class="c d"></div><div class="c d"></div>
+                              {{-- fila 3 --}}
+                              <div class="c g"></div><div class="c y"></div><div class="c y"></div><div class="c r"></div><div class="c r"></div><div class="c d"></div><div class="c d"></div>
+                              {{-- fila 4 --}}
+                              <div class="c g"></div><div class="c g"></div><div class="c y"></div><div class="c y"></div><div class="c r"></div><div class="c r"></div><div class="c d"></div>
+                              {{-- fila 5 --}}
+                              <div class="c x"></div><div class="c g"></div><div class="c g"></div><div class="c y"></div><div class="c y"></div><div class="c y"></div><div class="c r"></div>
+                              {{-- fila 6 --}}
+                              <div class="c x"></div><div class="c x"></div><div class="c g"></div><div class="c g"></div><div class="c y"></div><div class="c y"></div><div class="c y"></div>
+                              {{-- fila 7 --}}
+                              <div class="c x"></div><div class="c x"></div><div class="c x"></div><div class="c g"></div><div class="c g"></div><div class="c g"></div><div class="c g"></div>
+                            </div>
+
+                            <div class="giro-matrix-canvas-wrap">
+                              <canvas id="mymatrizriesgos"></canvas>
+                            </div>
+
+                            <div class="giro-matrix-xvals">
+                              <div>0.4</div>
+                              <div>1.2</div>
+                              <div>2.0</div>
+                              <div>4.0</div>
+                              <div>6.0</div>
+                              <div>8.0</div>
+                              <div>10.0</div>
+                            </div>
+
+                            <div class="giro-matrix-xlabels">
+                              <div>Insignificante</div>
+                              <div>leve</div>
+                              <div>Marginal</div>
+                              <div>Grave</div>
+                              <div>Crítico</div>
+                              <div>Desastroso</div>
+                              <div>Catastrófico</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="giro-matrix-axis-note giro-matrix-axis-note--matrix">
+                          <span><strong>Amenaza</strong></span>
+                          <span><strong>Impacto / Severidad</strong></span>
+                        </div>
+                      </div>
+
+                      <div class="giro-matrix-bottom">
+                        <div class="giro-matrix-table-title">
+                          Resumen de escenarios
+                          <small style="display:block;font-size:12px;font-weight:700;color:#6b7280;margin-top:4px;">
+                            Se muestran 8 registros visibles. Desliza para ver más.
+                          </small>
+                        </div>
+
+                        <div class="giro-matrix-table-wrap giro-matrix-table-wrap--bottom">
+                          <table class="giro-matrix-table">
+                            <thead>
+                              <tr>
+                                <th>Escenario</th>
+                                <th>IPD</th>
+                                <th>Perfil</th>
+                                <th>Nivel</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              @forelse(($matrixRows ?? []) as $r)
+                                @php
+                                  $lvl = $r['nivel'] ?? '';
+                                  $cls = 'lvl-bajo';
+                                  if ($lvl === 'Muy Alto') $cls = 'lvl-muy-alto';
+                                  elseif ($lvl === 'Alto') $cls = 'lvl-alto';
+                                  elseif ($lvl === 'Medio') $cls = 'lvl-medio';
+                                  elseif ($lvl === 'Bajo') $cls = 'lvl-bajo';
+                                  else $cls = 'lvl-muy-bajo';
+                                @endphp
+                                <tr>
+                                  <td class="td-esc">{{ $r['label'] ?? '' }}</td>
+                                  <td>{{ number_format((float)($r['ipd'] ?? 0), 2) }}</td>
+                                  <td>{{ $r['perfil'] ?? '' }}</td>
+                                  <td><span class="giro-lvl {{ $cls }}">{{ $lvl }}</span></td>
+                                </tr>
+                              @empty
+                                <tr>
+                                  <td colspan="4" class="text-center py-3">Sin datos</td>
+                                </tr>
+                              @endforelse
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
+
                   </div>
                 </div>
 
@@ -821,17 +1665,22 @@
                   </div>
                 </div>
 
-                {{-- 7. Placeholder --}}
+                {{-- 7. Pareto (80-20) --}}
                 <div class="giro-chart-panel" id="chart-pareto">
-                  <div class="giro-chart-card">
+                  <div class="giro-chart-card giro-chart-card--pareto">
                     <h5 class="giro-chart-title">Gráfico Pareto (80-20)</h5>
-                    <div class="giro-chart-placeholder">
-                      Aquí irá la gráfica de <strong>Pareto (80-20)</strong>
+
+                    <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--pareto">
+                      <div class="giro-chart-canvas-inner giro-chart-canvas-inner--pareto" id="paretoInner">
+                        <canvas id="mypareto"></canvas>
+                      </div>
                     </div>
+
+                    <div id="paretoLegend" class="giro-pareto-legend"></div>
                   </div>
                 </div>
 
-                {{-- 8. Placeholder --}}
+                {{-- 8. Distribución % de Escenarios --}}
                 <div class="giro-chart-panel" id="chart-escenarios">
                   <div class="giro-chart-card">
                     <h5 class="giro-chart-title">Distribución % de Escenarios</h5>

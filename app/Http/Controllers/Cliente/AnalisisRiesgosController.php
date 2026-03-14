@@ -240,9 +240,22 @@ class AnalisisRiesgosController extends Controller
 
     public function graficassociales($id_cliente)
     {
-        $data = AnalisisRiesgoSocial::with(['BarrerasPerimetrales', 'hdNivelControl'])
-            ->where('cliente_id', $id_cliente)
-            ->get();
+        // $data = AnalisisRiesgoSocial::with(['BarrerasPerimetrales', 'hdNivelControl'])
+        //     ->where('cliente_id', $id_cliente)
+        //     ->get();
+
+        $data = AnalisisRiesgoSocial::with([
+            'BarrerasPerimetrales',
+            'hdNivelControl',
+            'analisisRiesgoSocialDeficiencias', // <-- IMPORTANTE
+
+            // === para Pareto (IPD / Criticidad) ===
+            'factorExp',
+            'hdProbabilidadif',
+            'hdConsecuencia',
+        ])->where('cliente_id', $id_cliente)->get();
+
+        // var_dump($data);
 
         $cliente = Cliente::where('id', $id_cliente)->first();
 
@@ -428,6 +441,246 @@ class AnalisisRiesgosController extends Controller
             $distribucionEscenarios['total']    = 100;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | PARETO (80–20): IPD ordenado + % Criticidad + % Acumulado
+        |--------------------------------------------------------------------------
+        | - Barra: IPD por escenario (E.<id>)
+        | - Línea: Riesgo acumulado (suma de % criticidad)
+        */
+        $paretoTmp = [];
+        $totalIPD = 0;
+
+        foreach ($data as $unid) {
+            // IPD (como tu cálculo de criticidad)
+            $ipd = (round(($unid->factorExp?->factor_dato ?? 0) *
+                  ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0))) *
+                  ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+
+            $ipd = (float) $ipd;
+
+            $paretoTmp[] = [
+                'id'  => (int) ($unid->id ?? 0),
+                'ipd' => $ipd,
+            ];
+
+            $totalIPD += $ipd;
+        }
+
+        // Ordenar de mayor a menor por IPD
+        usort($paretoTmp, function($a, $b){
+            return $b['ipd'] <=> $a['ipd'];
+        });
+
+        // Construir series
+        $paretoLabels = [];
+        $paretoIPD = [];
+        $paretoCrit = [];
+        $paretoAcum = [];
+
+        $acum = 0;
+
+        foreach ($paretoTmp as $row) {
+            $label = 'E.' . ($row['id'] ?: '0');
+
+            $crit = $totalIPD > 0 ? round(($row['ipd'] / $totalIPD) * 100, 2) : 0;
+            $acum = round($acum + $crit, 2);
+            if ($acum > 100) $acum = 100;
+
+            $paretoLabels[] = $label;
+            $paretoIPD[]    = round($row['ipd'], 2);
+            $paretoCrit[]   = $crit;
+            $paretoAcum[]   = $acum;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Distribución de Medidas de Seguridad (Debilidades / Fortalezas)
+        |--------------------------------------------------------------------------
+        | Fuente: analisis_riesgo_social_deficiencias (checks seleccionados)
+        | Clasificación por hd_nivel_control (tabla hd_nivel_control):
+        | Debilidades: Regular / Deficiente / Sin control / Inoperante
+        | Fortalezas:  Eficiente / Óptimo
+        |--------------------------------------------------------------------------
+        */
+        $mapDef = [
+            1 => 'pasivas',
+            2 => 'activas',
+            3 => 'humanas',
+            4 => 'documentales',
+        ];
+
+        $labelsMed = [
+            'pasivas'       => 'Pasivas',
+            'activas'       => 'Activas',
+            'humanas'       => 'Humanas',
+            'documentales'  => 'Documentales',
+        ];
+
+        $medidas = [
+            'debilidades' => [
+                'totales' => ['pasivas'=>0,'activas'=>0,'humanas'=>0,'documentales'=>0],
+                'detalle' => [
+                    'pasivas'      => ['Regular'=>0,'Deficiente'=>0,'Sin control'=>0,'Inoperante'=>0],
+                    'activas'      => ['Regular'=>0,'Deficiente'=>0,'Sin control'=>0,'Inoperante'=>0],
+                    'humanas'      => ['Regular'=>0,'Deficiente'=>0,'Sin control'=>0,'Inoperante'=>0],
+                    'documentales' => ['Regular'=>0,'Deficiente'=>0,'Sin control'=>0,'Inoperante'=>0],
+                ],
+            ],
+            'fortalezas' => [
+                'totales' => ['pasivas'=>0,'activas'=>0,'humanas'=>0,'documentales'=>0],
+                'detalle' => [
+                    'pasivas'      => ['Óptimo'=>0,'Eficiente'=>0],
+                    'activas'      => ['Óptimo'=>0,'Eficiente'=>0],
+                    'humanas'      => ['Óptimo'=>0,'Eficiente'=>0],
+                    'documentales' => ['Óptimo'=>0,'Eficiente'=>0],
+                ],
+            ],
+        ];
+
+        $nivelFromHd = function($hdNivelControl) {
+            // Leer el nombre REAL del nivel (por id / tabla hd_nivel_control)
+            $raw = trim((string) optional($hdNivelControl)->nivel_control);
+
+            // Normalizar (espacios + minúsculas)
+            $rawLower = preg_replace('/\s+/', ' ', mb_strtolower($raw));
+
+            if ($rawLower === 'optimo' || $rawLower === 'óptimo') return 'Óptimo';
+            if ($rawLower === 'eficiente') return 'Eficiente';
+            if ($rawLower === 'regular') return 'Regular';
+            if ($rawLower === 'deficiente') return 'Deficiente';
+            if ($rawLower === 'sin control') return 'Sin control';
+            if ($rawLower === 'inoperante') return 'Inoperante';
+
+            // Fallback por nc_calculo SOLO si viene vacío el nombre
+            $nc = (float) (optional($hdNivelControl)->nc_calculo ?? 0);
+            if ($nc >= 10) return 'Óptimo';
+            if ($nc >= 8)  return 'Eficiente';
+            if ($nc >= 6)  return 'Regular';
+            if ($nc >= 4)  return 'Deficiente';
+            if ($nc >= 2)  return 'Sin control';
+            return 'Inoperante';
+        };
+
+        foreach ($data as $item) {
+
+            $nivel = $nivelFromHd($item->hdNivelControl);
+
+            $isFortaleza = in_array($nivel, ['Óptimo','Eficiente'], true);
+            $bucket = $isFortaleza ? 'fortalezas' : 'debilidades';
+
+            // checar checks (pueden ser varios)
+            foreach (($item->analisisRiesgoSocialDeficiencias ?? []) as $defRow) {
+
+                // en tu tabla SÍ existe id_deficiencia, aunque no esté en fillable
+                $idDef = (int) ($defRow->id_deficiencia ?? 0);
+                if (!isset($mapDef[$idDef])) continue;
+
+                $key = $mapDef[$idDef];
+
+                // total por categoría
+                $medidas[$bucket]['totales'][$key]++;
+
+                // desglose por nivel (ahora sí va a coincidir "Sin control")
+                if (!isset($medidas[$bucket]['detalle'][$key][$nivel])) continue;
+                $medidas[$bucket]['detalle'][$key][$nivel]++;
+            }
+        }
+
+        /* Arrays listos para JS */
+        $medDebLabels = array_values($labelsMed);
+        $medDebData   = [
+            $medidas['debilidades']['totales']['pasivas'],
+            $medidas['debilidades']['totales']['activas'],
+            $medidas['debilidades']['totales']['humanas'],
+            $medidas['debilidades']['totales']['documentales'],
+        ];
+
+        $medForLabels = array_values($labelsMed);
+        $medForData   = [
+            $medidas['fortalezas']['totales']['pasivas'],
+            $medidas['fortalezas']['totales']['activas'],
+            $medidas['fortalezas']['totales']['humanas'],
+            $medidas['fortalezas']['totales']['documentales'],
+        ];
+
+        $medDebDetalle = $medidas['debilidades']['detalle'];
+        $medForDetalle = $medidas['fortalezas']['detalle'];
+
+        /*
+        |--------------------------------------------------------------------------
+        | MATRIZ DE EVALUACIÓN DE RIESGOS (Heatmap + puntos + tabla)
+        |--------------------------------------------------------------------------
+        | - Punto = (x=Fac2, y=Fac1)
+        |   Fac1 = round(factorExp * prob, 1)
+        |   Fac2 = consecuencia
+        | - Tabla: escenario (E.id), IPD, Perfil (fac1-fac2), Nivel
+        */
+        $matrixPoints = [];
+        $matrixRows   = [];
+
+        foreach ($data as $unid) {
+
+            $id = (int) ($unid->id ?? 0);
+
+            // Fac1 = Amenaza/Probabilidad (según tu fórmula)
+            $fac1 = round(
+                (float)($unid->factorExp?->factor_dato ?? 0) *
+                (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
+                1
+            );
+
+            // Fac2 = Impacto/Severidad
+            $fac2 = (float) ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+
+            // IPD base (tu fórmula)
+            $ipdBase = ((int)(
+                (((float)($unid->factorExp?->factor_dato ?? 0) * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) * 10)
+            ) / 10) * ((float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0));
+
+            $ipdBase = round((float)$ipdBase, 2);
+
+            // Nivel (usamos tu mismo umbral de nivel_riesgo)
+            $riesgo = (float)($unid->nivel_riesgo ?? 0);
+            if ($riesgo >= 36.10) {
+                $nivelTxt = 'Muy Alto';
+            } elseif ($riesgo >= 16.10) {
+                $nivelTxt = 'Alto';
+            } elseif ($riesgo >= 6.50) {
+                $nivelTxt = 'Medio';
+            } elseif ($riesgo >= 1.50) {
+                $nivelTxt = 'Bajo';
+            } else {
+                $nivelTxt = 'Muy Bajo';
+            }
+
+            $perfil = '(' . number_format($fac1, 1) . '-' . number_format($fac2, 1) . ')';
+
+            // Puntos para el chart
+            $matrixPoints[] = [
+                'id'     => $id,
+                'label'  => 'E.' . $id,
+                'x'      => $fac2,   // Impacto
+                'y'      => $fac1,   // Amenaza
+                'ipd'    => $ipdBase,
+                'perfil' => $perfil,
+                'nivel'  => $nivelTxt,
+            ];
+
+            // Filas para tabla (orden por ID)
+            $matrixRows[] = [
+                'id'     => $id,
+                'label'  => 'E.' . $id,
+                'ipd'    => $ipdBase,
+                'perfil' => $perfil,
+                'nivel'  => $nivelTxt,
+            ];
+        }
+
+        // Ordenar tabla por ID asc
+        usort($matrixRows, function($a, $b){
+            return ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
+        });
 
         return view('analisisriesgos.graficas-sociales-cliente', compact(
             'data',
@@ -444,10 +697,25 @@ class AnalisisRiesgosController extends Controller
             'riesgosPorCriterioMuyBajo',
             'escenariosFilas',
             'totalesEscenarios',
-            'distribucionEscenarios'
+            'distribucionEscenarios',
+
+            // === Pareto ===
+            'paretoLabels',
+            'paretoIPD',
+            'paretoCrit',
+            'paretoAcum',
+
+            'medDebLabels',
+            'medDebData',
+            'medForLabels',
+            'medForData',
+            'medDebDetalle',
+            'medForDetalle',
+
+            'matrixPoints',
+            'matrixRows',
         ));
     }
-
 
     public function detalleanalisissocial($id_cliente, $id_riesgo)
     {

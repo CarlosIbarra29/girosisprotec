@@ -469,3 +469,1010 @@
     height: 360px;
   }
 }
+
+
+/* ===== Medidas de Seguridad ===== */
+.giro-medidas-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.giro-medidas-block{
+  border: 1px solid rgb(var(--camel-rgb) / 18%);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff 0%, #fcfaf7 100%);
+  box-shadow: 0 14px 30px rgba(0,0,0,.05);
+}
+
+/* header más “pro” */
+.giro-medidas-head{
+  padding: .75rem 1rem;
+  font-weight: 900;
+  letter-spacing: .6px;
+  font-size: .92rem;
+  text-align: center;
+  color: #fff;
+}
+.giro-medidas-head--bad{ background: linear-gradient(90deg, #5a0000, #ff0000); }
+.giro-medidas-head--good{ background: linear-gradient(90deg, #24540d, #8bd13c); }
+
+/* Pie centrado y más alto (web) */
+.giro-medidas-pie{
+  height: 260px;
+  padding: .9rem 1rem .4rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* tarjetas mini (grid) */
+.giro-medidas-mini{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .85rem;
+  padding: .9rem 1rem 1.15rem;
+}
+
+.giro-mini-card{
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), transparent 55%), #0f0f10;
+  border-radius: 16px;
+  padding: .75rem .85rem .7rem;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 12px 26px rgba(0,0,0,0.14);
+  height: 150px;
+  position: relative;
+}
+
+.giro-mini-title{
+  color: #fff;
+  font-weight: 800;
+  font-size: .86rem;
+  text-align: center;
+  margin-bottom: .35rem;
+  opacity: .95;
+  letter-spacing: .2px;
+}
+
+/* canvas ocupa bien */
+.giro-mini-card canvas{
+  height: 112px !important;
+  width: 100% !important;
+}
+
+/* Desktop: 4 columnas */
+@media (min-width: 992px){
+  .giro-medidas-mini{
+    grid-template-columns: repeat(4, minmax(0,1fr));
+  }
+}
+
+/* Mobile: que NO se vea “apretado” como tu foto */
+@media (max-width: 480px){
+
+  /* bloque completo más compacto y centrado */
+  .giro-medidas-block{
+    border-radius: 16px;
+  }
+
+  .giro-medidas-head{
+    padding: .65rem .75rem;
+    font-size: .86rem;
+    letter-spacing: .45px;
+  }
+
+  /* pie: más “hero” y menos aire muerto */
+  .giro-medidas-pie{
+    height: 230px;
+    padding: .65rem .55rem .15rem;
+  }
+
+  /* mini grid: 2x2 pero con separación más elegante */
+  .giro-medidas-mini{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+    padding: .65rem .55rem .9rem;
+  }
+
+  /* cards: más premium, menos “bloque negro” */
+  .giro-mini-card{
+    height: 150px;
+    padding: .6rem .6rem .55rem;
+    border-radius: 14px;
+
+    background:
+      radial-gradient(circle at 30% 15%, rgba(255,255,255,0.07), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04)),
+      #0f0f10;
+
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.07),
+      0 10px 18px rgba(0,0,0,0.14);
+
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* un “brillito” sutil */
+  .giro-mini-card:before{
+    content:"";
+    position:absolute;
+    inset:-40% -30% auto -30%;
+    height: 70%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
+    transform: rotate(-8deg);
+    pointer-events:none;
+  }
+
+  /* título más compacto */
+  .giro-mini-title{
+    font-size: .8rem;
+    margin-bottom: .25rem;
+    letter-spacing: .15px;
+    opacity: .95;
+  }
+
+  /* canvas: más alto para que se lean etiquetas */
+  .giro-mini-card canvas{
+    height: 115px !important;
+  }
+}
+
+
+/* ==============================
+   DAÑO POTENCIAL vs PATRÓN ESTÁNDAR
+   (solo afecta el panel #chart-dano)
+   ============================== */
+
+#chart-dano .giro-chart-card--dano{
+  /* Mantiene la estética del resto */
+}
+
+/* Contenedor del canvas */
+#chart-dano .giro-chart-canvas-wrap--dano{
+  height: 390px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,0.10), transparent 42%),
+    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+  border: 1px solid rgba(194,164,118,0.16);
+  padding: 14px 12px 10px;
+  box-shadow: 0 12px 26px rgba(18,18,18,0.05);
+}
+
+/* ========= Tabla (wrap premium, no “pegada”) ========= */
+#chart-dano .giro-dano-table-wrap{
+  margin-top: 14px;
+  border: 1px solid rgb(var(--camel-rgb) / 16%);
+  border-radius: 18px;
+  overflow: hidden;              /* redondeo real */
+  background: linear-gradient(180deg, #ffffff 0%, #fbf9f4 100%);
+  box-shadow: 0 12px 26px rgba(18,18,18,0.05);
+}
+
+/* Si en móvil necesita scroll, lo damos aquí sin romper el radio */
+#chart-dano .giro-dano-table-wrap{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tabla */
+#chart-dano .giro-dano-table{
+  width: 100%;
+  min-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+/* Header */
+#chart-dano .giro-dano-table thead th{
+  background: linear-gradient(180deg, #ffffff 0%, rgb(var(--camel-rgb) / 10%) 100%);
+  border-bottom: 1px solid rgb(var(--camel-rgb) / 18%);
+  padding: .9rem .8rem;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: #111;
+  white-space: nowrap;
+}
+#chart-dano .giro-dano-table thead th:first-child{
+  text-align: left;
+  padding-left: 1.05rem;
+}
+
+/* Body cells */
+#chart-dano .giro-dano-table tbody td{
+  padding: .85rem .8rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(18,18,18,0.06);
+  font-size: .94rem;
+  font-weight: 800;
+  color: rgba(18,18,18,0.82);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Primera columna (label) */
+#chart-dano .giro-dano-table tbody td:first-child{
+  text-align: left;
+  padding-left: 1.05rem;
+  font-weight: 900;
+  color: #1f2a44;
+  white-space: nowrap;
+}
+
+/* Zebra + hover */
+#chart-dano .giro-dano-table tbody tr:nth-child(odd){
+  background: rgba(255,255,255,0.92);
+}
+#chart-dano .giro-dano-table tbody tr:nth-child(even){
+  background: rgba(194,164,118,0.06);
+}
+#chart-dano .giro-dano-table tbody tr:hover{
+  background: rgba(194,164,118,0.12);
+}
+#chart-dano .giro-dano-table tbody tr:last-child td{
+  border-bottom: 0;
+}
+
+/* Dots */
+#chart-dano .giro-dano-dot{
+  display:inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: .55rem;
+  vertical-align: middle;
+  transform: translateY(1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+}
+#chart-dano .giro-dano-dot--pot{
+  background: rgba(255,0,0,0.92);
+  box-shadow: 0 6px 14px rgba(255,0,0,0.20);
+}
+#chart-dano .giro-dano-dot--std{
+  background: rgba(18,18,18,0.65);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+/* ========= Responsive ========= */
+@media (max-width: 768px){
+  #chart-dano .giro-chart-canvas-wrap--dano{
+    height: 340px;
+    padding: 12px 10px 8px;
+    border-radius: 16px;
+  }
+
+  #chart-dano .giro-dano-table thead th,
+  #chart-dano .giro-dano-table tbody td{
+    padding: .72rem .6rem;
+    font-size: .88rem;
+  }
+
+  #chart-dano .giro-dano-table thead th:first-child,
+  #chart-dano .giro-dano-table tbody td:first-child{
+    padding-left: .85rem;
+  }
+}
+
+@media (max-width: 480px){
+  #chart-dano .giro-chart-canvas-wrap--dano{
+    height: 320px;
+    padding: 10px 8px 6px;
+  }
+
+  #chart-dano .giro-dano-table{
+    min-width: 560px; /* menos ancho para que el scroll sea menor */
+  }
+
+  #chart-dano .giro-dano-table thead th{
+    font-size: .80rem;
+    padding: .62rem .5rem;
+  }
+
+  #chart-dano .giro-dano-table tbody td{
+    font-size: .82rem;
+    padding: .62rem .5rem;
+  }
+
+  #chart-dano .giro-dano-dot{
+    width: 9px;
+    height: 9px;
+    margin-right: .45rem;
+  }
+}
+
+/* ===== Pareto (80-20) ===== */
+.giro-chart-card--pareto{
+  background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
+  border: 1px solid rgba(194,164,118,0.22);
+  border-radius: 26px;
+  box-shadow: 0 18px 34px rgba(18,18,18,0.06), inset 0 1px 0 rgba(255,255,255,0.85);
+  padding: 24px 26px 18px;
+}
+
+.giro-chart-canvas-wrap--pareto{
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,0.10), transparent 45%),
+    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+  border: 1px solid rgba(194,164,118,0.14);
+  border-radius: 22px;
+  padding: 14px 12px 8px;
+  overflow-x: auto;              /* scroll si hay muchos E.x */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.giro-chart-canvas-inner--pareto{
+  min-width: 980px;              /* base desktop */
+  height: 420px;
+}
+
+#mypareto{
+  display:block;
+  height: 380px !important;
+}
+
+/* Mobile */
+@media (max-width: 480px){
+  .giro-chart-card--pareto{
+    padding: 18px 16px 14px;
+    border-radius: 20px;
+  }
+  .giro-chart-canvas-wrap--pareto{
+    border-radius: 16px;
+    padding: 10px 8px 6px;
+  }
+  .giro-chart-canvas-inner--pareto{
+    height: 360px;
+  }
+  #mypareto{
+    height: 360px !important;
+  }
+}
+
+/* ===== Pareto (80-20) ===== */
+.giro-chart-card--pareto{
+  max-width: 1075px;
+}
+
+.giro-chart-canvas-wrap--pareto{
+  height: 410px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,0.10), transparent 42%),
+    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+  border: 1px solid rgba(194,164,118,0.16);
+  padding: 14px 12px 10px;
+
+  /* CLAVE: permitir ver todo */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194,164,118,0.55) transparent;
+}
+
+.giro-chart-canvas-wrap--pareto::-webkit-scrollbar{ height: 10px; }
+.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-thumb{
+  background: rgba(194,164,118,0.55);
+  border-radius: 999px;
+}
+.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-track{ background: transparent; }
+
+.giro-chart-canvas-inner--pareto{
+  height: 380px;        /* alto real del canvas */
+  min-width: 980px;     /* se ajusta por JS si hay muchas barras */
+  position: relative;
+}
+
+/* ===== Leyenda “sección” ===== */
+.giro-pareto-legend{
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfaf7 100%);
+  border: 1px solid rgba(194,164,118,0.18);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.05);
+}
+
+.giro-pareto-legend__inner{
+  display:flex;
+  gap: 18px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap: wrap;
+}
+
+.giro-pareto-legend__item{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-weight: 900;
+  color: #121212;
+  font-size: .92rem;
+}
+
+.giro-pareto-legend__swatch{
+  width: 26px;
+  height: 10px;
+  border-radius: 999px;
+  display:inline-block;
+}
+
+/* swatch barras */
+.giro-pareto-legend__swatch--bar{
+  background: linear-gradient(180deg, rgba(205, 220, 240, 0.95), rgba(74, 111, 165, 0.90));
+  border: 1px solid rgba(18,18,18,0.35);
+}
+
+/* swatch línea */
+.giro-pareto-legend__swatch--line{
+  height: 0;
+  width: 30px;
+  border-top: 3px solid rgba(255,0,0,0.92);
+  border-radius: 0;
+  position: relative;
+}
+.giro-pareto-legend__swatch--line::after{
+  content:"";
+  position:absolute;
+  right:-2px;
+  top:-5px;
+  width: 8px;
+  height: 8px;
+  background:#fff;
+  border: 2px solid rgba(255,0,0,0.92);
+  border-radius: 999px;
+}
+
+@media (max-width: 480px){
+  .giro-chart-canvas-wrap--pareto{
+    height: 330px;
+    padding: 10px 8px 8px;
+    border-radius: 16px;
+  }
+  .giro-chart-canvas-inner--pareto{
+    height: 300px;
+    min-width: 860px;
+  }
+  .giro-pareto-legend__item{ font-size: .86rem; }
+}
+
+/* =========================================================
+   MATRIX UI PRO - MEJORA WEB + MOBILE + TABLA CON SCROLL
+   Pegar al final de tu CSS
+   ========================================================= */
+
+/* ---------- CARD GENERAL MATRIZ ---------- */
+.giro-chart-card--matrix{
+  padding: 18px 18px 22px !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,.08), transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #fbf8f3 100%) !important;
+  border: 1px solid rgba(194,164,118,.18) !important;
+  box-shadow:
+    0 18px 40px rgba(18,18,18,.07),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+#chart-origen .giro-chart-title{
+  margin-bottom: 14px !important;
+  font-size: 1.75rem !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.03em;
+}
+
+/* ---------- WRAP GENERAL ---------- */
+.giro-matrix-wrap--vertical{
+  gap: 18px !important;
+}
+
+/* ---------- STAGE MATRIZ ---------- */
+.giro-matrix-left--full{
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194,164,118,.60) transparent;
+  padding-bottom: 6px;
+}
+
+.giro-matrix-left--full::-webkit-scrollbar{
+  height: 10px;
+}
+
+.giro-matrix-left--full::-webkit-scrollbar-thumb{
+  background: rgba(194,164,118,.60);
+  border-radius: 999px;
+}
+
+.giro-matrix-left--full::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.giro-matrix-stage{
+  min-width: 900px; /* web base */
+  display: grid !important;
+  grid-template-columns: 96px 42px minmax(0,1fr) !important; /* <- quita hueco grande */
+  column-gap: 10px !important;
+  align-items: start;
+  width: 100%;
+}
+
+/* ---------- EJE Y ---------- */
+.giro-matrix-ylabels,
+.giro-matrix-yvals{
+  position: relative;
+  height: 560px !important;
+}
+
+.giro-matrix-ylabels{
+  border-left: 3px solid #4A6FA5;
+  padding-left: 10px;
+}
+
+.giro-matrix-ylabels > div,
+.giro-matrix-yvals > div{
+  position: absolute;
+  transform: translateY(-50%);
+  font-weight: 800;
+  font-size: 13px !important;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.giro-matrix-ylabels > div{
+  color: #1f1f1f;
+}
+
+.giro-matrix-yvals > div{
+  right: 0;
+  color: #36506E;
+}
+
+/* posiciones recalculadas para menos alto */
+.giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 18px; }
+.giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 106px; }
+.giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 194px; }
+.giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 282px; }
+.giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 370px; }
+.giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 458px; }
+.giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 546px; }
+
+/* ---------- MAIN MATRIZ ---------- */
+.giro-matrix-main{
+  position: relative;
+  width: 100%;
+  height: 560px !important;
+  padding-bottom: 70px !important;
+}
+
+.giro-matrix-grid{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 450px !important;
+  display: grid;
+  grid-template-columns: 8fr 8fr 14fr 20fr 20fr 20fr 20fr;
+  grid-template-rows: repeat(7, 1fr);
+  border: 1px solid rgba(194,164,118,.14) !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(0,0,0,.04);
+}
+
+.giro-matrix-grid .c{
+  border: 1px solid rgba(255,255,255,.92);
+}
+
+.giro-matrix-grid .x{ background:#D9D9D9; }
+.giro-matrix-grid .g{ background:#92D050; }
+.giro-matrix-grid .y{ background:#FFC000; }
+.giro-matrix-grid .r{ background:#FF1A00; }
+.giro-matrix-grid .d{ background:#C00000; }
+
+.giro-matrix-canvas-wrap{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 450px !important;
+  z-index: 2;
+}
+
+#mymatrizriesgos{
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ---------- EJE X ---------- */
+.giro-matrix-xvals,
+.giro-matrix-xlabels{
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 8fr 8fr 14fr 20fr 20fr 20fr 20fr;
+  text-align: center;
+}
+
+.giro-matrix-xvals{
+  top: 465px !important;
+}
+
+.giro-matrix-xvals div{
+  font-weight: 800;
+  font-size: 13px !important;
+  color: #36506E;
+}
+
+.giro-matrix-xlabels{
+  top: 495px !important;
+  padding-top: 10px;
+  border-top: 2px solid #4A6FA5;
+}
+
+.giro-matrix-xlabels div{
+  font-weight: 800;
+  font-size: 13px !important;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+/* ---------- NOTA DE EJES ---------- */
+.giro-matrix-axis-note{
+  margin-top: 6px !important;
+  padding: 0 2px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px !important;
+  color: #27456f;
+  font-weight: 800;
+}
+
+/* ---------- TABLA MATRIZ PRO ---------- */
+.giro-matrix-bottom{
+  width: 100%;
+}
+
+.giro-matrix-table-title{
+  margin-bottom: 10px !important;
+  font-size: 1.35rem !important;
+  font-weight: 900 !important;
+  color: #17263c;
+  letter-spacing: -.02em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.giro-matrix-table-title small{
+  display: block;
+  margin-top: 4px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  line-height: 1.35;
+}
+
+.giro-matrix-table-wrap{
+  width: 100%;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(194,164,118,.18) !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #fbf8f3 100%) !important;
+  box-shadow:
+    0 16px 34px rgba(18,18,18,.06),
+    inset 0 1px 0 rgba(255,255,255,.88) !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194,164,118,.55) transparent;
+}
+
+.giro-matrix-table-wrap::-webkit-scrollbar{
+  height: 10px;
+}
+
+.giro-matrix-table-wrap::-webkit-scrollbar-thumb{
+  background: rgba(194,164,118,.55);
+  border-radius: 999px;
+}
+
+.giro-matrix-table-wrap::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/* tabla con header fijo y 8 filas visibles */
+.giro-matrix-table{
+  width: 100%;
+  min-width: 760px;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.giro-matrix-table thead,
+.giro-matrix-table tbody tr{
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.giro-matrix-table tbody{
+  display: block;
+  max-height: 448px; /* aprox 8 filas */
+  overflow-y: auto;
+  overflow-x: visible;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194,164,118,.55) transparent;
+}
+
+.giro-matrix-table tbody::-webkit-scrollbar{
+  width: 10px;
+}
+
+.giro-matrix-table tbody::-webkit-scrollbar-thumb{
+  background: rgba(194,164,118,.55);
+  border-radius: 999px;
+}
+
+.giro-matrix-table tbody::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.giro-matrix-table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background:
+    linear-gradient(180deg, #fffdf9 0%, #f4ece1 100%) !important;
+  color: #17263c;
+  font-weight: 900;
+  font-size: 13px !important;
+  padding: 14px 12px !important;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.05);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.giro-matrix-table tbody td{
+  padding: 13px 12px !important;
+  font-size: 13px !important;
+  color: #2d2d2d;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+  background: rgba(255,255,255,.78);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.giro-matrix-table tbody tr:nth-child(even) td{
+  background: rgba(248,244,238,.86);
+}
+
+.giro-matrix-table tbody tr:hover td{
+  background: rgba(234,242,251,.95) !important;
+}
+
+.giro-matrix-table tbody tr:last-child td{
+  border-bottom: none;
+}
+
+.giro-matrix-table th:nth-child(1),
+.giro-matrix-table td:nth-child(1){ width: 22%; }
+
+.giro-matrix-table th:nth-child(2),
+.giro-matrix-table td:nth-child(2){ width: 16%; }
+
+.giro-matrix-table th:nth-child(3),
+.giro-matrix-table td:nth-child(3){ width: 34%; }
+
+.giro-matrix-table th:nth-child(4),
+.giro-matrix-table td:nth-child(4){ width: 28%; }
+
+.td-esc{
+  font-weight: 900 !important;
+  color: #3f5f95 !important;
+  text-align: center !important;
+}
+
+.giro-lvl{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  padding: 8px 14px !important;
+  border-radius: 999px;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1;
+  letter-spacing: .01em;
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+.lvl-muy-bajo{ background:#ececec; color:#1f1f1f; }
+.lvl-bajo{ background:#92d050; color:#14210c; }
+.lvl-medio{ background:#ffc000; color:#3c2a00; }
+.lvl-alto{ background:#ff1a1a; color:#ffffff; }
+.lvl-muy-alto{ background:#c00000; color:#ffffff; }
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 991px){
+  #chart-origen .giro-chart-title{
+    font-size: 1.45rem !important;
+  }
+
+  .giro-matrix-stage{
+    min-width: 760px;
+    grid-template-columns: 82px 36px minmax(0,1fr) !important;
+    column-gap: 8px !important;
+  }
+
+  .giro-matrix-ylabels,
+  .giro-matrix-yvals{
+    height: 500px !important;
+  }
+
+  .giro-matrix-ylabels > div,
+  .giro-matrix-yvals > div{
+    font-size: 12px !important;
+  }
+
+  .giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 16px; }
+  .giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 92px; }
+  .giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 168px; }
+  .giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 244px; }
+  .giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 320px; }
+  .giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 396px; }
+  .giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 472px; }
+
+  .giro-matrix-main{
+    height: 500px !important;
+    padding-bottom: 64px !important;
+  }
+
+  .giro-matrix-grid,
+  .giro-matrix-canvas-wrap{
+    height: 390px !important;
+  }
+
+  .giro-matrix-xvals{
+    top: 404px !important;
+  }
+
+  .giro-matrix-xlabels{
+    top: 430px !important;
+  }
+
+  .giro-matrix-xvals div,
+  .giro-matrix-xlabels div{
+    font-size: 11px !important;
+  }
+
+  .giro-matrix-axis-note{
+    font-size: 13px !important;
+    flex-direction: row;
+  }
+
+  .giro-matrix-table tbody{
+    max-height: 408px;
+  }
+}
+
+@media (max-width: 768px){
+  .giro-chart-card--matrix{
+    padding: 14px 12px 18px !important;
+    border-radius: 18px !important;
+  }
+
+  #chart-origen .giro-chart-title{
+    font-size: 1.22rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .giro-matrix-left--full{
+    margin: 0 -2px;
+    padding-bottom: 8px;
+  }
+
+  .giro-matrix-stage{
+    min-width: 700px;
+    grid-template-columns: 72px 34px minmax(0,1fr) !important;
+    column-gap: 6px !important;
+  }
+
+  .giro-matrix-ylabels,
+  .giro-matrix-yvals{
+    height: 455px !important;
+  }
+
+  .giro-matrix-ylabels{
+    padding-left: 8px;
+  }
+
+  .giro-matrix-ylabels > div,
+  .giro-matrix-yvals > div{
+    font-size: 11px !important;
+  }
+
+  .giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 14px; }
+  .giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 82px; }
+  .giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 150px; }
+  .giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 218px; }
+  .giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 286px; }
+  .giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 354px; }
+  .giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 422px; }
+
+  .giro-matrix-main{
+    height: 455px !important;
+    padding-bottom: 60px !important;
+  }
+
+  .giro-matrix-grid,
+  .giro-matrix-canvas-wrap{
+    height: 350px !important;
+  }
+
+  .giro-matrix-xvals{
+    top: 362px !important;
+  }
+
+  .giro-matrix-xlabels{
+    top: 386px !important;
+    padding-top: 8px;
+  }
+
+  .giro-matrix-xvals div,
+  .giro-matrix-xlabels div{
+    font-size: 10px !important;
+  }
+
+  .giro-matrix-axis-note{
+    margin-top: 2px !important;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 12px !important;
+  }
+
+ .giro-matrix-table-title{
+  font-size: 1.1rem !important;
+  margin-bottom: 8px !important;
+  text-align: center;
+  align-items: center;
+}
+
+  .giro-matrix-table-wrap{
+    border-radius: 16px !important;
+  }
+
+  .giro-matrix-table{
+    min-width: 760px;
+  }
+
+  .giro-matrix-table thead th,
+  .giro-matrix-table tbody td{
+    font-size: 12px !important;
+    padding: 11px 10px !important;
+  }
+
+  .giro-lvl{
+    min-width: 84px;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+  }
+}
