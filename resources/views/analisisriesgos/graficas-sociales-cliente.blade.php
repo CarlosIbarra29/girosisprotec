@@ -41,11 +41,17 @@
     const paretoCrit   = {!! json_encode($paretoCrit ?? []) !!};
     const paretoAcum   = {!! json_encode($paretoAcum ?? []) !!};
 
+    const avanceConsecucionPorcentaje = {!! json_encode($avanceConsecucionPorcentaje ?? 0) !!};
+    const avanceNoAceptables = {!! json_encode($avanceNoAceptables ?? []) !!};
+    const avanceDetalleNoAceptables = {!! json_encode($avanceDetalleNoAceptables ?? []) !!};
+    const avanceAceptables = {!! json_encode($avanceAceptables ?? []) !!};
+
     // ======= MATRIZ (DATA DESDE CONTROLLER) =======
     // Espera:
     // matrixPoints: [{id,label,x,y,ipd,perfil,nivel}, ...]
     // matrixRows:   [{label,ipd,perfil,nivel}, ...] para la tabla
     const matrixPoints = {!! json_encode($matrixPoints ?? []) !!};
+    const matrixCriteria = {!! json_encode($matrixCriteria ?? []) !!};
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -1175,135 +1181,437 @@
       }
 
 
-      /* ========= 8. Matriz de evaluación de riesgos (puntos sobre matriz HTML/CSS) ========= */
-    var canvasMatrix = document.getElementById('mymatrizriesgos');
-    if (canvasMatrix) {
-      var ctxM = canvasMatrix.getContext('2d');
+      /* ========= 8. Matriz de evaluación de riesgos (filtro + nuevo perfil) ========= */
+      var canvasMatrix = document.getElementById('mymatrizriesgos');
+      if (canvasMatrix) {
+        var ctxM = canvasMatrix.getContext('2d');
+        var selectedCriteria = (matrixCriteria || []).map(function(c){ return String(c.id); });
+        var showNuevoPerfil = false;
+        var matrixChart = null;
 
-      var steps = [0.4, 1.2, 2, 4, 6, 8, 10];
+        function getFilteredMatrixPoints() {
+          return (matrixPoints || []).filter(function(p){
+            return selectedCriteria.indexOf(String(p.criterio_id)) !== -1;
+          });
+        }
 
-      var scatterData = (matrixPoints || []).map(function(p){
-        return {
-          x: Number(p.x || 0),
-          y: Number(p.y || 0),
-          id: p.id,
-          label: p.label,
-          ipd: p.ipd,
-          perfil: p.perfil,
-          nivel: p.nivel
-        };
-      });
+        function updateMatrixTable() {
+          var rows = document.querySelectorAll('#matrixTableBody tr[data-criterio]');
+          rows.forEach(function(row){
+            var criterio = row.getAttribute('data-criterio');
+            row.style.display = (selectedCriteria.indexOf(String(criterio)) !== -1) ? '' : 'none';
+          });
+        }
 
-      var matrixPointLabelPlugin = {
-        afterDatasetsDraw: function(chart) {
-          if (!chart || chart.canvas.id !== 'mymatrizriesgos') return;
+        function buildLineData(points) {
+          var out = [];
+          points.forEach(function(p){
+            if (
+              p.x !== null && p.y !== null &&
+              p.x2 !== null && p.y2 !== null &&
+              p.x2 !== undefined && p.y2 !== undefined
+            ) {
+              out.push({ x: Number(p.x),  y: Number(p.y),  id: p.id, isLine: true });
+              out.push({ x: Number(p.x2), y: Number(p.y2), id: p.id, isLine: true });
+              out.push(null);
+            }
+          });
+          return out;
+        }
 
-          var ctx = chart.ctx;
-          var meta = chart.getDatasetMeta(0);
-          if (!meta || meta.hidden) return;
+        function renderMatrix() {
+          var filtered = getFilteredMatrixPoints();
 
-          ctx.save();
-          ctx.font = "900 10px Poppins, Arial, sans-serif";
-          ctx.fillStyle = "#ffffff";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-
-          meta.data.forEach(function(pt, i) {
-            var d = chart.data.datasets[0].data[i];
-            if (!d) return;
-            ctx.fillText(String(d.id || ''), pt._model.x, pt._model.y);
+          var originalData = filtered.map(function(p){
+            return {
+              x: Number(p.x || 0),
+              y: Number(p.y || 0),
+              id: p.id,
+              label: p.label,
+              ipd: p.ipd,
+              perfil: p.perfil,
+              nivel: p.nivel,
+              isNew: false
+            };
           });
 
-          ctx.restore();
-        }
-      };
+          var nuevoData = filtered
+            .filter(function(p){
+              return p.x2 !== null && p.y2 !== null && p.x2 !== undefined && p.y2 !== undefined;
+            })
+            .map(function(p){
+              return {
+                x: Number(p.x2 || 0),
+                y: Number(p.y2 || 0),
+                id: p.id,
+                label: p.label,
+                ipd: p.ipd2,
+                perfil: p.nuevo_perfil,
+                nivel: p.nuevo_nivel,
+                isNew: true
+              };
+            });
 
-      new Chart(ctxM, {
-        type: 'scatter',
-        plugins: [matrixPointLabelPlugin],
-        data: {
-          datasets: [{
-            label: 'Escenarios',
-            data: scatterData,
-            pointRadius: 13,
-            pointHoverRadius: 14,
-            pointBackgroundColor: 'rgba(0,0,0,0.96)',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          legend: { display: false },
-          animation: {
-            duration: 700
-          },
-          layout: {
-            padding: {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0
-            }
-          },
-          tooltips: {
-            backgroundColor: 'rgba(25,25,25,0.88)',
-            titleFontStyle: 'bold',
-            bodyFontStyle: 'bold',
-            displayColors: false,
-            xPadding: 14,
-            yPadding: 12,
-            cornerRadius: 12,
-            caretSize: 8,
-            callbacks: {
-              title: function(items, data){
-                var i = items && items[0] ? items[0].index : 0;
-                var p = data.datasets[0].data[i] || {};
-                return (p.label || 'Escenario');
-              },
-              label: function(item, data){
-                var p = data.datasets[0].data[item.index] || {};
-                return [
-                  'IPD: ' + Number(p.ipd || 0).toFixed(2),
-                  'Perfil: ' + (p.perfil || ''),
-                  'Nivel: ' + (p.nivel || ''),
-                  'Amenaza: ' + Number(p.y || 0).toFixed(1),
-                  'Impacto: ' + Number(p.x || 0).toFixed(1)
-                ];
-              }
-            }
-          },
-          scales: {
-            xAxes: [{
-              type: 'linear',
-              position: 'bottom',
-              ticks: {
-                min: 0.0,
-                max: 10.8,
-                display: false
-              },
-              gridLines: {
-                display: false,
-                drawBorder: false
-              }
-            }],
-            yAxes: [{
-              type: 'linear',
-              ticks: {
-                min: 0.0,
-                max: 10.8,
-                display: false
-              },
-              gridLines: {
-                display: false,
-                drawBorder: false
-              }
-            }]
+          var lineData = buildLineData(filtered);
+
+          if (matrixChart) {
+            matrixChart.destroy();
           }
+
+          var matrixPointLabelPlugin = {
+            afterDatasetsDraw: function(chart) {
+              if (!chart || chart.canvas.id !== 'mymatrizriesgos') return;
+
+              var ctx = chart.ctx;
+              ctx.save();
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+
+              chart.data.datasets.forEach(function(ds, datasetIndex){
+                if (datasetIndex === 2) return; // no pintar labels en líneas
+
+                var meta = chart.getDatasetMeta(datasetIndex);
+                if (!meta || meta.hidden) return;
+
+                meta.data.forEach(function(pt, i) {
+                  var d = ds.data[i];
+                  if (!d) return;
+
+                  ctx.font = "900 10px Poppins, Arial, sans-serif";
+                  ctx.fillStyle = d.isNew ? "#111111" : "#ffffff";
+                  ctx.fillText(String(d.id || ''), pt._model.x, pt._model.y);
+                });
+              });
+
+              ctx.restore();
+            }
+          };
+
+          matrixChart = new Chart(ctxM, {
+            type: 'scatter',
+            plugins: [matrixPointLabelPlugin],
+            data: {
+              datasets: [
+                {
+                  label: 'Perfil actual',
+                  data: originalData,
+                  pointRadius: 13,
+                  pointHoverRadius: 14,
+                  pointBackgroundColor: 'rgba(0,0,0,0.96)',
+                  pointBorderColor: '#ffffff',
+                  pointBorderWidth: 2,
+                  showLine: false
+                },
+                {
+                  label: 'Nuevo perfil',
+                  data: nuevoData,
+                  pointRadius: showNuevoPerfil ? 13 : 0,
+                  pointHoverRadius: showNuevoPerfil ? 14 : 0,
+                  pointBackgroundColor: '#ffffff',
+                  pointBorderColor: '#111111',
+                  pointBorderWidth: 2,
+                  showLine: false,
+                  hidden: !showNuevoPerfil
+                },
+                {
+                  type: 'line',
+                  label: 'Conexión',
+                  data: lineData,
+                  fill: false,
+                  showLine: true,
+                  pointRadius: 0,
+                  pointHoverRadius: 0,
+                  borderColor: 'rgba(255,255,255,0.92)',
+                  borderWidth: 3,
+                  borderDash: [8, 6],
+                  lineTension: 0,
+                  spanGaps: false,
+                  hidden: !showNuevoPerfil
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              legend: { display: false },
+              animation: { duration: 700 },
+              layout: {
+                padding: { top: 0, right: 0, bottom: 0, left: 0 }
+              },
+              tooltips: {
+                backgroundColor: 'rgba(25,25,25,0.88)',
+                titleFontStyle: 'bold',
+                bodyFontStyle: 'bold',
+                displayColors: false,
+                xPadding: 14,
+                yPadding: 12,
+                cornerRadius: 12,
+                caretSize: 8,
+                callbacks: {
+                  title: function(items, data){
+                    var i = items && items[0] ? items[0].index : 0;
+                    var ds = data.datasets[items[0].datasetIndex];
+                    var p = ds.data[i] || {};
+                    return (p.label || 'Escenario');
+                  },
+                  label: function(item, data){
+                    var ds = data.datasets[item.datasetIndex];
+                    var p = ds.data[item.index] || {};
+                    if (ds.label === 'Conexión') return '';
+
+                    return [
+                      (p.isNew ? 'Nuevo Perfil' : 'Perfil actual'),
+                      'IPD: ' + Number(p.ipd || 0).toFixed(2),
+                      'Perfil: ' + (p.perfil || ''),
+                      'Nivel: ' + (p.nivel || ''),
+                      'Amenaza: ' + Number(p.y || 0).toFixed(1),
+                      'Impacto: ' + Number(p.x || 0).toFixed(1)
+                    ];
+                  },
+                  filter: function(tooltipItem, data) {
+                    return data.datasets[tooltipItem.datasetIndex].label !== 'Conexión';
+                  }
+                }
+              },
+              scales: {
+                xAxes: [{
+                  type: 'linear',
+                  position: 'bottom',
+                  ticks: {
+                    min: 0.0,
+                    max: 10.8,
+                    display: false
+                  },
+                  gridLines: {
+                    display: false,
+                    drawBorder: false
+                  }
+                }],
+                yAxes: [{
+                  type: 'linear',
+                  ticks: {
+                    min: 0.0,
+                    max: 10.8,
+                    display: false
+                  },
+                  gridLines: {
+                    display: false,
+                    drawBorder: false
+                  }
+                }]
+              }
+            }
+          });
+
+          updateMatrixTable();
         }
-      });
-    }
+
+        // ===== Multiselect =====
+        var trigger = document.getElementById('matrixCriteriaTrigger');
+        var menu = document.getElementById('matrixCriteriaMenu');
+        var summary = document.getElementById('matrixCriteriaSummary');
+        var allCheckbox = document.getElementById('matrixCriteriaAll');
+        var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.matrix-criteria-checkbox'));
+        var btnNuevoPerfil = document.getElementById('btnToggleNuevoPerfil');
+
+        function updateSummary() {
+          var selected = checkboxes.filter(function(cb){ return cb.checked; });
+          selectedCriteria = selected.map(function(cb){ return String(cb.value); });
+
+          if (selected.length === checkboxes.length) {
+            summary.textContent = 'Todos los criterios';
+            allCheckbox.checked = true;
+            allCheckbox.indeterminate = false;
+          } else if (selected.length === 0) {
+            summary.textContent = 'Sin criterios seleccionados';
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = false;
+          } else if (selected.length === 1) {
+            summary.textContent = selected[0].parentNode.querySelector('span').textContent.trim();
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = true;
+          } else {
+            summary.textContent = selected.length + ' criterios seleccionados';
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = true;
+          }
+
+          renderMatrix();
+        }
+
+        if (trigger && menu) {
+          trigger.addEventListener('click', function(e){
+            e.stopPropagation();
+            menu.classList.toggle('is-open');
+            trigger.classList.toggle('is-open');
+          });
+
+          document.addEventListener('click', function(e){
+            if (!document.getElementById('matrixCriteriaFilter').contains(e.target)) {
+              menu.classList.remove('is-open');
+              trigger.classList.remove('is-open');
+            }
+          });
+        }
+
+        if (allCheckbox) {
+          allCheckbox.addEventListener('change', function(){
+            checkboxes.forEach(function(cb){
+              cb.checked = allCheckbox.checked;
+            });
+            updateSummary();
+          });
+        }
+
+        checkboxes.forEach(function(cb){
+          cb.addEventListener('change', function(){
+            updateSummary();
+          });
+        });
+
+        if (btnNuevoPerfil) {
+          btnNuevoPerfil.addEventListener('click', function(){
+            showNuevoPerfil = !showNuevoPerfil;
+            btnNuevoPerfil.classList.toggle('is-active', showNuevoPerfil);
+            btnNuevoPerfil.textContent = showNuevoPerfil ? 'Ocultar Nuevo Perfil' : 'Mostrar Nuevo Perfil';
+            renderMatrix();
+          });
+        }
+
+        renderMatrix();
+      }
+
+      /* ========= 9. Avance de Consecución ========= */
+      // Gauge semicircular
+      var gaugeCanvas = document.getElementById('myavanceconsecuciongauge');
+      if (gaugeCanvas) {
+        var gctx = gaugeCanvas.getContext('2d');
+
+        var avancePct = Number(avanceConsecucionPorcentaje || 0);
+        var restantePct = Math.max(0, 100 - avancePct);
+
+        new Chart(gctx, {
+          type: 'doughnut',
+          data: {
+            datasets: [{
+              data: [avancePct, restantePct],
+              backgroundColor: [
+                (avancePct >= 90) ? '#00B050'
+                  : (avancePct >= 80) ? '#92D050'
+                  : (avancePct >= 70) ? '#FFC000'
+                  : '#FF0000',
+                '#E7E7E7'
+              ],
+              borderColor: '#ffffff',
+              borderWidth: 2,
+              hoverBackgroundColor: [
+                (avancePct >= 90) ? '#00B050'
+                  : (avancePct >= 80) ? '#92D050'
+                  : (avancePct >= 70) ? '#FFC000'
+                  : '#FF0000',
+                '#E7E7E7'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            rotation: Math.PI,
+            circumference: Math.PI,
+            cutoutPercentage: 62,
+            legend: { display: false },
+            tooltips: {
+              enabled: true,
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  return tooltipItem.index === 0
+                    ? 'Avance: ' + avancePct.toFixed(2) + '%'
+                    : 'Pendiente: ' + restantePct.toFixed(2) + '%';
+                }
+              }
+            },
+            animation: {
+              duration: 1100,
+              easing: 'easeOutQuart'
+            }
+          }
+        });
+      }
+
+      // Barra estados no aceptables
+      var barCanvas = document.getElementById('myavanceconsecucionbar');
+      if (barCanvas) {
+        var bctx = barCanvas.getContext('2d');
+
+        new Chart(bctx, {
+          type: 'bar',
+          data: {
+            labels: ['Abierta', 'Proceso', 'Ejecutada'],
+            datasets: [{
+              data: [
+                Number((avanceNoAceptables && avanceNoAceptables.abierta) || 0),
+                Number((avanceNoAceptables && avanceNoAceptables.proceso) || 0),
+                Number((avanceNoAceptables && avanceNoAceptables.ejecutada) || 0)
+              ],
+              backgroundColor: [
+                'rgba(255, 0, 0, 0.92)',
+                'rgba(255, 192, 0, 0.92)',
+                'rgba(0, 176, 80, 0.92)'
+              ],
+              borderColor: [
+                'rgba(210, 0, 0, 1)',
+                'rgba(214, 157, 0, 1)',
+                'rgba(0, 140, 62, 1)'
+              ],
+              borderWidth: 2,
+              categoryPercentage: 0.58,
+              barPercentage: 0.7
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { display: false },
+            animation: {
+              duration: 1000,
+              easing: 'easeOutQuart'
+            },
+            tooltips: {
+              backgroundColor: 'rgba(18,18,18,0.94)',
+              displayColors: false,
+              callbacks: {
+                label: function(tooltipItem) {
+                  return 'Total: ' + tooltipItem.yLabel;
+                }
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                  stepSize: 1,
+                  fontStyle: 'bold',
+                  fontColor: '#4a4a4a'
+                },
+                gridLines: {
+                  color: 'rgba(0,0,0,0.06)',
+                  zeroLineColor: 'rgba(0,0,0,0.12)'
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  fontStyle: 'bold',
+                  fontColor: '#303030'
+                },
+                gridLines: {
+                  display: false
+                }
+              }]
+            }
+          }
+        });
+      }
 
 
     });
@@ -1370,6 +1678,9 @@
                 </button>
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-escenarios">
                   Distribución %<br>de Escenarios
+                </button>
+                <button type="button" class="giro-kpi-tab" data-chart-target="chart-avance">
+                  Avance de<br>Consecución
                 </button>
               </div>
 
@@ -1526,6 +1837,43 @@
                 <div class="giro-chart-panel" id="chart-origen">
                   <div class="giro-chart-card giro-chart-card--matrix">
                     <h5 class="giro-chart-title">Matriz de evaluación de riesgos</h5>
+                    <div class="giro-matrix-toolbar">
+                      <div class="giro-matrix-filter">
+                        <label class="giro-matrix-filter__label">Filtrar por criterio</label>
+
+                        <div class="giro-matrix-multiselect" id="matrixCriteriaFilter">
+                          <button type="button" class="giro-matrix-multiselect__trigger" id="matrixCriteriaTrigger">
+                            <span id="matrixCriteriaSummary">Todos los criterios</span>
+                            <span class="giro-matrix-multiselect__arrow">▼</span>
+                          </button>
+
+                          <div class="giro-matrix-multiselect__menu" id="matrixCriteriaMenu">
+                            <label class="giro-matrix-multiselect__option giro-matrix-multiselect__option--all">
+                              <input type="checkbox" id="matrixCriteriaAll" checked>
+                              <span>Seleccionar todos</span>
+                            </label>
+
+                            @foreach(($matrixCriteria ?? []) as $crit)
+                              <label class="giro-matrix-multiselect__option">
+                                <input
+                                  type="checkbox"
+                                  class="matrix-criteria-checkbox"
+                                  value="{{ $crit['id'] }}"
+                                  checked
+                                >
+                                <span>{{ $crit['label'] }}</span>
+                              </label>
+                            @endforeach
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="giro-matrix-actions">
+                        <button type="button" class="giro-matrix-toggle-btn" id="btnToggleNuevoPerfil">
+                          Mostrar Nuevo Perfil
+                        </button>
+                      </div>
+                    </div>
 
                     <div class="giro-matrix-wrap giro-matrix-wrap--vertical">
                       <div class="giro-matrix-left giro-matrix-left--full">
@@ -1613,16 +1961,18 @@
                         </div>
 
                         <div class="giro-matrix-table-wrap giro-matrix-table-wrap--bottom">
-                          <table class="giro-matrix-table">
+                          <table class="giro-matrix-table giro-matrix-table--extended">
                             <thead>
                               <tr>
                                 <th>Escenario</th>
                                 <th>IPD</th>
                                 <th>Perfil</th>
                                 <th>Nivel</th>
+                                <th>Nuevo Perfil</th>
+                                <th>Nivel de R. Nuevo Perfil</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="matrixTableBody">
                               @forelse(($matrixRows ?? []) as $r)
                                 @php
                                   $lvl = $r['nivel'] ?? '';
@@ -1632,16 +1982,33 @@
                                   elseif ($lvl === 'Medio') $cls = 'lvl-medio';
                                   elseif ($lvl === 'Bajo') $cls = 'lvl-bajo';
                                   else $cls = 'lvl-muy-bajo';
+
+                                  $lvl2 = $r['nuevo_nivel'] ?? '-';
+                                  $cls2 = 'lvl-empty';
+                                  if ($lvl2 === 'Muy Alto') $cls2 = 'lvl-muy-alto';
+                                  elseif ($lvl2 === 'Alto') $cls2 = 'lvl-alto';
+                                  elseif ($lvl2 === 'Medio') $cls2 = 'lvl-medio';
+                                  elseif ($lvl2 === 'Bajo') $cls2 = 'lvl-bajo';
+                                  elseif ($lvl2 === 'Muy Bajo') $cls2 = 'lvl-muy-bajo';
                                 @endphp
-                                <tr>
+
+                                <tr data-criterio="{{ $r['criterio_id'] ?? 0 }}">
                                   <td class="td-esc">{{ $r['label'] ?? '' }}</td>
                                   <td>{{ number_format((float)($r['ipd'] ?? 0), 2) }}</td>
-                                  <td>{{ $r['perfil'] ?? '' }}</td>
-                                  <td><span class="giro-lvl {{ $cls }}">{{ $lvl }}</span></td>
+                                  <td>{{ $r['perfil'] ?? '-' }}</td>
+                                  <td><span class="giro-lvl {{ $cls }}">{{ $lvl ?: '-' }}</span></td>
+                                  <td>{{ $r['nuevo_perfil'] ?? '-' }}</td>
+                                  <td>
+                                    @if(($r['nuevo_nivel'] ?? '-') !== '-')
+                                      <span class="giro-lvl {{ $cls2 }}">{{ $r['nuevo_nivel'] }}</span>
+                                    @else
+                                      -
+                                    @endif
+                                  </td>
                                 </tr>
                               @empty
                                 <tr>
-                                  <td colspan="4" class="text-center py-3">Sin datos</td>
+                                  <td colspan="6" class="text-center py-3">Sin datos</td>
                                 </tr>
                               @endforelse
                             </tbody>
@@ -1743,6 +2110,130 @@
                     </div>
                   </div>
                 </div>
+
+                {{-- 9. Avance de Consecución --}}
+                <div class="giro-chart-panel" id="chart-avance">
+                  <div class="giro-chart-card giro-chart-card--avance">
+                    <h5 class="giro-chart-title">Avance de Consecución</h5>
+
+                    <div class="giro-avance-top">
+                      <div class="giro-avance-gauge-card">
+                        <div class="giro-avance-mini-title">Avance de Consecución</div>
+                        <div class="giro-avance-gauge-wrap">
+                          <canvas id="myavanceconsecuciongauge"></canvas>
+                        </div>
+                        <div class="giro-avance-gauge-value">
+                          {{ number_format((float)($avanceConsecucionPorcentaje ?? 0), 2) }}%
+                        </div>
+                      </div>
+
+                      <div class="giro-avance-bar-card">
+                        <div class="giro-avance-mini-title">Estado de las Acciones de los Riesgos No Aceptables</div>
+                        <div class="giro-avance-bar-wrap">
+                          <canvas id="myavanceconsecucionbar"></canvas>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="giro-avance-bottom">
+                      <div class="giro-avance-table-card giro-avance-table-card--na">
+                        <div class="giro-avance-table-head giro-avance-table-head--danger">
+                          No aceptables
+                        </div>
+
+                        <div class="giro-avance-table-wrap">
+                          <table class="giro-avance-table">
+                            <thead>
+                              <tr>
+                                <th>Estado de las Acciones</th>
+                                <th>Muy Alto</th>
+                                <th>Alto</th>
+                                <th>Medio</th>
+                                <th>Total Esc.</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Abierta</td>
+                                <td>{{ $avanceDetalleNoAceptables['abierta']['muy_alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['abierta']['alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['abierta']['medio'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['abierta']['total'] ?? 0 }}</td>
+                              </tr>
+                              <tr>
+                                <td>Proceso</td>
+                                <td>{{ $avanceDetalleNoAceptables['proceso']['muy_alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['proceso']['alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['proceso']['medio'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['proceso']['total'] ?? 0 }}</td>
+                              </tr>
+                              <tr>
+                                <td>Ejecutada</td>
+                                <td>{{ $avanceDetalleNoAceptables['ejecutada']['muy_alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['ejecutada']['alto'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['ejecutada']['medio'] ?? 0 }}</td>
+                                <td>{{ $avanceDetalleNoAceptables['ejecutada']['total'] ?? 0 }}</td>
+                              </tr>
+                            </tbody>
+                            <tfoot>
+                              <tr>
+                                <td>Total</td>
+                                <td>
+                                  {{ ($avanceDetalleNoAceptables['abierta']['muy_alto'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['proceso']['muy_alto'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['ejecutada']['muy_alto'] ?? 0) }}
+                                </td>
+                                <td>
+                                  {{ ($avanceDetalleNoAceptables['abierta']['alto'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['proceso']['alto'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['ejecutada']['alto'] ?? 0) }}
+                                </td>
+                                <td>
+                                  {{ ($avanceDetalleNoAceptables['abierta']['medio'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['proceso']['medio'] ?? 0)
+                                    + ($avanceDetalleNoAceptables['ejecutada']['medio'] ?? 0) }}
+                                </td>
+                                <td>{{ $avanceNoAceptables['total'] ?? 0 }}</td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="giro-avance-table-card giro-avance-table-card--ok">
+                        <div class="giro-avance-table-head giro-avance-table-head--success">
+                          Aceptables
+                          <small>Conteo general sin estado de acciones</small>
+                        </div>
+
+                        <div class="giro-avance-accept-note">
+                          Este bloque resume únicamente los riesgos <strong>Bajo</strong> y <strong>Muy Bajo</strong>.
+                        </div>
+
+                        <div class="giro-avance-table-wrap giro-avance-table-wrap--accept">
+                          <table class="giro-avance-table giro-avance-table--accept">
+                            <thead>
+                              <tr>
+                                <th>Bajo</th>
+                                <th>Muy Bajo</th>
+                                <th>Total</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>{{ $avanceAceptables['bajo'] ?? 0 }}</td>
+                                <td>{{ $avanceAceptables['muy_bajo'] ?? 0 }}</td>
+                                <td>{{ $avanceAceptables['total'] ?? 0 }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
 
               </div>
 

@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            
+                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion }}" id="organizacion" required/> -->
                                             <input type="text" class="form-control f-control" name="organizacion" id="organizacion" placeholder=" " required>
                                             <label for="organizacion" class="f-label">Razón Social</label>
                                         </div>

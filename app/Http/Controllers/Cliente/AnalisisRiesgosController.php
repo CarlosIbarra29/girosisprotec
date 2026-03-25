@@ -253,6 +253,10 @@ class AnalisisRiesgosController extends Controller
             'factorExp',
             'hdProbabilidadif',
             'hdConsecuencia',
+
+            // NUEVO PERFIL
+            'NivelPr2',
+            'hdConsecuencia3',
         ])->where('cliente_id', $id_cliente)->get();
 
         // var_dump($data);
@@ -611,36 +615,45 @@ class AnalisisRiesgosController extends Controller
         |--------------------------------------------------------------------------
         | MATRIZ DE EVALUACIÓN DE RIESGOS (Heatmap + puntos + tabla)
         |--------------------------------------------------------------------------
-        | - Punto = (x=Fac2, y=Fac1)
-        |   Fac1 = round(factorExp * prob, 1)
-        |   Fac2 = consecuencia
-        | - Tabla: escenario (E.id), IPD, Perfil (fac1-fac2), Nivel
+        | - Punto original = (x=Fac2, y=Fac1)
+        | - Punto nuevo    = (x=Fac3, y=Fac2)
+        | - Tabla: escenario, IPD, Perfil, Nivel, Nuevo Perfil, Nivel nuevo
         */
         $matrixPoints = [];
         $matrixRows   = [];
+        $matrixCriteriaMap = [];
 
         foreach ($data as $unid) {
 
             $id = (int) ($unid->id ?? 0);
 
-            // Fac1 = Amenaza/Probabilidad (según tu fórmula)
+            $criterioId = (int) ($unid->libror_barreras_perimetrales_id ?? 0);
+            $criterioLabel = optional($unid->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+
+            if (!isset($matrixCriteriaMap[$criterioId])) {
+                $matrixCriteriaMap[$criterioId] = [
+                    'id'    => $criterioId,
+                    'label' => $criterioLabel,
+                ];
+            }
+
+            // =========================
+            // PERFIL ORIGINAL
+            // =========================
             $fac1 = round(
                 (float)($unid->factorExp?->factor_dato ?? 0) *
                 (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
                 1
             );
 
-            // Fac2 = Impacto/Severidad
-            $fac2 = (float) ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+            $facOriginalImpacto = (float) ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
 
-            // IPD base (tu fórmula)
             $ipdBase = ((int)(
                 (((float)($unid->factorExp?->factor_dato ?? 0) * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) * 10)
             ) / 10) * ((float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0));
 
             $ipdBase = round((float)$ipdBase, 2);
 
-            // Nivel (usamos tu mismo umbral de nivel_riesgo)
             $riesgo = (float)($unid->nivel_riesgo ?? 0);
             if ($riesgo >= 36.10) {
                 $nivelTxt = 'Muy Alto';
@@ -654,33 +667,175 @@ class AnalisisRiesgosController extends Controller
                 $nivelTxt = 'Muy Bajo';
             }
 
-            $perfil = '(' . number_format($fac1, 1) . '-' . number_format($fac2, 1) . ')';
+            $perfil = '(' . number_format($fac1, 1) . '-' . number_format($facOriginalImpacto, 1) . ')';
 
-            // Puntos para el chart
+            // =========================
+            // NUEVO PERFIL
+            // =========================
+            $fac2Num = is_numeric($unid->fac2) ? round((float)$unid->fac2, 1) : null;
+            $fac3Num = null;
+
+            if (!is_null(optional($unid->hdConsecuencia3)->calculo_consecuencia)) {
+                $fac3Num = round((float) optional($unid->hdConsecuencia3)->calculo_consecuencia, 1);
+            }
+
+            $nuevoPerfil = '-';
+            $nivelR2Txt = '-';
+            $ipd2Val = null;
+
+            if ($fac2Num !== null && $fac3Num !== null) {
+                $nuevoPerfil = '(' . number_format($fac2Num, 1) . '-' . number_format($fac3Num, 1) . ')';
+                $ipd2Val = round($fac2Num * $fac3Num, 2);
+
+                $nr = NivelRiesgo::where('min', '<=', (float)$ipd2Val)
+                    ->where('max', '>=', (float)$ipd2Val)
+                    ->first();
+
+                if ($nr) {
+                    $nivelR2Txt = $nr->nivel_riesgo;
+                }
+            }
+
             $matrixPoints[] = [
-                'id'     => $id,
-                'label'  => 'E.' . $id,
-                'x'      => $fac2,   // Impacto
-                'y'      => $fac1,   // Amenaza
-                'ipd'    => $ipdBase,
-                'perfil' => $perfil,
-                'nivel'  => $nivelTxt,
+                'id'            => $id,
+                'label'         => 'E.' . $id,
+
+                'criterio_id'   => $criterioId,
+                'criterio'      => $criterioLabel,
+
+                // original
+                'x'             => $facOriginalImpacto,
+                'y'             => $fac1,
+                'ipd'           => $ipdBase,
+                'perfil'        => $perfil,
+                'nivel'         => $nivelTxt,
+
+                // nuevo
+                'x2'            => $fac3Num,
+                'y2'            => $fac2Num,
+                'ipd2'          => $ipd2Val,
+                'nuevo_perfil'  => $nuevoPerfil,
+                'nuevo_nivel'   => $nivelR2Txt,
             ];
 
-            // Filas para tabla (orden por ID)
             $matrixRows[] = [
-                'id'     => $id,
-                'label'  => 'E.' . $id,
-                'ipd'    => $ipdBase,
-                'perfil' => $perfil,
-                'nivel'  => $nivelTxt,
+                'id'            => $id,
+                'label'         => 'E.' . $id,
+                'criterio_id'   => $criterioId,
+                'criterio'      => $criterioLabel,
+
+                'ipd'           => $ipdBase,
+                'perfil'        => $perfil,
+                'nivel'         => $nivelTxt,
+
+                'nuevo_perfil'  => $nuevoPerfil,
+                'nuevo_nivel'   => $nivelR2Txt,
             ];
         }
 
-        // Ordenar tabla por ID asc
         usort($matrixRows, function($a, $b){
             return ($a['id'] ?? 0) <=> ($b['id'] ?? 0);
         });
+
+        $matrixCriteria = array_values($matrixCriteriaMap);
+        usort($matrixCriteria, function($a, $b){
+            return strcmp((string)$a['label'], (string)$b['label']);
+        });
+
+                /*
+        |--------------------------------------------------------------------------
+        | AVANCE DE CONSECUCIÓN
+        |--------------------------------------------------------------------------
+        | No aceptables: Muy Alto, Alto, Medio
+        | Aceptables: Bajo, Muy Bajo
+        |
+        | estatus_riesgo:
+        | null / 1 = Abierta
+        | 2        = Proceso
+        | 3        = Ejecutada
+        |--------------------------------------------------------------------------
+        */
+        $avanceNoAceptables = [
+            'abierta'   => 0,
+            'proceso'   => 0,
+            'ejecutada' => 0,
+            'total'     => 0,
+        ];
+
+        $avanceDetalleNoAceptables = [
+            'abierta' => [
+                'muy_alto' => 0,
+                'alto'     => 0,
+                'medio'    => 0,
+                'total'    => 0,
+            ],
+            'proceso' => [
+                'muy_alto' => 0,
+                'alto'     => 0,
+                'medio'    => 0,
+                'total'    => 0,
+            ],
+            'ejecutada' => [
+                'muy_alto' => 0,
+                'alto'     => 0,
+                'medio'    => 0,
+                'total'    => 0,
+            ],
+        ];
+
+        $avanceAceptables = [
+            'bajo'     => 0,
+            'muy_bajo' => 0,
+            'total'    => 0,
+        ];
+
+        foreach ($data as $unid) {
+            $riesgo = (float) ($unid->nivel_riesgo ?? 0);
+
+            if ($riesgo >= 36.10) {
+                $nivelKey = 'muy_alto';
+                $nivelTxt = 'Muy Alto';
+            } elseif ($riesgo >= 16.10) {
+                $nivelKey = 'alto';
+                $nivelTxt = 'Alto';
+            } elseif ($riesgo >= 6.50) {
+                $nivelKey = 'medio';
+                $nivelTxt = 'Medio';
+            } elseif ($riesgo >= 1.50) {
+                $nivelKey = 'bajo';
+                $nivelTxt = 'Bajo';
+            } else {
+                $nivelKey = 'muy_bajo';
+                $nivelTxt = 'Muy Bajo';
+            }
+
+            $estatus = $unid->estatus_riesgo;
+
+            // ACEPTABLES
+            if (in_array($nivelKey, ['bajo', 'muy_bajo'], true)) {
+                $avanceAceptables[$nivelKey]++;
+                $avanceAceptables['total']++;
+                continue;
+            }
+
+            // NO ACEPTABLES
+            $estadoKey = 'abierta';
+            if ((int)$estatus === 2) {
+                $estadoKey = 'proceso';
+            } elseif ((int)$estatus === 3) {
+                $estadoKey = 'ejecutada';
+            }
+
+            $avanceNoAceptables[$estadoKey]++;
+            $avanceNoAceptables['total']++;
+
+            $avanceDetalleNoAceptables[$estadoKey][$nivelKey]++;
+            $avanceDetalleNoAceptables[$estadoKey]['total']++;
+        }
+
+        $avanceConsecucionPorcentaje = $avanceNoAceptables['total'] > 0
+            ? round(($avanceNoAceptables['ejecutada'] / $avanceNoAceptables['total']) * 100, 2)
+            : 0;
 
         return view('analisisriesgos.graficas-sociales-cliente', compact(
             'data',
@@ -714,6 +869,11 @@ class AnalisisRiesgosController extends Controller
 
             'matrixPoints',
             'matrixRows',
+            'matrixCriteria',
+            'avanceNoAceptables',
+            'avanceDetalleNoAceptables',
+            'avanceAceptables',
+            'avanceConsecucionPorcentaje',
         ));
     }
 
