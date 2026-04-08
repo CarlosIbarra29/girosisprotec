@@ -244,7 +244,7 @@ body{
     max-width: 500px !important;
     min-height: 100vh !important;
     display: flex !important;
-    flex-direction: column !important;
+    /*flex-direction: column !important;*/
     justify-content: center !important;
     align-items: center !important;
     padding: 1rem .95rem !important;
