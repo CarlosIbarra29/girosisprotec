@@ -40,6 +40,7 @@
     const paretoIPD    = {!! json_encode($paretoIPD ?? []) !!};
     const paretoCrit   = {!! json_encode($paretoCrit ?? []) !!};
     const paretoAcum   = {!! json_encode($paretoAcum ?? []) !!};
+    const paretoEventos = {!! json_encode($paretoEventos ?? []) !!};
 
     const avanceConsecucionPorcentaje = {!! json_encode($avanceConsecucionPorcentaje ?? 0) !!};
     const avanceNoAceptables = {!! json_encode($avanceNoAceptables ?? []) !!};
@@ -349,9 +350,99 @@
           }
         };
 
+        var danoDesviacionPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mydanopotencial') return;
+
+            var riesgoPotencialIndex = 0; // dataset 0 = Riesgo Potencial
+            var ds = chart.data.datasets[riesgoPotencialIndex];
+            var meta = chart.getDatasetMeta(riesgoPotencialIndex);
+
+            if (!ds || !meta || meta.hidden || !meta.data || !meta.data.length) return;
+
+            var maxIndex = -1;
+            var maxValue = -Infinity;
+
+            ds.data.forEach(function(point, i){
+              var value = Number((point && point.y) || 0);
+              if (value > maxValue) {
+                maxValue = value;
+                maxIndex = i;
+              }
+            });
+
+            if (maxIndex === -1 || maxValue <= 0 || !meta.data[maxIndex]) return;
+
+            var pt = meta.data[maxIndex];
+            var model = pt._model;
+            var x = model.x;
+            var y = model.y;
+
+            var ctx = chart.ctx;
+            var area = chart.chartArea;
+            var isMobile = window.innerWidth <= 768;
+
+            var text = 'Desviación';
+            var fontSize = isMobile ? 12 : 14;
+            var textX = x - (isMobile ? 56 : 72);
+            var textY = Math.max(area.top + 18, y - (isMobile ? 58 : 64));
+
+            var textWidth;
+            ctx.save();
+            ctx.font = (isMobile ? '700 ' : '800 ') + fontSize + 'px Poppins, Arial, sans-serif';
+            textWidth = ctx.measureText(text).width;
+            ctx.restore();
+
+            /* la flecha sale del centro de la palabra */
+            var arrowStartX = textX + (textWidth / 2);
+            var arrowStartY = textY + (isMobile ? 10 : 12);
+
+            /* termina arriba a la izquierda del punto para no tapar el porcentaje */
+            var arrowEndX = x - (isMobile ? 16 : 18);
+            var arrowEndY = y - (isMobile ? 14 : 16);
+
+            ctx.save();
+
+            /* texto */
+            ctx.font = (isMobile ? '700 ' : '800 ') + fontSize + 'px Poppins, Arial, sans-serif';
+            ctx.fillStyle = 'rgba(120, 20, 20, 0.92)';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, textX, textY);
+
+            /* línea diagonal */
+            ctx.beginPath();
+            ctx.moveTo(arrowStartX, arrowStartY);
+            ctx.lineTo(arrowEndX, arrowEndY);
+            ctx.lineWidth = isMobile ? 2 : 3;
+            ctx.strokeStyle = 'rgba(180, 40, 40, 0.88)';
+            ctx.stroke();
+
+            /* punta */
+            var angle = Math.atan2(arrowEndY - arrowStartY, arrowEndX - arrowStartX);
+            var headLength = isMobile ? 8 : 10;
+
+            ctx.beginPath();
+            ctx.moveTo(arrowEndX, arrowEndY);
+            ctx.lineTo(
+              arrowEndX - headLength * Math.cos(angle - Math.PI / 6),
+              arrowEndY - headLength * Math.sin(angle - Math.PI / 6)
+            );
+            ctx.lineTo(
+              arrowEndX - headLength * Math.cos(angle + Math.PI / 6),
+              arrowEndY - headLength * Math.sin(angle + Math.PI / 6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(180, 40, 40, 0.88)';
+            ctx.fill();
+
+            ctx.restore();
+          }
+        };
+
         new Chart(ctx2, {
           type: 'line',
-          plugins: [pointPctPlugin],
+          plugins: [pointPctPlugin, danoDesviacionPlugin],
           data: {
             labels: xLabels,
             datasets: [
@@ -1017,9 +1108,10 @@
         var pa = (paretoAcum || []);
 
         function barGradient(ctx) {
-          var g = ctx.createLinearGradient(0, 0, 0, 320);
-          g.addColorStop(0, 'rgba(74, 111, 165, 0.90)');
-          g.addColorStop(1, 'rgba(205, 220, 240, 0.95)');
+          var g = ctx.createLinearGradient(0, 0, 0, 340);
+          g.addColorStop(0, 'rgba(194, 164, 118, 0.58)'); // camel
+          g.addColorStop(0.55, 'rgba(155, 124, 78, 0.56)'); // camel-700
+          g.addColorStop(1, 'rgba(127, 101, 63, 0.54)'); // camel-800
           return g;
         }
         var gradBar = barGradient(ctxP);
@@ -1099,8 +1191,11 @@
                 label: 'IPD',
                 data: pi,
                 backgroundColor: gradBar,
-                borderColor: 'rgba(18,18,18,0.45)',
+                borderColor: 'rgba(18,18,18,0.75)',
                 borderWidth: 2,
+                hoverBackgroundColor: 'rgba(127, 101, 63, 0.98)',
+                hoverBorderColor: 'rgba(18,18,18,0.95)',
+                hoverBorderWidth: 2,
                 barThickness: isMobile ? 14 : 20,
                 maxBarThickness: isMobile ? 16 : 24,
                 categoryPercentage: 0.70,
@@ -1138,10 +1233,33 @@
               titleFontStyle: 'bold',
               bodyFontStyle: 'bold',
               callbacks: {
+                title: function(items, data){
+                  var i = items && items[0] ? items[0].index : 0;
+                  return data.labels[i] || '';
+                },
                 label: function(t, d){
                   var label = d.datasets[t.datasetIndex].label || '';
                   if (t.datasetIndex === 1) return ' ' + label + ': ' + Number(t.yLabel).toFixed(2) + '%';
                   return ' ' + label + ': ' + t.yLabel;
+                },
+                afterBody: function(items){
+                  var i = items && items[0] ? items[0].index : 0;
+                  var evento = (paretoEventos[i] || '').trim();
+
+                  if (!evento) {
+                    return ['Evento de riesgo: -'];
+                  }
+
+                  var limite = 70;
+                  var corto = evento.length > limite ? evento.substring(0, limite).trim() + '...' : evento;
+
+                  var salida = ['Evento de riesgo: ' + corto];
+
+                  if (evento.length > limite) {
+                    salida.push('Ver más en detalle');
+                  }
+
+                  return salida;
                 }
               }
             },
@@ -1269,6 +1387,7 @@
 
               chart.data.datasets.forEach(function(ds, datasetIndex){
                 if (datasetIndex === 2) return; // no pintar labels en líneas
+                if (ds.label === 'Nuevo perfil' && !showNuevoPerfil) return; // ocultar labels del nuevo perfil
 
                 var meta = chart.getDatasetMeta(datasetIndex);
                 if (!meta || meta.hidden) return;
@@ -1276,6 +1395,7 @@
                 meta.data.forEach(function(pt, i) {
                   var d = ds.data[i];
                   if (!d) return;
+                  if (d.isNew && !showNuevoPerfil) return; // doble seguridad
 
                   ctx.font = "900 10px Poppins, Arial, sans-serif";
                   ctx.fillStyle = d.isNew ? "#111111" : "#ffffff";
@@ -1286,7 +1406,6 @@
               ctx.restore();
             }
           };
-
           matrixChart = new Chart(ctxM, {
             type: 'scatter',
             plugins: [matrixPointLabelPlugin],
@@ -2073,12 +2192,12 @@
                           @forelse($escenariosFilas as $fila)
                             <tr>
                               <td class="giro-escenarios-label">{{ $fila['label'] }}</td>
-                              <td class="giro-td-muy-bajo">{{ $fila['muy_bajo'] }}</td>
-                              <td class="giro-td-bajo">{{ $fila['bajo'] }}</td>
-                              <td class="giro-td-medio">{{ $fila['medio'] }}</td>
-                              <td class="giro-td-alto">{{ $fila['alto'] }}</td>
-                              <td class="giro-td-muy-alto">{{ $fila['muy_alto'] }}</td>
-                              <td class="giro-td-total">{{ $fila['total'] }}</td>
+                              <td class="giro-td-muy-bajo">{{ ($fila['muy_bajo'] ?? 0) == 0 ? '' : $fila['muy_bajo'] }}</td>
+                              <td class="giro-td-bajo">{{ ($fila['bajo'] ?? 0) == 0 ? '' : $fila['bajo'] }}</td>
+                              <td class="giro-td-medio">{{ ($fila['medio'] ?? 0) == 0 ? '' : $fila['medio'] }}</td>
+                              <td class="giro-td-alto">{{ ($fila['alto'] ?? 0) == 0 ? '' : $fila['alto'] }}</td>
+                              <td class="giro-td-muy-alto">{{ ($fila['muy_alto'] ?? 0) == 0 ? '' : $fila['muy_alto'] }}</td>
+                              <td class="giro-td-total">{{ ($fila['total'] ?? 0) == 0 ? '' : $fila['total'] }}</td>
                             </tr>
                           @empty
                             <tr>

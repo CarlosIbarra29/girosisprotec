@@ -466,6 +466,7 @@ class AnalisisRiesgosController extends Controller
             $paretoTmp[] = [
                 'id'  => (int) ($unid->id ?? 0),
                 'ipd' => $ipd,
+                'evento_riesgo'  => (string) ($unid->eventos_riesgo ?? ''),
             ];
 
             $totalIPD += $ipd;
@@ -481,6 +482,7 @@ class AnalisisRiesgosController extends Controller
         $paretoIPD = [];
         $paretoCrit = [];
         $paretoAcum = [];
+        $paretoEventos = [];
 
         $acum = 0;
 
@@ -495,6 +497,7 @@ class AnalisisRiesgosController extends Controller
             $paretoIPD[]    = round($row['ipd'], 2);
             $paretoCrit[]   = $crit;
             $paretoAcum[]   = $acum;
+            $paretoEventos[]  = $row['evento_riesgo'] ?? '';
         }
 
         /*
@@ -859,6 +862,7 @@ class AnalisisRiesgosController extends Controller
             'paretoIPD',
             'paretoCrit',
             'paretoAcum',
+            'paretoEventos',
 
             'medDebLabels',
             'medDebData',

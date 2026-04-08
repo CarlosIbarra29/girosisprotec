@@ -330,7 +330,7 @@
 }
 
 .giro-escenarios-table th{
-  font-weight: 700;
+  font-weight: 300;
 }
 
 .giro-escenarios-table td{
@@ -858,8 +858,8 @@
 
 /* swatch barras */
 .giro-pareto-legend__swatch--bar{
-  background: linear-gradient(180deg, rgba(205, 220, 240, 0.95), rgba(74, 111, 165, 0.90));
-  border: 1px solid rgba(18,18,18,0.35);
+  background: linear-gradient(180deg, rgba(194, 164, 118, 0.98), rgba(127, 101, 63, 0.94));
+  border: 1px solid rgba(18,18,18,0.55);
 }
 
 /* swatch línea */
