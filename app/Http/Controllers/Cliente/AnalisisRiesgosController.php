@@ -457,11 +457,14 @@ class AnalisisRiesgosController extends Controller
 
         foreach ($data as $unid) {
             // IPD (como tu cálculo de criticidad)
-            $ipd = (round(($unid->factorExp?->factor_dato ?? 0) *
-                  ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0))) *
-                  ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+            $fac1 = round(
+                (float)($unid->factorExp?->factor_dato ?? 0) *
+                (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
+                1
+            );
 
-            $ipd = (float) $ipd;
+            $ipd = (float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0) * $fac1;
+            $ipd = round($ipd, 2);
 
             $paretoTmp[] = [
                 'id'  => (int) ($unid->id ?? 0),
@@ -651,11 +654,7 @@ class AnalisisRiesgosController extends Controller
 
             $facOriginalImpacto = (float) ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
 
-            $ipdBase = ((int)(
-                (((float)($unid->factorExp?->factor_dato ?? 0) * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) * 10)
-            ) / 10) * ((float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0));
-
-            $ipdBase = round((float)$ipdBase, 2);
+            $ipdBase = round($facOriginalImpacto * $fac1, 2);
 
             $riesgo = (float)($unid->nivel_riesgo ?? 0);
             if ($riesgo >= 36.10) {

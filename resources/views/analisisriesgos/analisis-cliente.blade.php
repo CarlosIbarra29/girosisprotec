@@ -66,7 +66,6 @@
               <span class="legend-item"><span class="legend-icon">▾</span> Select (clic)</span>
             </div>
 
-
             <div class="card-body">
               <!-- <div class="text-center mb-4">
                 <a href="{{ route('analisis.analisiscliente', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
@@ -185,9 +184,13 @@
                       @php
                         $totalIPD = 0;
                         foreach($data as $unid) {
-                          $ipd = (round(($unid->factorExp?->factor_dato ?? 0) *
-                                 ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0))) *
-                                 ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
+                          $fac1Loop = round(
+                            (float)($unid->factorExp?->factor_dato ?? 0)
+                            * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
+                            1
+                          );
+
+                          $ipd = (float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0) * $fac1Loop;
                           $totalIPD += $ipd;
                         }
                       @endphp
@@ -261,7 +264,6 @@
                           </td>
 
                           {{-- Medidas de Prevención (EDITABLE) --}}
-
                           <td class="text-long">
                             <div class="cell-edit clamp-3 {{ empty(trim($unid->medidas_prevencion ?? '')) ? 'is-empty' : '' }}"
                                  data-id="{{ $unid->id }}"
@@ -289,14 +291,12 @@
                           </td>
 
                           @php
-                            // Fac.1 = Exposición × Probabilidad, 1 decimal
                             $fac1 = round(
                               (float)($unid->factorExp?->factor_dato ?? 0)
                               * (float)($unid->hdProbabilidadif?->calculo_probabilidad ?? 0),
                               1
                             );
 
-                            // Amz.1 cercano
                             $amz1Label = 'Sin Registro';
                             if(isset($nivelesAmenaza) && $nivelesAmenaza->count()){
                               $closest = $nivelesAmenaza->sortBy(function($n) use ($fac1){
@@ -333,47 +333,31 @@
                           </td>
 
                           @php
-                            $ipdBase = ((int)(
-                              ( ( $unid->factorExp?->factor_dato ?? 0 )
-                                * ( $unid->hdProbabilidadif?->calculo_probabilidad ?? 0 ) ) * 10
-                            ) / 10) * ( $unid->hdConsecuencia?->calculo_consecuencia ?? 0 );
+                            $ipdBase = (float)($unid->hdConsecuencia?->calculo_consecuencia ?? 0) * (float)$fac1;
                           @endphp
 
                           <td class="nowrap-num">
-                            <span class="ipd1-val" data-id="{{ $unid->id }}">{{ $ipdBase }}</span>
+                            <span class="ipd1-val" data-id="{{ $unid->id }}">{{ number_format($ipdBase, 1, '.', '') }}</span>
                           </td>
 
+                          @php
+                            $riesgoMarginal = (($ipdBase - 6.4) < 6.4) ? 0 : ($ipdBase - 6.4);
+                          @endphp
+
                           <td class="nowrap-num">
-                            {{
-                              (
-                                (
-                                  ($calc =
-                                    ( (int)( ( ( $unid->factorExp?->factor_dato ?? 0 )
-                                              * ( $unid->hdProbabilidadif?->calculo_probabilidad ?? 0 ) ) * 10 ) / 10 )
-                                    * ( $unid->hdConsecuencia?->calculo_consecuencia ?? 0 )
-                                  ) - 6.4
-                                ) < 6.4
-                              )
-                              ? 0
-                              : $calc - 6.4
-                            }}
+                            {{ number_format($riesgoMarginal, 1, '.', '') }}
                           </td>
 
                           <td class="nowrap-num">
                             @php
-                              $ipd = (round(($unid->factorExp?->factor_dato ?? 0) *
-                                    ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0))) *
-                                    ($unid->hdConsecuencia?->calculo_consecuencia ?? 0);
-                              $indiceCriticidad = $totalIPD > 0 ? round(($ipd / $totalIPD) * 100, 2) : 0;
+                              $indiceCriticidad = $totalIPD > 0 ? round(($ipdBase / $totalIPD) * 100, 2) : 0;
                             @endphp
+
                             {{ $indiceCriticidad }}%
                           </td>
 
                           <td class="nowrap-num">
-                            ({{ round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) .
-                               '-' .
-                               round($unid->hdConsecuencia?->calculo_consecuencia ?? 0)
-                             }})
+                            ({{ round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) . '-' . round($unid->hdConsecuencia?->calculo_consecuencia ?? 0) }})
                           </td>
 
                           @php
@@ -440,7 +424,6 @@
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
-
                           {{-- Contramedidas (EDITABLE) --}}
                           <td class="text-long">
                             <div class="cell-edit clamp-3 {{ empty(trim($unid->contramedidas ?? '')) ? 'is-empty' : '' }}"
@@ -450,7 +433,6 @@
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
-
                           {{-- Costo de Solución (EDITABLE) --}}
                           <td>
                             <div class="cell-edit clamp-3 cell-money {{ empty(trim((string)($unid->costo_sol ?? ''))) ? 'is-empty' : 'has-value' }}"
@@ -458,7 +440,6 @@
                                  data-field="costo_sol"
                                  contenteditable="false">{{ $unid->costo_sol }}</div>
                           </td>
-
 
                           {{-- NIVEL DE CONTROL 2 (SELECT) --}}
                           @php
@@ -661,7 +642,6 @@
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
-
                           <td class="text-long">
                             <div class="cell-edit clamp-3 {{ empty(trim($unid->plan ?? '')) ? 'is-empty' : '' }}"
                                  data-id="{{ $unid->id }}"
@@ -670,7 +650,6 @@
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
-
                           <td class="text-long">
                             <div class="cell-edit clamp-3 {{ empty(trim($unid->responsable ?? '')) ? 'is-empty' : '' }}"
                                  data-id="{{ $unid->id }}"
@@ -678,7 +657,6 @@
                                  contenteditable="false">{{ $unid->responsable }}</div>
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
-
 
                           {{-- Fechas EDITABLES --}}
                           @php
@@ -863,7 +841,6 @@
       return /^sin registro$/i.test(s) ? '' : s;
     }
     function isEmptyText(t){
-      // contenteditable a veces deja NBSP o saltos invisibles
       return (t || '')
         .replace(/\u00A0/g,' ')
         .replace(/\s+/g,' ')
@@ -875,55 +852,96 @@
       if(!y || !m || !d) return ymd;
       return `${d}/${m}/${y}`;
     }
-    function toNum(x){ if (x == null) return NaN; return parseFloat(String(x).replace(',', '.')); }
-    function _norm(s){ return (s||'').toString().trim().toLowerCase(); }
+    function toNum(x){
+      if (x == null) return NaN;
+      return parseFloat(String(x).replace(',', '.'));
+    }
+    function _norm(s){
+      return (s||'').toString().trim().toLowerCase();
+    }
 
     // ===== Derivados =====
-    function setIR(row, data){
-      const irEl = row && row.querySelector('.ir-val'); if (!irEl) return;
-      if (data && data.ir != null && !isNaN(data.ir)) { irEl.textContent = Number(data.ir).toFixed(1); return; }
-      const ipd1 = toNum(row.querySelector('.ipd1-val')?.textContent || '0');
+    function setIR(row){
+      const irEl = row && row.querySelector('.ir-val');
+      if (!irEl) return;
+
+      const ipd1 = toNum(row.querySelector('.ipd1-val')?.textContent || '');
       const ipd2 = toNum(row.querySelector('.ipd2-val')?.textContent || '');
-      if (!ipd1 || !isFinite(ipd1) || !isFinite(ipd2)) irEl.textContent = 'Sin Registro';
-      else irEl.textContent = (ipd1 - ipd2).toFixed(1);
+
+      if (!isFinite(ipd1) || !isFinite(ipd2)) {
+        irEl.textContent = 'Sin Registro';
+        return;
+      }
+
+      irEl.textContent = (ipd1 - ipd2).toFixed(1);
     }
-    function setIRP(row, data){
-      const irpEl = row && row.querySelector('.irp-val'); if (!irpEl) return;
-      if (data && data.irp_pct != null && !isNaN(data.irp_pct)) { irpEl.textContent = `${Number(data.irp_pct).toFixed(1)}%`; return; }
-      const ipd1 = toNum(row.querySelector('.ipd1-val')?.textContent || '0');
-      const ipd2 = (data && data.ipd2 != null) ? toNum(data.ipd2) : toNum(row.querySelector('.ipd2-val')?.textContent || '');
-      if (!ipd1 || !isFinite(ipd1) || ipd1 <= 0 || !isFinite(ipd2)) irpEl.textContent = 'Sin Registro';
-      else irpEl.textContent = `${((1 - (ipd2 / ipd1)) * 100).toFixed(1)}%`;
+
+    function setIRP(row){
+      const irpEl = row && row.querySelector('.irp-val');
+      if (!irpEl) return;
+
+      const ipd1 = toNum(row.querySelector('.ipd1-val')?.textContent || '');
+      const ipd2 = toNum(row.querySelector('.ipd2-val')?.textContent || '');
+
+      if (!isFinite(ipd1) || !isFinite(ipd2) || ipd1 <= 0) {
+        irpEl.textContent = 'Sin Registro';
+        return;
+      }
+
+      irpEl.textContent = `${((1 - (ipd2 / ipd1)) * 100).toFixed(1)}%`;
     }
+
     function setPerfil(row, data){
-      const perfilEl = row && row.querySelector('.perfil2-val'); if (!perfilEl) return;
+      const perfilEl = row && row.querySelector('.perfil2-val');
+      if (!perfilEl) return;
+
       const f2 = (data && data.fac2 != null) ? data.fac2 : toNum(row.querySelector('.fac2-val')?.textContent || '');
       const f3 = (data && data.fac3 != null) ? data.fac3 : toNum(row.querySelector('.fac3-val')?.textContent || '');
+
       if (isNaN(f2) || isNaN(f3)) perfilEl.textContent = 'Sin Registro';
       else perfilEl.textContent = `(${Math.round(f2)}-${Math.round(f3)})`;
     }
 
     // ===== Colores =====
     function colorNivelRiesgo2(td, txt){
-      if (!td) return; td.style.backgroundColor = ''; td.style.color = '';
+      if (!td) return;
+      td.style.backgroundColor = '';
+      td.style.color = '';
       const t = _norm(txt);
       if (t === 'bajo') td.style.backgroundColor = '#99ff99';
       else if (t === 'medio') td.style.backgroundColor = '#ffe0b2';
       else if (t === 'alto') td.style.backgroundColor = '#ff9999';
-      else if (t === 'muy alto'){ td.style.backgroundColor = '#cc0000'; td.style.color = '#fff'; }
+      else if (t === 'muy alto'){
+        td.style.backgroundColor = '#cc0000';
+        td.style.color = '#fff';
+      }
     }
+
     function colorAceptabilidad(td, txt){
-      if (!td) return; td.style.backgroundColor = ''; td.style.color = '';
+      if (!td) return;
+      td.style.backgroundColor = '';
+      td.style.color = '';
       const t = _norm(txt);
-      if (t === 'aceptables'){ td.style.backgroundColor = '#28a745'; td.style.color = '#fff'; }
-      else if (t === 'no aceptables'){ td.style.backgroundColor = '#dc3545'; td.style.color = '#fff'; }
+      if (t === 'aceptables'){
+        td.style.backgroundColor = '#28a745';
+        td.style.color = '#fff';
+      } else if (t === 'no aceptables'){
+        td.style.backgroundColor = '#dc3545';
+        td.style.color = '#fff';
+      }
     }
+
     function applyRowColors(row){
-      const nr2El = row.querySelector('.nivel2-val'); if (nr2El) colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
-      const acEl  = row.querySelector('.acept-val');  if (acEl)  colorAceptabilidad(acEl.closest('td'), acEl.textContent);
+      const nr2El = row.querySelector('.nivel2-val');
+      if (nr2El) colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+
+      const acEl  = row.querySelector('.acept-val');
+      if (acEl) colorAceptabilidad(acEl.closest('td'), acEl.textContent);
     }
+
     function setSolEficaz(row, aceptTxt){
-      const el = row && row.querySelector('.sol-eficaz-val'); if (!el) return;
+      const el = row && row.querySelector('.sol-eficaz-val');
+      if (!el) return;
       const t = (aceptTxt || '').toString().trim().toLowerCase();
       el.textContent = (t === 'aceptables') ? 'SI' : (t === 'no aceptables') ? 'NO' : 'Sin Registro';
     }
@@ -948,13 +966,11 @@
       if (!el || !el.classList.contains('cell-edit')) return;
       if (el.getAttribute('contenteditable') === 'true') return;
 
-      // Guardar original (si estaba vacío, orig = '')
       el.dataset.orig = normalizeText(el.textContent);
 
       el.setAttribute('contenteditable','true');
       el.classList.remove('clamp-3');
 
-      // ✅ Si estaba vacío (placeholder), limpia para escribir
       if (el.classList.contains('is-empty') || isEmptyText(el.textContent)) {
         el.textContent = '';
         el.classList.remove('is-empty');
@@ -980,7 +996,11 @@
       if (!el || !el.classList || !el.classList.contains('cell-edit')) return;
       if (el.getAttribute('contenteditable') !== 'true') return;
 
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); el.blur(); }
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        el.blur();
+      }
+
       if (e.key === 'Escape') {
         e.preventDefault();
         if (el.dataset.orig != null) el.textContent = el.dataset.orig;
@@ -996,19 +1016,15 @@
       const nuevoRaw = normalizeText(el.textContent);
       const origRaw  = normalizeText(el.dataset.orig || '');
 
-      // ✅ Detectar vacío real (incluye NBSP, etc.)
       const nuevoEmpty = isEmptyText(nuevoRaw);
       const origEmpty  = isEmptyText(origRaw);
 
-      // Volver a modo lectura
       el.setAttribute('contenteditable','false');
       el.classList.add('clamp-3');
 
-      // ✅ Placeholder visual
       if (nuevoEmpty) el.classList.add('is-empty');
       else el.classList.remove('is-empty');
 
-      // Si no cambió (ambos vacíos o iguales)
       if ((nuevoEmpty && origEmpty) || (!nuevoEmpty && !origEmpty && nuevoRaw.trim() === origRaw.trim())) return;
 
       const id    = el.dataset.id;
@@ -1019,17 +1035,21 @@
       try {
         const resp = await fetch("{{ route('analisis.updateCell') }}", {
           method: 'POST',
-          headers: { 'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN': token },
+          headers: {
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+            'X-CSRF-TOKEN': token
+          },
           credentials: 'same-origin',
           body: JSON.stringify({ id, field, value: (nuevoEmpty ? null : nuevoRaw.trim()) })
         });
+
         const data = await resp.json();
         el.classList.remove('saving');
 
         if (resp.ok && data.ok) {
-          el.classList.add('saved'); setTimeout(()=>el.classList.remove('saved'), 1200);
-
-          // ✅ Actualizar orig (si quedó vacío, orig = '')
+          el.classList.add('saved');
+          setTimeout(()=>el.classList.remove('saved'), 1200);
           el.dataset.orig = nuevoEmpty ? '' : nuevoRaw.trim();
         } else {
           throw new Error(data.message || 'Error al guardar');
@@ -1039,7 +1059,6 @@
         el.classList.add('error');
         setTimeout(()=>el.classList.remove('error'), 1200);
 
-        // Revertir visualmente
         el.textContent = origRaw;
         if (origEmpty) el.classList.add('is-empty');
         else el.classList.remove('is-empty');
@@ -1055,8 +1074,12 @@
     const selQuery = 'select.sel-nivel-control2, select.sel-estatus, select.sel-seg-control, select.sel-nivel-probabilidad2, select.sel-nivel-sev2';
 
     document.addEventListener('pointerdown', (e) => {
-      const td = e.target.closest('td'); if (!td) return;
-      const sel = td.querySelector(selQuery); if (!sel || !sel.disabled) return;
+      const td = e.target.closest('td');
+      if (!td) return;
+
+      const sel = td.querySelector(selQuery);
+      if (!sel || !sel.disabled) return;
+
       sel.disabled = false;
       setTimeout(()=>{ try{ sel.focus(); }catch(_){} }, 0);
     });
@@ -1074,70 +1097,115 @@
 
       const id    = sel.dataset.id;
       const field = sel.dataset.field;
-      let value   = sel.value; value = isNaN(parseInt(value,10)) ? null : parseInt(value,10);
+      let value   = sel.value;
+      value = isNaN(parseInt(value,10)) ? null : parseInt(value,10);
 
       sel.classList.add('saving');
+
       try {
         const resp = await fetch("{{ route('analisis.updateCell') }}", {
           method:'POST',
-          headers:{ 'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN': token },
+          headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json',
+            'X-CSRF-TOKEN': token
+          },
           credentials:'same-origin',
           body: JSON.stringify({ id, field, value })
         });
+
         const data = await resp.json();
         sel.classList.remove('saving');
 
         if (resp.ok && data.ok){
-          sel.classList.add('saved'); setTimeout(()=>sel.classList.remove('saved'), 900);
+          sel.classList.add('saved');
+          setTimeout(()=>sel.classList.remove('saved'), 900);
+
           const row = sel.closest('tr');
 
           if (field === 'probabilidad_id2' || field === 'nivel_control2') {
             const facEl = row && row.querySelector('.fac2-val');
             if (facEl) facEl.textContent = (data.fac2 == null) ? 'Sin Registro' : Number(data.fac2).toFixed(1);
+
             const amzEl = row && row.querySelector('.amz2-val');
             if (amzEl) amzEl.textContent = data.amz2_label || 'Sin Registro';
+
             const ipdEl = row && row.querySelector('.ipd2-val');
             if (ipdEl) ipdEl.textContent = (data.ipd2 == null) ? 'Sin Registro' : Number(data.ipd2).toFixed(1);
+
             const rm2El = row && row.querySelector('.rm2-val');
             if (rm2El) rm2El.textContent = (data.rm2 == null) ? 'Sin Registro' : Number(data.rm2).toFixed(1);
+
             const nc3El = row && row.querySelector('.nc3-val');
             if (nc3El) nc3El.textContent = (data.nc3 == null) ? 'Sin asignar' : data.nc3;
+
             const exp3El = row && row.querySelector('.exp3-val');
             if (exp3El) exp3El.textContent = (data.exp3 == null) ? 'Sin asignar' : data.exp3;
 
-            setPerfil(row, data); setIR(row, data); setIRP(row, data);
+            setPerfil(row, data);
+            setIR(row);
+            setIRP(row);
 
             const nr2El = row && row.querySelector('.nivel2-val');
-            if (nr2El){ nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro'); colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent); }
+            if (nr2El){
+              nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro');
+              colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+            }
+
             const aceptEl = row && row.querySelector('.acept-val');
-            if (aceptEl){ aceptEl.textContent = (data.aceptabilidad || 'Sin Registro'); colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent); }
+            if (aceptEl){
+              aceptEl.textContent = (data.aceptabilidad || 'Sin Registro');
+              colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
+            }
+
             const solEl = row && row.querySelector('.sol-eficaz-val');
-            if (solEl){ if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz; else setSolEficaz(row, (aceptEl && aceptEl.textContent) || ''); }
+            if (solEl){
+              if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
+              else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
+            }
           }
 
           if (field === 'sev2') {
             const fac3El = row && row.querySelector('.fac3-val');
-            if (fac3El)  fac3El.textContent = (data.fac3 == null) ? 'Sin Registro' : Number(data.fac3).toFixed(1);
-            const ipdEl  = row && row.querySelector('.ipd2-val');
-            if (ipdEl)   ipdEl.textContent  = (data.ipd2 == null) ? 'Sin Registro' : Number(data.ipd2).toFixed(1);
-            const rm2El  = row && row.querySelector('.rm2-val');
-            if (rm2El)   rm2El.textContent  = (data.rm2 == null) ? 'Sin Registro' : Number(data.rm2).toFixed(1);
+            if (fac3El) fac3El.textContent = (data.fac3 == null) ? 'Sin Registro' : Number(data.fac3).toFixed(1);
 
-            setPerfil(row, data); setIR(row, data); setIRP(row, data);
+            const ipdEl  = row && row.querySelector('.ipd2-val');
+            if (ipdEl) ipdEl.textContent  = (data.ipd2 == null) ? 'Sin Registro' : Number(data.ipd2).toFixed(1);
+
+            const rm2El  = row && row.querySelector('.rm2-val');
+            if (rm2El) rm2El.textContent  = (data.rm2 == null) ? 'Sin Registro' : Number(data.rm2).toFixed(1);
+
+            setPerfil(row, data);
+            setIR(row);
+            setIRP(row);
 
             const nr2El = row && row.querySelector('.nivel2-val');
-            if (nr2El){ nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro'); colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent); }
+            if (nr2El){
+              nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro');
+              colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+            }
+
             const aceptEl = row && row.querySelector('.acept-val');
-            if (aceptEl){ aceptEl.textContent = (data.aceptabilidad || 'Sin Registro'); colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent); }
+            if (aceptEl){
+              aceptEl.textContent = (data.aceptabilidad || 'Sin Registro');
+              colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
+            }
+
             const solEl = row && row.querySelector('.sol-eficaz-val');
-            if (solEl){ if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz; else setSolEficaz(row, (aceptEl && aceptEl.textContent) || ''); }
+            if (solEl){
+              if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
+              else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
+            }
           }
         } else {
           throw new Error(data.message || 'Error al guardar');
         }
       } catch (err) {
-        sel.classList.remove('saving'); sel.classList.add('error'); setTimeout(()=>sel.classList.remove('error'), 900);
-        console.error(err); alert('No se pudo guardar el cambio.');
+        sel.classList.remove('saving');
+        sel.classList.add('error');
+        setTimeout(()=>sel.classList.remove('error'), 900);
+        console.error(err);
+        alert('No se pudo guardar el cambio.');
       }
     });
 
@@ -1145,44 +1213,70 @@
     // C) FECHAS: clic en la celda para abrir datepicker
     // =========================================================
     document.addEventListener('click', (e)=>{
-      const cell = e.target.closest('.date-cell'); if (!cell) return;
+      const cell = e.target.closest('.date-cell');
+      if (!cell) return;
       if (e.target.classList && e.target.classList.contains('date-input')) return;
+
       const span  = cell.querySelector('.date-text');
       const input = cell.querySelector('.date-input');
       if (!span || !input) return;
-      span.style.display = 'none'; input.style.display = 'block';
-      setTimeout(()=>{ try { input.focus(); if (typeof input.showPicker === 'function') input.showPicker(); } catch(_) {} }, 0);
+
+      span.style.display = 'none';
+      input.style.display = 'block';
+
+      setTimeout(()=>{
+        try {
+          input.focus();
+          if (typeof input.showPicker === 'function') input.showPicker();
+        } catch(_) {}
+      }, 0);
     });
 
     document.addEventListener('change', async (e)=>{
       const input = e.target;
       if (!input.classList || !input.classList.contains('date-input')) return;
-      const cell = input.closest('.date-cell'); if (!cell) return;
+
+      const cell = input.closest('.date-cell');
+      if (!cell) return;
+
       const id    = cell.dataset.id;
       const field = cell.dataset.field;
       const value = input.value || null;
+
       input.classList.add('saving');
 
       try {
         const resp = await fetch("{{ route('analisis.updateCell') }}", {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json','Accept': 'application/json','X-CSRF-TOKEN': token },
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': token
+          },
           credentials: 'same-origin',
           body: JSON.stringify({ id, field, value })
         });
+
         const data = await resp.json();
         input.classList.remove('saving');
+
         const span = cell.querySelector('.date-text');
         if (resp.ok && data.ok) {
           if (span) span.textContent = value ? ymdToDMY(value) : 'Sin Registro';
-          input.classList.add('saved'); setTimeout(()=>input.classList.remove('saved'), 900);
-        } else { throw new Error(data.message || 'Error al guardar la fecha'); }
+          input.classList.add('saved');
+          setTimeout(()=>input.classList.remove('saved'), 900);
+        } else {
+          throw new Error(data.message || 'Error al guardar la fecha');
+        }
       } catch (err) {
-        input.classList.remove('saving'); input.classList.add('error'); setTimeout(()=>input.classList.remove('error'), 900);
-        console.error(err); alert('No se pudo guardar la fecha.');
+        input.classList.remove('saving');
+        input.classList.add('error');
+        setTimeout(()=>input.classList.remove('error'), 900);
+        console.error(err);
+        alert('No se pudo guardar la fecha.');
       } finally {
         const span = cell.querySelector('.date-text');
-        if (span){ span.style.display = 'inline'; }
+        if (span) span.style.display = 'inline';
         input.style.display = 'none';
       }
     });
@@ -1196,6 +1290,5 @@
 
   });
 </script>
-
 
 @endsection
