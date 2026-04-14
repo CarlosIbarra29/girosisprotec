@@ -1145,7 +1145,7 @@
 .giro-matrix-ylabels,
 .giro-matrix-yvals{
   position: relative;
-  height: 560px !important;
+  height: 500px !important;
 }
 
 .giro-matrix-ylabels{
@@ -1173,13 +1173,13 @@
 }
 
 /* posiciones recalculadas para menos alto */
-.giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 18px; }
-.giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 106px; }
-.giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 194px; }
-.giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 282px; }
-.giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 370px; }
-.giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 458px; }
-.giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 546px; }
+.giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 56px; }
+.giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 124px; }
+.giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 184px; }
+.giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 254px; }
+.giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 314px; }
+.giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 374px; }
+.giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 446px; }
 
 /* ---------- MAIN MATRIZ ---------- */
 .giro-matrix-main{

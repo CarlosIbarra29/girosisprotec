@@ -53,7 +53,7 @@ class AnalisisRiesgoSocial extends Model
     /**
      * @var array
      */
-    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'nivel_riesgo', 'descripcion','nivel_control2','probabilidad_id2','sev2','indice_reduccion','aceptabilidad','sol_eficaz','observaciones','plan','responsable','fecha_inicio','fecha_fin','estatus_riesgo','seg_control','fac2','costo_sol','estrategias'];
+    protected $fillable = ['cliente_id', 'libror_barreras_perimetrales_id', 'libror_sociales_alcances_id', 'hd_nivel_control_id', 'hd_consecuencia_id', 'hd_probabilidad_id', 'status_delete', 'punto_control', 'factores_riesgo', 'eventos_riesgo', 'recursos_expuestos', 'fuente_riesgo', 'ubicacion_riesgo', 'medidas_prevencion', 'contramedidas', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated','factor_exposicion', 'nivel_riesgo', 'descripcion','nivel_control2','probabilidad_id2','sev2','indice_reduccion','aceptabilidad','sol_eficaz','observaciones','plan','responsable','area_responsable','fecha_inicio','fecha_fin','estatus_riesgo','seg_control','fac2','costo_sol','estrategias'];
 
 
     public function hdConsecuencia()

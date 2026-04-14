@@ -1432,6 +1432,7 @@ class AnalisisRiesgosController extends Controller
             'observaciones',
             'plan',
             'responsable',
+            'area_responsable',
             'fecha_inicio',
             'fecha_fin',
             'estatus_riesgo',

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @push('scripts')
-  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.1') }}"></script>
+  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.2') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css">
   <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/listadoanalisis.css?v=1.0.5') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/listadoanalisis.css?v=1.3.1') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -115,7 +115,11 @@
                 <div id="tbl-scroll" class="table-responsive">
                   <table class="table table-hover table-checkable" id="kdatatable_clientes_inactivos">
                     <thead>
-                      <tr>
+                      <tr class="quadrant-row">
+                        <th colspan="27" class="quadrant-title quadrant-1"></th>
+                        <th colspan="26" class="quadrant-title quadrant-2">RIESGO RESIDUAL</th>
+                      </tr>
+                       <tr class="main-header-row">
                         <th>
                           Esc.
                           <button type="button"
@@ -124,6 +128,7 @@
                             <i class="la la-filter"></i>
                           </button>
                         </th>
+                        <th><b>Fecha Inicio</b></th>
                         <th>Criterio</th>
                         <th>Punto Normativo</th>
                         <th>Ubicacion del Riesgo</th>
@@ -170,7 +175,7 @@
                         <th><b>Observaciones</b></th>
                         <th><b>Plan Contingencia</b></th>
                         <th><b>Responsable</b></th>
-                        <th><b>Fecha Inicio</b></th>
+                        <th><b>Area</b></th>
                         <th><b>Fecha Fin</b></th>
                         <th><b>Estatus</b></th>
                         <th><b>Controles Asegurados</b></th>
@@ -198,6 +203,26 @@
                       @foreach($data as $unid)
                         <tr data-row-id="{{ $unid->id }}">
                           <td>E.{{ $unid->id }}</td>
+
+                          {{-- Fechas EDITABLES --}}
+                          @php
+                            $fiRaw = $unid->fecha_inicio ? \Carbon\Carbon::parse($unid->fecha_inicio)->format('Y-m-d') : '';
+                            $fiUI  = $fiRaw ? \Carbon\Carbon::parse($fiRaw)->format('d/m/Y') : null;
+                            $ffRaw = $unid->fecha_fin ? \Carbon\Carbon::parse($unid->fecha_fin)->format('Y-m-d') : '';
+                            $ffUI  = $ffRaw ? \Carbon\Carbon::parse($ffRaw)->format('d/m/Y') : null;
+                          @endphp
+
+                          <td class="date-cell"
+                              data-id="{{ $unid->id }}"
+                              data-field="fecha_inicio">
+                            <span class="date-text">{{ $fiUI ?? 'Sin Registro' }}</span>
+                            <input type="date"
+                                   class="date-input form-control form-control-sm"
+                                   value="{{ $fiRaw }}"
+                                   style="display:none; min-width: 170px;">
+                          </td>
+
+
                           <td>{{ $unid->BarrerasPerimetrales->alcance }}</td>
 
                           {{-- Punto Normativo (editable opcional) --}}
@@ -357,7 +382,7 @@
                           </td>
 
                           <td class="nowrap-num">
-                            ({{ round(($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)) . '-' . round($unid->hdConsecuencia?->calculo_consecuencia ?? 0) }})
+                            ({{ number_format((($unid->factorExp?->factor_dato ?? 0) * ($unid->hdProbabilidadif?->calculo_probabilidad ?? 0)), 1, '.', '') . '-' . number_format(($unid->hdConsecuencia?->calculo_consecuencia ?? 0), 1, '.', '') }})
                           </td>
 
                           @php
@@ -416,12 +441,20 @@
                           </td>
 
                           {{-- Estrategia (EDITABLE) --}}
-                          <td class="text-long">
-                            <div class="cell-edit clamp-3 {{ empty(trim($unid->estrategias ?? '')) ? 'is-empty' : '' }}"
-                                 data-id="{{ $unid->id }}"
-                                 data-field="estrategias"
-                                 contenteditable="false">{{ $unid->estrategias }}</div>
-                            <a href="#" class="toggle-more ml-2">Ver más</a>
+                          @php
+                            $estrategiaVal = (int)($unid->estrategias ?? 0);
+                          @endphp
+                          <td>
+                            <select class="form-control gray_area sel-estrategia"
+                                    data-id="{{ $unid->id }}"
+                                    data-field="estrategias"
+                                    disabled>
+                              <option value="">Seleccionar</option>
+                              <option value="1" {{ $estrategiaVal === 1 ? 'selected' : '' }}>Aceptar</option>
+                              <option value="2" {{ $estrategiaVal === 2 ? 'selected' : '' }}>Mitigar</option>
+                              <option value="3" {{ $estrategiaVal === 3 ? 'selected' : '' }}>Financiar</option>
+                              <option value="4" {{ $estrategiaVal === 4 ? 'selected' : '' }}>Evitar</option>
+                            </select>
                           </td>
 
                           {{-- Contramedidas (EDITABLE) --}}
@@ -610,8 +643,8 @@
                               case 'muy alto':$nr2Class = 'risk2-muyalto'; break;
                             }
                             $accClass = '';
-                            if (strtolower($aceptTxt) === 'aceptables')      $accClass = 'acc-acept';
-                            elseif (strtolower($aceptTxt) === 'no aceptables') $accClass = 'acc-noacept';
+                            if (strtolower($aceptTxt) === 'aceptable')      $accClass = 'acc-acept';
+                            elseif (strtolower($aceptTxt) === 'no aceptable') $accClass = 'acc-noacept';
                           @endphp
 
                           <td class="nowrap-num td-nr2 {{ $nr2Class }}">
@@ -625,8 +658,8 @@
                           @php
                             $solEf = null;
                             $accLower = strtolower($aceptTxt ?? '');
-                            if ($accLower === 'aceptables')      $solEf = 'SI';
-                            elseif ($accLower === 'no aceptables') $solEf = 'NO';
+                            if ($accLower === 'aceptable')      $solEf = 'SI';
+                            elseif ($accLower === 'no aceptable') $solEf = 'NO';
                           @endphp
 
                           <td class="nowrap-num td-sol">
@@ -658,22 +691,12 @@
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
-                          {{-- Fechas EDITABLES --}}
-                          @php
-                            $fiRaw = $unid->fecha_inicio ? \Carbon\Carbon::parse($unid->fecha_inicio)->format('Y-m-d') : '';
-                            $fiUI  = $fiRaw ? \Carbon\Carbon::parse($fiRaw)->format('d/m/Y') : null;
-                            $ffRaw = $unid->fecha_fin ? \Carbon\Carbon::parse($unid->fecha_fin)->format('Y-m-d') : '';
-                            $ffUI  = $ffRaw ? \Carbon\Carbon::parse($ffRaw)->format('d/m/Y') : null;
-                          @endphp
-
-                          <td class="date-cell"
-                              data-id="{{ $unid->id }}"
-                              data-field="fecha_inicio">
-                            <span class="date-text">{{ $fiUI ?? 'Sin Registro' }}</span>
-                            <input type="date"
-                                   class="date-input form-control form-control-sm"
-                                   value="{{ $fiRaw }}"
-                                   style="display:none; min-width: 170px;">
+                          <td class="text-long">
+                            <div class="cell-edit clamp-3 {{ empty(trim($unid->area_responsable ?? '')) ? 'is-empty' : '' }}"
+                                 data-id="{{ $unid->id }}"
+                                 data-field="area_responsable"
+                                 contenteditable="false">{{ $unid->area_responsable }}</div>
+                            <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
 
                           <td class="date-cell"
@@ -759,6 +782,7 @@
                     <tfoot>
                       <tr>
                         <th>Esc.</th>
+                        <th><b>Fecha Inicio</b></th>
                         <th>Criterio</th>
                         <th>Punto Normativo</th>
                         <th>Ubicacion del Riesgo</th>
@@ -804,7 +828,7 @@
                         <th><b>Observaciones</b></th>
                         <th><b>Plan Contingencia</b></th>
                         <th><b>Responsable</b></th>
-                        <th><b>Fecha Inicio</b></th>
+                        <th><b>Area</b></th>
                         <th><b>Fecha Fin</b></th>
                         <th><b>Estatus</b></th>
                         <th><b>Controles Asegurados</b></th>
@@ -922,10 +946,10 @@
       td.style.backgroundColor = '';
       td.style.color = '';
       const t = _norm(txt);
-      if (t === 'aceptables'){
+      if (t === 'aceptable'){
         td.style.backgroundColor = '#28a745';
         td.style.color = '#fff';
-      } else if (t === 'no aceptables'){
+      } else if (t === 'no aceptable'){
         td.style.backgroundColor = '#dc3545';
         td.style.color = '#fff';
       }
@@ -943,7 +967,7 @@
       const el = row && row.querySelector('.sol-eficaz-val');
       if (!el) return;
       const t = (aceptTxt || '').toString().trim().toLowerCase();
-      el.textContent = (t === 'aceptables') ? 'SI' : (t === 'no aceptables') ? 'NO' : 'Sin Registro';
+      el.textContent = (t === 'aceptable') ? 'SI' : (t === 'no aceptable') ? 'NO' : 'Sin Registro';
     }
 
     // ===== Ver más / Ver menos =====
@@ -1071,7 +1095,7 @@
     // =========================================================
     // B) SELECTS: clic en la celda para habilitar temporalmente
     // =========================================================
-    const selQuery = 'select.sel-nivel-control2, select.sel-estatus, select.sel-seg-control, select.sel-nivel-probabilidad2, select.sel-nivel-sev2';
+    const selQuery = 'select.sel-nivel-control2, select.sel-estatus, select.sel-seg-control, select.sel-nivel-probabilidad2, select.sel-nivel-sev2, select.sel-estrategia';
 
     document.addEventListener('pointerdown', (e) => {
       const td = e.target.closest('td');

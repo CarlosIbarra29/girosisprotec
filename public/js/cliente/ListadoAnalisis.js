@@ -165,33 +165,43 @@ jQuery(document).ready(function () {
 
   /* --------------------------------------------------
    * 1) Crear fila de filtros en EL ENCABEZADO (thead)
+   *    tomando SOLO la fila real de títulos
    * -------------------------------------------------- */
   var $thead = $tabla.find("thead");
-  var $headerRow = $thead.find("tr").first(); // fila de títulos
-  var $filterRow = $headerRow.clone(false);   // clonamos estructura
+
+  // Si existe la fila real con clase main-header-row, usamos esa.
+  // Si no, usamos la última fila del thead como respaldo.
+  var $headerRow = $thead.find("tr.main-header-row").first();
+  if (!$headerRow.length) {
+    $headerRow = $thead.find("tr").last();
+  }
+
+  // Evitar duplicar filtros si el script vuelve a correr
+  $thead.find("tr.filters-row").remove();
+
+  var $filterRow = $headerRow.clone(false);
 
   $filterRow
+    .removeClass("main-header-row quadrant-row")
     .addClass("filters-row")
     .find("th")
-    .each(function (index) {
-      var title = $(this).text().trim();
+    .each(function () {
+      var title = $(this).text().trim().replace(/\s+/g, " ");
 
       // Sin filtro en "Acciones" o columnas sin título
       if (!title || title.toLowerCase() === "acciones") {
-        $(this).html(""); // celda vacía
+        $(this).html("");
         return;
       }
 
-      // Input de búsqueda por columna
       $(this).html(
-        '<input type="text" class="form-control form-control-sm column-filter" ' +
-        'placeholder="' +
-        title +
-        '" />'
+        '<input type="text" class="form-control form-control-sm column-filter" placeholder="' +
+          title +
+          '" />'
       );
     });
 
-  // Añadimos la segunda fila de encabezado
+  // Agregar la fila de filtros al final del thead
   $thead.append($filterRow);
 
   /* --------------------------------------------------
@@ -217,22 +227,18 @@ jQuery(document).ready(function () {
     responsive: false,
     ordering: true,
     order: [],
-    orderCellsTop: true, // usa la PRIMERA fila del thead para ordenar
+    orderCellsTop: true,
+    fixedHeader: true,
   });
 
   // --- Estado inicial: filtros ocultos ---
-  // Usamos un pequeño delay para asegurarnos de que el wrapper ya existe
   setTimeout(function () {
     var $wrapper = $("#kdatatable_clientes_inactivos_wrapper");
     if (!$wrapper.length) return;
 
-    // Marcar como ocultos
     $wrapper.addClass("filters-hidden");
-
-    // Esconder la fila de filtros en todos los thead
     $wrapper.find("thead tr.filters-row").hide();
 
-    // Poner el botón en estado "apagado" y con título "Mostrar filtros"
     $wrapper
       .find(".btn-filters-toggle")
       .addClass("filters-off")
@@ -241,8 +247,6 @@ jQuery(document).ready(function () {
 
   /* --------------------------------------------------
    * Botón "Filtros" junto a ESC.
-   * Usa delegación sobre el documento, para que funcione
-   * aunque el wrapper/thead se generen después.
    * -------------------------------------------------- */
   $(document).on(
     "click",
@@ -258,7 +262,6 @@ jQuery(document).ready(function () {
 
       $wrapper.toggleClass("filters-hidden", ahoraOcultos);
 
-      // Mostrar / ocultar todas las filas de filtros en todos los thead
       var $filterRows = $wrapper.find("thead tr.filters-row");
       if (ahoraOcultos) {
         $filterRows.hide();
@@ -266,21 +269,18 @@ jQuery(document).ready(function () {
         $filterRows.show();
       }
 
-      // Actualizar TODOS los botones de filtros del wrapper
       var nuevoTitle = ahoraOcultos ? "Mostrar filtros" : "Ocultar filtros";
       $wrapper
         .find(".btn-filters-toggle")
         .toggleClass("filters-off", ahoraOcultos)
         .attr("title", nuevoTitle);
 
-      // Ajustar columnas
       try {
         DT_INACTIVOS.columns().adjust().draw(false);
       } catch (err) {}
     }
   );
 
-  // Lo dejamos global por si tu Blade lo usa en otro lado
   window.DT_INACTIVOS = DT_INACTIVOS;
 
   /* --------------------------------------------------
@@ -293,7 +293,6 @@ jQuery(document).ready(function () {
       var val = this.value;
 
       if (DT_INACTIVOS.column(colIdx).search() !== val) {
-        // Búsqueda simple (sin regex, sin smart)
         DT_INACTIVOS
           .column(colIdx)
           .search(val || "", false, false)
@@ -311,7 +310,6 @@ jQuery(document).ready(function () {
     } catch (e) {}
   }
 
-  // un pequeño delay para que tome bien los anchos
   setTimeout(ajustaColumnas, 0);
 
   $(window).on("resize", ajustaColumnas);

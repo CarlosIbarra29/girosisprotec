@@ -248,36 +248,49 @@ td[style*="background-color: red"] p {
 
 #kdatatable_clientes_inactivos th:nth-child(25),
 #kdatatable_clientes_inactivos td:nth-child(25) { 
-  min-width: 230px !important; 
+  min-width: 135px !important; 
 }
 
 /* 27: Nivel de control2 (select) */
-#kdatatable_clientes_inactivos th:nth-child(27),
-#kdatatable_clientes_inactivos td:nth-child(27) { 
+#kdatatable_clientes_inactivos th:nth-child(28),
+#kdatatable_clientes_inactivos td:nth-child(28) { 
   min-width: 140px !important; 
 }
 
-/* Prob (30) */
-#kdatatable_clientes_inactivos th:nth-child(30),
-#kdatatable_clientes_inactivos td:nth-child(30) { 
+/* Prob (31) */
+#kdatatable_clientes_inactivos th:nth-child(31),
+#kdatatable_clientes_inactivos td:nth-child(31) { 
   min-width: 100px !important; 
 }
 
-/* Sev. (33) */
-#kdatatable_clientes_inactivos th:nth-child(33),
-#kdatatable_clientes_inactivos td:nth-child(33) { 
-  min-width: 140px !important; 
+/* SEV (35) */
+#kdatatable_clientes_inactivos th:nth-child(34),
+#kdatatable_clientes_inactivos td:nth-child(34) { 
+  min-width: 150px !important; 
+}
+
+
+/* 48: Area */
+#kdatatable_clientes_inactivos th:nth-child(48),
+#kdatatable_clientes_inactivos td:nth-child(48) { 
+  min-width: 70px !important; 
+}
+
+/* 48: Area */
+#kdatatable_clientes_inactivos th:nth-child(49),
+#kdatatable_clientes_inactivos td:nth-child(49) { 
+  min-width: 100px !important; 
 }
 
 /* 48: Estatus */
-#kdatatable_clientes_inactivos th:nth-child(48),
-#kdatatable_clientes_inactivos td:nth-child(48) { 
+#kdatatable_clientes_inactivos th:nth-child(50),
+#kdatatable_clientes_inactivos td:nth-child(50) { 
   min-width: 100px !important; 
 }
 
 /* 49: Controles asegurados */
-#kdatatable_clientes_inactivos th:nth-child(49),
-#kdatatable_clientes_inactivos td:nth-child(49) { 
+#kdatatable_clientes_inactivos th:nth-child(51),
+#kdatatable_clientes_inactivos td:nth-child(51) { 
   min-width: 100px !important; 
 }
 
@@ -504,7 +517,7 @@ td:has(select.sel-nivel-sev2):focus-within {
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
   position: relative !important;
-  padding-left: 18px !important; /* espacio para el punto */
+  padding-left: 14px !important; /* espacio para el punto */
 }
 
 /* 2) Dibujar el puntito */
@@ -550,14 +563,18 @@ td:has(select.sel-nivel-sev2):focus-within {
 }
 
 /* 4) (Opcional) Línea tenue a la izquierda para remarcar aún más */
-#kdatatable_clientes_inactivos td:has(.cell-edit),
+/*#kdatatable_clientes_inactivos td:has(.cell-edit),
 #kdatatable_clientes_inactivos td:has(.date-cell),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-control2),
 #kdatatable_clientes_inactivos td:has(select.sel-estatus),
 #kdatatable_clientes_inactivos td:has(select.sel-seg-control),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
-  box-shadow: inset 3px 0 0 0 rgba(194,164,118,.12) !important; /* barrita muy sutil */
+  box-shadow: inset 3px 0 0 0 rgba(194,164,118,.12) !important; 
+}*/
+
+#kdatatable_clientes_inactivos tbody td {
+  box-shadow: inset 2px 0 0 0 rgba(194,164,118,.10) !important; 
 }
 
 /* Placeholder visual para celdas editables vacías */
@@ -579,3 +596,124 @@ td:has(select.sel-nivel-sev2):focus-within {
 }
 
 
+/* =========================
+   CENTRAR ENCABEZADOS Y CONTENIDO DE LA TABLA
+   ========================= */
+
+/* Encabezados */
+#kdatatable_clientes_inactivos thead th,
+#kdatatable_clientes_inactivos tfoot th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* Celdas */
+#kdatatable_clientes_inactivos tbody td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+/* Textos largos que traen clamp / ver más */
+#kdatatable_clientes_inactivos td.text-long,
+#kdatatable_clientes_inactivos td .cell-edit,
+#kdatatable_clientes_inactivos td .clamp-3,
+#kdatatable_clientes_inactivos td .date-text,
+#kdatatable_clientes_inactivos td .nowrap-num,
+#kdatatable_clientes_inactivos td p,
+#kdatatable_clientes_inactivos td span,
+#kdatatable_clientes_inactivos td div {
+  text-align: center !important;
+}
+
+/* "Ver más" centrado y como bloque */
+#kdatatable_clientes_inactivos a.toggle-more {
+  display: block !important;
+  text-align: center !important;
+  margin-top: .35rem !important;
+  margin-left: 0 !important;
+}
+
+/* Selects centrados */
+#kdatatable_clientes_inactivos td select.form-control {
+  text-align: center !important;
+  text-align-last: center !important;
+  padding-left: 1.75rem !important;
+  padding-right: 1.75rem !important;
+}
+
+/* Inputs de fecha */
+#kdatatable_clientes_inactivos td .date-input {
+  text-align: center !important;
+}
+
+/* Acciones siempre centradas */
+#kdatatable_clientes_inactivos td.col-actions,
+#kdatatable_clientes_inactivos td.col-actions a,
+#kdatatable_clientes_inactivos td.col-actions button {
+  text-align: center !important;
+}
+
+/* Ajuste para columnas editables que antes estaban arriba */
+.table td.text-long {
+  vertical-align: middle !important;
+}
+
+/* =========================
+   CUADRANTES
+   ========================= */
+
+/* Regla base para la fila de cuadrantes en la tabla original
+   y en los clones que crea DataTables / FixedHeader */
+#kdatatable_clientes_inactivos thead tr.quadrant-row th,
+div.dataTables_scrollHead table thead tr.quadrant-row th,
+table.fixedHeader-floating thead tr.quadrant-row th {
+  text-align: center; !important;
+  vertical-align: middle !important;
+  font-size: 1rem !important;
+  font-weight: 800 !important;
+  letter-spacing: .02em !important;
+  text-transform: uppercase !important;
+  /*padding: .45rem .9rem !important;*/
+  border-bottom: 1px solid rgba(0,0,0,.08) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Cuadrante 1: transparente con texto negro */
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-1,
+div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-1,
+table.fixedHeader-floating thead tr.quadrant-row th.quadrant-1 {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #121212 !important;
+}
+
+/* Cuadrante 2: gris con texto blanco */
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-2,
+div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-2,
+table.fixedHeader-floating thead tr.quadrant-row th.quadrant-2 {
+  background: #6b7280 !important;
+  background-color: #6b7280 !important;
+  color: #ffffff !important;
+}
+
+/* Asegurar que cualquier texto interno respete el color */
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-1 *,
+div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-1 *,
+table.fixedHeader-floating thead tr.quadrant-row th.quadrant-1 * {
+  color: #121212 !important;
+}
+
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-2 *,
+div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-2 *,
+table.fixedHeader-floating thead tr.quadrant-row th.quadrant-2 * {
+  color: #ffffff !important;
+}
+
+/* Que la fila principal de encabezados siga negra */
+#kdatatable_clientes_inactivos thead tr.main-header-row th,
+div.dataTables_scrollHead table thead tr.main-header-row th,
+table.fixedHeader-floating thead tr.main-header-row th {
+  background: var(--ink) !important;
+  color: #ffffff !important;
+}
