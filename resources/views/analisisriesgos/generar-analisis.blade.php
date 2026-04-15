@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('scripts')
-    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.1') }}"></script>
+    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.4') }}"></script>
     <link href="{{ asset('/css/version2/gnranalisis.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 

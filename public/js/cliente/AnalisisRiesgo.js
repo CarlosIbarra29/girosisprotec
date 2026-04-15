@@ -111,7 +111,7 @@
 
     $("#alcance_mas").off('click').on('click', function () {
       // Validación obligatoria para avanzar
-      if (!validarTresSelects()) return;
+      // if (!validarTresSelects()) return;
 
       var paginador   = document.getElementById("paginador_num").value;
       var id_cliente  = document.getElementById("id_cliente").value;
@@ -164,7 +164,7 @@
 
     $("#alcance_menos").off('click').on('click', function () {
       // Si NO quieres validar para regresar, comenta la siguiente línea:
-      if (!validarTresSelects()) return;
+      // if (!validarTresSelects()) return;
 
       var paginador   = document.getElementById("paginador_num").value;
       var id_cliente  = document.getElementById("id_cliente").value;
