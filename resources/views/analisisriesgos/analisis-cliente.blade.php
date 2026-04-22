@@ -8,7 +8,7 @@
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/listadoanalisis.css?v=1.3.1') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/listadoanalisis.css?v=1.3.4') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -128,7 +128,7 @@
                             <i class="la la-filter"></i>
                           </button>
                         </th>
-                        <th><b>Fecha Inicio</b></th>
+                        <th><b>Fecha Registro</b></th>
                         <th>Criterio</th>
                         <th>Punto Normativo</th>
                         <th>Ubicacion del Riesgo</th>
@@ -366,7 +366,7 @@
                           </td>
 
                           @php
-                            $riesgoMarginal = (($ipdBase - 6.4) < 6.4) ? 0 : ($ipdBase - 6.4);
+                            $riesgoMarginal = (($ipdBase - 6.4) < 0) ? 0 : ($ipdBase - 6.4);
                           @endphp
 
                           <td class="nowrap-num">
@@ -589,7 +589,7 @@
                             $rm2Val = 'Sin Registro';
                             if (is_numeric($ipd2Val)) {
                               $diff = (float)$ipd2Val - 6.4;
-                              $rm2Val = number_format(($diff < 6.4 ? 0 : $diff), 1, '.', '');
+                              $rm2Val = number_format(($diff < 0 ? 0 : $diff), 1, '.', '');
                             }
                           @endphp
 
@@ -739,14 +739,8 @@
                             else                { $color2 = '';      $vlcontrol = 'NA'; }
                           @endphp
 
-                          <td
-                            @if($color2)
-                              style="background-color: {{ $color2 }}; text-align:center;"
-                            @else
-                              style="text-align:center;"
-                            @endif
-                          >
-                            <p style="color: white">{{ $vlcontrol }}</p>
+                          <td class="td-gestion {{ $val == 1 ? 'gestion-si' : ($val == 2 ? 'gestion-no' : 'gestion-na') }}">
+                            <p class="gestion-label">{{ $vlcontrol }}</p>
                           </td>
 
                           <td class="text-center col-actions">
@@ -782,7 +776,7 @@
                     <tfoot>
                       <tr>
                         <th>Esc.</th>
-                        <th><b>Fecha Inicio</b></th>
+                        <th><b>Fecha Registro</b></th>
                         <th>Criterio</th>
                         <th>Punto Normativo</th>
                         <th>Ubicacion del Riesgo</th>
@@ -943,15 +937,38 @@
 
     function colorAceptabilidad(td, txt){
       if (!td) return;
+
+      td.classList.remove('acc-acept', 'acc-noacept');
       td.style.backgroundColor = '';
       td.style.color = '';
+
       const t = _norm(txt);
-      if (t === 'aceptable'){
-        td.style.backgroundColor = '#28a745';
-        td.style.color = '#fff';
-      } else if (t === 'no aceptable'){
-        td.style.backgroundColor = '#dc3545';
-        td.style.color = '#fff';
+
+      if (t === 'aceptable' || t === 'aceptables'){
+        td.classList.add('acc-acept');
+      } else if (t === 'no aceptable' || t === 'no aceptables'){
+        td.classList.add('acc-noacept');
+      }
+    }
+
+    function updateGestionCell(row, segValue){
+      const td = row && row.querySelector('.td-gestion');
+      const label = td && td.querySelector('.gestion-label');
+      if (!td || !label) return;
+
+      td.classList.remove('gestion-si', 'gestion-no', 'gestion-na');
+
+      const val = parseInt(segValue, 10);
+
+      if (val === 1) {
+        td.classList.add('gestion-si');
+        label.textContent = 'Riesgo Gestionado';
+      } else if (val === 2) {
+        td.classList.add('gestion-no');
+        label.textContent = 'Riesgo No Gestionado';
+      } else {
+        td.classList.add('gestion-na');
+        label.textContent = 'NA';
       }
     }
 
@@ -966,17 +983,95 @@
     function setSolEficaz(row, aceptTxt){
       const el = row && row.querySelector('.sol-eficaz-val');
       if (!el) return;
+
       const t = (aceptTxt || '').toString().trim().toLowerCase();
-      el.textContent = (t === 'aceptable') ? 'SI' : (t === 'no aceptable') ? 'NO' : 'Sin Registro';
+
+      el.textContent =
+        (t === 'aceptable' || t === 'aceptables') ? 'SI' :
+        (t === 'no aceptable' || t === 'no aceptables') ? 'NO' :
+        'Sin Registro';
+    }
+
+    function hasRealOverflow(el){
+      if (!el) return false;
+
+      const wasClamped = el.classList.contains('clamp-3');
+
+      if (!wasClamped) {
+        return (
+          el.scrollHeight > el.clientHeight + 1 ||
+          el.scrollWidth > el.clientWidth + 1
+        );
+      }
+
+      el.classList.remove('clamp-3');
+
+      const fullHeight = el.scrollHeight;
+      const fullWidth  = el.scrollWidth;
+
+      el.classList.add('clamp-3');
+
+      const clampedHeight = el.clientHeight;
+      const clampedWidth  = el.clientWidth;
+
+      return (
+        fullHeight > clampedHeight + 1 ||
+        fullWidth > clampedWidth + 1
+      );
+    }
+
+    function refreshToggleMore(scope = document){
+      let cells = [];
+
+      if (scope instanceof Element && scope.classList.contains('text-long')) {
+        cells = [scope];
+      } else {
+        cells = Array.from(scope.querySelectorAll('.text-long'));
+      }
+
+      cells.forEach((cell) => {
+        const content = cell.firstElementChild;
+        const link = cell.querySelector('.toggle-more');
+
+        if (!content || !link) return;
+
+        const wasExpanded = !content.classList.contains('clamp-3');
+
+        if (wasExpanded) {
+          content.classList.add('clamp-3');
+        }
+
+        requestAnimationFrame(() => {
+          const shouldShow = hasRealOverflow(content);
+
+          if (shouldShow) {
+            link.classList.remove('is-hidden');
+
+            if (wasExpanded) {
+              content.classList.remove('clamp-3');
+              link.textContent = 'Ver menos';
+            } else {
+              link.textContent = 'Ver más';
+            }
+          } else {
+            link.classList.add('is-hidden');
+            content.classList.add('clamp-3');
+            link.textContent = 'Ver más';
+          }
+        });
+      });
     }
 
     // ===== Ver más / Ver menos =====
     document.addEventListener('click', function(e){
       if(!e.target.classList.contains('toggle-more')) return;
+      if (e.target.classList.contains('is-hidden')) return;
+
       e.preventDefault();
       const link = e.target;
       const target = link.previousElementSibling;
       if(!target) return;
+
       target.classList.toggle('clamp-3');
       link.textContent = target.classList.contains('clamp-3') ? 'Ver más' : 'Ver menos';
     });
@@ -1075,6 +1170,11 @@
           el.classList.add('saved');
           setTimeout(()=>el.classList.remove('saved'), 1200);
           el.dataset.orig = nuevoEmpty ? '' : nuevoRaw.trim();
+
+          const textLong = el.closest('.text-long');
+          if (textLong) {
+            requestAnimationFrame(() => refreshToggleMore(textLong));
+          }
         } else {
           throw new Error(data.message || 'Error al guardar');
         }
@@ -1221,6 +1321,10 @@
               else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
             }
           }
+
+          if (field === 'seg_control') {
+            updateGestionCell(row, value);
+          }
         } else {
           throw new Error(data.message || 'Error al guardar');
         }
@@ -1312,6 +1416,18 @@
       setSolEficaz(row, ac);
     });
 
+    refreshToggleMore();
+
+  
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(() => refreshToggleMore());
+    })
+
+    setTimeout(() => refreshToggleMore(), 150);
+    setTimeout(() => refreshToggleMore(), 500);
+
+    document.addEventListener('shown.bs.tab', () => refreshToggleMore());
+    document.addEventListener('shown.bs.collapse', () => refreshToggleMore());
   });
 </script>
 

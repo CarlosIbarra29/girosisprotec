@@ -347,11 +347,69 @@ td[style*="background-color: red"] p {
 .risk2-muyalto { background:#cc0000 !important; color:#fff !important; }
 
 /* Colores Aceptabilidad */
-.td-acept { 
+/*.td-acept { 
   text-align:center !important; 
 }
 .acc-acept   { background:#28a745 !important; color:#fff !important; }
-.acc-noacept { background:#dc3545 !important; color:#fff !important; }
+.acc-noacept { background:#dc3545 !important; color:#fff !important; }*/
+
+
+/* Columna Aceptabilidad: sin fondo, solo banderita sutil */
+/* =========================
+   ACEPTABILIDAD CON BANDERITA REAL
+   ========================= */
+.td-acept{
+  position: relative !important;
+  text-align: center !important;
+  background: transparent !important;
+  color: var(--ink) !important;
+  padding-left: 28px !important;
+}
+
+.acc-acept,
+.acc-noacept{
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+/* Poste de la banderita */
+.td-acept.acc-acept::before,
+.td-acept.acc-noacept::before{
+  content: "";
+  position: absolute;
+  left: 108px;
+  top: 7px;
+  width: 2px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(17,24,39,.35);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.35);
+}
+
+/* Tela de la banderita */
+.td-acept.acc-acept::after,
+.td-acept.acc-noacept::after{
+  content: "";
+  position: absolute;
+  left: 110px;
+  top: 7px;
+  width: 20px;
+  height: 16px;
+  clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.18);
+}
+
+/* Verde */
+.td-acept.acc-acept::after{
+  background: linear-gradient(180deg, #34d399 0%, #16a34a 100%);
+}
+
+/* Roja */
+.td-acept.acc-noacept::after{
+  background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%);
+}
+
 
 /*==== Buscador filtros ====*/
 
@@ -579,7 +637,7 @@ td:has(select.sel-nivel-sev2):focus-within {
 
 /* Placeholder visual para celdas editables vacías */
 .cell-edit.is-empty::before{
-  content: "Sin Datos";
+  content: "";
   font-weight: 800;
   color: #111827;                 /* negro elegante */
   opacity: .85;
@@ -627,10 +685,17 @@ td:has(select.sel-nivel-sev2):focus-within {
 
 /* "Ver más" centrado y como bloque */
 #kdatatable_clientes_inactivos a.toggle-more {
-  display: block !important;
+  /*display: block !important;*/
   text-align: center !important;
   margin-top: .35rem !important;
   margin-left: 0 !important;
+}
+
+.text-long > div,
+.text-long > .cell-edit,
+.text-long > .clamp-3 {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
 }
 
 /* Selects centrados */
@@ -716,4 +781,37 @@ div.dataTables_scrollHead table thead tr.main-header-row th,
 table.fixedHeader-floating thead tr.main-header-row th {
   background: var(--ink) !important;
   color: #ffffff !important;
+  text-align: center !important;
+}
+
+/* Estado gestión al lado de Controles Asegurados */
+.td-gestion{
+  text-align: center !important;
+}
+
+.td-gestion .gestion-label{
+  margin: 0 !important;
+  font-weight: 700 !important;
+  letter-spacing: .2px !important;
+  color: #fff !important;
+}
+
+.td-gestion.gestion-si{
+  background: green !important;
+}
+
+.td-gestion.gestion-no{
+  background: red !important;
+}
+
+.td-gestion.gestion-na{
+  background: transparent !important;
+}
+
+.td-gestion.gestion-na .gestion-label{
+  color: #b8b8b8 !important;
+}
+
+a.toggle-more.is-hidden{
+  display: none !important;
 }

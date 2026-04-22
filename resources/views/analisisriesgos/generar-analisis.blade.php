@@ -2,7 +2,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.4') }}"></script>
-    <link href="{{ asset('/css/version2/gnranalisis.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/version2/gnranalisis.css?v=1.1.4') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -18,10 +18,10 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
-                    <h3 class="card-title">Generar analisis de riesgos al cliente ({{ $cliented->nombre_comercial }})</h3>
+                    <h3 class="card-title">Evaluación del Riesgo: conforme el cuadro de ISO 31000 ({{ $cliented->nombre_comercial }})</h3>
 
                     <div style="margin-top: 16px;">
-                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Perfil de riesgos</a>
+                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Evaluación del Riesgo</a>
                         <a href="{{ route('analisis.graficassociales', $cliente) }}" class="btn btn-success btn-xs "  href="#"><i class="la la-tachometer"></i>KPI's</a>
                         <a class="btn btn-success btn-xs"  href="{{ route('analisis.analisiscliente', $cliente ) }}"><i class="la la-project-diagram"></i></i> Analisis de Escenarios</a>
                     </div>
@@ -30,6 +30,14 @@
                 <input type='hidden' id='url_alcances' value='{{ route('analisis.obteneralcances') }}'>
                 <!--begin::Form-->
                     <div class="card-body">
+
+                        
+                        @if($alcance_social== "Vacio" || $id_alcance == 0)
+                        @else
+                            <div class="row  hr-container">
+                                <span><h3><b>Identificación del riesgo</b></h3></span>
+                            </div>
+                        @endif
 
                         <div class="card card-custom gutter-b">
                             <div class="card-body">
@@ -187,14 +195,21 @@
                         @else
 
                             <div class="row  hr-container">
-                                <span><h3><b>Controles</b></h3></span>
+                                <span><h3><b>Análisis del Riesgo</b></h3></span>
                             </div>
 
                             <div class="card card-custom gutter-b">
                                 <div class="card-body">
                                     <div class="row form-group">
+                                        <div class="col-lg-12 fl">
+                                            <label for="observaciones"><b>Medidas de Prevención y Protección Actuales</b></label>
+                                            <textarea class="form-control gray_area" name="medidas_prevencion" placeholder="" id="generales_unidad" rows="5"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
                                         <div class="col-lg-4 fl">
-                                            <label><b>Nivel de control</b></label>
+                                            <label><b>Nivel de control Existente</b></label>
                                             <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
                                                 <option value="" disabled selected>Selecciona una opción</option>
                                                 <option value="1">Inoperante</option>
@@ -230,18 +245,11 @@
                                             <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
                                         </div>
                                     </div>
-
-                                    <div class="row form-group">
-                                        <div class="col-lg-12 fl">
-                                            <label for="observaciones"><b>Medidas de Prevención y Protección Actuales</b></label>
-                                            <textarea class="form-control gray_area" name="medidas_prevencion" placeholder="" id="generales_unidad" rows="5"></textarea>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="row  hr-container">
-                                <span><h3><b>Deficiencias e Impactos</b></h3></span>
+                                <span><h3><b>Vulnerabilidades / Impactos al Negocio</b></h3></span>
                             </div>
                             
                             <div class="card card-custom gutter-b">
@@ -249,7 +257,7 @@
                                    
                                     <div class="row form-group">
                                         <div class="col-lg-4 degradado-border-right" >
-                                            <label for="observaciones"><b style="font-size: 15px;">Deficiencia medidas de seguridad</b></label><br>
+                                            <label for="observaciones"><b style="font-size: 15px;">Vulnerabilidades del Sistema Identificadas</b></label><br>
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="checkbox-list">
@@ -283,13 +291,13 @@
 
                                         </div>
                                         <div class="col-lg-8">
-                                            <label for="observaciones"><b style="font-size: 17px;">Impactos al Negocio</b></label><br>
+                                            <label for="observaciones"><b style="font-size: 16px;">Areas de Impacto Organizacional</b></label><br>
 
                                             <div class="row form-group">
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <div class="row">
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="1" name="impactos_negocio[]"/>
@@ -303,7 +311,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="checkbox-list">
 
                                                                     <label class="checkbox">
@@ -318,7 +326,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="5" name="impactos_negocio[]"/>
@@ -332,12 +340,46 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-2">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="7" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Comunidad
+                                                                    </label>
+                                                                </div>
+                                                                <div class="checkbox-list">
+                                                                    <label class="checkbox">
+                                                                        <input type="checkbox" value="8" name="impactos_negocio[]"/>
+                                                                        <span></span>
+                                                                        Financiero 
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-2">
+                                                                <div class="checkbox-list">
+                                                                    <label class="checkbox">
+                                                                        <input type="checkbox" value="9" name="impactos_negocio[]"/>
+                                                                        <span></span>
+                                                                        Ambiental
+                                                                    </label>
+                                                                </div>
+                                                                <div class="checkbox-list">
+                                                                    <label class="checkbox">
+                                                                        <input type="checkbox" value="11" name="impactos_negocio[]"/>
+                                                                        <span></span>
+                                                                        Tecnológico 
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-2">
+                                                                <div class="checkbox-list">
+                                                                    <label class="checkbox">
+                                                                        <input type="checkbox" value="12" name="impactos_negocio[]"/>
+                                                                        <span></span>
+                                                                        Legal
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -420,37 +462,37 @@
                                         <div class="col-lg-4 text-center">
 
                                             <div class="risk-level nivelmma">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
                                             <div class="risk-level nivelma oculto" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="background-color: #8B0000;">Muy alto</div>
                                             </div>
                                             <div class="risk-level oculto nivela" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="background-color: #FF0000;">Alto</div>
                                             </div>
                                             <div class="risk-level oculto nivelm" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="background-color: #f4c542;">Medio</div>
                                             </div>
                                             <div class="risk-level oculto nivelb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="background-color: #32CD32;">Bajo</div>
                                             </div>
                                             <div class="risk-level oculto nivelmb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div> 
                                             <div class="risk-level oculto nivelmmb" style="display: none;">
-                                                <span class="title">Nivel de Riesgo </span>
+                                                <span class="title">Valoración de Riesgo </span>
                                                 <span style="display:block;height:0.5lh" aria-hidden="true"></span>
                                                 <div class="risk-color" style="color:black; background-color: #F1EBEB;">Muy Bajo</div>
                                             </div>

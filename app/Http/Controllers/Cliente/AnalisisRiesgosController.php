@@ -170,6 +170,7 @@ class AnalisisRiesgosController extends Controller
             'cliente_id' => $request->cliente,
             'libror_barreras_perimetrales_id' => $request->punto_normativo,
             'libror_sociales_alcances_id' => $request->alcances,
+            'fecha_inicio' =>date('Y-m-d'),
             'punto_control' => $request->punto_control,
             'factores_riesgo' => $request->factor_riesgo,
             'eventos_riesgo' => $request->evento_riesgo,
@@ -1483,6 +1484,12 @@ class AnalisisRiesgosController extends Controller
                 if ($row->$field !== null && ($row->$field < 1 || $row->$field > 7)) {
                     return response()->json(['ok' => false, 'message' => 'Valor inválido (1-7)'], 422);
                 }
+            } elseif ($field === 'estrategias') {
+                $v = $request->input('value');
+                $row->$field = ($v === null || $v === '') ? null : (int)$v;
+                if ($row->$field !== null && ($row->$field < 1 || $row->$field > 4)) {
+                    return response()->json(['ok' => false, 'message' => 'Valor inválido (1-4)'], 422);
+                }
             } else {
                 $val = trim((string)($request->input('value') ?? ''));
                 $row->$field = ($val === '') ? null : $val;
@@ -1602,9 +1609,9 @@ class AnalisisRiesgosController extends Controller
 
                     // Solución Eficaz (SI/NO)
                     $accLower = mb_strtolower($aceptabilidad, 'UTF-8');
-                    if ($accLower === 'aceptables') {
+                    if ($accLower === 'aceptable') {
                         $solEficaz = 'SI';
-                    } elseif ($accLower === 'no aceptables') {
+                    } elseif ($accLower === 'no aceptable') {
                         $solEficaz = 'NO';
                     }
                     $row->sol_eficaz = $solEficaz;
