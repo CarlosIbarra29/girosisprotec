@@ -396,9 +396,9 @@
                                         <div class="col-lg-8 fl">
                                             <label for="contramedidas"><b>Medidas de Mitigacón</b></label>
                                             @if($id_alcance != 0)
-                                                <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5">{{ $alcance_social->contramedidas }}</textarea>
+                                                <textarea style="height: 70px !important" class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5">{{ $alcance_social->contramedidas }}</textarea>
                                             @else
-                                                <textarea class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
+                                                <textarea style="height: 70px !important" class="form-control gray_area" name="contramedidas" placeholder="" id="contramedidas" rows="5"></textarea>
                                             @endif
 
                                             <!-- <div class="row mt-2"> … (comentarios intactos) … </div> -->
