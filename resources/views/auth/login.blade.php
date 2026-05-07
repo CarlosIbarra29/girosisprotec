@@ -22,7 +22,7 @@
     <link href="{{ asset('theme/assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('css/principal.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/principal2.css?v=1.1.1') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/login.css') }}" rel="stylesheet" type="text/css" />
 </head>
 

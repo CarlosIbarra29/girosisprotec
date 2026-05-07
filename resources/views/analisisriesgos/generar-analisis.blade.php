@@ -2,7 +2,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.4') }}"></script>
-    <link href="{{ asset('/css/version2/gnranalisis.css?v=1.1.4') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/version2/gnranalisis.css?v=1.2.3') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -18,12 +18,12 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
-                    <h3 class="card-title">Evaluación del Riesgo: conforme el cuadro de ISO 31000 ({{ $cliented->nombre_comercial }})</h3>
+                    <h3 class="card-title">Evaluación del Riesgo ({{ $cliented->nombre_comercial }})</h3>
 
                     <div style="margin-top: 16px;">
-                        <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Evaluación del Riesgo</a>
+                        <!-- <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Evaluación del Riesgo</a> -->
                         <a href="{{ route('analisis.graficassociales', $cliente) }}" class="btn btn-success btn-xs "  href="#"><i class="la la-tachometer"></i>KPI's</a>
-                        <a class="btn btn-success btn-xs"  href="{{ route('analisis.analisiscliente', $cliente ) }}"><i class="la la-project-diagram"></i></i> Analisis de Escenarios</a>
+                        <a class="btn btn-success btn-xs"  href="{{ route('analisis.analisiscliente', $cliente ) }}"><i class="la la-project-diagram"></i></i> Evaluación del Riesgo</a>
                     </div>
 
                 </div>
@@ -57,7 +57,7 @@
                                         @if($alcance_social== "Vacio" || $id_alcance == 0)
 
                                         @else
-                                            <p>{{ $num }} de {{ $count_alcance }}</p> 
+                                            <p style="margin-bottom: 0px!important">{{ $num }} de {{ $count_alcance }}</p> 
                                             @if($num == 1)
                                                 <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_menos" data-toggle="tooltip" data-theme="dark" title="" >
                                                     <i class="la la-arrow-left"></i>
@@ -187,19 +187,6 @@
                                         </div>
                                     </div>
 
-                                @endif
-                            </div>
-                        </div>
-
-                        @if($alcance_social== "Vacio" || $id_alcance == 0)
-                        @else
-
-                            <div class="row  hr-container">
-                                <span><h3><b>Análisis del Riesgo</b></h3></span>
-                            </div>
-
-                            <div class="card card-custom gutter-b">
-                                <div class="card-body">
                                     <div class="row form-group">
                                         <div class="col-lg-12 fl">
                                             <label for="observaciones"><b>Medidas de Prevención y Protección Actuales</b></label>
@@ -207,54 +194,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="row form-group">
-                                        <div class="col-lg-4 fl">
-                                            <label><b>Nivel de control Existente</b></label>
-                                            <select class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
-                                                <option value="" disabled selected>Selecciona una opción</option>
-                                                <option value="1">Inoperante</option>
-                                                <option value="2" >Sin control</option>
-                                                <option value="3" >Deficiente</option>
-                                                <option value="4" >Regular</option>
-                                                <option value="5" >Eficiente</option>
-                                                <option value="6" >Optimo</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 nivel_inoperante fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto nivel_sincontrol fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">No se cuenta con las medidas de control.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto nivel_deficiente fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto regular fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto eficiente fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
-                                        </div>
-                                        <div class="col-lg-8 mt-2 oculto optimo fl">
-                                            <label><b>Descripción</b></label>
-                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row  hr-container">
-                                <span><h3><b>Vulnerabilidades / Impactos al Negocio</b></h3></span>
-                            </div>
-                            
-                            <div class="card card-custom gutter-b">
-                                <div class="card-body">
-                                   
                                     <div class="row form-group">
                                         <div class="col-lg-4 degradado-border-right" >
                                             <label for="observaciones"><b style="font-size: 15px;">Vulnerabilidades del Sistema Identificadas</b></label><br>
@@ -291,7 +230,7 @@
 
                                         </div>
                                         <div class="col-lg-8">
-                                            <label for="observaciones"><b style="font-size: 16px;">Areas de Impacto Organizacional</b></label><br>
+                                            <label for="observaciones"><b style="font-size: 15px;">Areas de Impacto Organizacional</b></label><br>
 
                                             <div class="row form-group">
                                                 <div class="col-lg-12">
@@ -341,13 +280,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-2">
+
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="7" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="9" name="impactos_negocio[]"/>
                                                                         <span></span>
-                                                                        Comunidad
+                                                                        Tecnológico 
                                                                     </label>
                                                                 </div>
+                                                                
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="8" name="impactos_negocio[]"/>
@@ -358,28 +299,24 @@
                                                             </div>
 
                                                             <div class="col-lg-2">
+
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="9" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="7" name="impactos_negocio[]"/>
                                                                         <span></span>
-                                                                        Ambiental
+                                                                        Comunidad / social
                                                                     </label>
                                                                 </div>
-                                                                <div class="checkbox-list">
-                                                                    <label class="checkbox">
-                                                                        <input type="checkbox" value="11" name="impactos_negocio[]"/>
-                                                                        <span></span>
-                                                                        Tecnológico 
-                                                                    </label>
-                                                                </div>
+                                                            
+                                                                
                                                             </div>
 
                                                             <div class="col-lg-2">
                                                                 <div class="checkbox-list">
                                                                     <label class="checkbox">
-                                                                        <input type="checkbox" value="12" name="impactos_negocio[]"/>
+                                                                        <input type="checkbox" value="10" name="impactos_negocio[]"/>
                                                                         <span></span>
-                                                                        Legal
+                                                                        Legal / Regulatorio
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -388,6 +325,70 @@
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </div>
+
+                                @endif
+                            </div>
+                        </div>
+
+                        @if($alcance_social== "Vacio" || $id_alcance == 0)
+                        @else
+
+                            <!-- <div class="row  hr-container">
+                                <span><h3><b>Vulnerabilidades / Impactos al Negocio</b></h3></span>
+                            </div>
+
+                            <div class="card card-custom gutter-b">
+                                <div class="card-body">
+                                
+                                    Esta seccion ya no se ocupa, si la opupampos descomentar
+                                </div>
+                            </div> -->
+
+                            <div class="row  hr-container">
+                                <span><h3><b>Análisis del Riesgo</b></h3></span>
+                            </div>
+                            
+                            <div class="card card-custom gutter-b">
+                                <div class="card-body">
+
+                                    <div class="row form-group">
+                                        <div class="col-lg-4 fl">
+                                            <label><b>Nivel de control Existente</b></label>
+                                            <select style="height: 60px !important;" class="form-control gray_area" id="nivel_control" name="nivel_control"  required >
+                                                <option value="" disabled selected>Selecciona una opción</option>
+                                                <option value="1">Inoperante</option>
+                                                <option value="2" >Sin control</option>
+                                                <option value="3" >Deficiente</option>
+                                                <option value="4" >Regular</option>
+                                                <option value="5" >Eficiente</option>
+                                                <option value="6" >Optimo</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 nivel_inoperante fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no funciona</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto nivel_sincontrol fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">No se cuenta con las medidas de control.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto nivel_deficiente fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto regular fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Cuenta con los criterios de aplicación pero existen posibilidades de mejora.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto eficiente fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Los criterios de aplicación son los adecuados a la instalación.</textarea>
+                                        </div>
+                                        <div class="col-lg-8 mt-2 oculto optimo fl">
+                                            <label><b>Descripción</b></label>
+                                            <textarea class="form-control gray_area" name="descripción" placeholder="" id="descripcion" rows="2">Excede los criterios de aplicación.</textarea>
                                         </div>
                                     </div>
 

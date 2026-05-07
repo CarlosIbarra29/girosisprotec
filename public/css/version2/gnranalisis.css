@@ -9,7 +9,8 @@
   --line:#E9E3D7;
   --shadow:0 10px 30px rgba(0,0,0,.08);
   --r:16px;
-  --h-ctl:54px;
+  --h-ctl:44px;
+  --h-ctl2:46px;
   --pad-x:16px;
 }
 body{ background:#F7F7F6; color:var(--ink) }
@@ -37,8 +38,8 @@ body{ background:#F7F7F6; color:var(--ink) }
 .fl{ position:relative; padding-top:8px }
 .fl>label{ margin:0 }
 .fl>label b{
-  position:absolute; left:18px; top:17px; z-index:2; height:26px; padding:0 12px;
-  border-radius:999px; background:#fff; color:#19212A; font-weight:800; font-size:13px;
+  position:absolute; left:18px; top:16px; z-index:2; height:26px; padding:3px 12px;
+  border-radius:999px; background:#fff; color:#19212A; font-weight:800; font-size:11px;
   border:1px solid rgba(183,149,75,.55); box-shadow:0 1px 0 rgba(183,149,75,.22);
 }
 
@@ -48,10 +49,12 @@ body{ background:#F7F7F6; color:var(--ink) }
   border:2px solid #E6E0D6 !important; border-radius:14px !important;
   padding:12px var(--pad-x) !important; background:#fff !important; color:var(--ink) !important;
   box-shadow:0 1px 0 rgba(0,0,0,.02) !important; transition:border-color .2s, box-shadow .2s;
+  font-size: 12px;
 }
 textarea.form-control{ 
-  height:70px !important; 
-  padding-top:14px !important; 
+  height:50px !important; 
+  min-height:var(--h-ctl2) !important;
+  padding-top:17px !important; 
 }
 .form-control:focus, .gray_area:focus, select.form-control:focus{
   outline:0 !important; border-color:#D2C3A1 !important; box-shadow:0 0 0 4px rgba(183,149,75,.22) !important;
@@ -75,7 +78,7 @@ select.form-control option{ color:#111 !important; background:#fff !important }
 select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !important }
 
 /* Check chips */
-.checkbox-list .checkbox{ display:inline-flex; align-items:center; gap:0px; margin:6px 6px 0 0; padding:8px 8px; border:1px solid #E5E1D8; border-radius:999px; background:#fff; cursor:pointer; transition:.2s }
+.checkbox-list .checkbox{ display:inline-flex; align-items:center; gap:0px; margin:4px 2px 0 0; padding:4px 8px; font-size: 12px; border:1px solid #E5E1D8; border-radius:999px; background:#fff; cursor:pointer; transition:.2s }
 .checkbox-list .checkbox:hover{ border-color:#D8D3C7; background:#fbf8f2 }
 .checkbox-list .checkbox input{ position:absolute; opacity:0 }
 .checkbox-list .checkbox span{ width:10px; height:10px; border-radius:999px; border:2px solid #D0C7B6; display:inline-block }
@@ -135,3 +138,7 @@ select.form-control option:checked{ background:#F2E9D4 !important; color:#111 !i
   filter:drop-shadow(0 1px 0 rgba(0,0,0,.07));
 }
 
+.card.card-custom > .card-body{
+ padding: 1rem 2.25rem 0rem 2.25rem !important;
+
+}

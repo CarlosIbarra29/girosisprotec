@@ -41,7 +41,7 @@
     <!--end::Layout Themes-->
 
     <!--begin::Custom Theme(used by all pages)-->
-    <link href="{{ asset('css/principal.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/principal.css?v=' . date('YmdHis')) }}" rel="stylesheet" type="text/css" />
     <!--end::Custom Theme-->
 
     @stack('styles')
@@ -564,8 +564,21 @@
                     <!--end::Menu Nav-->
                 </div>
                 <!--end::Menu Container-->
+               
             </div>
             <!--end::Aside Menu-->
+             {{-- Footer visual del sidebar --}}
+            <div class="giro-aside-footer">
+                <div class="giro-aside-footer-brand">
+                    <span class="giro-shield-dot">
+                        <i class="flaticon-security"></i>
+                    </span>
+                    <div>
+                        <strong>SIS PROTEC</strong>
+                        <small>© {{ date('Y') }} Todos los derechos reservados.</small>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--end::Aside-->
         <!--begin::Wrapper-->

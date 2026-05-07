@@ -93,7 +93,7 @@
           var ctx = chart.ctx;
           ctx.save();
           ctx.font = "bold 15px Poppins, Arial, sans-serif";
-          ctx.fillStyle = "#121212";
+          ctx.fillStyle = "rgba(255,255,255,0.94)";
           ctx.textAlign = "center";
           ctx.textBaseline = "bottom";
 
@@ -107,7 +107,7 @@
         }
       });
 
-      /* ========= Plugin: flecha + líneas de referencia (solo vulnerabilidad) ========= */
+      /* ========= Plugin: líneas + flecha + valores (solo vulnerabilidad) ========= */
       Chart.plugins.register({
         afterDraw: function(chart) {
           if (chart.canvas.id !== 'myanalisisvulnerabilidad') return;
@@ -120,67 +120,86 @@
           if (!yAxis || !chartArea) return;
 
           var niveles = [
-            { value: 10, label: 'Óptimo',      color: '#00B050' },
-            { value: 8,  label: 'Eficiente',   color: '#92D050' },
-            { value: 6,  label: 'Regular',     color: '#FFC000' },
-            { value: 4,  label: 'Deficiente',  color: '#FF4F81' },
-            { value: 2,  label: 'Sin Control', color: '#C00000' }
+            { value: 10, label: 'Óptimo',      color: '#8BAA35' },
+            { value: 8,  label: 'Eficiente',   color: '#6F8F2A' },
+            { value: 6,  label: 'Regular',     color: '#D59B22' },
+            { value: 4,  label: 'Deficiente',  color: '#C33535' },
+            { value: 2,  label: 'Sin Control', color: '#8D1111' }
           ];
 
-          var arrowX  = chartArea.right + (isMobile ? 40 : 46);
+          var arrowX = chartArea.right + (isMobile ? 30 : 34);
           var arrowTop = yAxis.getPixelForValue(10);
-          var arrowBottom = yAxis.getPixelForValue(0.5);
+          var arrowBottom = yAxis.getPixelForValue(0.7);
 
-          var lineEndX = chartArea.right + (isMobile ? 76 : 120);
-          var labelX   = chartArea.right + (isMobile ? 62 : 86);
-          var fontSize = isMobile ? 11 : 14;
+          var labelX = chartArea.right + (isMobile ? 60 : 76);
+          var valueX = chartArea.right + (isMobile ? 38 : 48);
 
           ctx.save();
 
-          /* 1) líneas horizontales */
           niveles.forEach(function(nivel) {
             var y = yAxis.getPixelForValue(nivel.value);
 
             ctx.beginPath();
             ctx.strokeStyle = nivel.color;
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.7;
+            ctx.globalAlpha = 0.82;
             ctx.moveTo(chartArea.left, y);
-            ctx.lineTo(lineEndX, y);
+            ctx.lineTo(chartArea.right, y);
             ctx.stroke();
+
+            ctx.globalAlpha = 1;
+            ctx.font = '800 ' + (isMobile ? 10 : 12) + 'px Poppins, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = nivel.color;
+            ctx.fillText(nivel.label, labelX, y);
+
+            ctx.fillStyle = 'rgba(255,255,255,.88)';
+            ctx.textAlign = 'center';
+            ctx.fillText(String(nivel.value), valueX, y);
           });
 
-          /* 2) flecha */
           var grad = ctx.createLinearGradient(0, arrowBottom, 0, arrowTop);
-          grad.addColorStop(0, '#111111');
-          grad.addColorStop(0.25, '#C00000');
-          grad.addColorStop(0.5, '#FF0000');
-          grad.addColorStop(0.75, '#FFC000');
-          grad.addColorStop(1, '#92D050');
+          grad.addColorStop(0, '#520000');
+          grad.addColorStop(0.22, '#B80000');
+          grad.addColorStop(0.43, '#FF2A20');
+          grad.addColorStop(0.62, '#FFC13B');
+          grad.addColorStop(0.82, '#C6C928');
+          grad.addColorStop(1, '#9BBE3B');
 
           ctx.fillStyle = grad;
-          ctx.fillRect(arrowX - 9, arrowTop + 20, 18, arrowBottom - arrowTop - 28);
+          ctx.shadowColor = 'rgba(0,0,0,.45)';
+          ctx.shadowBlur = 12;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 5;
+
+          ctx.fillRect(arrowX - 8, arrowTop + 22, 16, arrowBottom - arrowTop - 28);
 
           ctx.beginPath();
           ctx.moveTo(arrowX, arrowTop);
-          ctx.lineTo(arrowX - 20, arrowTop + 20);
-          ctx.lineTo(arrowX + 20, arrowTop + 20);
+          ctx.lineTo(arrowX - 19, arrowTop + 22);
+          ctx.lineTo(arrowX + 19, arrowTop + 22);
           ctx.closePath();
           ctx.fill();
 
-          /* 3) texto encima (para que no se pierda detrás) */
-          niveles.forEach(function(nivel) {
-            var y = yAxis.getPixelForValue(nivel.value);
+          ctx.restore();
+        },
 
-            ctx.font = 'bold ' + fontSize + 'px Poppins, Arial, sans-serif';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
+        afterDatasetsDraw: function(chart) {
+          if (chart.canvas.id !== 'myanalisisvulnerabilidad') return;
 
-            var textW = ctx.measureText(nivel.label).width;
-            ctx.fillStyle = 'rgba(255,255,255,0.92)';
-            ctx.fillRect(labelX - 4, y - (fontSize / 2) - 2, textW + 8, fontSize + 4);
+          var ctx = chart.ctx;
+          var meta = chart.getDatasetMeta(0);
 
-            ctx.fillStyle = '#4A6FA5';
-            ctx.fillText(nivel.label, labelX, y);
+          ctx.save();
+          ctx.font = "900 13px Poppins, Arial, sans-serif";
+          ctx.fillStyle = "#D7A73F";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "bottom";
+
+          meta.data.forEach(function(bar, index) {
+            var value = Number(chart.data.datasets[0].data[index] || 0);
+            ctx.fillText(value.toFixed(1), bar._model.x, bar._model.y - 8);
           });
 
           ctx.restore();
@@ -208,25 +227,25 @@
         var ctx1 = canvasIndice.getContext('2d');
 
         function crearGradientesIndice(ctx) {
-          var g1 = ctx.createLinearGradient(0, 0, 0, 320);
-          g1.addColorStop(0, 'rgba(255,255,255,1)');
-          g1.addColorStop(1, 'rgba(235,235,235,0.95)');
+          var g1 = ctx.createLinearGradient(0, 0, 0, 360);
+          g1.addColorStop(0, 'rgba(185,187,191,1)');
+          g1.addColorStop(1, 'rgba(88,92,98,0.96)');
 
-          var g2 = ctx.createLinearGradient(0, 0, 0, 320);
-          g2.addColorStop(0, 'rgba(153,255,153,1)');
-          g2.addColorStop(1, 'rgba(110,230,110,0.90)');
+          var g2 = ctx.createLinearGradient(0, 0, 0, 360);
+          g2.addColorStop(0, 'rgba(79,188,92,1)');
+          g2.addColorStop(1, 'rgba(28,112,44,0.96)');
 
-          var g3 = ctx.createLinearGradient(0, 0, 0, 320);
-          g3.addColorStop(0, 'rgba(255,255,120,1)');
-          g3.addColorStop(1, 'rgba(255,215,0,0.92)');
+          var g3 = ctx.createLinearGradient(0, 0, 0, 360);
+          g3.addColorStop(0, 'rgba(236,175,61,1)');
+          g3.addColorStop(1, 'rgba(158,111,28,0.98)');
 
-          var g4 = ctx.createLinearGradient(0, 0, 0, 320);
-          g4.addColorStop(0, 'rgba(255,80,80,1)');
-          g4.addColorStop(1, 'rgba(255,0,0,0.92)');
+          var g4 = ctx.createLinearGradient(0, 0, 0, 360);
+          g4.addColorStop(0, 'rgba(214,67,74,1)');
+          g4.addColorStop(1, 'rgba(135,25,34,0.98)');
 
-          var g5 = ctx.createLinearGradient(0, 0, 0, 320);
-          g5.addColorStop(0, 'rgba(230,40,40,1)');
-          g5.addColorStop(1, 'rgba(204,0,0,0.95)');
+          var g5 = ctx.createLinearGradient(0, 0, 0, 360);
+          g5.addColorStop(0, 'rgba(217,38,45,1)');
+          g5.addColorStop(1, 'rgba(151,0,9,0.98)');
 
           return [g1, g2, g3, g4, g5];
         }
@@ -242,11 +261,11 @@
               data: indiceDistribucionData,
               backgroundColor: gradientesIndice,
               borderColor: [
-                'rgba(180,180,180,1)',
-                'rgba(153,255,153,1)',
-                'rgba(210,210,0,1)',
-                'rgba(255,0,0,1)',
-                'rgba(204,0,0,1)'
+                'rgba(215,217,222,0.50)',
+                'rgba(86,210,100,0.82)',
+                'rgba(236,175,61,0.90)',
+                'rgba(214,67,74,0.90)',
+                'rgba(217,38,45,0.95)'
               ],
               borderWidth: 3,
               hoverBackgroundColor: gradientesIndice,
@@ -280,20 +299,26 @@
                   beginAtZero: true,
                   precision: 0,
                   stepSize: 1,
-                  fontColor: '#121212',
-                  fontStyle: 'bold'
+                  fontColor: 'rgba(255,255,255,0.76)',
+                  fontStyle: 'bold',
+                  fontSize: 13
                 },
                 gridLines: {
-                  color: 'rgba(0,0,0,0.08)',
-                  zeroLineColor: 'rgba(0,0,0,0.14)'
+                  color: 'rgba(255,255,255,0.11)',
+                  zeroLineColor: 'rgba(255,255,255,0.22)',
+                  borderDash: [4, 4]
                 }
               }],
               xAxes: [{
                 ticks: {
-                  fontColor: '#121212',
-                  fontStyle: 'bold'
+                  fontColor: 'rgba(255,255,255,0.84)',
+                  fontStyle: 'bold',
+                  fontSize: 13
                 },
-                gridLines: { display: false }
+                gridLines: {
+                  display: false,
+                  zeroLineColor: 'rgba(255,255,255,0.18)'
+                }
               }]
             }
           }
@@ -327,8 +352,8 @@
 
             var ctx = chart.ctx;
             ctx.save();
-            ctx.font = "700 11px Poppins, Arial, sans-serif";
-            ctx.fillStyle = "rgba(18,18,18,0.78)";
+            ctx.font = "800 11px Poppins, Arial, sans-serif";
+            ctx.fillStyle = "rgba(255,255,255,0.88)";
             ctx.textAlign = "center";
             ctx.textBaseline = "bottom";
 
@@ -405,7 +430,7 @@
 
             /* texto */
             ctx.font = (isMobile ? '700 ' : '800 ') + fontSize + 'px Poppins, Arial, sans-serif';
-            ctx.fillStyle = 'rgba(120, 20, 20, 0.92)';
+            ctx.fillStyle = '#D7A73F';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, textX, textY);
@@ -415,7 +440,7 @@
             ctx.moveTo(arrowStartX, arrowStartY);
             ctx.lineTo(arrowEndX, arrowEndY);
             ctx.lineWidth = isMobile ? 2 : 3;
-            ctx.strokeStyle = 'rgba(180, 40, 40, 0.88)';
+            ctx.strokeStyle = '#D7A73F';
             ctx.stroke();
 
             /* punta */
@@ -433,7 +458,7 @@
               arrowEndY - headLength * Math.sin(angle + Math.PI / 6)
             );
             ctx.closePath();
-            ctx.fillStyle = 'rgba(180, 40, 40, 0.88)';
+            ctx.fillStyle = '#D7A73F';
             ctx.fill();
 
             ctx.restore();
@@ -449,12 +474,12 @@
               {
                 label: 'Riesgo Potencial',
                 data: toXY(danoPotencialY),
-                borderColor: 'rgba(255, 0, 0, 0.92)',
-                backgroundColor: 'rgba(255, 0, 0, 0.10)',
-                pointBackgroundColor: 'rgba(255, 0, 0, 0.95)',
-                pointBorderColor: 'rgba(255,255,255,1)',
+                borderColor: '#D7A73F',
+                backgroundColor: 'rgba(215,167,63,0.14)',
+                pointBackgroundColor: '#D7A73F',
+                pointBorderColor: '#0b1119',
                 pointRadius: 4,
-                pointHoverRadius: 5,
+                pointHoverRadius: 6,
                 borderWidth: 3,
                 fill: true,
                 lineTension: 0.28
@@ -462,15 +487,15 @@
               {
                 label: 'Riesgo Estándar',
                 data: toXY(riesgoEstandarY),
-                borderColor: 'rgba(18,18,18,0.70)',
+                borderColor: 'rgba(135,140,145,0.86)',
                 backgroundColor: 'transparent',
-                pointBackgroundColor: 'rgba(18,18,18,0.70)',
-                pointBorderColor: 'rgba(255,255,255,1)',
-                pointStyle: 'rectRot',
+                pointBackgroundColor: 'rgba(135,140,145,0.95)',
+                pointBorderColor: '#0b1119',
+                pointStyle: 'circle',
                 pointRadius: 4,
-                pointHoverRadius: 5,
+                pointHoverRadius: 6,
                 borderWidth: 2,
-                borderDash: [6, 5],
+                borderDash: [7, 5],
                 fill: false,
                 lineTension: 0.28
               }
@@ -483,14 +508,25 @@
             legend: {
               display: true,
               position: 'bottom',
-              labels: { fontStyle: 'bold', boxWidth: 12, usePointStyle: true }
+              labels: {
+                fontStyle: 'bold',
+                fontColor: 'rgba(255,255,255,0.86)',
+                boxWidth: 12,
+                padding: 18,
+                usePointStyle: true
+              }
             },
             tooltips: {
               mode: 'index',
               intersect: false,
-              backgroundColor: 'rgba(18,18,18,0.92)',
+              backgroundColor: 'rgba(8,13,20,0.96)',
               titleFontStyle: 'bold',
               bodyFontStyle: 'bold',
+              titleFontColor: '#ffffff',
+              bodyFontColor: '#ffffff',
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 10,
               callbacks: {
                 title: function(items){
                   var x = items && items[0] ? Math.round(items[0].xLabel) : 0;
@@ -503,17 +539,30 @@
               }
             },
             hover: { mode: 'nearest', intersect: false },
+            layout: {
+              padding: {
+                top: 22,
+                right: 16,
+                bottom: 6,
+                left: 8
+              }
+            },
             scales: {
               yAxes: [{
                 ticks: {
                   beginAtZero: true,
                   suggestedMax: 100,
                   callback: function(v){ return v + '%'; },
-                  fontStyle: 'bold'
+                  fontColor: 'rgba(255,255,255,0.86)',
+                  fontStyle: 'bold',
+                  fontSize: 12,
+                  padding: 8
                 },
                 gridLines: {
-                  color: 'rgba(0,0,0,0.06)',
-                  zeroLineColor: 'rgba(0,0,0,0.12)'
+                  color: 'rgba(255,255,255,0.075)',
+                  zeroLineColor: 'rgba(255,255,255,0.18)',
+                  borderDash: [4, 4],
+                  drawBorder: false
                 }
               }],
               xAxes: [{
@@ -522,6 +571,7 @@
                   min: -0.08,
                   max: 4,
                   stepSize: 1,
+                  fontColor: 'rgba(255,255,255,0.86)',
                   fontStyle: 'bold',
                   padding: 10,
                   callback: function(value){
@@ -544,9 +594,10 @@
       if (cVul) {
         var ctx3 = cVul.getContext('2d');
 
-        var gradVul = ctx3.createLinearGradient(0, 0, 0, 320);
-        gradVul.addColorStop(0, 'rgba(24, 40, 62, 1)');
-        gradVul.addColorStop(1, 'rgba(56, 92, 140, 0.95)');
+        var gradVul = ctx3.createLinearGradient(0, 0, 0, 420);
+        gradVul.addColorStop(0, 'rgba(95, 116, 142, 0.98)');
+        gradVul.addColorStop(0.48, 'rgba(58, 75, 98, 0.96)');
+        gradVul.addColorStop(1, 'rgba(31, 42, 59, 0.98)');
 
         new Chart(ctx3, {
           type: 'bar',
@@ -556,29 +607,43 @@
               label: 'Promedio de nivel de control',
               data: vulnerabilidadPromedios,
               backgroundColor: gradVul,
-              borderColor: 'rgba(18, 26, 38, 0.95)',
-              borderWidth: 2,
-              hoverBackgroundColor: 'rgba(36, 66, 102, 0.95)',
-              categoryPercentage: 0.65,
-              barPercentage: 0.78
+              borderColor: 'rgba(118, 142, 171, 0.55)',
+              borderWidth: 1,
+              hoverBackgroundColor: 'rgba(88, 111, 140, 0.98)',
+              hoverBorderColor: 'rgba(215,167,63,0.9)',
+              hoverBorderWidth: 2,
+              categoryPercentage: 0.58,
+              barPercentage: 0.68
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+              duration: 1100,
+              easing: 'easeOutQuart'
+            },
             legend: { display: false },
             tooltips: {
-              backgroundColor: 'rgba(18,18,18,0.92)',
+              backgroundColor: 'rgba(8,13,20,0.96)',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
               displayColors: false,
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 10,
               callbacks: {
                 label: function(tooltipItem) {
-                  return 'Indice: ' + tooltipItem.yLabel;
+                  return 'Índice: ' + Number(tooltipItem.yLabel || 0).toFixed(1);
                 }
               }
             },
             layout: {
               padding: {
-                right: window.innerWidth <= 768 ? 120 : 190
+                top: 26,
+                right: window.innerWidth <= 768 ? 115 : 155,
+                bottom: 8,
+                left: 4
               }
             },
             scales: {
@@ -587,22 +652,61 @@
                   beginAtZero: true,
                   max: 10,
                   min: 0,
-                  stepSize: 1,
-                  fontColor: '#4A4A4A',
-                  fontStyle: 'bold'
+                  stepSize: 2,
+                  fontColor: 'rgba(255,255,255,0.78)',
+                  fontStyle: 'bold',
+                  fontSize: 12,
+                  padding: 8
                 },
-                gridLines: { color: 'rgba(0,0,0,0.06)' }
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Puntaje',
+                  fontColor: '#D7A73F',
+                  fontStyle: 'bold',
+                  fontSize: 11
+                },
+                gridLines: {
+                  color: 'rgba(255,255,255,0.08)',
+                  zeroLineColor: 'rgba(255,255,255,0.20)',
+                  borderDash: [4, 4],
+                  drawBorder: false
+                }
               }],
               xAxes: [{
                 ticks: {
                   autoSkip: false,
                   maxRotation: 0,
                   minRotation: 0,
-                  fontColor: '#4A6FA5',
+                  fontColor: 'rgba(255,255,255,0.86)',
                   fontStyle: 'bold',
-                  fontSize: 11
+                  fontSize: 10,
+                  padding: 8,
+                  callback: function(value) {
+                    var text = String(value || '');
+                    if (text.length <= 18) return text;
+
+                    var parts = text.split(' ');
+                    var line = '';
+                    var lines = [];
+
+                    parts.forEach(function(word) {
+                      if ((line + ' ' + word).trim().length > 16) {
+                        lines.push(line.trim());
+                        line = word;
+                      } else {
+                        line += ' ' + word;
+                      }
+                    });
+
+                    if (line.trim()) lines.push(line.trim());
+
+                    return lines.slice(0, 2);
+                  }
                 },
-                gridLines: { display: false }
+                gridLines: {
+                  display: false,
+                  drawBorder: false
+                }
               }]
             }
           }
@@ -953,9 +1057,10 @@
             cutoutPercentage: 62,
             animation: { duration: 900, easing: 'easeOutQuart' },
             legend: {
-              position: 'bottom',
+              position: isMobile ? 'bottom' : 'right',
               labels: {
                 fontStyle: 'bold',
+                fontColor: 'rgba(255,255,255,0.88)',
                 boxWidth: isMobile ? 9 : 10,
                 fontSize: isMobile ? 10 : 12,
                 padding: isMobile ? 8 : 12,
@@ -1009,14 +1114,14 @@
                   fontStyle: 'bold',
                   suggestedMax: (typeof maxX === 'number' ? maxX : undefined)
                 },
-                gridLines: { color: 'rgba(255,255,255,0.10)' }
+                gridLines: { color: 'rgba(255,255,255,0.075)' }
               }],
               yAxes: [{
                 gridLines: { display: false },
                 ticks: {
                   fontColor: 'rgba(255,255,255,0.92)',
                   fontStyle: 'bold',
-                  fontSize: isMobile ? 10 : 11,
+                  fontSize: isMobile ? 10 : 10,
                   padding: isMobile ? 6 : 4
                 }
               }]
@@ -1307,6 +1412,27 @@
         var showNuevoPerfil = false;
         var matrixChart = null;
 
+        var matrixAxisValues = [0.4, 1.2, 2.0, 4.0, 6.0, 8.0, 10.0];
+
+        function mapMatrixValue(value) {
+          var v = Number(value || 0);
+
+          if (v <= matrixAxisValues[0]) return 0;
+          if (v >= matrixAxisValues[matrixAxisValues.length - 1]) return matrixAxisValues.length - 1;
+
+          for (var i = 0; i < matrixAxisValues.length - 1; i++) {
+            var a = matrixAxisValues[i];
+            var b = matrixAxisValues[i + 1];
+
+            if (v >= a && v <= b) {
+              var pct = (v - a) / (b - a);
+              return i + pct;
+            }
+          }
+
+          return 0;
+        }
+
         function getFilteredMatrixPoints() {
           return (matrixPoints || []).filter(function(p){
             return selectedCriteria.indexOf(String(p.criterio_id)) !== -1;
@@ -1323,17 +1449,35 @@
 
         function buildLineData(points) {
           var out = [];
+
           points.forEach(function(p){
             if (
               p.x !== null && p.y !== null &&
               p.x2 !== null && p.y2 !== null &&
               p.x2 !== undefined && p.y2 !== undefined
             ) {
-              out.push({ x: Number(p.x),  y: Number(p.y),  id: p.id, isLine: true });
-              out.push({ x: Number(p.x2), y: Number(p.y2), id: p.id, isLine: true });
+              out.push({
+                x: mapMatrixValue(p.x),
+                y: mapMatrixValue(p.y),
+                rawX: Number(p.x || 0),
+                rawY: Number(p.y || 0),
+                id: p.id,
+                isLine: true
+              });
+
+              out.push({
+                x: mapMatrixValue(p.x2),
+                y: mapMatrixValue(p.y2),
+                rawX: Number(p.x2 || 0),
+                rawY: Number(p.y2 || 0),
+                id: p.id,
+                isLine: true
+              });
+
               out.push(null);
             }
           });
+
           return out;
         }
 
@@ -1342,8 +1486,10 @@
 
           var originalData = filtered.map(function(p){
             return {
-              x: Number(p.x || 0),
-              y: Number(p.y || 0),
+              x: mapMatrixValue(p.x),
+              y: mapMatrixValue(p.y),
+              rawX: Number(p.x || 0),
+              rawY: Number(p.y || 0),
               id: p.id,
               label: p.label,
               ipd: p.ipd,
@@ -1359,8 +1505,10 @@
             })
             .map(function(p){
               return {
-                x: Number(p.x2 || 0),
-                y: Number(p.y2 || 0),
+                x: mapMatrixValue(p.x2),
+                y: mapMatrixValue(p.y2),
+                rawX: Number(p.x2 || 0),
+                rawY: Number(p.y2 || 0),
                 id: p.id,
                 label: p.label,
                 ipd: p.ipd2,
@@ -1483,8 +1631,8 @@
                       'IPD: ' + Number(p.ipd || 0).toFixed(2),
                       'Perfil: ' + (p.perfil || ''),
                       'Nivel: ' + (p.nivel || ''),
-                      'Amenaza: ' + Number(p.y || 0).toFixed(1),
-                      'Impacto: ' + Number(p.x || 0).toFixed(1)
+                      'Amenaza: ' + Number(p.rawY || 0).toFixed(1),
+                      'Impacto: ' + Number(p.rawX || 0).toFixed(1)
                     ];
                   },
                   filter: function(tooltipItem, data) {
@@ -1497,8 +1645,8 @@
                   type: 'linear',
                   position: 'bottom',
                   ticks: {
-                    min: 0.0,
-                    max: 10.8,
+                    min: -0.5,
+                    max: 6.5,
                     display: false
                   },
                   gridLines: {
@@ -1509,8 +1657,8 @@
                 yAxes: [{
                   type: 'linear',
                   ticks: {
-                    min: 0.0,
-                    max: 10.8,
+                    min: -0.5,
+                    max: 6.5,
                     display: false
                   },
                   gridLines: {
@@ -1747,6 +1895,76 @@
 
 @section('content')
 
+@php
+  $indiceDistribucionDataBlade = [
+    (int) ($conteoIndice['muy_bajo'] ?? 0),
+    (int) ($conteoIndice['bajo'] ?? 0),
+    (int) ($conteoIndice['medio'] ?? 0),
+    (int) ($conteoIndice['alto'] ?? 0),
+    (int) ($conteoIndice['muy_alto'] ?? 0),
+  ];
+
+  $indiceTotal = array_sum($indiceDistribucionDataBlade);
+
+  $indiceCards = [
+    [
+      'label' => 'Muy Bajo',
+      'value' => (int) ($conteoIndice['muy_bajo'] ?? 0),
+      'class' => 'muy-bajo',
+    ],
+    [
+      'label' => 'Bajo',
+      'value' => (int) ($conteoIndice['bajo'] ?? 0),
+      'class' => 'bajo',
+    ],
+    [
+      'label' => 'Medio',
+      'value' => (int) ($conteoIndice['medio'] ?? 0),
+      'class' => 'medio',
+    ],
+    [
+      'label' => 'Alto',
+      'value' => (int) ($conteoIndice['alto'] ?? 0),
+      'class' => 'alto',
+    ],
+    [
+      'label' => 'Muy Alto',
+      'value' => (int) ($conteoIndice['muy_alto'] ?? 0),
+      'class' => 'muy-alto',
+    ],
+  ];
+
+  $vulnerabilidadCards = [];
+
+  foreach (($vulnerabilidadLabels ?? []) as $i => $label) {
+    $value = (float) (($vulnerabilidadPromedios ?? [])[$i] ?? 0);
+
+    $nivel = 'Sin Control';
+    $class = 'sin-control';
+
+    if ($value > 8) {
+      $nivel = 'Óptimo';
+      $class = 'optimo';
+    } elseif ($value > 6) {
+      $nivel = 'Eficiente';
+      $class = 'eficiente';
+    } elseif ($value > 4) {
+      $nivel = 'Regular';
+      $class = 'regular';
+    } elseif ($value >= 3) {
+      $nivel = 'Deficiente';
+      $class = 'deficiente';
+    }
+
+    $vulnerabilidadCards[] = [
+      'label' => $label,
+      'value' => $value,
+      'nivel' => $nivel,
+      'class' => $class,
+    ];
+  }
+@endphp
+
 <div class="d-flex flex-row">
   <div class="flex-row-fluid">
     <div class="d-flex flex-column flex-grow-1">
@@ -1763,44 +1981,88 @@
                 <h3 class="card-label">KPIs de riesgos sociales ({{ $cliente->organizacion }})</h3>
               </div>
 
-              <div class="card-toolbar">
-                <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                  <i class="la la-arrow-left"></i>Regresar
+              <div class="card-toolbar giro-card-toolbar">
+                <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="giro-back-btn">
+                    <i class="la la-arrow-left giro-back-btn__icon"></i>
+                    <span class="giro-back-btn__text">Regresar</span>
                 </a>
-              </div>
+            </div>
             </div>
 
             <div class="card-body">
 
               {{-- Barra de navegación de gráficas --}}
               <div class="giro-kpi-tabs" id="giroKpiTabs">
+
                 <button type="button" class="giro-kpi-tab is-active" data-chart-target="chart-indice">
-                  Índice de Distribución
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-analytics"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Índice de<br>Distribución</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-dano">
-                  Daño potencial<br>vs P. Estándar
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-file"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Daño potencial<br>vs P. Estándar</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-vulnerabilidad">
-                  Análisis de<br>Vulnerabilidad
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon-network"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Análisis de<br>Vulnerabilidad</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-medidas">
-                  Distr. de<br>Medidas de S
+                  <span class="giro-kpi-tab__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 19h16"></path>
+                      <path d="M7 19v-6"></path>
+                      <path d="M12 19V9"></path>
+                      <path d="M17 19v-11"></path>
+                      <path d="M5 11l4-4 3 2 5-5"></path>
+                    </svg>
+                  </span>
+                  <span class="giro-kpi-tab__text">Vulnerabilidades del<br> Sistema</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-origen">
-                  Matriz de evaluación<br>de riesgos
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon-grid-menu"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Matriz de evaluación<br>de riesgos</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-security">
-                  Distr. Riesgos<br> por criterio
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-pie-chart"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Distr. Riesgos<br>por criterio</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-pareto">
-                  Gráfico<br>Pareto (80-20)
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-chart"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Gráfico<br>Pareto (80–20)</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-escenarios">
-                  Distribución %<br>de Escenarios
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-percentage"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Distribución %<br>de Escenarios</span>
                 </button>
+
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-avance">
-                  Avance de<br>Consecución
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-check-mark"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Avance de<br>Consecución</span>
                 </button>
+
               </div>
 
               {{-- Área central: solo se muestra una gráfica a la vez --}}
@@ -1808,11 +2070,38 @@
 
                 {{-- 1. Índice de distribución (VISIBLE POR DEFAULT) --}}
                 <div class="giro-chart-panel is-active" id="chart-indice">
-                  <div class="giro-chart-card">
+                  <div class="giro-chart-card giro-chart-card--indice">
+
                     <h5 class="giro-chart-title">Índice de Distribución de Eventos de Riesgo</h5>
-                    <div class="giro-chart-canvas-wrap">
+
+                    <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--indice">
                       <canvas id="myindicedistribucion"></canvas>
                     </div>
+
+                    <div class="giro-indice-summary">
+                      @foreach($indiceCards as $card)
+                        @php
+                          $pct = $indiceTotal > 0 ? round(($card['value'] / $indiceTotal) * 100, 1) : 0;
+                        @endphp
+
+                        <div class="giro-indice-card giro-indice-card--{{ $card['class'] }}">
+                          <div class="giro-indice-card__icon">
+                            <i class="flaticon-security"></i>
+                          </div>
+
+                          <div class="giro-indice-card__content">
+                            <div class="giro-indice-card__label">{{ $card['label'] }}</div>
+                            <div class="giro-indice-card__value">{{ $card['value'] }}</div>
+                            <div class="giro-indice-card__pct">{{ number_format($pct, 1) }}% del total</div>
+                          </div>
+
+                          <div class="giro-indice-card__bar">
+                            <span style="width: {{ min(100, $pct) }}%;"></span>
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+
                   </div>
                 </div>
 
@@ -1864,20 +2153,56 @@
 
                 {{-- 3. Vulnerabilidad --}}
                 <div class="giro-chart-panel" id="chart-vulnerabilidad">
-                  <div class="giro-chart-card">
-                    <h5 class="giro-chart-title">Análisis de Vulnerabilidad</h5>
+                  <div class="giro-chart-card giro-chart-card--vuln">
+
+                    <h5 class="giro-chart-title giro-chart-title--vuln">
+                      <span class="giro-vuln-title-icon">
+                        <i class="flaticon-network"></i>
+                      </span>
+                      Análisis de Vulnerabilidad
+                    </h5>
+
                     <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--vuln">
                       <div class="giro-chart-canvas-inner giro-chart-canvas-inner--vuln">
                         <canvas id="myanalisisvulnerabilidad"></canvas>
                       </div>
                     </div>
+
+                    <div class="giro-vuln-summary">
+                      @forelse($vulnerabilidadCards as $card)
+                        <div class="giro-vuln-card giro-vuln-card--{{ $card['class'] }}">
+                          <div class="giro-vuln-card__icon">
+                            <i class="flaticon-security"></i>
+                          </div>
+
+                          <div class="giro-vuln-card__body">
+                            <div class="giro-vuln-card__label">
+                              {{ $card['label'] }}
+                            </div>
+
+                            <div class="giro-vuln-card__value">
+                              {{ number_format($card['value'], 1) }}
+                            </div>
+
+                            <div class="giro-vuln-card__badge">
+                              {{ $card['nivel'] }}
+                            </div>
+                          </div>
+                        </div>
+                      @empty
+                        <div class="giro-vuln-empty">
+                          Sin datos de vulnerabilidad
+                        </div>
+                      @endforelse
+                    </div>
+
                   </div>
                 </div>
 
                 {{-- 4. Medidas --}}
                 <div class="giro-chart-panel" id="chart-medidas">
                   <div class="giro-chart-card">
-                    <h5 class="giro-chart-title">Distribución de Medidas de Seguridad</h5>
+                    <h5 class="giro-chart-title">Vulnerabilidades del sistema</h5>
 
                     <div class="giro-medidas-grid">
 
@@ -2068,6 +2393,33 @@
                         <div class="giro-matrix-axis-note giro-matrix-axis-note--matrix">
                           <span><strong>Amenaza</strong></span>
                           <span><strong>Impacto / Severidad</strong></span>
+                        </div>
+
+                        <div class="giro-matrix-legend">
+                          <div class="giro-matrix-legend__item">
+                            <span class="giro-matrix-legend__dot giro-matrix-legend__dot--muy-bajo"></span>
+                            <span>Muy Bajo</span>
+                          </div>
+
+                          <div class="giro-matrix-legend__item">
+                            <span class="giro-matrix-legend__dot giro-matrix-legend__dot--bajo"></span>
+                            <span>Bajo</span>
+                          </div>
+
+                          <div class="giro-matrix-legend__item">
+                            <span class="giro-matrix-legend__dot giro-matrix-legend__dot--medio"></span>
+                            <span>Medio</span>
+                          </div>
+
+                          <div class="giro-matrix-legend__item">
+                            <span class="giro-matrix-legend__dot giro-matrix-legend__dot--alto"></span>
+                            <span>Alto</span>
+                          </div>
+
+                          <div class="giro-matrix-legend__item">
+                            <span class="giro-matrix-legend__dot giro-matrix-legend__dot--muy-alto"></span>
+                            <span>Muy Alto</span>
+                          </div>
                         </div>
                       </div>
 

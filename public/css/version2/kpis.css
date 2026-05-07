@@ -1,60 +1,82 @@
-/* ===== Paleta GIRO ===== */
+/* =========================================================
+   KPIS GIRO / SISPROTEC
+   Archivo completo
+   ========================================================= */
+
+/* ==============================
+   01. PALETA GENERAL
+   ============================== */
+
 :root{
-  --camel:      #C2A476;   /* camel base */
-  --camel-700:  #9B7C4E;   /* camel oscuro */
-  --camel-800:  #7F653F;   /* hover intenso */
-  --ink:        #121212;   /* negro */
-  --ink-2:      #1A1A1A;   /* negro para gradientes/bordes */
-  --paper:      #ffffff;   /* blanco */
-  --muted:      #F5F1EA;   /* fondo suave */
-  --line:       rgba(0,0,0,.08);
-  --camel-rgb:  194 164 118;  /* helper para alfas */
-  --radius-table: 14px;       /* radio de tabla */
+  --camel: #C2A476;
+  --camel-700: #9B7C4E;
+  --camel-800: #7F653F;
+  --gold: #D7A73F;
+  --gold-soft: #F2C766;
+  --ink: #121212;
+  --ink-2: #1A1A1A;
+  --paper: #ffffff;
+  --muted: #F5F1EA;
+  --line: rgba(0,0,0,.08);
+  --camel-rgb: 194 164 118;
+  --radius-table: 14px;
+
+  --dark-900: #080d14;
+  --dark-850: #0a111b;
+  --dark-800: #0d1520;
+  --dark-750: #111b29;
+  --dark-line: rgba(255,255,255,.09);
+  --dark-line-gold: rgba(194,164,118,.22);
+  --dark-text: rgba(255,255,255,.92);
+  --dark-muted: rgba(255,255,255,.62);
 }
 
-/* ===== Card / Header ===== */
+/* ==============================
+   02. CARD / HEADER GENERAL
+   ============================== */
+
 .card.card-custom{
-  border:1px solid var(--ink-2);
-  box-shadow:0 6px 20px rgba(0,0,0,.08);
-  background:var(--paper);
-} 
-.card.card-custom .card-header{
-  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
-  border-bottom:3px solid var(--camel);
+  border: 1px solid var(--ink-2);
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  background: var(--paper);
 }
+
+.card.card-custom .card-header{
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  border-bottom: 3px solid var(--camel);
+}
+
 .card.card-custom .card-title .card-label,
 .card.card-custom .card-title .card-icon i{
-  color:#fff !important;
+  color: #fff !important;
 }
 
-/* “Sin dato” */
-.sin-dato{ color:#97A1A9; font-style:italic; }
+.card.card-custom .card-body{
+  /*background: #fff;*/
+  background: #000;
+}
 
-/* Botones de icono (estilo base global) */
-.btn.btn-clean.btn-icon{ color:#8b9096; border-radius:8px; }
+.sin-dato{
+  color: #97A1A9;
+  font-style: italic;
+}
+
+.btn.btn-clean.btn-icon{
+  color: #8b9096;
+  border-radius: 8px;
+}
+
 .btn.btn-clean.btn-icon:hover{
-  color:var(--camel);
-  background:rgb(var(--camel-rgb) / 12%);
+  color: var(--camel);
+  background: rgb(var(--camel-rgb) / 12%);
 }
 
-/* ===== Paginación DataTables ===== */
 .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-  background:var(--camel)!important;
-  color:var(--ink)!important;
-  border:none!important;
+  background: var(--camel) !important;
+  color: var(--ink) !important;
+  border: none !important;
 }
 
-/* ===== Carta ===== */
-.card.card-custom .card-header .card-toolbar .btn-link-primary{
-  color: var(--camel) !important;
-  font-weight: 700 !important;
-}
-.card.card-custom .card-header .card-toolbar .btn-link-primary:hover{
-  color: var(--paper) !important;
-  text-decoration: none;
-}
-
-/* Botón claro tipo primario -> camel */
 .card.card-custom .card-header .card-toolbar .btn-light-primary{
   background: var(--muted) !important;
   color: #000 !important;
@@ -62,106 +84,318 @@
   border-radius: 10px;
   font-weight: 700;
 }
+
 .card.card-custom .card-header .card-toolbar .btn-light-primary:hover{
   background: var(--camel-700) !important;
   border-color: var(--camel-700) !important;
-  color: var(--paper) !important; ;
+  color: var(--paper) !important;
 }
-.card.card-custom .card-header .card-toolbar .btn-light-primary:focus{
-  box-shadow: 0 0 0 3px rgb(var(--camel-rgb) / 24%) !important;
-  outline: none !important;
-}
+
 .card.card-custom .card-header .card-toolbar .btn-light-primary i{
   color: var(--camel) !important;
   font-size: 1.3rem;
 }
+
 .card.card-custom .card-header .card-toolbar .btn-light-primary:hover i{
-  color: var(--paper) !important; ;
+  color: var(--paper) !important;
 }
 
-/* ===== Badge compacta de análisis (si la usas aquí) ===== */
 .badge-analisis{
-  background:transparent;
-  color:var(--camel)!important;
-  border:1px solid var(--camel)!important;
-  font-weight:700; font-size:14px;
-  padding:.2rem .5rem; border-radius:8px;
-}
-
-/* ===== KPIs GIRO: barra de gráficas ===== */
-.giro-kpi-tabs{
-  display:flex;
-  gap:.65rem;
-  flex-wrap:nowrap;
-  overflow-x:auto;
-  padding:.25rem .1rem .8rem;
-  margin-bottom:1.25rem;
-  border-bottom:2px solid rgb(var(--camel-rgb) / 20%);
-  scrollbar-width:thin;
-  scrollbar-color: var(--camel) transparent;
-  justify-content: center;
-}
-
-.giro-kpi-tabs::-webkit-scrollbar{
-  height:8px;
-}
-.giro-kpi-tabs::-webkit-scrollbar-thumb{
-  background: rgb(var(--camel-rgb) / 55%);
-  border-radius:999px;
-}
-.giro-kpi-tabs::-webkit-scrollbar-track{
   background: transparent;
+  color: var(--camel) !important;
+  border: 1px solid var(--camel) !important;
+  font-weight: 700;
+  font-size: 14px;
+  padding: .2rem .5rem;
+  border-radius: 8px;
+}
+
+/* ==============================
+   BOTÓN REGRESAR - ESTILO FOTO
+   ============================== */
+
+.giro-card-toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.giro-back-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid #c8a15a;
+  background: linear-gradient(180deg, #101722 0%, #0b1119 100%);
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: .96rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 6px 16px rgba(0,0,0,.18);
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.giro-back-btn:hover{
+  color: #ffffff !important;
+  border-color: #ddb56a;
+  background: linear-gradient(180deg, #131c28 0%, #0d141d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 20px rgba(0,0,0,.22),
+    0 0 0 1px rgba(200,161,90,.08);
+  transform: translateY(-1px);
+}
+
+.giro-back-btn:focus{
+  outline: none;
+  color: #ffffff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 0 0 3px rgba(200,161,90,.16),
+    0 10px 20px rgba(0,0,0,.20);
+}
+
+.giro-back-btn:active{
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.22),
+    0 4px 10px rgba(0,0,0,.16);
+}
+
+.giro-back-btn__icon{
+  margin: 0 !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  color: #c8a15a !important;
+  position: relative;
+  top: -1px;
+}
+
+.giro-back-btn__text{
+  color: inherit;
+  line-height: 1;
+  position: relative;
+  top: -1px;
+}
+
+/* ==============================
+   03. BARRA DE TABS GLOBAL
+   ============================== */
+
+.giro-kpi-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: .75rem;
+  width: 100%;
+  padding: .55rem 0 .85rem;
+  margin: 0 auto 1rem;
+  background: transparent;
+  border-bottom: 0;
 }
 
 .giro-kpi-tab{
-  border:1px solid rgb(var(--camel-rgb) / 28%);
-  background: linear-gradient(180deg, #fff 0%, var(--muted) 100%);
-  color: var(--ink);
-  border-radius: 12px;
-  padding: .7rem 1rem;
-  font-weight: 700;
-  font-size: .92rem;
-  line-height: 1.1;
-  white-space: normal;
-  min-width: 150px;
+  position: relative;
+  min-width: 138px;
+  min-height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: .78rem .9rem;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+    linear-gradient(180deg, #0f1722 0%, #0b121c 100%);
+  color: rgba(255,255,255,.78);
   text-align: center;
   cursor: pointer;
-  transition: all .2s ease;
+  transition: all .22s ease;
   outline: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 8px 18px rgba(0,0,0,.10);
 }
 
 .giro-kpi-tab:hover{
-  border-color: var(--camel);
-  color: var(--camel-800);
-  box-shadow: 0 4px 14px rgb(var(--camel-rgb) / 18%);
+  color: #fff;
+  border-color: rgba(194,164,118,.38);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 12px 26px rgba(0,0,0,.18);
 }
 
 .giro-kpi-tab.is-active{
-  background: linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
-  color: var(--paper);
-  border-color: var(--camel);
-  box-shadow: inset 0 -3px 0 var(--camel), 0 6px 16px rgba(0,0,0,.14);
+  color: #fff;
+  border-color: rgba(218,171,73,.70);
+  background:
+    radial-gradient(circle at top left, rgba(218,171,73,.18), transparent 48%),
+    linear-gradient(180deg, #172231 0%, #101925 100%);
+  box-shadow:
+    inset 0 -3px 0 var(--gold),
+    0 0 0 1px rgba(218,171,73,.12),
+    0 16px 30px rgba(0,0,0,.22);
 }
+
+.giro-kpi-tab.is-active::before{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid rgba(218,171,73,.32);
+  pointer-events: none;
+}
+
+.giro-kpi-tab__icon{
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.72);
+  font-size: 1.05rem;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.giro-kpi-tab.is-active .giro-kpi-tab__icon{
+  color: var(--gold);
+}
+
+.giro-kpi-tab__icon i{
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.giro-kpi-tab__icon svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.giro-kpi-tab__text{
+  display: block;
+  font-size: .82rem;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  text-align: center;
+}
+
+/* Desktop grande: centrados */
+@media (min-width: 1200px){
+  .giro-kpi-tabs{
+    overflow: visible;
+    scrollbar-width: none;
+  }
+}
+
+/* Tablets / laptops más chicas: scroll horizontal */
+@media (max-width: 1199px){
+  .giro-kpi-tabs{
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(194,164,118,.45) transparent;
+    padding-bottom: .8rem;
+  }
+
+  .giro-kpi-tabs::-webkit-scrollbar{
+    height: 8px;
+  }
+
+  .giro-kpi-tabs::-webkit-scrollbar-thumb{
+    background: rgba(194,164,118,.45);
+    border-radius: 999px;
+  }
+
+  .giro-kpi-tabs::-webkit-scrollbar-track{
+    background: transparent;
+  }
+
+  .giro-kpi-tab{
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 768px){
+  .giro-kpi-tabs{
+    gap: .55rem;
+  }
+
+  .giro-kpi-tab{
+    min-width: 136px;
+    min-height: 58px;
+    padding: .68rem .78rem;
+  }
+
+  .giro-kpi-tab__icon{
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    font-size: .98rem;
+  }
+
+  .giro-kpi-tab__icon i{
+    font-size: .98rem;
+  }
+
+  .giro-kpi-tab__icon svg{
+    width: 16px;
+    height: 16px;
+  }
+
+  .giro-kpi-tab__text{
+    font-size: .78rem;
+  }
+}
+
+/* ==============================
+   04. STAGE GENERAL
+   ============================== */
 
 .giro-chart-stage{
   min-height: 470px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .giro-chart-panel{
-  display:none;
-  width:100%;
+  display: none;
+  width: 100%;
 }
 
 .giro-chart-panel.is-active{
-  display:block;
+  display: block;
 }
 
 .giro-chart-card{
   background: linear-gradient(180deg, #fff 0%, #fcfaf7 100%);
-  border:1px solid rgb(var(--camel-rgb) / 20%);
+  border: 1px solid rgb(var(--camel-rgb) / 20%);
   border-radius: 18px;
   padding: 1.2rem 1.2rem 1rem;
   box-shadow: 0 10px 28px rgba(0,0,0,.06);
@@ -170,7 +404,7 @@
 }
 
 .giro-chart-title{
-  text-align:center;
+  text-align: center;
   color: var(--ink-2);
   font-weight: 800;
   font-size: 1.3rem;
@@ -182,89 +416,507 @@
   height: 360px;
 }
 
-.giro-chart-placeholder{
-  height: 360px;
-  border: 2px dashed rgb(var(--camel-rgb) / 38%);
-  border-radius: 16px;
+/* ==============================
+   05. GRÁFICO 1 - ÍNDICE DE DISTRIBUCIÓN
+   ============================== */
+
+#chart-indice .giro-chart-card--indice{
+  max-width: 100%;
+  padding: 18px 20px 20px;
+  border-radius: 8px;
   background:
-    linear-gradient(180deg, rgb(var(--camel-rgb) / 8%) 0%, rgba(255,255,255,1) 100%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding: 1.5rem;
-  color: var(--camel-800);
-  font-weight: 700;
-  font-size: 1rem;
+    radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 38%),
+    linear-gradient(180deg, #0b131d 0%, #0c141e 100%);
+  border: 1px solid rgba(194,164,118,.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 38px rgba(0,0,0,.22);
 }
 
-@media (max-width: 768px){
-  .giro-kpi-tab{
-    min-width: 135px;
-    font-size: .84rem;
-    padding: .65rem .85rem;
-  }
-
-  .giro-chart-card{
-    padding: 1rem;
-  }
-
-  .giro-chart-canvas-wrap,
-  .giro-chart-placeholder{
-    height: 300px;
-  }
-
-  .giro-kpi-tabs{
-    justify-content: flex-start;
-  }
+#chart-indice .giro-chart-title{
+  margin: 0 0 18px;
+  color: rgba(255,255,255,.92);
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.03em;
 }
 
-/* ===== Vulnerabilidad: mejora desktop/mobile ===== */
-/* ===== Vulnerabilidad: desktop contenido / mobile con scroll ===== */
-.giro-chart-canvas-wrap--vuln{
+#chart-indice .giro-chart-title::after{
+  content: "";
+  display: block;
+  width: 70px;
+  height: 3px;
+  border-radius: 999px;
+  margin: 12px auto 0;
+  background: linear-gradient(90deg, #9c6f1d 0%, #f0c15a 52%, #9c6f1d 100%);
+  box-shadow: 0 0 18px rgba(240,193,90,.22);
+}
+
+#chart-indice .giro-chart-canvas-wrap--indice{
+  height: 360px;
+  border-radius: 8px;
+  padding: 18px 20px 12px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008)),
+    #111922;
+  border: 1px solid rgba(194,164,118,.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 24px rgba(0,0,0,.16);
+}
+
+#chart-indice canvas#myindicedistribucion{
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.giro-indice-summary{
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.giro-indice-card{
   position: relative;
-  height: 470px;
+  min-height: 128px;
+  padding: 16px 16px 14px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 45%),
+    linear-gradient(180deg, #111922 0%, #0e1721 100%);
+  border: 1px solid rgba(194,164,118,.20);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 12px 24px rgba(0,0,0,.16);
   overflow: hidden;
 }
 
-.giro-chart-canvas-inner--vuln{
+.giro-indice-card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,.045), transparent 46%);
+  pointer-events: none;
+}
+
+.giro-indice-card__icon{
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.90);
+  font-size: 2rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 12px 24px rgba(0,0,0,.20);
+}
+
+.giro-indice-card__content{
+  padding-left: 78px;
   position: relative;
-  width: 100%;
-  height: 470px;
-  min-width: 100%;
+  z-index: 1;
 }
 
-#myanalisisvulnerabilidad{
+.giro-indice-card__label{
+  color: rgba(255,255,255,.86);
+  font-size: .95rem;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.giro-indice-card__value{
+  color: #f5c96a;
+  font-size: 1.95rem;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  margin-bottom: 8px;
+}
+
+.giro-indice-card__pct{
+  color: rgba(255,255,255,.56);
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.giro-indice-card__bar{
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 13px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.11);
+  overflow: hidden;
+}
+
+.giro-indice-card__bar span{
   display: block;
-  width: 100% !important;
-  height: 470px !important;
-  min-width: 100%;
-  max-width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  min-width: 0;
 }
 
-@media (max-width: 768px){
+.giro-indice-card--muy-bajo .giro-indice-card__icon{
+  background: linear-gradient(180deg, #a6a8ad 0%, #656971 100%);
+}
+
+.giro-indice-card--muy-bajo .giro-indice-card__bar span{
+  background: linear-gradient(90deg, #c7c9ce 0%, #878b94 100%);
+}
+
+.giro-indice-card--bajo .giro-indice-card__icon{
+  background: linear-gradient(180deg, #6fbf73 0%, #2c7d32 100%);
+}
+
+.giro-indice-card--bajo .giro-indice-card__bar span{
+  background: linear-gradient(90deg, #8be28f 0%, #38a141 100%);
+}
+
+.giro-indice-card--medio .giro-indice-card__icon{
+  background: linear-gradient(180deg, #efbd4b 0%, #a8771f 100%);
+}
+
+.giro-indice-card--medio .giro-indice-card__bar span{
+  background: linear-gradient(90deg, #f6c95c 0%, #b98121 100%);
+}
+
+.giro-indice-card--alto .giro-indice-card__icon{
+  background: linear-gradient(180deg, #d94d53 0%, #8c1f2a 100%);
+}
+
+.giro-indice-card--alto .giro-indice-card__bar span{
+  background: linear-gradient(90deg, #ff6269 0%, #ac2633 100%);
+}
+
+.giro-indice-card--muy-alto .giro-indice-card__icon{
+  background: linear-gradient(180deg, #c9252f 0%, #85000b 100%);
+}
+
+.giro-indice-card--muy-alto .giro-indice-card__bar span{
+  background: linear-gradient(90deg, #ff2f3a 0%, #a5000e 100%);
+}
+
+/* ==============================
+   06. VULNERABILIDAD
+   ============================== */
+
+  #chart-vulnerabilidad .giro-chart-card--vuln{
+    max-width: 100%;
+    padding: 22px 22px 20px;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at top center, rgba(194,164,118,.06), transparent 40%),
+      linear-gradient(180deg, #0a1119 0%, #081019 100%);
+    border: 1px solid rgba(194,164,118,.20);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 18px 38px rgba(0,0,0,.22);
+  }
+
+  #chart-vulnerabilidad .giro-chart-title--vuln{
+    margin: 0 0 18px;
+    color: rgba(255,255,255,.88);
+    font-size: 1.45rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -.025em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #chart-vulnerabilidad .giro-chart-title--vuln::after{
+    content: "";
+    position: absolute;
+    margin-top: 48px;
+    width: 72px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+    box-shadow: 0 0 18px rgba(241,198,92,.18);
+  }
+
+  .giro-vuln-title-icon{
+    width: 27px;
+    height: 27px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 1.25rem;
+  }
+
   .giro-chart-canvas-wrap--vuln{
-    height: 360px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    position: relative;
+    height: 380px;
+    overflow: hidden;
+    border-radius: 8px;
+    padding: 18px 22px 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+      #0f171f;
+    border: 1px solid rgba(194,164,118,.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 12px 24px rgba(0,0,0,.16);
   }
 
   .giro-chart-canvas-inner--vuln{
-    width: 900px;
-    min-width: 900px;
-    height: 360px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
   }
 
   #myanalisisvulnerabilidad{
-    width: 900px !important;
-    min-width: 900px;
-    max-width: none;
-    height: 360px !important;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100%;
+    max-width: 100%;
   }
-}
 
-/* ===== Riesgos por criterio ===== */
+  .giro-vuln-summary{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 0 6px;
+  }
+
+  .giro-vuln-card{
+    position: relative;
+    width: 100%;
+    max-width: 285px;
+    min-height: 92px;
+    padding: 12px 13px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 11px;
+
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,.055), transparent 42%),
+      linear-gradient(180deg, #121b26 0%, #0c141d 100%);
+
+    border: 1px solid rgba(194,164,118,.18);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 10px 20px rgba(0,0,0,.18);
+
+    transition:
+      transform .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease;
+  }
+
+  .giro-vuln-card:hover{
+    transform: translateY(-2px);
+    border-color: rgba(215,167,63,.38);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.045),
+      0 14px 26px rgba(0,0,0,.24),
+      0 0 0 1px rgba(215,167,63,.06);
+  }
+
+  .giro-vuln-card::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(215,167,63,.14), transparent 34%),
+      radial-gradient(circle at top right, rgba(255,255,255,.04), transparent 48%);
+    opacity: .75;
+    pointer-events: none;
+  }
+
+  .giro-vuln-card::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 999px;
+    background: rgba(255,77,77,.9);
+    box-shadow: 0 0 14px rgba(255,77,77,.32);
+  }
+
+  .giro-vuln-card__icon{
+    position: relative;
+    z-index: 1;
+    width: 38px;
+    height: 38px;
+    margin: 0;
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255,255,255,.94);
+    font-size: 1.15rem;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.20),
+      0 8px 16px rgba(0,0,0,.24);
+  }
+
+  .giro-vuln-card__body{
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "label label"
+      "value badge";
+    align-items: end;
+    column-gap: 10px;
+    row-gap: 6px;
+  }
+
+  .giro-vuln-card__label{
+    grid-area: label;
+    min-height: 0;
+    margin: 0;
+
+    color: rgba(255,255,255,.90);
+    font-size: .78rem;
+    line-height: 1.15;
+    font-weight: 900;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .giro-vuln-card__value{
+    grid-area: value;
+    margin: 0;
+
+    color: #ff4d4d;
+    font-size: 1.62rem;
+    line-height: .92;
+    font-weight: 950;
+    letter-spacing: -.05em;
+  }
+
+  .giro-vuln-card__badge{
+    grid-area: badge;
+    min-height: 23px;
+    min-width: 76px;
+    padding: 0 10px;
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #fff;
+    font-size: .68rem;
+    line-height: 1;
+    font-weight: 950;
+    white-space: nowrap;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.13),
+      0 7px 14px rgba(0,0,0,.20);
+  }
+
+  /* Color lateral por nivel */
+  .giro-vuln-card--sin-control::after{
+    background: #b90f0f;
+    box-shadow: 0 0 14px rgba(185,15,15,.35);
+  }
+
+  .giro-vuln-card--deficiente::after{
+    background: #e4423f;
+    box-shadow: 0 0 14px rgba(228,66,63,.35);
+  }
+
+  .giro-vuln-card--regular::after{
+    background: #d9a42d;
+    box-shadow: 0 0 14px rgba(217,164,45,.35);
+  }
+
+  .giro-vuln-card--eficiente::after{
+    background: #8aa83c;
+    box-shadow: 0 0 14px rgba(138,168,60,.35);
+  }
+
+  .giro-vuln-card--optimo::after{
+    background: #9fbd3f;
+    box-shadow: 0 0 14px rgba(159,189,63,.35);
+  }
+
+  .giro-vuln-card--sin-control .giro-vuln-card__icon,
+  .giro-vuln-card--sin-control .giro-vuln-card__badge{
+    background: linear-gradient(180deg, #b51e1e 0%, #7a0c0c 100%);
+  }
+
+  .giro-vuln-card--deficiente .giro-vuln-card__icon,
+  .giro-vuln-card--deficiente .giro-vuln-card__badge{
+    background: linear-gradient(180deg, #e24a43 0%, #b92929 100%);
+  }
+
+  .giro-vuln-card--regular .giro-vuln-card__icon,
+  .giro-vuln-card--regular .giro-vuln-card__badge{
+    background: linear-gradient(180deg, #d9a42d 0%, #a67414 100%);
+  }
+
+  .giro-vuln-card--eficiente .giro-vuln-card__icon,
+  .giro-vuln-card--eficiente .giro-vuln-card__badge{
+    background: linear-gradient(180deg, #8aa83c 0%, #5f7a22 100%);
+  }
+
+  .giro-vuln-card--optimo .giro-vuln-card__icon,
+  .giro-vuln-card--optimo .giro-vuln-card__badge{
+    background: linear-gradient(180deg, #9fb83e 0%, #698424 100%);
+  }
+
+  .giro-vuln-card--regular .giro-vuln-card__value{
+    color: #f1c65c;
+  }
+
+  .giro-vuln-card--eficiente .giro-vuln-card__value,
+  .giro-vuln-card--optimo .giro-vuln-card__value{
+    color: #a8bd43;
+  }
+
+  .giro-vuln-empty{
+    padding: 18px;
+    border-radius: 8px;
+    border: 1px dashed rgba(194,164,118,.22);
+    color: rgba(255,255,255,.70);
+    text-align: center;
+    font-weight: 800;
+    background: rgba(255,255,255,.03);
+  }
+
+/* ==============================
+   07. RIESGOS POR CRITERIO
+   ============================== */
+
 .giro-chart-canvas-wrap--security{
   position: relative;
   height: 420px;
@@ -286,29 +938,47 @@
   max-width: 100%;
 }
 
-@media (max-width: 768px){
-  .giro-chart-canvas-wrap--security{
-    height: 360px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .giro-chart-canvas-inner--security{
-    width: 900px;
-    min-width: 900px;
-    height: 360px;
-  }
-
-  #myriesgosporcriterio{
-    width: 900px !important;
-    min-width: 900px;
-    max-width: none;
-    height: 360px !important;
-  }
+#chart-security .giro-chart-card{
+  background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
+  border: 1px solid rgba(194,164,118,0.22);
+  border-radius: 26px;
+  box-shadow:
+    0 18px 34px rgba(18,18,18,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+  padding: 24px 26px 18px;
 }
 
-/* ===== Distribución % de escenarios ===== */
+#chart-security .giro-chart-title{
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.12;
+  color: #121212;
+  letter-spacing: -0.02em;
+}
+
+#chart-security .giro-chart-canvas-wrap--security{
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,0.08), transparent 42%),
+    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
+  border: 1px solid rgba(194,164,118,0.14);
+  border-radius: 22px;
+  padding: 16px 14px 8px;
+}
+
+#chart-security .giro-chart-canvas-inner--security{
+  height: 460px;
+}
+
+#chart-security #myriesgosporcriterio{
+  height: 430px !important;
+}
+
+/* ==============================
+   08. DISTRIBUCIÓN DE ESCENARIOS
+   ============================== */
+
 .giro-escenarios-wrap{
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -396,390 +1066,371 @@
   font-weight: 700;
 }
 
-@media (max-width: 768px){
-  .giro-escenarios-table th,
-  .giro-escenarios-table td{
-    font-size: .84rem;
-    padding: .4rem .5rem;
-  }
-}
+/* ==============================
+   09. MEDIDAS DE SEGURIDAD
+   ============================== */
 
-/* ===== Look más premium para la gráfica de riesgos por criterio ===== */
-#chart-security .giro-chart-card {
-  background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
-  border: 1px solid rgba(194, 164, 118, 0.22);
-  border-radius: 26px;
-  box-shadow:
-    0 18px 34px rgba(18, 18, 18, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
-  padding: 24px 26px 18px;
-}
-
-#chart-security .giro-chart-title {
-  margin-bottom: 14px;
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 800;
-  line-height: 1.12;
-  color: #121212;
-  letter-spacing: -0.02em;
-}
-
-#chart-security .giro-chart-canvas-wrap--security {
+#chart-medidas .giro-chart-card{
+  max-width: 100%;
+  padding: 20px 22px 22px;
+  border-radius: 10px;
   background:
-    radial-gradient(circle at top center, rgba(194, 164, 118, 0.08), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
-  border: 1px solid rgba(194, 164, 118, 0.14);
-  border-radius: 22px;
-  padding: 16px 14px 8px;
+    radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+    linear-gradient(180deg, #0b131d 0%, #081019 100%);
+  border: 1px solid rgba(194,164,118,.20);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 38px rgba(0,0,0,.22);
 }
 
-#chart-security .giro-chart-canvas-inner--security {
-  height: 460px;
+#chart-medidas .giro-chart-title{
+  margin: 0 0 18px;
+  color: rgba(255,255,255,.92);
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.025em;
 }
 
-#myriesgosporcriterio {
-  height: 430px !important;
+#chart-medidas .giro-chart-title::after{
+  content: "";
+  display: block;
+  width: 74px;
+  height: 3px;
+  margin: 12px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+  box-shadow: 0 0 18px rgba(241,198,92,.18);
 }
 
-/* Un poco más bonito el contenedor general */
-.giro-chart-stage {
-  margin-top: 18px;
-}
-
-@media (max-width: 768px) {
-  #chart-security .giro-chart-card {
-    padding: 18px 16px 14px;
-    border-radius: 20px;
-  }
-
-  #chart-security .giro-chart-title {
-    font-size: 1.45rem;
-    line-height: 1.18;
-    margin-bottom: 10px;
-  }
-
-  #chart-security .giro-chart-canvas-wrap--security {
-    border-radius: 16px;
-    padding: 10px 8px 4px;
-  }
-
-  #chart-security .giro-chart-canvas-inner--security {
-    height: 360px;
-  }
-}
-
-/* ===== Medidas de Seguridad ===== */
 .giro-medidas-grid{
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 18px;
 }
 
 .giro-medidas-block{
-  border: 1px solid rgb(var(--camel-rgb) / 18%);
-  border-radius: 18px;
+  position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #fff 0%, #fcfaf7 100%);
-  box-shadow: 0 14px 30px rgba(0,0,0,.05);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+    linear-gradient(180deg, #111922 0%, #0d151e 100%);
+  border: 1px solid rgba(194,164,118,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 14px 28px rgba(0,0,0,.20);
 }
 
-/* header más “pro” */
+.giro-medidas-block::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.04), transparent 45%);
+  pointer-events: none;
+}
+
 .giro-medidas-head{
-  padding: .75rem 1rem;
-  font-weight: 900;
-  letter-spacing: .6px;
-  font-size: .92rem;
+  position: relative;
+  z-index: 1;
+  min-height: 34px;
+  padding: 9px 14px;
+  font-weight: 950;
+  letter-spacing: .35px;
+  font-size: .82rem;
+  line-height: 1;
   text-align: center;
   color: #fff;
-}
-.giro-medidas-head--bad{ background: linear-gradient(90deg, #5a0000, #ff0000); }
-.giro-medidas-head--good{ background: linear-gradient(90deg, #24540d, #8bd13c); }
-
-/* Pie centrado y más alto (web) */
-.giro-medidas-pie{
-  height: 260px;
-  padding: .9rem 1rem .4rem;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
-/* tarjetas mini (grid) */
-.giro-medidas-mini{
+.giro-medidas-head--bad{
+  background:
+    linear-gradient(90deg, rgba(93,0,0,.96) 0%, rgba(165,0,0,.96) 48%, rgba(232,0,0,.96) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 22px rgba(255,0,0,.11);
+}
+
+.giro-medidas-head--good{
+  background:
+    linear-gradient(90deg, rgba(38,91,16,.96) 0%, rgba(87,155,42,.96) 52%, rgba(123,212,58,.96) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 22px rgba(123,212,58,.11);
+}
+
+/* Layout horizontal: dona izquierda + mini cards derecha */
+.giro-medidas-block{
   display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: .85rem;
-  padding: .9rem 1rem 1.15rem;
+  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-areas:
+    "head head"
+    "pie mini";
+  column-gap: 18px;
+  row-gap: 0;
+  padding-bottom: 14px;
+}
+
+.giro-medidas-head{
+  grid-area: head;
+}
+
+.giro-medidas-pie{
+  grid-area: pie;
+  position: relative;
+  z-index: 1;
+  height: 205px;
+  padding: 16px 6px 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.giro-medidas-pie canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.giro-medidas-mini{
+  grid-area: mini;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 14px;
+  padding: 16px 14px 0 0;
+  align-items: stretch;
 }
 
 .giro-mini-card{
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.06), transparent 55%), #0f0f10;
-  border-radius: 16px;
-  padding: .75rem .85rem .7rem;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 12px 26px rgba(0,0,0,0.14);
-  height: 150px;
   position: relative;
+  height: 160px;
+  border-radius: 10px;
+  padding: 12px 12px 10px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.05), transparent 45%),
+    linear-gradient(180deg, #121922 0%, #090d13 100%);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 20px rgba(0,0,0,.20);
+  overflow: hidden;
+}
+
+.giro-mini-card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(194,164,118,.06), transparent 44%),
+    radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 46%);
+  pointer-events: none;
 }
 
 .giro-mini-title{
-  color: #fff;
-  font-weight: 800;
-  font-size: .86rem;
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,.92);
+  font-weight: 950;
+  font-size: .78rem;
   text-align: center;
-  margin-bottom: .35rem;
-  opacity: .95;
-  letter-spacing: .2px;
+  margin-bottom: 6px;
+  line-height: 1.1;
+  letter-spacing: -.01em;
 }
 
-/* canvas ocupa bien */
 .giro-mini-card canvas{
-  height: 112px !important;
+  position: relative;
+  z-index: 1;
+  height: 124px !important;
   width: 100% !important;
 }
 
-/* Desktop: 4 columnas */
-@media (min-width: 992px){
-  .giro-medidas-mini{
-    grid-template-columns: repeat(4, minmax(0,1fr));
-  }
+/* Colores sutiles por bloque */
+.giro-medidas-block:first-child .giro-mini-card{
+  border-color: rgba(255,80,80,.14);
 }
 
-/* Mobile: que NO se vea “apretado” como tu foto */
-@media (max-width: 480px){
+.giro-medidas-block:first-child .giro-mini-card::before{
+  background:
+    linear-gradient(90deg, rgba(255,0,0,.075), transparent 44%),
+    radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 46%);
+}
 
-  /* bloque completo más compacto y centrado */
-  .giro-medidas-block{
-    border-radius: 16px;
-  }
+.giro-medidas-block:last-child .giro-mini-card{
+  border-color: rgba(130,205,72,.16);
+}
 
-  .giro-medidas-head{
-    padding: .65rem .75rem;
-    font-size: .86rem;
-    letter-spacing: .45px;
-  }
-
-  /* pie: más “hero” y menos aire muerto */
-  .giro-medidas-pie{
-    height: 230px;
-    padding: .65rem .55rem .15rem;
-  }
-
-  /* mini grid: 2x2 pero con separación más elegante */
-  .giro-medidas-mini{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: .65rem;
-    padding: .65rem .55rem .9rem;
-  }
-
-  /* cards: más premium, menos “bloque negro” */
-  .giro-mini-card{
-    height: 150px;
-    padding: .6rem .6rem .55rem;
-    border-radius: 14px;
-
-    background:
-      radial-gradient(circle at 30% 15%, rgba(255,255,255,0.07), transparent 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04)),
-      #0f0f10;
-
-    box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.07),
-      0 10px 18px rgba(0,0,0,0.14);
-
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* un “brillito” sutil */
-  .giro-mini-card:before{
-    content:"";
-    position:absolute;
-    inset:-40% -30% auto -30%;
-    height: 70%;
-    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
-    transform: rotate(-8deg);
-    pointer-events:none;
-  }
-
-  /* título más compacto */
-  .giro-mini-title{
-    font-size: .8rem;
-    margin-bottom: .25rem;
-    letter-spacing: .15px;
-    opacity: .95;
-  }
-
-  /* canvas: más alto para que se lean etiquetas */
-  .giro-mini-card canvas{
-    height: 115px !important;
-  }
+.giro-medidas-block:last-child .giro-mini-card::before{
+  background:
+    linear-gradient(90deg, rgba(130,205,72,.075), transparent 44%),
+    radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 46%);
 }
 
 /* ==============================
-   DAÑO POTENCIAL vs PATRÓN ESTÁNDAR
-   (solo afecta el panel #chart-dano)
+   10. DAÑO POTENCIAL
    ============================== */
 
-#chart-dano .giro-chart-card--dano{
-  /* Mantiene la estética del resto */
-}
+  #chart-dano .giro-chart-card--dano{
+    max-width: 100%;
+    padding: 20px 22px 22px;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+      linear-gradient(180deg, #0b1119 0%, #080d14 100%);
+    border: 1px solid rgba(194,164,118,.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 18px 38px rgba(0,0,0,.24);
+  }
 
-/* Contenedor del canvas */
-#chart-dano .giro-chart-canvas-wrap--dano{
-  height: 390px;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at top center, rgba(194,164,118,0.10), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
-  border: 1px solid rgba(194,164,118,0.16);
-  padding: 14px 12px 10px;
-  box-shadow: 0 12px 26px rgba(18,18,18,0.05);
-}
+  #chart-dano .giro-chart-title{
+    margin: 0 0 18px;
+    color: rgba(255,255,255,.92);
+    font-size: 1.45rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -.025em;
+  }
 
-/* ========= Tabla (wrap premium, no “pegada”) ========= */
-#chart-dano .giro-dano-table-wrap{
-  margin-top: 14px;
-  border: 1px solid rgb(var(--camel-rgb) / 16%);
-  border-radius: 18px;
-  overflow: hidden;
-  background: linear-gradient(180deg, #ffffff 0%, #fbf9f4 100%);
-  box-shadow: 0 12px 26px rgba(18,18,18,0.05);
-}
+  #chart-dano .giro-chart-title::after{
+    content: "";
+    display: block;
+    width: 70px;
+    height: 3px;
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+    box-shadow: 0 0 18px rgba(241,198,92,.22);
+  }
 
-/* Si en móvil necesita scroll, lo damos aquí sin romper el radio */
-#chart-dano .giro-dano-table-wrap{
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Tabla */
-#chart-dano .giro-dano-table{
-  width: 100%;
-  min-width: 640px;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: transparent;
-}
-
-/* Header */
-#chart-dano .giro-dano-table thead th{
-  background: linear-gradient(180deg, #ffffff 0%, rgb(var(--camel-rgb) / 10%) 100%);
-  border-bottom: 1px solid rgb(var(--camel-rgb) / 18%);
-  padding: .9rem .8rem;
-  text-align: center;
-  font-weight: 900;
-  letter-spacing: .2px;
-  color: #111;
-  white-space: nowrap;
-}
-#chart-dano .giro-dano-table thead th:first-child{
-  text-align: left;
-  padding-left: 1.05rem;
-}
-
-/* Body cells */
-#chart-dano .giro-dano-table tbody td{
-  padding: .85rem .8rem;
-  text-align: center;
-  border-bottom: 1px solid rgba(18,18,18,0.06);
-  font-size: .94rem;
-  font-weight: 800;
-  color: rgba(18,18,18,0.82);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Primera columna (label) */
-#chart-dano .giro-dano-table tbody td:first-child{
-  text-align: left;
-  padding-left: 1.05rem;
-  font-weight: 900;
-  color: #1f2a44;
-  white-space: nowrap;
-}
-
-/* Zebra + hover */
-#chart-dano .giro-dano-table tbody tr:nth-child(odd){
-  background: rgba(255,255,255,0.92);
-}
-#chart-dano .giro-dano-table tbody tr:nth-child(even){
-  background: rgba(194,164,118,0.06);
-}
-#chart-dano .giro-dano-table tbody tr:hover{
-  background: rgba(194,164,118,0.12);
-}
-#chart-dano .giro-dano-table tbody tr:last-child td{
-  border-bottom: 0;
-}
-
-/* Dots */
-#chart-dano .giro-dano-dot{
-  display:inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  margin-right: .55rem;
-  vertical-align: middle;
-  transform: translateY(1px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.14);
-}
-#chart-dano .giro-dano-dot--pot{
-  background: rgba(255,0,0,0.92);
-  box-shadow: 0 6px 14px rgba(255,0,0,0.20);
-}
-#chart-dano .giro-dano-dot--std{
-  background: rgba(18,18,18,0.65);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-}
-
-/* ========= Responsive ========= */
-@media (max-width: 768px){
   #chart-dano .giro-chart-canvas-wrap--dano{
-    height: 340px;
-    padding: 12px 10px 8px;
-    border-radius: 16px;
+    height: 390px;
+    border-radius: 8px;
+    padding: 16px 16px 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+      #0d121a;
+    border: 1px solid rgba(194,164,118,.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 12px 24px rgba(0,0,0,.16);
   }
 
-  #chart-dano .giro-dano-table thead th,
-  #chart-dano .giro-dano-table tbody td{
-    padding: .72rem .6rem;
-    font-size: .88rem;
+  #chart-dano canvas#mydanopotencial{
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
   }
 
-  #chart-dano .giro-dano-table thead th:first-child,
-  #chart-dano .giro-dano-table tbody td:first-child{
-    padding-left: .85rem;
-  }
-}
-
-@media (max-width: 480px){
-  #chart-dano .giro-chart-canvas-wrap--dano{
-    height: 320px;
-    padding: 10px 8px 6px;
+  /* Tabla inferior estilo dark */
+  #chart-dano .giro-dano-table-wrap{
+    margin-top: 18px;
+    border: 1px solid rgba(194,164,118,.18);
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+      linear-gradient(180deg, #101720 0%, #0b1118 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 12px 26px rgba(0,0,0,.18);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   #chart-dano .giro-dano-table{
-    min-width: 560px;
+    width: 100%;
+    min-width: 640px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent;
+    color: rgba(255,255,255,.88);
   }
 
   #chart-dano .giro-dano-table thead th{
-    font-size: .80rem;
-    padding: .62rem .5rem;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.025) 0%, rgba(255,255,255,.008) 100%);
+    border-bottom: 1px solid rgba(194,164,118,.16);
+    padding: 13px 12px;
+    text-align: center;
+    font-weight: 950;
+    letter-spacing: -.01em;
+    color: rgba(255,255,255,.88);
+    white-space: nowrap;
+  }
+
+  #chart-dano .giro-dano-table thead th:first-child{
+    text-align: left;
+    padding-left: 18px;
   }
 
   #chart-dano .giro-dano-table tbody td{
-    font-size: .82rem;
-    padding: .62rem .5rem;
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: .94rem;
+    font-weight: 850;
+    color: rgba(255,255,255,.86);
+    font-variant-numeric: tabular-nums;
+  }
+
+  #chart-dano .giro-dano-table tbody td:first-child{
+    text-align: left;
+    padding-left: 18px;
+    font-weight: 950;
+    color: rgba(255,255,255,.92);
+    white-space: nowrap;
+  }
+
+  #chart-dano .giro-dano-table tbody tr:nth-child(odd){
+    background: rgba(255,255,255,.035);
+  }
+
+  #chart-dano .giro-dano-table tbody tr:nth-child(even){
+    background: rgba(255,255,255,.012);
+  }
+
+  #chart-dano .giro-dano-table tbody tr:hover{
+    background: rgba(215,167,63,.07);
+  }
+
+  #chart-dano .giro-dano-table tbody tr:last-child td{
+    border-bottom: 0;
   }
 
   #chart-dano .giro-dano-dot{
-    width: 9px;
-    height: 9px;
-    margin-right: .45rem;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    margin-right: .65rem;
+    vertical-align: middle;
+    transform: translateY(1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,.24);
   }
-}
 
-/* ===== Pareto (80-20) ===== */
+  #chart-dano .giro-dano-dot--pot{
+    background: #D7A73F;
+    box-shadow:
+      0 6px 14px rgba(215,167,63,.20),
+      0 0 0 3px rgba(215,167,63,.10);
+  }
+
+  #chart-dano .giro-dano-dot--std{
+    background: rgba(130,135,140,.92);
+    box-shadow:
+      0 6px 14px rgba(0,0,0,.22),
+      0 0 0 3px rgba(255,255,255,.06);
+  }
+/* ==============================
+   11. PARETO
+   ============================== */
+
 .giro-chart-card--pareto{
   background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
   border: 1px solid rgba(194,164,118,0.22);
@@ -804,12 +1455,18 @@
   scrollbar-color: rgba(194,164,118,0.55) transparent;
 }
 
-.giro-chart-canvas-wrap--pareto::-webkit-scrollbar{ height: 10px; }
+.giro-chart-canvas-wrap--pareto::-webkit-scrollbar{
+  height: 10px;
+}
+
 .giro-chart-canvas-wrap--pareto::-webkit-scrollbar-thumb{
   background: rgba(194,164,118,0.55);
   border-radius: 999px;
 }
-.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-track{ background: transparent; }
+
+.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-track{
+  background: transparent;
+}
 
 .giro-chart-canvas-inner--pareto{
   height: 380px;
@@ -818,11 +1475,10 @@
 }
 
 #mypareto{
-  display:block;
+  display: block;
   height: 380px !important;
 }
 
-/* ===== Leyenda “sección” ===== */
 .giro-pareto-legend{
   margin-top: 12px;
   padding: 10px 12px;
@@ -833,16 +1489,16 @@
 }
 
 .giro-pareto-legend__inner{
-  display:flex;
+  display: flex;
   gap: 18px;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
 .giro-pareto-legend__item{
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   gap: 8px;
   font-weight: 900;
   color: #121212;
@@ -853,16 +1509,14 @@
   width: 26px;
   height: 10px;
   border-radius: 999px;
-  display:inline-block;
+  display: inline-block;
 }
 
-/* swatch barras */
 .giro-pareto-legend__swatch--bar{
-  background: linear-gradient(180deg, rgba(194, 164, 118, 0.98), rgba(127, 101, 63, 0.94));
+  background: linear-gradient(180deg, rgba(194,164,118,0.98), rgba(127,101,63,0.94));
   border: 1px solid rgba(18,18,18,0.55);
 }
 
-/* swatch línea */
 .giro-pareto-legend__swatch--line{
   height: 0;
   width: 30px;
@@ -870,852 +1524,689 @@
   border-radius: 0;
   position: relative;
 }
+
 .giro-pareto-legend__swatch--line::after{
-  content:"";
-  position:absolute;
-  right:-2px;
-  top:-5px;
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -5px;
   width: 8px;
   height: 8px;
-  background:#fff;
+  background: #fff;
   border: 2px solid rgba(255,0,0,0.92);
   border-radius: 999px;
 }
 
-@media (max-width: 480px){
-  .giro-chart-card--pareto{
-    padding: 18px 16px 14px;
-    border-radius: 20px;
-  }
-  .giro-chart-canvas-wrap--pareto{
-    height: 330px;
-    padding: 10px 8px 8px;
-    border-radius: 16px;
-  }
-  .giro-chart-canvas-inner--pareto{
-    height: 300px;
-    min-width: 860px;
-  }
-  #mypareto{
-    height: 360px !important;
-  }
-  .giro-pareto-legend__item{ font-size: .86rem; }
-}
-
-/* =========================================================
-   MATRIX UI PRO - MEJORA WEB + MOBILE + TABLA CON SCROLL
-   ========================================================= */
-
-/* ---------- CARD GENERAL MATRIZ ---------- */
-.giro-chart-card--matrix{
-  padding: 18px 18px 22px !important;
-  border-radius: 24px !important;
-  background:
-    radial-gradient(circle at top center, rgba(194,164,118,.08), transparent 38%),
-    linear-gradient(180deg, #ffffff 0%, #fbf8f3 100%) !important;
-  border: 1px solid rgba(194,164,118,.18) !important;
-  box-shadow:
-    0 18px 40px rgba(18,18,18,.07),
-    inset 0 1px 0 rgba(255,255,255,.90) !important;
-}
-
-#chart-origen .giro-chart-title{
-  margin-bottom: 14px !important;
-  font-size: 1.75rem !important;
-  line-height: 1.05 !important;
-  letter-spacing: -.03em;
-}
-
-/* ---------- WRAP GENERAL ---------- */
-.giro-matrix-wrap--vertical{
-  gap: 18px !important;
-}
-
-/* ---------- NUEVO TOOLBAR MATRIZ ---------- */
-.giro-matrix-toolbar{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:14px;
-  flex-wrap:wrap;
-  margin-bottom:16px;
-}
-
-.giro-matrix-filter{
-  min-width:320px;
-  flex:1 1 430px;
-}
-
-.giro-matrix-filter__label{
-  display:block;
-  margin-bottom:7px;
-  font-size:13px;
-  font-weight:800;
-  color:#27456f;
-  letter-spacing:.01em;
-}
-
-.giro-matrix-multiselect{
-  position:relative;
-  width:100%;
-  max-width:430px;
-}
-
-.giro-matrix-multiselect__trigger{
-  width:100%;
-  min-height:48px;
-  padding:11px 14px;
-  border:1px solid rgba(194,164,118,.22);
-  border-radius:14px;
-  background:linear-gradient(180deg, #ffffff 0%, #f7f1e8 100%);
-  color:#17263c;
-  font-weight:800;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,.04);
-  transition:all .2s ease;
-  outline:none !important;
-  cursor:pointer;
-}
-
-.giro-matrix-multiselect__trigger:hover{
-  border-color:rgba(74,111,165,.42);
-}
-
-.giro-matrix-multiselect__trigger.is-open{
-  border-color:#4A6FA5;
-  box-shadow:0 0 0 3px rgba(74,111,165,.12);
-}
-
-.giro-matrix-multiselect__arrow{
-  flex:0 0 auto;
-  font-size:12px;
-  color:#36506E;
-  transition:transform .2s ease;
-}
-
-.giro-matrix-multiselect__trigger.is-open .giro-matrix-multiselect__arrow{
-  transform:rotate(180deg);
-}
-
-.giro-matrix-multiselect__menu{
-  display:none;
-  position:absolute;
-  top:calc(100% + 8px);
-  left:0;
-  width:100%;
-  max-width:430px;
-  max-height:290px;
-  overflow-y:auto;
-  padding:8px;
-  background:#fff;
-  border:1px solid rgba(194,164,118,.22);
-  border-radius:16px;
-  box-shadow:0 18px 32px rgba(0,0,0,.10);
-  z-index:50;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(194,164,118,.45) transparent;
-}
-
-.giro-matrix-multiselect__menu.is-open{
-  display:block;
-}
-
-.giro-matrix-multiselect__menu::-webkit-scrollbar{
-  width:8px;
-}
-
-.giro-matrix-multiselect__menu::-webkit-scrollbar-thumb{
-  background:rgba(194,164,118,.45);
-  border-radius:999px;
-}
-
-.giro-matrix-multiselect__menu::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-.giro-matrix-multiselect__option{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:9px 10px;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:700;
-  color:#1f1f1f;
-  transition:background .18s ease, color .18s ease;
-}
-
-.giro-matrix-multiselect__option:hover{
-  background:rgba(74,111,165,.08);
-  color:#17324f;
-}
-
-.giro-matrix-multiselect__option input{
-  width:16px;
-  height:16px;
-  accent-color:#4A6FA5;
-  cursor:pointer;
-  flex:0 0 auto;
-}
-
-.giro-matrix-multiselect__option span{
-  display:block;
-  line-height:1.25;
-}
-
-.giro-matrix-multiselect__option--all{
-  margin-bottom:4px;
-  padding-bottom:12px;
-  border-bottom:1px dashed rgba(194,164,118,.34);
-}
-
-.giro-matrix-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.giro-matrix-toggle-btn{
-  min-height:48px;
-  padding:0 16px;
-  border:1px solid rgba(194,164,118,.26);
-  border-radius:14px;
-  background:linear-gradient(180deg, #ffffff 0%, #f7f1e8 100%);
-  color:#17263c;
-  font-weight:900;
-  letter-spacing:.01em;
-  box-shadow:0 8px 20px rgba(0,0,0,.04);
-  transition:all .2s ease;
-  outline:none !important;
-  cursor:pointer;
-}
-
-.giro-matrix-toggle-btn:hover{
-  border-color:var(--camel);
-  color:#111;
-  box-shadow:0 10px 24px rgba(0,0,0,.06);
-}
-
-.giro-matrix-toggle-btn.is-active{
-  background:linear-gradient(180deg, #17263c 0%, #101a29 100%);
-  color:#fff;
-  border-color:var(--camel);
-  box-shadow:inset 0 -3px 0 var(--camel), 0 10px 24px rgba(0,0,0,.12);
-}
-
-/* ---------- STAGE MATRIZ ---------- */
-.giro-matrix-left--full{
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(194,164,118,.60) transparent;
-  padding-bottom: 6px;
-}
-
-.giro-matrix-left--full::-webkit-scrollbar{
-  height: 10px;
-}
-
-.giro-matrix-left--full::-webkit-scrollbar-thumb{
-  background: rgba(194,164,118,.60);
-  border-radius: 999px;
-}
-
-.giro-matrix-left--full::-webkit-scrollbar-track{
-  background: transparent;
-}
-
-.giro-matrix-stage{
-  min-width: 900px;
-  display: grid !important;
-  grid-template-columns: 96px 42px minmax(0,1fr) !important;
-  column-gap: 10px !important;
-  align-items: start;
-  width: 100%;
-}
-
-/* ---------- EJE Y ---------- */
-.giro-matrix-ylabels,
-.giro-matrix-yvals{
-  position: relative;
-  height: 500px !important;
-}
-
-.giro-matrix-ylabels{
-  border-left: 3px solid #4A6FA5;
-  padding-left: 10px;
-}
-
-.giro-matrix-ylabels > div,
-.giro-matrix-yvals > div{
-  position: absolute;
-  transform: translateY(-50%);
-  font-weight: 800;
-  font-size: 13px !important;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.giro-matrix-ylabels > div{
-  color: #1f1f1f;
-}
-
-.giro-matrix-yvals > div{
-  right: 0;
-  color: #36506E;
-}
-
-/* posiciones recalculadas para menos alto */
-.giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 56px; }
-.giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 124px; }
-.giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 184px; }
-.giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 254px; }
-.giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 314px; }
-.giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 374px; }
-.giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 446px; }
-
-/* ---------- MAIN MATRIZ ---------- */
-.giro-matrix-main{
-  position: relative;
-  width: 100%;
-  height: 560px !important;
-  padding-bottom: 70px !important;
-}
-
-.giro-matrix-grid{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 450px !important;
-  display: grid;
-  grid-template-columns: 8fr 8fr 14fr 20fr 20fr 20fr 20fr;
-  grid-template-rows: repeat(7, 1fr);
-  border: 1px solid rgba(194,164,118,.14) !important;
-  border-radius: 0 !important;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 10px 22px rgba(0,0,0,.04);
-}
-
-.giro-matrix-grid .c{
-  border: 1px solid rgba(255,255,255,.92);
-}
-
-.giro-matrix-grid .x{ background:#D9D9D9; }
-.giro-matrix-grid .g{ background:#92D050; }
-.giro-matrix-grid .y{ background:#FFC000; }
-.giro-matrix-grid .r{ background:#FF1A00; }
-.giro-matrix-grid .d{ background:#C00000; }
-
-.giro-matrix-canvas-wrap{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 450px !important;
-  z-index: 2;
-}
-
-#mymatrizriesgos{
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-
-/* ---------- EJE X ---------- */
-.giro-matrix-xvals,
-.giro-matrix-xlabels{
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: grid;
-  grid-template-columns: 8fr 8fr 14fr 20fr 20fr 20fr 20fr;
-  text-align: center;
-}
-
-.giro-matrix-xvals{
-  top: 465px !important;
-}
-
-.giro-matrix-xvals div{
-  font-weight: 800;
-  font-size: 13px !important;
-  color: #36506E;
-}
-
-.giro-matrix-xlabels{
-  top: 495px !important;
-  padding-top: 10px;
-  border-top: 2px solid #4A6FA5;
-}
-
-.giro-matrix-xlabels div{
-  font-weight: 800;
-  font-size: 13px !important;
-  color: #1f1f1f;
-  white-space: nowrap;
-}
-
-/* ---------- NOTA DE EJES ---------- */
-.giro-matrix-axis-note{
-  margin-top: 6px !important;
-  padding: 0 2px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 14px !important;
-  color: #27456f;
-  font-weight: 800;
-}
-
-/* ---------- TABLA MATRIZ PRO ---------- */
-.giro-matrix-bottom{
-  width: 100%;
-}
-
-.giro-matrix-table-title{
-  margin-bottom: 10px !important;
-  font-size: 1.35rem !important;
-  font-weight: 900 !important;
-  color: #17263c;
-  letter-spacing: -.02em;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.giro-matrix-table-title small{
-  display: block;
-  margin-top: 4px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: #6b7280;
-  line-height: 1.35;
-}
-
-.giro-matrix-table-wrap{
-  width: 100%;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  -webkit-overflow-scrolling: touch;
-  border: 1px solid rgba(194,164,118,.18) !important;
-  border-radius: 20px !important;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #fbf8f3 100%) !important;
-  box-shadow:
-    0 16px 34px rgba(18,18,18,.06),
-    inset 0 1px 0 rgba(255,255,255,.88) !important;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(194,164,118,.55) transparent;
-}
-
-.giro-matrix-table-wrap::-webkit-scrollbar{
-  height: 10px;
-}
-
-.giro-matrix-table-wrap::-webkit-scrollbar-thumb{
-  background: rgba(194,164,118,.55);
-  border-radius: 999px;
-}
-
-.giro-matrix-table-wrap::-webkit-scrollbar-track{
-  background: transparent;
-}
-
-.giro-matrix-table{
-  width: 100%;
-  min-width: 760px;
-  border-collapse: separate !important;
-  border-spacing: 0;
-  table-layout: fixed;
-}
-
-.giro-matrix-table thead,
-.giro-matrix-table tbody tr{
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-.giro-matrix-table tbody{
-  display: block;
-  max-height: 448px;
-  overflow-y: auto;
-  overflow-x: visible;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(194,164,118,.55) transparent;
-}
-
-.giro-matrix-table tbody::-webkit-scrollbar{
-  width: 10px;
-}
-
-.giro-matrix-table tbody::-webkit-scrollbar-thumb{
-  background: rgba(194,164,118,.55);
-  border-radius: 999px;
-}
-
-.giro-matrix-table tbody::-webkit-scrollbar-track{
-  background: transparent;
-}
-
-.giro-matrix-table thead th{
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  background:
-    linear-gradient(180deg, #fffdf9 0%, #f4ece1 100%) !important;
-  color: #17263c;
-  font-weight: 900;
-  font-size: 13px !important;
-  padding: 14px 12px !important;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,.05);
-  text-align: center;
-  vertical-align: middle;
-}
-
-.giro-matrix-table tbody td{
-  padding: 13px 12px !important;
-  font-size: 13px !important;
-  color: #2d2d2d;
-  border-bottom: 1px solid rgba(0,0,0,.05);
-  background: rgba(255,255,255,.78);
-  text-align: center;
-  vertical-align: middle;
-}
-
-.giro-matrix-table tbody tr:nth-child(even) td{
-  background: rgba(248,244,238,.86);
-}
-
-.giro-matrix-table tbody tr:hover td{
-  background: rgba(234,242,251,.95) !important;
-}
-
-.giro-matrix-table tbody tr:last-child td{
-  border-bottom: none;
-}
-
-.giro-matrix-table th:nth-child(1),
-.giro-matrix-table td:nth-child(1){ width: 22%; }
-
-.giro-matrix-table th:nth-child(2),
-.giro-matrix-table td:nth-child(2){ width: 16%; }
-
-.giro-matrix-table th:nth-child(3),
-.giro-matrix-table td:nth-child(3){ width: 34%; }
-
-.giro-matrix-table th:nth-child(4),
-.giro-matrix-table td:nth-child(4){ width: 28%; }
-
-.td-esc{
-  font-weight: 900 !important;
-  color: #3f5f95 !important;
-  text-align: center !important;
-}
-
-.giro-lvl{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 96px;
-  padding: 8px 14px !important;
-  border-radius: 999px;
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  line-height: 1;
-  letter-spacing: .01em;
-  border: 1px solid rgba(0,0,0,.08);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.28);
-}
-
-.lvl-muy-bajo{ background:#ececec; color:#1f1f1f; }
-.lvl-bajo{ background:#92d050; color:#14210c; }
-.lvl-medio{ background:#ffc000; color:#3c2a00; }
-.lvl-alto{ background:#ff1a1a; color:#ffffff; }
-.lvl-muy-alto{ background:#c00000; color:#ffffff; }
-.lvl-empty{
-  background:#f2f2f2;
-  color:#7a7a7a;
-  border-color:rgba(0,0,0,.08);
-}
-
-.td-new-profile{
-  font-weight:700;
-  color:#2d405c;
-  letter-spacing:.01em;
-}
-
-/* ===== Ajuste tabla extendida para Nuevo Perfil y Nivel Nuevo Perfil ===== */
-/* ===== Ajuste tabla extendida para Nuevo Perfil y Nivel Nuevo Perfil ===== */
-.giro-matrix-table--extended{
-  min-width: 100%;
-}
-
-.giro-matrix-table--extended th,
-.giro-matrix-table--extended td{
-  padding: 10px 8px !important;
-  font-size: 12px !important;
-}
-
-.giro-matrix-table--extended th:nth-child(1),
-.giro-matrix-table--extended td:nth-child(1){
-  width: 10%;
-}
-
-.giro-matrix-table--extended th:nth-child(2),
-.giro-matrix-table--extended td:nth-child(2){
-  width: 10%;
-}
-
-.giro-matrix-table--extended th:nth-child(3),
-.giro-matrix-table--extended td:nth-child(3){
-  width: 16%;
-}
-
-.giro-matrix-table--extended th:nth-child(4),
-.giro-matrix-table--extended td:nth-child(4){
-  width: 14%;
-}
-
-.giro-matrix-table--extended th:nth-child(5),
-.giro-matrix-table--extended td:nth-child(5){
-  width: 16%;
-}
-
-.giro-matrix-table--extended th:nth-child(6),
-.giro-matrix-table--extended td:nth-child(6){
-  width: 16%;
-}
-
-.giro-matrix-table--extended .giro-lvl{
-  min-width: 82px;
-  padding: 6px 10px !important;
-  font-size: 11px !important;
-}
-
-/* ---------- MOBILE ---------- */
-@media (max-width: 991px){
-  #chart-origen .giro-chart-title{
-    font-size: 1.45rem !important;
-  }
-
-  .giro-matrix-stage{
-    min-width: 760px;
-    grid-template-columns: 82px 36px minmax(0,1fr) !important;
-    column-gap: 8px !important;
-  }
-
-  .giro-matrix-ylabels,
-  .giro-matrix-yvals{
-    height: 500px !important;
-  }
-
-  .giro-matrix-ylabels > div,
-  .giro-matrix-yvals > div{
-    font-size: 12px !important;
-  }
-
-  .giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 16px; }
-  .giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 92px; }
-  .giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 168px; }
-  .giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 244px; }
-  .giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 320px; }
-  .giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 396px; }
-  .giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 472px; }
-
-  .giro-matrix-main{
-    height: 500px !important;
-    padding-bottom: 64px !important;
-  }
-
-  .giro-matrix-grid,
-  .giro-matrix-canvas-wrap{
-    height: 390px !important;
-  }
-
-  .giro-matrix-xvals{
-    top: 404px !important;
-  }
-
-  .giro-matrix-xlabels{
-    top: 430px !important;
-  }
-
-  .giro-matrix-xvals div,
-  .giro-matrix-xlabels div{
-    font-size: 11px !important;
-  }
-
-  .giro-matrix-axis-note{
-    font-size: 13px !important;
-    flex-direction: row;
-  }
-
-  .giro-matrix-table tbody{
-    max-height: 408px;
-  }
-}
-
-@media (max-width: 768px){
-  .giro-chart-card--matrix{
-    padding: 14px 12px 18px !important;
-    border-radius: 18px !important;
+/* ==============================
+   12. MATRIZ
+   ============================== */
+
+  #chart-origen .giro-chart-card--matrix{
+    max-width: 100%;
+    padding: 22px 24px 24px !important;
+    border-radius: 10px !important;
+    background:
+      radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+      linear-gradient(180deg, #0b1119 0%, #080d14 100%) !important;
+    border: 1px solid rgba(194,164,118,.22) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 18px 38px rgba(0,0,0,.24) !important;
   }
 
   #chart-origen .giro-chart-title{
-    font-size: 1.22rem !important;
+    position: relative;
+    margin: 0 0 22px !important;
+    text-align: center;
+    color: rgba(255,255,255,.92) !important;
+    font-size: 1.55rem !important;
+    font-weight: 950 !important;
     line-height: 1.1 !important;
-    margin-bottom: 12px !important;
+    letter-spacing: -.03em;
   }
 
+  #chart-origen .giro-chart-title::after{
+    content: "";
+    display: block;
+    width: 72px;
+    height: 3px;
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+    box-shadow: 0 0 18px rgba(241,198,92,.20);
+  }
+
+  /* Toolbar superior */
   .giro-matrix-toolbar{
-    flex-direction:column;
-    align-items:stretch;
-    gap:12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
   }
 
   .giro-matrix-filter{
-    min-width:100%;
-    flex:1 1 100%;
+    min-width: 280px;
+    flex: 1 1 440px;
   }
 
-  .giro-matrix-multiselect,
-  .giro-matrix-multiselect__menu{
-    max-width:100%;
+  .giro-matrix-filter__label{
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    color: rgba(255,255,255,.82);
+    letter-spacing: .01em;
   }
 
-  .giro-matrix-actions{
-    width:100%;
-  }
-
-  .giro-matrix-toggle-btn{
-    width:100%;
+  .giro-matrix-multiselect{
+    position: relative;
+    width: 100%;
+    max-width: 360px;
   }
 
   .giro-matrix-multiselect__trigger{
-    min-height:46px;
-    font-size:13px;
-    padding:10px 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 14px;
+    border: 1px solid rgba(194,164,118,.25);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.018) 100%),
+      #0f1722;
+    color: rgba(255,255,255,.92);
+    font-size: .86rem;
+    font-weight: 850;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 8px 18px rgba(0,0,0,.16);
+    transition: all .2s ease;
+    outline: none !important;
+    cursor: pointer;
+  }
+
+  .giro-matrix-multiselect__trigger:hover{
+    border-color: rgba(215,167,63,.50);
+  }
+
+  .giro-matrix-multiselect__trigger.is-open{
+    border-color: rgba(215,167,63,.70);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.045),
+      0 0 0 3px rgba(215,167,63,.12),
+      0 10px 22px rgba(0,0,0,.22);
+  }
+
+  .giro-matrix-multiselect__arrow{
+    flex: 0 0 auto;
+    font-size: 11px;
+    color: var(--gold);
+    transition: transform .2s ease;
+  }
+
+  .giro-matrix-multiselect__trigger.is-open .giro-matrix-multiselect__arrow{
+    transform: rotate(180deg);
+  }
+
+  .giro-matrix-multiselect__menu{
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    max-width: 360px;
+    max-height: 290px;
+    overflow-y: auto;
+    padding: 8px;
+    background: #0d141e;
+    border: 1px solid rgba(194,164,118,.25);
+    border-radius: 10px;
+    box-shadow: 0 18px 32px rgba(0,0,0,.35);
+    z-index: 70;
+  }
+
+  .giro-matrix-multiselect__menu.is-open{
+    display: block;
   }
 
   .giro-matrix-multiselect__option{
-    font-size:13px;
-    padding:8px 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 750;
+    color: rgba(255,255,255,.84);
+  }
+
+  .giro-matrix-multiselect__option:hover{
+    background: rgba(215,167,63,.10);
+    color: #fff;
+  }
+
+  .giro-matrix-multiselect__option input{
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .giro-matrix-multiselect__option--all{
+    margin-bottom: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(194,164,118,.30);
+  }
+
+  .giro-matrix-actions{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .giro-matrix-toggle-btn{
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(215,167,63,.72);
+    border-radius: 8px;
+    background:
+      radial-gradient(circle at top left, rgba(215,167,63,.16), transparent 46%),
+      linear-gradient(180deg, #111a25 0%, #0b1119 100%);
+    color: #f5c96a;
+    font-size: .9rem;
+    font-weight: 950;
+    letter-spacing: -.01em;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.04),
+      0 10px 20px rgba(0,0,0,.20);
+    transition: all .2s ease;
+    outline: none !important;
+    cursor: pointer;
+  }
+
+  .giro-matrix-toggle-btn:hover{
+    color: #fff;
+    border-color: #f1c65c;
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.05),
+      0 14px 26px rgba(0,0,0,.26),
+      0 0 0 1px rgba(215,167,63,.08);
+  }
+
+  .giro-matrix-toggle-btn.is-active{
+    color: #111;
+    background: linear-gradient(180deg, #f1c65c 0%, #d7a73f 100%);
+    border-color: #f1c65c;
+  }
+
+  /* Contenedor general */
+  .giro-matrix-wrap{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .giro-matrix-wrap--vertical{
+    gap: 18px !important;
+  }
+
+  .giro-matrix-left{
+    width: 100%;
   }
 
   .giro-matrix-left--full{
-    margin: 0 -2px;
-    padding-bottom: 8px;
+    width: 100%;
   }
 
+  /* Stage de matriz */
   .giro-matrix-stage{
-    min-width: 700px;
-    grid-template-columns: 72px 34px minmax(0,1fr) !important;
-    column-gap: 6px !important;
+    position: relative;
+    display: grid;
+    grid-template-columns: 150px 56px minmax(720px, 1fr);
+    grid-template-rows: 330px 34px 48px;
+    gap: 0;
+    width: 100%;
+    padding: 0 0 0 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(215,167,63,.55) transparent;
   }
 
-  .giro-matrix-ylabels,
-  .giro-matrix-yvals{
-    height: 455px !important;
+  .giro-matrix-stage::-webkit-scrollbar{
+    height: 10px;
   }
 
+  .giro-matrix-stage::-webkit-scrollbar-thumb{
+    background: rgba(215,167,63,.55);
+    border-radius: 999px;
+  }
+
+  .giro-matrix-stage::-webkit-scrollbar-track{
+    background: transparent;
+  }
+
+  /* Etiquetas eje Y */
   .giro-matrix-ylabels{
-    padding-left: 8px;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 150px;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    border-left: 3px solid var(--gold);
+    border-top: 1px solid rgba(255,255,255,.10);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.008)),
+      #0d141d;
   }
 
-  .giro-matrix-ylabels > div,
+  .giro-matrix-ylabels > div{
+    display: flex;
+    align-items: center;
+    padding: 0 12px 0 22px;
+    color: rgba(255,255,255,.82);
+    font-size: .88rem;
+    font-weight: 850;
+    border-bottom: 1px solid rgba(255,255,255,.075);
+  }
+
+  .giro-matrix-ylabels > div:last-child{
+    border-bottom: 0;
+  }
+
+  /* Valores eje Y */
+  .giro-matrix-yvals{
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 56px;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    border-top: 1px solid rgba(255,255,255,.10);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+      #0d141d;
+  }
+
   .giro-matrix-yvals > div{
-    font-size: 11px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.88);
+    font-size: .86rem;
+    font-weight: 950;
+    border-bottom: 1px solid rgba(255,255,255,.075);
   }
 
-  .giro-matrix-ylabels .y10, .giro-matrix-yvals .y10{ top: 14px; }
-  .giro-matrix-ylabels .y8,  .giro-matrix-yvals .y8 { top: 82px; }
-  .giro-matrix-ylabels .y6,  .giro-matrix-yvals .y6 { top: 150px; }
-  .giro-matrix-ylabels .y4,  .giro-matrix-yvals .y4 { top: 218px; }
-  .giro-matrix-ylabels .y2,  .giro-matrix-yvals .y2 { top: 286px; }
-  .giro-matrix-ylabels .y12, .giro-matrix-yvals .y12{ top: 354px; }
-  .giro-matrix-ylabels .y04, .giro-matrix-yvals .y04{ top: 422px; }
+  .giro-matrix-yvals > div:last-child{
+    border-bottom: 0;
+  }
 
+  /* Área principal */
   .giro-matrix-main{
-    height: 455px !important;
-    padding-bottom: 60px !important;
+    grid-column: 3;
+    grid-row: 1 / span 3;
+    position: relative;
+    min-width: 900px;
+    display: grid;
+    grid-template-rows: 330px 34px 48px;
   }
 
-  .giro-matrix-grid,
+  /* Cuadrícula de colores */
+  .giro-matrix-grid{
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    width: 100%;
+    height: 330px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-left: 0;
+    background: #111;
+    overflow: hidden;
+  }
+
+  .giro-matrix-grid .c{
+    border-right: 2px solid rgba(255,255,255,.70);
+    border-bottom: 2px solid rgba(255,255,255,.70);
+  }
+
+  .giro-matrix-grid .c:nth-child(7n){
+    border-right: 0;
+  }
+
+  .giro-matrix-grid .c:nth-last-child(-n+7){
+    border-bottom: 0;
+  }
+
+  .giro-matrix-grid .c.x{
+    background: linear-gradient(180deg, #d2d2d2 0%, #bcbcbc 100%);
+  }
+
+  .giro-matrix-grid .c.g{
+    background: linear-gradient(180deg, #92cf47 0%, #79b434 100%);
+  }
+
+  .giro-matrix-grid .c.y{
+    background: linear-gradient(180deg, #ffc41c 0%, #eda500 100%);
+  }
+
+  .giro-matrix-grid .c.r{
+    background: linear-gradient(180deg, #ff2415 0%, #dc160c 100%);
+  }
+
+  .giro-matrix-grid .c.d{
+    background: linear-gradient(180deg, #bd0000 0%, #820000 100%);
+  }
+
+  /* Canvas con los puntos */
   .giro-matrix-canvas-wrap{
-    height: 350px !important;
+    grid-row: 1;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: auto;
   }
 
+  #mymatrizriesgos{
+    width: 100% !important;
+    height: 330px !important;
+    display: block;
+  }
+
+  /* Valores eje X */
   .giro-matrix-xvals{
-    top: 362px !important;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    background: rgba(8,13,20,.85);
   }
 
+  .giro-matrix-xvals > div{
+    text-align: center;
+    color: rgba(255,255,255,.84);
+    font-size: .86rem;
+    font-weight: 950;
+  }
+
+  /* Etiquetas eje X */
   .giro-matrix-xlabels{
-    top: 386px !important;
-    padding-top: 8px;
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    background: rgba(8,13,20,.65);
   }
 
-  .giro-matrix-xvals div,
-  .giro-matrix-xlabels div{
-    font-size: 10px !important;
+  .giro-matrix-xlabels > div{
+    text-align: center;
+    color: rgba(255,255,255,.88);
+    font-size: .82rem;
+    line-height: 1.1;
+    font-weight: 850;
+    padding: 0 4px;
   }
 
+  /* Nota de ejes */
   .giro-matrix-axis-note{
-    margin-top: 2px !important;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    font-size: 12px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 0 0;
+    color: var(--gold);
+    font-size: .92rem;
+    font-weight: 900;
+  }
+
+  .giro-matrix-axis-note--matrix span:last-child{
+    text-align: right;
+  }
+
+  /* Leyenda de colores */
+  .giro-matrix-legend{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    margin-top: 14px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.008)),
+      #0c131c;
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 10px 20px rgba(0,0,0,.16);
+  }
+
+  .giro-matrix-legend__item{
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: rgba(255,255,255,.84);
+    font-size: .92rem;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .giro-matrix-legend__dot{
+    width: 15px;
+    height: 15px;
+    border-radius: 999px;
+    box-shadow:
+      0 0 0 3px rgba(255,255,255,.06),
+      0 6px 12px rgba(0,0,0,.24);
+  }
+
+  .giro-matrix-legend__dot--muy-bajo{
+    background: linear-gradient(180deg, #d4d4d4 0%, #9d9d9d 100%);
+  }
+
+  .giro-matrix-legend__dot--bajo{
+    background: linear-gradient(180deg, #92cf47 0%, #6fae2e 100%);
+  }
+
+  .giro-matrix-legend__dot--medio{
+    background: linear-gradient(180deg, #ffc41c 0%, #eda500 100%);
+  }
+
+  .giro-matrix-legend__dot--alto{
+    background: linear-gradient(180deg, #ff5a5a 0%, #d72626 100%);
+  }
+
+  .giro-matrix-legend__dot--muy-alto{
+    background: linear-gradient(180deg, #ff2415 0%, #bd0000 100%);
+  }
+
+  /* Bloque inferior tabla */
+  .giro-matrix-bottom{
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(194,164,118,.16);
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+      linear-gradient(180deg, #101720 0%, #0b1118 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 12px 26px rgba(0,0,0,.18);
+    overflow: hidden;
   }
 
   .giro-matrix-table-title{
-    font-size: 1.1rem !important;
-    margin-bottom: 8px !important;
+    padding: 14px 16px 10px;
     text-align: center;
-    align-items: center;
+    color: rgba(255,255,255,.92);
+    font-size: 1.2rem;
+    line-height: 1.15;
+    font-weight: 950;
+    letter-spacing: -.02em;
+  }
+
+  .giro-matrix-table-title small{
+    display: block !important;
+    margin-top: 6px !important;
+    color: rgba(255,255,255,.58) !important;
+    font-size: 12px !important;
+    font-weight: 750 !important;
   }
 
   .giro-matrix-table-wrap{
-    border-radius: 16px !important;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .giro-matrix-table-wrap--bottom{
+    max-height: 285px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(215,167,63,.65) rgba(255,255,255,.04);
+  }
+
+  .giro-matrix-table-wrap--bottom::-webkit-scrollbar{
+    width: 10px;
+    height: 10px;
+  }
+
+  .giro-matrix-table-wrap--bottom::-webkit-scrollbar-thumb{
+    background: rgba(215,167,63,.70);
+    border-radius: 999px;
+  }
+
+  .giro-matrix-table-wrap--bottom::-webkit-scrollbar-track{
+    background: rgba(255,255,255,.04);
   }
 
   .giro-matrix-table{
-    min-width: 760px;
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: rgba(255,255,255,.86);
   }
 
-  .giro-matrix-table--extended{
-    min-width:1160px;
+  .giro-matrix-table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 12px 14px;
+    text-align: center;
+    color: rgba(255,255,255,.90);
+    font-size: .88rem;
+    font-weight: 950;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.018) 100%),
+      #111821;
+    border-bottom: 1px solid rgba(194,164,118,.20);
+    border-right: 1px solid rgba(255,255,255,.07);
+    white-space: nowrap;
   }
 
-  .giro-matrix-table thead th,
+  .giro-matrix-table thead th:last-child{
+    border-right: 0;
+  }
+
   .giro-matrix-table tbody td{
-    font-size: 12px !important;
-    padding: 11px 10px !important;
+    padding: 11px 14px;
+    text-align: center;
+    color: rgba(255,255,255,.82);
+    font-size: .9rem;
+    font-weight: 800;
+    border-bottom: 1px solid rgba(255,255,255,.065);
+    border-right: 1px solid rgba(255,255,255,.055);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
+  .giro-matrix-table tbody td:last-child{
+    border-right: 0;
+  }
+
+  .giro-matrix-table tbody tr:nth-child(odd){
+    background: rgba(255,255,255,.025);
+  }
+
+  .giro-matrix-table tbody tr:nth-child(even){
+    background: rgba(255,255,255,.055);
+  }
+
+  .giro-matrix-table tbody tr:hover{
+    background: rgba(215,167,63,.08);
+  }
+
+  .giro-matrix-table .td-esc{
+    color: #d7a73f;
+    font-weight: 950;
+  }
+
+  /* Badges de nivel */
   .giro-lvl{
-    min-width: 84px;
-    padding: 7px 10px !important;
-    font-size: 11px !important;
+    min-width: 82px;
+    min-height: 23px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: .78rem;
+    line-height: 1;
+    font-weight: 950;
+    text-align: center;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.22),
+      0 7px 14px rgba(0,0,0,.22);
   }
-}
 
-/* =========================================================
-   AVANCE DE CONSECUCIÓN
-   ========================================================= */
+  .giro-lvl.lvl-muy-alto{
+    background: linear-gradient(180deg, #ff2f2f 0%, #b40000 100%);
+  }
+
+  .giro-lvl.lvl-alto{
+    background: linear-gradient(180deg, #ff5a5a 0%, #d72626 100%);
+  }
+
+  .giro-lvl.lvl-medio{
+    color: #151515;
+    background: linear-gradient(180deg, #ffd84a 0%, #f2b400 100%);
+  }
+
+  .giro-lvl.lvl-bajo{
+    background: linear-gradient(180deg, #92cf47 0%, #5f9829 100%);
+  }
+
+  .giro-lvl.lvl-muy-bajo{
+    background: linear-gradient(180deg, #4d535a 0%, #1f252c 100%);
+    border: 1px solid rgba(255,255,255,.24);
+  }
+
+  .giro-lvl.lvl-empty{
+    color: rgba(255,255,255,.58);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: none;
+  }
+
+/* ==============================
+   13. AVANCE DE CONSECUCIÓN
+   ============================== */
 
 #chart-avance .giro-chart-card--avance{
   background:
@@ -1812,18 +2303,6 @@
   align-items: start !important;
 }
 
-.giro-avance-table-card--ok{
-  position: relative;
-  margin-top: 26px;
-  border: 1px solid rgba(0, 166, 81, 0.14) !important;
-  background:
-    radial-gradient(circle at top center, rgba(0,166,81,.05), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #f6fcf8 100%) !important;
-  box-shadow:
-    0 14px 28px rgba(0,0,0,.05),
-    inset 0 1px 0 rgba(255,255,255,.9) !important;
-}
-
 .giro-avance-table-card{
   overflow: hidden;
 }
@@ -1850,8 +2329,7 @@
   gap: 3px;
   padding: 14px 14px 12px !important;
   border-bottom: 1px solid rgba(0,166,81,.12) !important;
-  background:
-    linear-gradient(180deg, rgba(245,255,248,1) 0%, rgba(235,250,240,1) 100%) !important;
+  background: linear-gradient(180deg, rgba(245,255,248,1) 0%, rgba(235,250,240,1) 100%) !important;
 }
 
 .giro-avance-table-head--success small{
@@ -1859,7 +2337,7 @@
   font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
-  color: rgba(0, 98, 52, .75);
+  color: rgba(0,98,52,.75);
   letter-spacing: .01em;
 }
 
@@ -1872,11 +2350,6 @@
   line-height: 1.35;
   background: rgba(0,166,81,.035);
   border-bottom: 1px dashed rgba(0,166,81,.12);
-}
-
-/* tabla aceptables más compacta y tipo “resumen” */
-.giro-avance-table-wrap--accept{
-  overflow: visible !important;
 }
 
 .giro-avance-table-wrap{
@@ -1910,48 +2383,28 @@
   font-weight: 700;
 }
 
-.giro-avance-table tbody tr:nth-child(even) td{
-  background: rgba(248,244,238,.86);
-}
-
 .giro-avance-table tfoot td{
   background: #d9e8ee;
   color: #17324f;
   font-weight: 900;
 }
 
-.giro-avance-table--accept{
-  min-width: 100% !important;
-}
-
-.giro-avance-table--accept th,
-.giro-avance-table--accept td{
-  font-size: 1rem;
-}
-
-.giro-avance-table--accept thead th{
-  background: #f4fbf6 !important;
-  color: #17324f;
-  font-weight: 900;
-}
-
-.giro-avance-table--accept tbody td{
-  background: #ffffff !important;
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #1f2f2a;
-  padding: 16px 10px !important;
-}
-
 .giro-avance-table--accept tbody td:last-child{
   color: #0f7c45;
 }
 
-@media (max-width: 991px){
-  .giro-avance-top{
-    grid-template-columns: 1fr;
-  }
+/* ==============================
+   14. RESPONSIVE
+   ============================== */
 
+@media (max-width: 1199px){
+  .giro-indice-summary{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px){
+  .giro-avance-top,
   .giro-avance-bottom{
     grid-template-columns: 1fr;
   }
@@ -1959,31 +2412,151 @@
   .giro-avance-gauge-wrap{
     max-width: 280px;
   }
-
-  .giro-avance-table-card--ok{
-    padding-top: 0;
-    margin-top: 12px;
-  }
-
-  .giro-avance-table-card--ok::before{
-    display: none;
-  }
 }
 
 @media (max-width: 768px){
+  .giro-kpi-tabs{
+    gap: .55rem;
+    padding-bottom: .7rem;
+  }
+
+  .giro-kpi-tab{
+    min-width: 138px;
+    min-height: 58px;
+    padding: .68rem .78rem;
+  }
+
+  .giro-kpi-tab__icon{
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    font-size: 1.05rem;
+  }
+
+  .giro-kpi-tab__text{
+    font-size: .78rem;
+  }
+
+  .giro-chart-card{
+    padding: 1rem;
+  }
+
+  .giro-chart-canvas-wrap{
+    height: 300px;
+  }
+
+  #chart-indice .giro-chart-card--indice{
+    padding: 15px 14px 16px;
+  }
+
+  #chart-indice .giro-chart-title{
+    font-size: 1.25rem;
+  }
+
+  #chart-indice .giro-chart-canvas-wrap--indice{
+    height: 315px;
+    padding: 12px 10px 8px;
+  }
+
+  .giro-indice-summary{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .giro-indice-card{
+    min-height: 116px;
+  }
+
+  .giro-chart-canvas-wrap--vuln,
+  .giro-chart-canvas-wrap--security{
+    height: 360px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .giro-chart-canvas-inner--vuln,
+  .giro-chart-canvas-inner--security{
+    width: 900px;
+    min-width: 900px;
+    height: 330px;
+  }
+
+  #myanalisisvulnerabilidad,
+  #myriesgosporcriterio{
+    width: 900px !important;
+    min-width: 900px;
+    max-width: none;
+    height: 330px !important;
+  }
+
+  #chart-vulnerabilidad .giro-chart-card--vuln{
+    padding: 16px 14px 16px;
+  }
+
+  #chart-vulnerabilidad .giro-chart-title--vuln{
+    font-size: 1.22rem;
+  }
+
+  .giro-vuln-summary{
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .giro-vuln-card{
+    max-width: 100%;
+    min-height: 88px;
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding: 11px 12px;
+  }
+
+  .giro-vuln-card__icon{
+    width: 34px;
+    height: 34px;
+  }
+
+  .giro-vuln-card__value{
+    font-size: 1.45rem;
+  }
+
+  .giro-vuln-card__badge{
+    min-width: 72px;
+    font-size: .66rem;
+  }
+
+  .giro-escenarios-table th,
+  .giro-escenarios-table td{
+    font-size: .84rem;
+    padding: .4rem .5rem;
+  }
+
+  #chart-dano .giro-chart-card--dano{
+    padding: 16px 14px 16px;
+  }
+
+  #chart-dano .giro-chart-title{
+    font-size: 1.22rem;
+  }
+
+  #chart-dano .giro-chart-canvas-wrap--dano{
+    height: 340px;
+    padding: 12px 10px 8px;
+    border-radius: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #chart-dano .giro-dano-table thead th,
+  #chart-dano .giro-dano-table tbody td{
+    padding: .72rem .6rem;
+    font-size: .88rem;
+  }
+
   #chart-avance .giro-chart-card--avance{
     padding: 16px 14px 16px;
     border-radius: 18px;
-  }
-
-  .giro-avance-gauge-card,
-  .giro-avance-bar-card,
-  .giro-avance-table-card{
-    border-radius: 18px;
-  }
-
-  .giro-avance-mini-title{
-    font-size: .95rem;
   }
 
   .giro-avance-bar-wrap{
@@ -1994,27 +2567,188 @@
     height: 220px !important;
   }
 
-  .giro-avance-table th,
-  .giro-avance-table td{
-    padding: 10px 8px;
-    font-size: .84rem;
+  #chart-medidas .giro-chart-card{
+    padding: 16px 14px 16px;
   }
 
-  .giro-avance-table-card--ok{
-    margin-top: 14px !important;
+  #chart-medidas .giro-chart-title{
+    font-size: 1.22rem;
   }
 
-  .giro-avance-table-head--success small{
-    font-size: 10px;
+  .giro-medidas-block{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "pie"
+      "mini";
   }
 
-  .giro-avance-accept-note{
-    font-size: 11px;
-    padding: 8px 10px 7px;
+  .giro-medidas-pie{
+    height: 235px;
+    padding: 16px 12px 4px;
   }
 
-  .giro-avance-table--accept tbody td{
-    font-size: .98rem;
-    padding: 12px 8px !important;
+  .giro-medidas-mini{
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
   }
+
+  .giro-mini-card{
+    height: 150px;
+  }
+
+  .giro-mini-card canvas{
+    height: 112px !important;
+  }
+
+  #chart-origen .giro-chart-card--matrix{
+    padding: 16px 14px 16px !important;
+  }
+
+  #chart-origen .giro-chart-title{
+    font-size: 1.24rem !important;
+  }
+
+  .giro-matrix-toolbar{
+    align-items: stretch;
+  }
+
+  .giro-matrix-filter,
+  .giro-matrix-multiselect{
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .giro-matrix-actions{
+    width: 100%;
+  }
+
+  .giro-matrix-toggle-btn{
+    width: 100%;
+  }
+
+  .giro-matrix-stage{
+    grid-template-columns: 120px 48px minmax(760px, 1fr);
+    grid-template-rows: 300px 32px 46px;
+  }
+
+  .giro-matrix-main{
+    min-width: 760px;
+    grid-template-rows: 300px 32px 46px;
+  }
+
+  .giro-matrix-grid{
+    height: 300px;
+  }
+
+  #mymatrizriesgos{
+    height: 300px !important;
+  }
+
+  .giro-matrix-ylabels > div{
+    padding-left: 12px;
+    font-size: .76rem;
+  }
+
+  .giro-matrix-yvals > div,
+  .giro-matrix-xvals > div{
+    font-size: .76rem;
+  }
+
+  .giro-matrix-xlabels > div{
+    font-size: .70rem;
+  }
+
+  .giro-matrix-axis-note{
+    font-size: .82rem;
+  }
+
+  .giro-matrix-table-title{
+    font-size: 1.05rem;
+  }
+
+  .giro-matrix-table-wrap--bottom{
+    max-height: 275px;
+  }
+
+}
+
+@media (max-width: 480px){
+  #chart-dano .giro-chart-canvas-wrap--dano{
+    height: 320px;
+    padding: 10px 8px 6px;
+  }
+
+  #chart-dano .giro-dano-table{
+    min-width: 560px;
+  }
+
+  #chart-dano .giro-dano-table thead th{
+    font-size: .80rem;
+    padding: .62rem .5rem;
+  }
+
+  #chart-dano .giro-dano-table tbody td{
+    font-size: .82rem;
+    padding: .62rem .5rem;
+  }
+
+  .giro-chart-card--pareto{
+    padding: 18px 16px 14px;
+    border-radius: 20px;
+  }
+
+  .giro-chart-canvas-wrap--pareto{
+    height: 330px;
+    padding: 10px 8px 8px;
+    border-radius: 16px;
+  }
+
+  .giro-chart-canvas-inner--pareto{
+    height: 300px;
+    min-width: 860px;
+  }
+
+  #mypareto{
+    height: 360px !important;
+  }
+
+  .giro-medidas-pie{
+    height: 220px;
+  }
+
+  .giro-mini-title{
+    font-size: .76rem;
+  }
+
+  .giro-medidas-head{
+    font-size: .74rem;
+    padding: 9px 10px;
+  }
+
+  .giro-matrix-stage{
+    grid-template-columns: 110px 44px minmax(720px, 1fr);
+  }
+
+  .giro-matrix-main{
+    min-width: 720px;
+  }
+
+  .giro-matrix-table{
+    min-width: 820px;
+  }
+
+  .giro-matrix-table thead th,
+  .giro-matrix-table tbody td{
+    padding: 10px 10px;
+    font-size: .78rem;
+  }
+
+  .giro-lvl{
+    min-width: 72px;
+    font-size: .70rem;
+    padding: 4px 9px;
+  }
+
 }

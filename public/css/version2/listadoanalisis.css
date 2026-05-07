@@ -235,14 +235,14 @@ td[style*="background-color: red"] p {
 }
 
 /* 43: Observaciones */
-#kdatatable_clientes_inactivos th:nth-child(43),
-#kdatatable_clientes_inactivos td:nth-child(43) { 
+#kdatatable_clientes_inactivos th:nth-child(44),
+#kdatatable_clientes_inactivos td:nth-child(44) { 
   min-width: 150px !important; 
 }
 
 /* 44: Plan de Contingencia */
-#kdatatable_clientes_inactivos th:nth-child(44),
-#kdatatable_clientes_inactivos td:nth-child(44) { 
+#kdatatable_clientes_inactivos th:nth-child(45),
+#kdatatable_clientes_inactivos td:nth-child(45) { 
   min-width: 150px !important; 
 }
 
@@ -260,7 +260,7 @@ td[style*="background-color: red"] p {
 /* Prob (31) */
 #kdatatable_clientes_inactivos th:nth-child(31),
 #kdatatable_clientes_inactivos td:nth-child(31) { 
-  min-width: 100px !important; 
+  min-width: 120px !important; 
 }
 
 /* SEV (35) */
@@ -279,19 +279,19 @@ td[style*="background-color: red"] p {
 /* 48: Area */
 #kdatatable_clientes_inactivos th:nth-child(49),
 #kdatatable_clientes_inactivos td:nth-child(49) { 
-  min-width: 100px !important; 
+  min-width: 120px !important; 
 }
 
 /* 48: Estatus */
 #kdatatable_clientes_inactivos th:nth-child(50),
 #kdatatable_clientes_inactivos td:nth-child(50) { 
-  min-width: 100px !important; 
+  min-width: 120px !important; 
 }
 
 /* 49: Controles asegurados */
 #kdatatable_clientes_inactivos th:nth-child(51),
 #kdatatable_clientes_inactivos td:nth-child(51) { 
-  min-width: 100px !important; 
+  min-width: 80px !important; 
 }
 
 /*/////////////////Edicion de table////////////////////////*/
@@ -702,7 +702,7 @@ td:has(select.sel-nivel-sev2):focus-within {
 #kdatatable_clientes_inactivos td select.form-control {
   text-align: center !important;
   text-align-last: center !important;
-  padding-left: 1.75rem !important;
+  padding-left: 0.5rem !important;
   padding-right: 1.75rem !important;
 }
 

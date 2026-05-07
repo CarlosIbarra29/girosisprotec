@@ -3,12 +3,12 @@
 @push('scripts')
   <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.2') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css"> -->
   <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/listadoanalisis.css?v=1.3.4') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/listadoanalisis.css?v=2.2.4') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -202,7 +202,8 @@
 
                       @foreach($data as $unid)
                         <tr data-row-id="{{ $unid->id }}">
-                          <td>E.{{ $unid->id }}</td>
+                          <!-- <td>E.{{ $unid->id }}</td> -->
+                          <td>E.{{ $loop->iteration }}</td>
 
                           {{-- Fechas EDITABLES --}}
                           @php
@@ -215,7 +216,7 @@
                           <td class="date-cell"
                               data-id="{{ $unid->id }}"
                               data-field="fecha_inicio">
-                            <span class="date-text">{{ $fiUI ?? 'Sin Registro' }}</span>
+                            <span class="date-text">{{ $fiUI ?? 'Elige Fecha' }}</span>
                             <input type="date"
                                    class="date-input form-control form-control-sm"
                                    value="{{ $fiRaw }}"
@@ -242,7 +243,7 @@
                                  data-id="{{ $unid->id }}"
                                  data-field="ubicacion_riesgo"
                                  contenteditable="false">
-                              {{ $unid->ubicacion_riesgo ?: 'Sin registro' }}
+                              {{ $unid->ubicacion_riesgo ?: '' }}
                             </div>
                             <a href="#" class="toggle-more ml-2">Ver más</a>
                           </td>
@@ -303,7 +304,7 @@
                             @if($unid->factorExp)
                               {{ $unid->factorExp->factor_exposicion }}
                             @else
-                              <span>Sin asignar</span>
+                              <!-- <span>Sin asignar</span> -->
                             @endif
                           </td>
 
@@ -311,7 +312,7 @@
                             @if($unid->hdProbabilidadif)
                               {{ $unid->hdProbabilidadif->probabilidad }}
                             @else
-                              <span>Sin asignar</span>
+                              <!-- <span>Sin asignar</span> -->
                             @endif
                           </td>
 
@@ -322,7 +323,7 @@
                               1
                             );
 
-                            $amz1Label = 'Sin Registro';
+                            $amz1Label = '';
                             if(isset($nivelesAmenaza) && $nivelesAmenaza->count()){
                               $closest = $nivelesAmenaza->sortBy(function($n) use ($fac1){
                                 return abs((float)$n->calculo_nivel_amenaza - (float)$fac1);
@@ -345,7 +346,7 @@
                             @if($unid->hdConsecuencia)
                               {{ $unid->hdConsecuencia->consecuencia }}
                             @else
-                              <span>Sin asignar</span>
+                              <!-- <span>Sin asignar</span> -->
                             @endif
                           </td>
 
@@ -434,7 +435,7 @@
                               }
                               $txtImp = $nombresImpactos->isNotEmpty()
                                 ? $nombresImpactos->implode(', ')
-                                : 'Sin registros';
+                                : '';
                             @endphp
                             <div class="clamp-3">{{ $txtImp }}</div>
                             <a href="#" class="toggle-more ml-2">Ver más</a>
@@ -452,7 +453,7 @@
                               <option value="">Seleccionar</option>
                               <option value="1" {{ $estrategiaVal === 1 ? 'selected' : '' }}>Aceptar</option>
                               <option value="2" {{ $estrategiaVal === 2 ? 'selected' : '' }}>Mitigar</option>
-                              <option value="3" {{ $estrategiaVal === 3 ? 'selected' : '' }}>Financiar</option>
+                              <option value="3" {{ $estrategiaVal === 3 ? 'selected' : '' }}>Compartir</option>
                               <option value="4" {{ $estrategiaVal === 4 ? 'selected' : '' }}>Evitar</option>
                             </select>
                           </td>
@@ -476,13 +477,14 @@
 
                           {{-- NIVEL DE CONTROL 2 (SELECT) --}}
                           @php
-                            $nc2 = $unid->nivel_control2 ?? ($unid->hdNivelControl?->id ?? 1);
+                            $nc2 = $unid->nivel_control2;
                           @endphp
                           <td>
                             <select class="form-control gray_area sel-nivel-control2"
                                     data-id="{{ $unid->id }}"
                                     data-field="nivel_control2"
                                     disabled>
+                              <option value="null" {{ empty($nc2) ? 'selected' : '' }}>Seleccionar</option>
                               <option value="1" {{ (int)$nc2===1 ? 'selected' : '' }}>Inoperante</option>
                               <option value="2" {{ (int)$nc2===2 ? 'selected' : '' }}>Sin control</option>
                               <option value="3" {{ (int)$nc2===3 ? 'selected' : '' }}>Deficiente</option>
@@ -495,24 +497,25 @@
                           {{-- #3 / Exp.3 derivados --}}
                           <td class="nowrap-num">
                             <span class="nc3-val" data-id="{{ $unid->id }}">
-                              {{ optional($unid->NivelExp2)->nc_calculo ?? 'Sin asignar' }}
+                              {{ optional($unid->NivelExp2)->nc_calculo ?? '' }}
                             </span>
                           </td>
                           <td class="nowrap-num">
                             <span class="exp3-val" data-id="{{ $unid->id }}">
-                              {{ optional($unid->NivelExp2)->exposicion ?? 'Sin asignar' }}
+                              {{ optional($unid->NivelExp2)->exposicion ?? '' }}
                             </span>
                           </td>
 
                           {{-- NIVEL DE PROBABILIDAD2 (SELECT) --}}
                           @php
-                            $np2 = $unid->probabilidad_id2 ?? ($unid->hdProbabilidad?->id ?? 1);
+                            $np2 = $unid->probabilidad_id2;
                           @endphp
                           <td>
                             <select class="form-control gray_area sel-nivel-probabilidad2"
                                     data-id="{{ $unid->id }}"
                                     data-field="probabilidad_id2"
                                     disabled>
+                              <option value="null" {{ empty($np2) ? 'selected' : '' }}>Seleccionar</option>
                               <option value="1" {{ (int)$np2===1 ? 'selected' : '' }}>Muy Alta</option>
                               <option value="2" {{ (int)$np2===2 ? 'selected' : '' }}>Alta</option>
                               <option value="3" {{ (int)$np2===3 ? 'selected' : '' }}>Media</option>
@@ -526,7 +529,7 @@
                               0.4=>'Improbable', 1.2=>'Remoto', 2.0=>'Esporádico',
                               4.0=>'Ocasional', 6.0=>'Frecuente', 9.0=>'Habitual', 10.0=>'Constante',
                             ];
-                            $amzLabel2 = 'Sin Registro';
+                            $amzLabel2 = '';
                             if ($unid->fac2 !== null) {
                               $v = (float) $unid->fac2; $label = null;
                               foreach ($amenazas as $th => $lbl) {
@@ -543,19 +546,20 @@
 
                           <td class="nowrap-num">
                             <span class="fac2-val" data-id="{{ $unid->id }}">
-                              {{ $unid->fac2 !== null ? number_format((float)$unid->fac2, 1, '.', '') : 'Sin Registro' }}
+                              {{ $unid->fac2 !== null ? number_format((float)$unid->fac2, 1, '.', '') : '' }}
                             </span>
                           </td>
 
                           {{-- NIVEL DE SEVERIDAD/CONSECUENCIA 2 (SELECT) --}}
                           @php
-                            $nsr2 = $unid->sev2 ?? ($unid->hdConsecuencia2?->id ?? 1);
+                            $nsr2 = $unid->sev2;
                           @endphp
                           <td>
                             <select class="form-control gray_area sel-nivel-sev2"
                                     data-id="{{ $unid->id }}"
                                     data-field="sev2"
                                     disabled>
+                              <option value="null" {{ empty($nsr2) ? 'selected' : '' }}>Seleccionar</option>
                               <option value="1" {{ (int)$nsr2===1 ? 'selected' : '' }}>Insignificante</option>
                               <option value="2" {{ (int)$nsr2===2 ? 'selected' : '' }}>Leve</option>
                               <option value="3" {{ (int)$nsr2===3 ? 'selected' : '' }}>Marginal</option>
@@ -567,14 +571,14 @@
                           </td>
 
                           @php
-                            $fac3Val = 'Sin Registro';
+                            $fac3Val = '';
                             if ($unid->sev2) {
                               $c = \App\Models\Hd\Consecuencia::find($unid->sev2);
                               if ($c) $fac3Val = number_format((float)$c->calculo_consecuencia, 1, '.', '');
                             }
                             $ipd2Val = ($unid->fac2 !== null && is_numeric($fac3Val))
                                       ? number_format((float)$unid->fac2 * (float)$fac3Val, 1, '.', '')
-                                      : 'Sin Registro';
+                                      : '';
                           @endphp
 
                           <td class="nowrap-num">
@@ -586,7 +590,7 @@
                           </td>
 
                           @php
-                            $rm2Val = 'Sin Registro';
+                            $rm2Val = '';
                             if (is_numeric($ipd2Val)) {
                               $diff = (float)$ipd2Val - 6.4;
                               $rm2Val = number_format(($diff < 0 ? 0 : $diff), 1, '.', '');
@@ -598,7 +602,7 @@
                           </td>
 
                           @php
-                            $nvPerfil = 'Sin Registro';
+                            $nvPerfil = '';
                             $fac2Num  = $unid->fac2;
                             $fac3Num  = is_numeric($fac3Val) ? (float)$fac3Val : null;
                             if ($fac2Num !== null && $fac3Num !== null) {
@@ -610,7 +614,7 @@
                           </td>
 
                           @php
-                            $irVal = 'Sin Registro';
+                            $irVal = '';
                             if (is_numeric($ipd2Val)) $irVal = number_format((float)$ipdBase - (float)$ipd2Val, 1, '.', '');
                           @endphp
                           <td class="nowrap-num">
@@ -618,7 +622,7 @@
                           </td>
 
                           @php
-                            $irpVal = 'Sin Registro';
+                            $irpVal = '';
                             if (is_numeric($ipd2Val) && $ipdBase > 0) {
                               $irpVal = number_format((1 - ((float)$ipd2Val / (float)$ipdBase)) * 100, 1, '.', '') . '%';
                             }
@@ -628,8 +632,8 @@
                           </td>
 
                           @php
-                            $nivelR2Txt = 'Sin Registro';
-                            $aceptTxt   = 'Sin Registro';
+                            $nivelR2Txt = '';
+                            $aceptTxt   = '';
                             if (is_numeric($ipd2Val)) {
                               $nr = \App\Models\Hd\NivelRiesgo::where('min','<=',(float)$ipd2Val)
                                 ->where('max','>=',(float)$ipd2Val)->first();
@@ -663,7 +667,7 @@
                           @endphp
 
                           <td class="nowrap-num td-sol">
-                            <span class="sol-eficaz-val" data-id="{{ $unid->id }}">{{ $solEf ?? 'Sin Registro' }}</span>
+                            <span class="sol-eficaz-val" data-id="{{ $unid->id }}">{{ $solEf ?? '' }}</span>
                           </td>
 
                           {{-- Observaciones / Plan / Responsable (EDITABLES) --}}
@@ -702,31 +706,33 @@
                           <td class="date-cell"
                               data-id="{{ $unid->id }}"
                               data-field="fecha_fin">
-                            <span class="date-text">{{ $ffUI ?? 'Sin Registro' }}</span>
+                            <span class="date-text">{{ $ffUI ?? 'Elige Fecha' }}</span>
                             <input type="date"
                                    class="date-input form-control form-control-sm"
                                    value="{{ $ffRaw }}"
                                    style="display:none; min-width: 170px;">
                           </td>
 
-                          @php $st = (int)($unid->estatus_riesgo ?? 1); @endphp
+                          @php $st = (int)($unid->estatus_riesgo ?? null); @endphp
                           <td>
                             <select class="form-control gray_area sel-estatus"
                                     data-id="{{ $unid->id }}"
                                     data-field="estatus_riesgo"
                                     disabled>
+                              <option value="null" {{ empty($st) ? 'selected' : '' }}>Seleccionar</option>
                               <option value="1" {{ $st===1 ? 'selected' : '' }}>Abierta</option>
                               <option value="2" {{ $st===2 ? 'selected' : '' }}>Proceso</option>
                               <option value="3" {{ $st===3 ? 'selected' : '' }}>Ejecutada</option>
                             </select>
                           </td>
 
-                          @php $seg = (int)($unid->seg_control ?? 2); @endphp
+                          @php $seg = (int)($unid->seg_control ?? null); @endphp
                           <td>
                             <select class="form-control gray_area sel-seg-control"
                                     data-id="{{ $unid->id }}"
                                     data-field="seg_control"
                                     disabled>
+                              <option value="null" {{ empty($seg) ? 'selected' : '' }}>Seleccionar</option>
                               <option value="1" {{ $seg===1 ? 'selected' : '' }}>Si</option>
                               <option value="2" {{ $seg===2 ? 'selected' : '' }}>No</option>
                             </select>
@@ -887,7 +893,7 @@
       const ipd2 = toNum(row.querySelector('.ipd2-val')?.textContent || '');
 
       if (!isFinite(ipd1) || !isFinite(ipd2)) {
-        irEl.textContent = 'Sin Registro';
+        irEl.textContent = '';
         return;
       }
 
@@ -902,7 +908,7 @@
       const ipd2 = toNum(row.querySelector('.ipd2-val')?.textContent || '');
 
       if (!isFinite(ipd1) || !isFinite(ipd2) || ipd1 <= 0) {
-        irpEl.textContent = 'Sin Registro';
+        irpEl.textContent = '';
         return;
       }
 
@@ -916,7 +922,7 @@
       const f2 = (data && data.fac2 != null) ? data.fac2 : toNum(row.querySelector('.fac2-val')?.textContent || '');
       const f3 = (data && data.fac3 != null) ? data.fac3 : toNum(row.querySelector('.fac3-val')?.textContent || '');
 
-      if (isNaN(f2) || isNaN(f3)) perfilEl.textContent = 'Sin Registro';
+      if (isNaN(f2) || isNaN(f3)) perfilEl.textContent = '';
       else perfilEl.textContent = `(${Math.round(f2)}-${Math.round(f3)})`;
     }
 
@@ -989,7 +995,7 @@
       el.textContent =
         (t === 'aceptable' || t === 'aceptables') ? 'SI' :
         (t === 'no aceptable' || t === 'no aceptables') ? 'NO' :
-        'Sin Registro';
+        '';
     }
 
     function hasRealOverflow(el){
@@ -1249,22 +1255,22 @@
 
           if (field === 'probabilidad_id2' || field === 'nivel_control2') {
             const facEl = row && row.querySelector('.fac2-val');
-            if (facEl) facEl.textContent = (data.fac2 == null) ? 'Sin Registro' : Number(data.fac2).toFixed(1);
+            if (facEl) facEl.textContent = (data.fac2 == null) ? '' : Number(data.fac2).toFixed(1);
 
             const amzEl = row && row.querySelector('.amz2-val');
-            if (amzEl) amzEl.textContent = data.amz2_label || 'Sin Registro';
+            if (amzEl) amzEl.textContent = data.amz2_label || '';
 
             const ipdEl = row && row.querySelector('.ipd2-val');
-            if (ipdEl) ipdEl.textContent = (data.ipd2 == null) ? 'Sin Registro' : Number(data.ipd2).toFixed(1);
+            if (ipdEl) ipdEl.textContent = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
 
             const rm2El = row && row.querySelector('.rm2-val');
-            if (rm2El) rm2El.textContent = (data.rm2 == null) ? 'Sin Registro' : Number(data.rm2).toFixed(1);
+            if (rm2El) rm2El.textContent = (data.rm2 == null) ? '' : Number(data.rm2).toFixed(1);
 
             const nc3El = row && row.querySelector('.nc3-val');
-            if (nc3El) nc3El.textContent = (data.nc3 == null) ? 'Sin asignar' : data.nc3;
+            if (nc3El) nc3El.textContent = (data.nc3 == null) ? '' : data.nc3;
 
             const exp3El = row && row.querySelector('.exp3-val');
-            if (exp3El) exp3El.textContent = (data.exp3 == null) ? 'Sin asignar' : data.exp3;
+            if (exp3El) exp3El.textContent = (data.exp3 == null) ? '' : data.exp3;
 
             setPerfil(row, data);
             setIR(row);
@@ -1272,13 +1278,13 @@
 
             const nr2El = row && row.querySelector('.nivel2-val');
             if (nr2El){
-              nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro');
+              nr2El.textContent = (data.nivel_riesgo2 || '');
               colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
             }
 
             const aceptEl = row && row.querySelector('.acept-val');
             if (aceptEl){
-              aceptEl.textContent = (data.aceptabilidad || 'Sin Registro');
+              aceptEl.textContent = (data.aceptabilidad || '');
               colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
             }
 
@@ -1291,13 +1297,13 @@
 
           if (field === 'sev2') {
             const fac3El = row && row.querySelector('.fac3-val');
-            if (fac3El) fac3El.textContent = (data.fac3 == null) ? 'Sin Registro' : Number(data.fac3).toFixed(1);
+            if (fac3El) fac3El.textContent = (data.fac3 == null) ? '' : Number(data.fac3).toFixed(1);
 
             const ipdEl  = row && row.querySelector('.ipd2-val');
-            if (ipdEl) ipdEl.textContent  = (data.ipd2 == null) ? 'Sin Registro' : Number(data.ipd2).toFixed(1);
+            if (ipdEl) ipdEl.textContent  = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
 
             const rm2El  = row && row.querySelector('.rm2-val');
-            if (rm2El) rm2El.textContent  = (data.rm2 == null) ? 'Sin Registro' : Number(data.rm2).toFixed(1);
+            if (rm2El) rm2El.textContent  = (data.rm2 == null) ? '' : Number(data.rm2).toFixed(1);
 
             setPerfil(row, data);
             setIR(row);
@@ -1305,13 +1311,13 @@
 
             const nr2El = row && row.querySelector('.nivel2-val');
             if (nr2El){
-              nr2El.textContent = (data.nivel_riesgo2 || 'Sin Registro');
+              nr2El.textContent = (data.nivel_riesgo2 || '');
               colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
             }
 
             const aceptEl = row && row.querySelector('.acept-val');
             if (aceptEl){
-              aceptEl.textContent = (data.aceptabilidad || 'Sin Registro');
+              aceptEl.textContent = (data.aceptabilidad || '');
               colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
             }
 
@@ -1390,7 +1396,7 @@
 
         const span = cell.querySelector('.date-text');
         if (resp.ok && data.ok) {
-          if (span) span.textContent = value ? ymdToDMY(value) : 'Sin Registro';
+          if (span) span.textContent = value ? ymdToDMY(value) : '';
           input.classList.add('saved');
           setTimeout(()=>input.classList.remove('saved'), 900);
         } else {
