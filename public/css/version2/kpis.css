@@ -916,154 +916,847 @@
 /* ==============================
    07. RIESGOS POR CRITERIO
    ============================== */
+  #chart-security .giro-chart-card--risk-criteria{
+    max-width: 100%;
+    padding: 20px 22px 18px;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+      linear-gradient(180deg, #0b1119 0%, #080d14 100%);
+    border: 1px solid rgba(194,164,118,.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 18px 38px rgba(0,0,0,.24);
+  }
 
-.giro-chart-canvas-wrap--security{
-  position: relative;
-  height: 420px;
-  overflow: hidden;
-}
+  .giro-risk-head{
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr) 260px;
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
 
-.giro-chart-canvas-inner--security{
-  position: relative;
-  width: 100%;
-  height: 420px;
-  min-width: 100%;
-}
+  .giro-risk-filter{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
 
-#myriesgosporcriterio{
-  display: block;
-  width: 100% !important;
-  height: 420px !important;
-  min-width: 100%;
-  max-width: 100%;
-}
+  .giro-risk-filter label{
+    margin: 0;
+    color: rgba(255,255,255,.82);
+    font-size: .78rem;
+    font-weight: 850;
+  }
 
-#chart-security .giro-chart-card{
-  background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
-  border: 1px solid rgba(194,164,118,0.22);
-  border-radius: 26px;
-  box-shadow:
-    0 18px 34px rgba(18,18,18,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.85);
-  padding: 24px 26px 18px;
-}
+  .giro-risk-select{
+    width: 100%;
+    height: 38px;
+    padding: 0 38px 0 12px;
+    border-radius: 7px;
+    border: 1px solid rgba(194,164,118,.22);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)),
+      #0d141d;
+    color: rgba(255,255,255,.92);
+    font-size: .82rem;
+    font-weight: 800;
+    outline: none !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 8px 18px rgba(0,0,0,.16);
+  }
 
-#chart-security .giro-chart-title{
-  margin-bottom: 14px;
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 800;
-  line-height: 1.12;
-  color: #121212;
-  letter-spacing: -0.02em;
-}
+  .giro-risk-select:hover,
+  .giro-risk-select:focus{
+    border-color: rgba(215,167,63,.52);
+  }
 
-#chart-security .giro-chart-canvas-wrap--security{
-  background:
-    radial-gradient(circle at top center, rgba(194,164,118,0.08), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
-  border: 1px solid rgba(194,164,118,0.14);
-  border-radius: 22px;
-  padding: 16px 14px 8px;
-}
+  .giro-risk-select option{
+    background: #0d141d;
+    color: #fff;
+  }
 
-#chart-security .giro-chart-canvas-inner--security{
-  height: 460px;
-}
+  /* Multiselect niveles de riesgo */
+  .giro-risk-multiselect{
+    position: relative;
+    width: 100%;
+  }
 
-#chart-security #myriesgosporcriterio{
-  height: 430px !important;
-}
+  .giro-risk-multiselect__trigger{
+    width: 100%;
+    min-height: 38px;
+    padding: 0 13px;
+    border-radius: 7px;
+    border: 1px solid rgba(194,164,118,.22);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)),
+      #0d141d;
+    color: rgba(255,255,255,.92);
+    font-size: .82rem;
+    font-weight: 800;
+    outline: none !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 8px 18px rgba(0,0,0,.16);
+  }
+
+  .giro-risk-multiselect__trigger:hover,
+  .giro-risk-multiselect__trigger.is-open{
+    border-color: rgba(215,167,63,.52);
+  }
+
+  .giro-risk-multiselect__arrow{
+    color: var(--gold);
+    font-size: 10px;
+    line-height: 1;
+    transition: transform .2s ease;
+  }
+
+  .giro-risk-multiselect__trigger.is-open .giro-risk-multiselect__arrow{
+    transform: rotate(180deg);
+  }
+
+  .giro-risk-multiselect__menu{
+    display: none;
+    position: absolute;
+    top: calc(100% + 7px);
+    left: 0;
+    width: 100%;
+    max-height: 255px;
+    overflow-y: auto;
+    padding: 7px;
+    border-radius: 8px;
+    background: #0b121b;
+    border: 1px solid rgba(194,164,118,.30);
+    box-shadow: 0 18px 32px rgba(0,0,0,.38);
+    z-index: 120;
+  }
+
+  .giro-risk-multiselect__menu.is-open{
+    display: block;
+  }
+
+  .giro-risk-multiselect__option{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 9px;
+    border-radius: 7px;
+    color: rgba(255,255,255,.88);
+    font-size: .78rem;
+    font-weight: 850;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .giro-risk-multiselect__option:hover{
+    background: rgba(215,167,63,.10);
+    color: #fff;
+  }
+
+  .giro-risk-multiselect__option input{
+    width: 15px;
+    height: 15px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .giro-risk-multiselect__option--all{
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(194,164,118,.30);
+  }
+
+  #chart-security .giro-chart-title--risk{
+    position: relative;
+    margin: 5px 0 0;
+    text-align: center;
+    color: rgba(255,255,255,.92);
+    font-size: 1.42rem;
+    font-weight: 950;
+    line-height: 1.1;
+    letter-spacing: -.025em;
+  }
+
+  #chart-security .giro-chart-title--risk::after{
+    content: "";
+    display: block;
+    width: 72px;
+    height: 3px;
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+    box-shadow: 0 0 18px rgba(241,198,92,.18);
+  }
+
+  .giro-risk-head-spacer{
+    min-height: 1px;
+  }
+
+  .giro-chart-canvas-wrap--security{
+    position: relative;
+    height: 405px;
+    padding: 10px 14px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+      #0d141d;
+    border: 1px solid rgba(194,164,118,.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 12px 24px rgba(0,0,0,.16);
+  }
+
+  .giro-chart-canvas-inner--security{
+    position: relative;
+    width: 100%;
+    height: 270px;
+    min-width: 100%;
+  }
+
+  #myriesgosporcriterio{
+    display: block;
+    width: 100% !important;
+    height: 270px !important;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .giro-risk-axis{
+    height: 68px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: start;
+    gap: 8px;
+    padding: 6px 10px 0 42px;
+  }
+
+  .giro-risk-axis__item{
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    color: rgba(255,255,255,.82);
+    text-align: center;
+  }
+
+  .giro-risk-axis__item i{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    color: rgba(255,255,255,.78);
+    font-size: 1.28rem;
+    line-height: 1;
+  }
+
+  .giro-risk-axis__item span{
+    display: -webkit-box;
+    max-width: 110px;
+    color: rgba(255,255,255,.78);
+    font-size: .74rem;
+    line-height: 1.12;
+    font-weight: 800;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .giro-risk-html-legend{
+    width: fit-content;
+    max-width: 100%;
+    margin: 8px auto 0;
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.10);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+      #0b1119;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 8px 18px rgba(0,0,0,.18);
+  }
+
+  .giro-risk-html-legend__item{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: rgba(255,255,255,.82);
+    font-size: .78rem;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .giro-risk-html-legend__dot{
+    width: 13px;
+    height: 13px;
+    border-radius: 999px;
+    display: inline-block;
+    box-shadow:
+      0 0 0 3px rgba(255,255,255,.045),
+      0 5px 10px rgba(0,0,0,.24);
+  }
+
+  .giro-risk-html-legend__dot--muy-bajo{
+    background: #b7b7b7;
+  }
+
+  .giro-risk-html-legend__dot--bajo{
+    background: #7fb24d;
+  }
+
+  .giro-risk-html-legend__dot--medio{
+    background: #f1b51c;
+  }
+
+  .giro-risk-html-legend__dot--alto{
+    background: #ff2a23;
+  }
+
+  .giro-risk-html-legend__dot--muy-alto{
+    background: #9b0f0f;
+  }
+
+  .giro-risk-summary{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(194,164,118,.18);
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+      linear-gradient(180deg, #101720 0%, #0b1118 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.03),
+      0 12px 26px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
+
+  .giro-risk-summary__item{
+    min-height: 82px;
+    display: grid;
+    grid-template-columns: 46px minmax(0,1fr);
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-right: 1px solid rgba(255,255,255,.07);
+  }
+
+  .giro-risk-summary__item:last-child{
+    border-right: 0;
+  }
+
+  .giro-risk-summary__icon{
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.88);
+    font-size: 1.4rem;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025)),
+      #151d27;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 8px 16px rgba(0,0,0,.22);
+  }
+
+  .giro-risk-summary__icon--gold{
+    color: #d7a73f;
+    background:
+      radial-gradient(circle at center, rgba(215,167,63,.18), transparent 62%),
+      #151d27;
+  }
+
+  .giro-risk-summary__icon--danger{
+    color: #ff4b4b;
+    background:
+      radial-gradient(circle at center, rgba(255,0,0,.22), transparent 62%),
+      #2b1114;
+  }
+
+  .giro-risk-summary__icon--success{
+    color: #82b84f;
+    background:
+      radial-gradient(circle at center, rgba(130,184,79,.22), transparent 62%),
+      #142316;
+  }
+
+  .giro-risk-summary__item span{
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255,255,255,.66);
+    font-size: .78rem;
+    line-height: 1.18;
+    font-weight: 750;
+  }
+
+  .giro-risk-summary__item strong{
+    display: block;
+    color: rgba(255,255,255,.92);
+    font-size: 1.22rem;
+    line-height: 1.05;
+    font-weight: 950;
+  }
+
+  .giro-risk-summary__item strong span{
+    display: inline;
+    margin: 0;
+    color: inherit;
+    font-size: .86rem;
+    font-weight: 850;
+  }
+
+  .giro-risk-summary__item strong.is-danger{
+    color: #ff3a35;
+  }
+
+  .giro-risk-summary__item strong.is-gold{
+    color: #d7a73f;
+    font-size: .86rem;
+    line-height: 1.25;
+  }
+
+  .giro-risk-note{
+    margin-top: 8px;
+    min-height: 38px;
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(194,164,118,.16);
+    background: rgba(255,255,255,.018);
+    color: rgba(255,255,255,.62);
+    font-size: .78rem;
+    font-weight: 750;
+  }
+
+  .giro-risk-note i{
+    color: #d7a73f;
+    font-size: 1.1rem;
+  }
 
 /* ==============================
    08. DISTRIBUCIÓN DE ESCENARIOS
    ============================== */
 
+#chart-escenarios .giro-chart-card--escenarios{
+  max-width: 100%;
+  padding: 22px 24px 22px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+    linear-gradient(180deg, #0b1119 0%, #080d14 100%);
+  border: 1px solid rgba(194,164,118,.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 38px rgba(0,0,0,.24);
+}
+
+#chart-escenarios .giro-chart-title--escenarios{
+  position: relative;
+  margin: 0 0 26px;
+  text-align: center;
+  color: rgba(255,255,255,.92);
+  font-size: 1.45rem;
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+}
+
+#chart-escenarios .giro-chart-title--escenarios::after{
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 12px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+  box-shadow: 0 0 18px rgba(241,198,92,.18);
+}
+
 .giro-escenarios-wrap{
+  width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid rgba(194,164,118,.22);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+    #0d141d;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 24px rgba(0,0,0,.16);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(215,167,63,.65) rgba(255,255,255,.04);
+}
+
+.giro-escenarios-wrap::-webkit-scrollbar{
+  height: 10px;
+}
+
+.giro-escenarios-wrap::-webkit-scrollbar-thumb{
+  background: rgba(215,167,63,.70);
+  border-radius: 999px;
+}
+
+.giro-escenarios-wrap::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.04);
 }
 
 .giro-escenarios-table{
   width: 100%;
-  min-width: 760px;
-  border-collapse: collapse;
-  color: #1A1A1A;
+  min-width: 980px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: rgba(255,255,255,.86);
+  background: transparent;
 }
 
 .giro-escenarios-table th,
 .giro-escenarios-table td{
-  border-bottom: 2px solid #8aa0c7;
-  padding: .55rem .6rem;
+  height: 42px;
+  padding: 10px 14px;
   text-align: center;
-  font-size: .95rem;
+  vertical-align: middle;
+  border-right: 1px solid rgba(255,255,255,.09);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: .86rem;
+  line-height: 1.1;
+  font-weight: 850;
 }
 
-.giro-escenarios-table th{
-  font-weight: 300;
+.giro-escenarios-table th:last-child,
+.giro-escenarios-table td:last-child{
+  border-right: 0;
 }
 
-.giro-escenarios-table td{
-  font-weight: 100;
+.giro-escenarios-table thead th{
+  color: rgba(255,255,255,.92);
+  font-size: .82rem;
+  font-weight: 950;
+  letter-spacing: -.01em;
 }
 
-.giro-escenarios-left,
-.giro-escenarios-label{
+.giro-escenarios-table tbody tr:last-child td{
+  border-bottom: 0;
+}
+
+.giro-escenarios-left{
+  width: 330px;
+  min-width: 330px;
   text-align: left !important;
-  white-space: nowrap;
-  font-weight: 100;
+  color: rgba(255,255,255,.86) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.012)),
+    #101720 !important;
 }
 
 .giro-th-group{
-  color: #fff;
-  font-size: .95rem;
+  color: rgba(255,255,255,.94) !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
 }
 
 .giro-th-group--ok{
-  background: #7f7f7f;
+  background: linear-gradient(180deg, rgba(86,108,58,.88) 0%, rgba(58,82,35,.92) 100%) !important;
 }
 
 .giro-th-group--risk{
-  background: #8c8c8c;
+  background: linear-gradient(180deg, rgba(121,39,35,.88) 0%, rgba(90,23,25,.94) 100%) !important;
 }
 
-.giro-th-muy-bajo,
-.giro-td-muy-bajo{
-  background: #FCFBF7;
+.giro-th-total{
+  width: 95px;
+  min-width: 95px;
+  color: rgba(255,255,255,.90) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+    #101720 !important;
 }
 
-.giro-th-bajo,
-.giro-td-bajo{
-  background: #92D050;
+.giro-th-muy-bajo{
+  background: linear-gradient(180deg, #3a3d42 0%, #262b31 100%) !important;
+  color: rgba(255,255,255,.88) !important;
 }
 
-.giro-th-medio,
-.giro-td-medio{
-  background: #FFC000;
+.giro-th-bajo{
+  background: linear-gradient(180deg, #3d6422 0%, #2d4b1a 100%) !important;
+  color: rgba(255,255,255,.92) !important;
 }
 
-.giro-th-alto,
-.giro-td-alto{
-  background: #FF0000;
-  color: #fff;
+.giro-th-medio{
+  background: linear-gradient(180deg, #c99417 0%, #aa7b10 100%) !important;
+  color: rgba(255,255,255,.94) !important;
 }
 
-.giro-th-muy-alto,
+.giro-th-alto{
+  background: linear-gradient(180deg, #dc492b 0%, #b53020 100%) !important;
+  color: rgba(255,255,255,.94) !important;
+}
+
+.giro-th-muy-alto{
+  background: linear-gradient(180deg, #8d1519 0%, #650b10 100%) !important;
+  color: rgba(255,255,255,.94) !important;
+}
+
+.giro-escenarios-label{
+  text-align: left !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+    #101720;
+  color: rgba(255,255,255,.84) !important;
+  font-weight: 850 !important;
+  white-space: nowrap;
+}
+
+.giro-escenarios-label__icon{
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  margin-right: 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #d7a73f;
+  font-size: 1.12rem;
+  vertical-align: middle;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.16), transparent 62%),
+    rgba(255,255,255,.025);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 6px 12px rgba(0,0,0,.18);
+}
+
+.giro-escenarios-label__icon i{
+  color: inherit;
+  font-size: 1.08rem;
+  line-height: 1;
+}
+
+.giro-escenarios-label__text{
+  display: inline-block;
+  vertical-align: middle;
+  color: rgba(255,255,255,.84);
+  font-size: .84rem;
+  font-weight: 850;
+}
+
+.giro-td-muy-bajo,
+.giro-td-bajo,
+.giro-td-medio,
+.giro-td-alto,
 .giro-td-muy-alto{
-  background: #C00000;
-  color: #fff;
+  color: rgba(255,255,255,.92) !important;
+  font-weight: 900 !important;
+  font-variant-numeric: tabular-nums;
 }
 
-.giro-th-total,
+.giro-td-muy-bajo{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.010)),
+    rgba(66,70,76,.50) !important;
+  color: rgba(255,255,255,.64) !important;
+}
+
+.giro-td-bajo{
+  background:
+    linear-gradient(180deg, rgba(146,207,71,.33), rgba(80,126,45,.34)),
+    rgba(50,85,30,.48) !important;
+}
+
+.giro-td-medio{
+  background:
+    linear-gradient(180deg, rgba(255,196,28,.46), rgba(180,126,13,.44)),
+    rgba(160,110,10,.52) !important;
+}
+
+.giro-td-alto{
+  background:
+    linear-gradient(180deg, rgba(255,70,38,.47), rgba(184,42,28,.46)),
+    rgba(135,35,25,.56) !important;
+}
+
+.giro-td-muy-alto{
+  background:
+    linear-gradient(180deg, rgba(170,20,24,.60), rgba(105,10,14,.62)),
+    rgba(95,9,14,.64) !important;
+}
+
 .giro-td-total{
-  background: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.008)),
+    #101720 !important;
+  color: rgba(255,255,255,.88) !important;
+  font-weight: 900 !important;
+  font-variant-numeric: tabular-nums;
 }
 
-.giro-row-total td,
+.giro-row-total td{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.014)),
+    #0c121a !important;
+  color: rgba(255,255,255,.92) !important;
+  font-size: .90rem;
+  font-weight: 950 !important;
+}
+
+.giro-row-total td:first-child{
+  color: rgba(255,255,255,.88) !important;
+}
+
 .giro-row-percent td{
-  background: #fff !important;
-  color: #121212 !important;
-  font-weight: 700;
+  background:
+    linear-gradient(180deg, rgba(194,164,118,.060), rgba(194,164,118,.020)),
+    #0b1119 !important;
+  color: rgba(255,255,255,.88) !important;
+  font-size: .88rem;
+  font-weight: 900 !important;
+  border-bottom: 0 !important;
+}
+
+.giro-row-percent td:first-child{
+  color: rgba(255,255,255,.86) !important;
+}
+
+.giro-escenarios-table tbody tr:not(.giro-row-total):not(.giro-row-percent):hover td{
+  filter: brightness(1.08);
+}
+
+.giro-escenarios-empty{
+  padding: 22px !important;
+  text-align: center !important;
+  color: rgba(255,255,255,.62) !important;
+  font-weight: 850 !important;
+  background: rgba(255,255,255,.018) !important;
+}
+
+.giro-escenarios-note{
+  margin-top: 18px;
+  min-height: 44px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(194,164,118,.16);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.022), rgba(255,255,255,.008)),
+    #0c131c;
+  color: rgba(255,255,255,.62);
+  font-size: .80rem;
+  line-height: 1.35;
+  font-weight: 750;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 8px 18px rgba(0,0,0,.16);
+}
+
+.giro-escenarios-note i{
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #d7a73f;
+  font-size: 1.08rem;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.16), transparent 62%),
+    rgba(255,255,255,.025);
+}
+
+.giro-escenarios-head{
+  position: relative;
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) 160px;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.giro-escenarios-head .giro-chart-title--escenarios{
+  margin: 0 !important;
+}
+
+.giro-escenarios-head__spacer{
+  min-height: 1px;
+}
+
+.giro-escenarios-export{
+  justify-self: end;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(215,167,63,.72);
+  background:
+    radial-gradient(circle at top left, rgba(215,167,63,.14), transparent 48%),
+    linear-gradient(180deg, #111a25 0%, #0b1119 100%);
+  color: #d7a73f;
+  font-size: .88rem;
+  font-weight: 950;
+  letter-spacing: -.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  outline: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 20px rgba(0,0,0,.20);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.giro-escenarios-export i{
+  color: inherit;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.giro-escenarios-export:hover{
+  color: #fff;
+  border-color: #f1c65c;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 14px 26px rgba(0,0,0,.26),
+    0 0 0 1px rgba(215,167,63,.08);
+}
+
+.giro-escenarios-export:active{
+  transform: translateY(0);
 }
 
 /* ==============================
@@ -1427,115 +2120,171 @@
       0 6px 14px rgba(0,0,0,.22),
       0 0 0 3px rgba(255,255,255,.06);
   }
+
 /* ==============================
    11. PARETO
    ============================== */
 
-.giro-chart-card--pareto{
-  background: linear-gradient(180deg, #ffffff 0%, #fcfaf6 100%);
-  border: 1px solid rgba(194,164,118,0.22);
-  border-radius: 26px;
-  box-shadow: 0 18px 34px rgba(18,18,18,0.06), inset 0 1px 0 rgba(255,255,255,0.85);
-  padding: 24px 26px 18px;
-  max-width: 1075px;
-}
+  #chart-pareto .giro-chart-card--pareto{
+    max-width: 100%;
+    padding: 22px 24px 22px;
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+      radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+      linear-gradient(180deg, #0b1119 0%, #080d14 100%);
+    border: 1px solid rgba(194,164,118,.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 18px 38px rgba(0,0,0,.24);
+  }
 
-.giro-chart-canvas-wrap--pareto{
-  height: 410px;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at top center, rgba(194,164,118,0.10), transparent 42%),
-    linear-gradient(180deg, #ffffff 0%, #faf8f3 100%);
-  border: 1px solid rgba(194,164,118,0.16);
-  padding: 14px 12px 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(194,164,118,0.55) transparent;
-}
+  #chart-pareto .giro-chart-title{
+    position: relative;
+    margin: 0 0 20px;
+    text-align: center;
+    color: rgba(255,255,255,.92);
+    font-size: 1.45rem;
+    font-weight: 950;
+    line-height: 1.1;
+    letter-spacing: -.025em;
+  }
 
-.giro-chart-canvas-wrap--pareto::-webkit-scrollbar{
-  height: 10px;
-}
+  #chart-pareto .giro-chart-title::after{
+    content: "";
+    display: block;
+    width: 72px;
+    height: 3px;
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+    box-shadow: 0 0 18px rgba(241,198,92,.18);
+  }
 
-.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-thumb{
-  background: rgba(194,164,118,0.55);
-  border-radius: 999px;
-}
+  .giro-chart-canvas-wrap--pareto{
+    height: 430px;
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+      #0d141d;
+    border: 1px solid rgba(194,164,118,.14);
+    padding: 16px 16px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(215,167,63,.60) rgba(255,255,255,.04);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 12px 24px rgba(0,0,0,.16);
+  }
 
-.giro-chart-canvas-wrap--pareto::-webkit-scrollbar-track{
-  background: transparent;
-}
+  .giro-chart-canvas-wrap--pareto::-webkit-scrollbar{
+    height: 10px;
+  }
 
-.giro-chart-canvas-inner--pareto{
-  height: 380px;
-  min-width: 980px;
-  position: relative;
-}
+  .giro-chart-canvas-wrap--pareto::-webkit-scrollbar-thumb{
+    background: rgba(215,167,63,.62);
+    border-radius: 999px;
+  }
 
-#mypareto{
-  display: block;
-  height: 380px !important;
-}
+  .giro-chart-canvas-wrap--pareto::-webkit-scrollbar-track{
+    background: rgba(255,255,255,.04);
+    border-radius: 999px;
+  }
 
-.giro-pareto-legend{
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: linear-gradient(180deg, #ffffff 0%, #fcfaf7 100%);
-  border: 1px solid rgba(194,164,118,0.18);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.05);
-}
+  .giro-chart-canvas-inner--pareto{
+    position: relative;
+    height: 385px;
+    min-width: 980px;
+  }
 
-.giro-pareto-legend__inner{
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+  #mypareto{
+    display: block;
+    width: 100% !important;
+    height: 385px !important;
+  }
 
-.giro-pareto-legend__item{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 900;
-  color: #121212;
-  font-size: .92rem;
-}
+  .giro-pareto-legend{
+    width: fit-content;
+    max-width: 100%;
+    margin: 14px auto 0;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+      #0b1119;
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025),
+      0 8px 18px rgba(0,0,0,.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.giro-pareto-legend__swatch{
-  width: 26px;
-  height: 10px;
-  border-radius: 999px;
-  display: inline-block;
-}
+  .giro-pareto-legend__inner{
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-.giro-pareto-legend__swatch--bar{
-  background: linear-gradient(180deg, rgba(194,164,118,0.98), rgba(127,101,63,0.94));
-  border: 1px solid rgba(18,18,18,0.55);
-}
+  .giro-pareto-legend__item{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,.88);
+    font-size: .82rem;
+    font-weight: 900;
+    white-space: nowrap;
+    line-height: 1;
+  }
 
-.giro-pareto-legend__swatch--line{
-  height: 0;
-  width: 30px;
-  border-top: 3px solid rgba(255,0,0,0.92);
-  border-radius: 0;
-  position: relative;
-}
+  .giro-pareto-legend__text{
+    color: rgba(255,255,255,.88);
+    font-size: .82rem;
+    font-weight: 900;
+    line-height: 1;
+  }
 
-.giro-pareto-legend__swatch--line::after{
-  content: "";
-  position: absolute;
-  right: -2px;
-  top: -5px;
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  border: 2px solid rgba(255,0,0,0.92);
-  border-radius: 999px;
-}
+  .giro-pareto-legend__swatch{
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .giro-pareto-legend__swatch--bar{
+    width: 28px;
+    height: 11px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #e2b248 0%, #9b732c 100%);
+    border: 1px solid rgba(215,167,63,.76);
+    box-shadow:
+      0 0 0 3px rgba(215,167,63,.08),
+      0 5px 10px rgba(0,0,0,.22);
+  }
+
+  .giro-pareto-legend__swatch--line{
+    position: relative;
+    width: 32px;
+    height: 0;
+    border-top: 3px solid #D7A73F;
+    border-radius: 0;
+  }
+
+  .giro-pareto-legend__swatch--line::after{
+    content: "";
+    position: absolute;
+    right: -2px;
+    top: -6px;
+    width: 9px;
+    height: 9px;
+    background: #F2C766;
+    border: 2px solid #7F653F;
+    border-radius: 999px;
+    box-shadow: 0 0 0 3px rgba(215,167,63,.12);
+  }
 
 /* ==============================
    12. MATRIZ
@@ -2209,188 +2958,506 @@
    ============================== */
 
 #chart-avance .giro-chart-card--avance{
+  max-width: 100%;
+  padding: 22px 24px 18px;
+  border-radius: 10px;
   background:
-    radial-gradient(circle at top center, rgba(194,164,118,.08), transparent 40%),
-    linear-gradient(180deg, #ffffff 0%, #fbf8f3 100%);
-  border: 1px solid rgba(194,164,118,.18);
-  border-radius: 24px;
+    radial-gradient(circle at top center, rgba(194,164,118,.055), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(215,167,63,.035), transparent 38%),
+    linear-gradient(180deg, #0b1119 0%, #080d14 100%);
+  border: 1px solid rgba(194,164,118,.22);
   box-shadow:
-    0 18px 40px rgba(18,18,18,.07),
-    inset 0 1px 0 rgba(255,255,255,.90);
-  padding: 22px 22px 20px;
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 38px rgba(0,0,0,.24);
 }
 
 #chart-avance .giro-chart-title{
-  margin-bottom: 16px;
+  position: relative;
+  margin: 0 0 22px;
+  text-align: center;
+  color: rgba(255,255,255,.92);
+  font-size: 1.45rem;
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: -.025em;
 }
 
-.giro-avance-top{
+#chart-avance .giro-chart-title::after{
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin: 12px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+  box-shadow: 0 0 18px rgba(241,198,92,.18);
+}
+
+.giro-avance-layout{
   display: grid;
-  grid-template-columns: 340px minmax(0,1fr);
+  grid-template-columns: 380px minmax(0, 1fr);
   gap: 18px;
   align-items: stretch;
-  margin-bottom: 18px;
 }
 
 .giro-avance-gauge-card,
 .giro-avance-bar-card,
-.giro-avance-table-card{
-  background: linear-gradient(180deg, #ffffff 0%, #f8f3eb 100%);
+.giro-avance-table-card,
+.giro-avance-summary{
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.035), transparent 42%),
+    linear-gradient(180deg, #101720 0%, #0b1118 100%);
   border: 1px solid rgba(194,164,118,.18);
-  border-radius: 22px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 12px 26px rgba(0,0,0,.18);
+}
+
+.giro-avance-gauge-card::before,
+.giro-avance-bar-card::before,
+.giro-avance-table-card::before,
+.giro-avance-summary::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 46%);
+  pointer-events: none;
 }
 
 .giro-avance-gauge-card{
-  padding: 16px 16px 14px;
+  min-height: 300px;
+  padding: 18px 18px 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .giro-avance-bar-card{
-  padding: 16px 16px 12px;
+  min-height: 300px;
+  padding: 18px 20px 12px;
 }
 
 .giro-avance-mini-title{
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
   text-align: center;
+  color: rgba(255,255,255,.88);
   font-size: 1rem;
   font-weight: 900;
-  color: #17263c;
-  margin-bottom: 10px;
   line-height: 1.15;
+  letter-spacing: -.01em;
 }
 
-.giro-avance-gauge-wrap{
+.giro-avance-mini-title i{
+  color: rgba(215,167,63,.85);
+  font-size: 1rem;
+  margin-left: 6px;
+}
+
+.giro-avance-gauge-area{
   position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 250px;
-  height: 150px;
+  max-width: 270px;
+  height: 155px;
+  margin: 4px auto 0;
 }
 
 #myavanceconsecuciongauge{
   width: 100% !important;
-  height: 150px !important;
+  height: 155px !important;
+  display: block;
 }
 
-.giro-avance-gauge-value{
-  margin-top: 8px;
-  min-width: 120px;
+.giro-avance-gauge-center{
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 1.35rem;
+  pointer-events: none;
+}
+
+.giro-avance-gauge-pct{
+  display: block;
+  color: #ff4d4d;
+  font-size: 1.55rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.04em;
+}
+
+.giro-avance-gauge-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  margin-top: 8px;
+  padding: 0 14px;
+  border-radius: 7px;
+  color: #ffb4b4;
+  background: rgba(255,45,45,.16);
+  border: 1px solid rgba(255,45,45,.18);
+  font-size: .76rem;
   font-weight: 900;
-  color: #ff2b2b;
-  background: rgba(0,0,0,.05);
-  border-radius: 12px;
-  padding: 8px 12px;
+  line-height: 1;
+}
+
+.giro-avance-gauge-copy{
+  position: relative;
+  z-index: 1;
+  max-width: 275px;
+  margin: 10px auto 0;
+  color: rgba(255,255,255,.60);
+  font-size: .80rem;
+  line-height: 1.35;
+  font-weight: 700;
+  text-align: center;
+}
+
+.giro-avance-gauge-copy strong{
+  color: rgba(255,255,255,.78);
 }
 
 .giro-avance-bar-wrap{
   position: relative;
-  height: 250px;
+  z-index: 1;
+  height: 210px;
+  margin-top: 2px;
 }
 
 #myavanceconsecucionbar{
   width: 100% !important;
-  height: 250px !important;
+  height: 210px !important;
+  display: block;
+}
+
+.giro-avance-bar-legend{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 4px;
+}
+
+.giro-avance-bar-legend__item{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.78);
+  font-size: .82rem;
+  line-height: 1;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.giro-avance-bar-legend__dot{
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.045),
+    0 5px 10px rgba(0,0,0,.24);
+}
+
+.giro-avance-bar-legend__dot--open{
+  background: #e00012;
+}
+
+.giro-avance-bar-legend__dot--process{
+  background: #d7a73f;
+}
+
+.giro-avance-bar-legend__dot--done{
+  background: #6b9d25;
 }
 
 .giro-avance-bottom{
   display: grid;
-  grid-template-columns: minmax(0,1.7fr) minmax(280px,.9fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, .9fr);
   gap: 18px;
-  align-items: start !important;
+  align-items: stretch;
+  margin-top: 18px;
 }
 
 .giro-avance-table-card{
-  overflow: hidden;
+  padding: 0;
 }
 
 .giro-avance-table-head{
+  position: relative;
+  z-index: 1;
+  padding: 12px 14px 10px;
   text-align: center;
   font-size: 1rem;
-  font-weight: 900;
-  padding: 12px 14px;
-  letter-spacing: .01em;
+  line-height: 1.15;
+  font-weight: 950;
+  letter-spacing: -.01em;
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .giro-avance-table-head--danger{
-  color: #c00000;
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,245,245,1) 100%);
-  border-bottom: 1px solid rgba(192,0,0,.14);
+  color: #ff4d4d;
+  background:
+    linear-gradient(180deg, rgba(255,0,0,.055), rgba(255,0,0,.018)),
+    rgba(255,255,255,.01);
 }
 
 .giro-avance-table-head--success{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 14px 14px 12px !important;
-  border-bottom: 1px solid rgba(0,166,81,.12) !important;
-  background: linear-gradient(180deg, rgba(245,255,248,1) 0%, rgba(235,250,240,1) 100%) !important;
+  color: #8fbd3c;
+  background:
+    linear-gradient(180deg, rgba(130,184,79,.070), rgba(130,184,79,.020)),
+    rgba(255,255,255,.01);
 }
 
-.giro-avance-table-head--success small{
+.giro-avance-table-head small{
   display: block;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: rgba(0,98,52,.75);
-  letter-spacing: .01em;
-}
-
-.giro-avance-accept-note{
-  padding: 10px 14px 8px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: #4f6b58;
-  line-height: 1.35;
-  background: rgba(0,166,81,.035);
-  border-bottom: 1px dashed rgba(0,166,81,.12);
+  margin-top: 6px;
+  color: rgba(255,255,255,.58);
+  font-size: .76rem;
+  line-height: 1.3;
+  font-weight: 750;
 }
 
 .giro-avance-table-wrap{
+  position: relative;
+  z-index: 1;
+  width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .giro-avance-table{
   width: 100%;
-  min-width: 100%;
-  border-collapse: collapse;
+  min-width: 650px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: rgba(255,255,255,.86);
 }
 
 .giro-avance-table th,
 .giro-avance-table td{
+  height: 42px;
+  padding: 10px 14px;
   text-align: center;
-  padding: 12px 10px;
-  font-size: .95rem;
-  border-bottom: 1px solid rgba(0,0,0,.06);
+  vertical-align: middle;
+  border-right: 1px solid rgba(255,255,255,.075);
+  border-bottom: 1px solid rgba(255,255,255,.075);
+  font-size: .86rem;
+  line-height: 1.1;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+}
+
+.giro-avance-table th:last-child,
+.giro-avance-table td:last-child{
+  border-right: 0;
 }
 
 .giro-avance-table thead th{
-  background: #f3eee6;
-  color: #1d2f49;
-  font-weight: 900;
+  color: rgba(255,255,255,.84);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.012)),
+    #101720;
+  font-size: .82rem;
+  font-weight: 950;
 }
 
-.giro-avance-table tbody td{
-  background: rgba(255,255,255,.84);
-  color: #2f2f2f;
-  font-weight: 700;
+.giro-avance-table tbody tr:nth-child(odd) td{
+  background: rgba(255,255,255,.018);
+}
+
+.giro-avance-table tbody tr:nth-child(even) td{
+  background: rgba(255,255,255,.035);
 }
 
 .giro-avance-table tfoot td{
-  background: #d9e8ee;
-  color: #17324f;
-  font-weight: 900;
+  color: rgba(255,255,255,.92);
+  background:
+    linear-gradient(180deg, rgba(194,164,118,.070), rgba(194,164,118,.020)),
+    #0c121a;
+  font-weight: 950;
+  border-bottom: 0;
+}
+
+.giro-avance-row-label{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  min-width: 110px;
+  color: rgba(255,255,255,.82);
+}
+
+.giro-avance-dot{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.045),
+    0 5px 10px rgba(0,0,0,.24);
+}
+
+.giro-avance-dot--open{
+  background: #e00012;
+}
+
+.giro-avance-dot--process{
+  background: #d7a73f;
+}
+
+.giro-avance-dot--done{
+  background: #6b9d25;
+}
+
+.giro-avance-note{
+  margin-top: 10px;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(194,164,118,.16);
+  background: rgba(255,255,255,.018);
+  color: rgba(255,255,255,.62);
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.giro-avance-note i{
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #d7a73f;
+  font-size: 1.08rem;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.16), transparent 62%),
+    rgba(255,255,255,.025);
+}
+
+.giro-avance-table--accept{
+  min-width: 100%;
+}
+
+.giro-avance-table--accept tbody td{
+  color: rgba(255,255,255,.88);
 }
 
 .giro-avance-table--accept tbody td:last-child{
-  color: #0f7c45;
+  color: #8fbd3c;
+  font-weight: 950;
+}
+
+.giro-avance-summary{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.giro-avance-summary__item{
+  position: relative;
+  z-index: 1;
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 13px 16px;
+  border-right: 1px solid rgba(255,255,255,.075);
+}
+
+.giro-avance-summary__item:last-child{
+  border-right: 0;
+}
+
+.giro-avance-summary__icon{
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #d7a73f;
+  font-size: 1.35rem;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.18), transparent 62%),
+    #151d27;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 16px rgba(0,0,0,.22);
+}
+
+.giro-avance-summary__icon--danger{
+  color: #ff4d4d;
+  background:
+    radial-gradient(circle at center, rgba(255,0,0,.20), transparent 62%),
+    #2b1114;
+}
+
+.giro-avance-summary__icon--success{
+  color: #8fbd3c;
+  background:
+    radial-gradient(circle at center, rgba(130,184,79,.22), transparent 62%),
+    #142316;
+}
+
+.giro-avance-summary__icon--target{
+  color: #d7a73f;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.22), transparent 62%),
+    #191716;
+}
+
+.giro-avance-summary__label{
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255,255,255,.66);
+  font-size: .78rem;
+  line-height: 1.18;
+  font-weight: 750;
+}
+
+.giro-avance-summary__value{
+  display: block;
+  color: rgba(255,255,255,.92);
+  font-size: 1.22rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.giro-avance-summary__value.is-danger{
+  color: #ff4d4d;
+}
+
+.giro-avance-summary__value.is-success{
+  color: #8fbd3c;
+}
+
+.giro-avance-summary__value.is-target{
+  color: #ff4d4d;
+}
+
+.giro-avance-summary__value small{
+  font-size: .80rem;
+  font-weight: 850;
+  color: inherit;
 }
 
 /* ==============================
@@ -2412,6 +3479,25 @@
   .giro-avance-gauge-wrap{
     max-width: 280px;
   }
+
+    .giro-avance-layout,
+    .giro-avance-bottom,
+    .giro-avance-summary{
+      grid-template-columns: 1fr;
+    }
+
+    .giro-avance-summary__item{
+      border-right: 0;
+      border-bottom: 1px solid rgba(255,255,255,.075);
+    }
+
+    .giro-avance-summary__item:last-child{
+      border-bottom: 0;
+    }
+
+    .giro-avance-table--accept{
+      min-width: 520px;
+    }
 }
 
 @media (max-width: 768px){
@@ -2672,6 +3758,117 @@
     max-height: 275px;
   }
 
+  #chart-security .giro-chart-card--risk-criteria{
+    padding: 16px 14px 16px;
+  }
+
+  .giro-risk-head{
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .giro-risk-head-spacer{
+    display: none;
+  }
+
+  #chart-security .giro-chart-title--risk{
+    order: -1;
+    font-size: 1.22rem;
+  }
+
+  .giro-chart-canvas-wrap--security{
+    height: 420px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .giro-chart-canvas-inner--security{
+    width: 900px;
+    min-width: 900px;
+    height: 270px;
+  }
+
+  #myriesgosporcriterio{
+    width: 900px !important;
+    min-width: 900px;
+    max-width: none;
+    height: 270px !important;
+  }
+
+  .giro-risk-axis{
+    width: 900px;
+    min-width: 900px;
+    padding-left: 42px;
+  }
+
+  .giro-risk-summary{
+    grid-template-columns: 1fr;
+  }
+
+  .giro-risk-summary__item{
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+
+  .giro-risk-summary__item:last-child{
+    border-bottom: 0;
+  }
+
+  .giro-risk-html-legend{
+    width: 900px;
+    min-width: 900px;
+  }
+
+  #chart-escenarios .giro-chart-card--escenarios{
+    padding: 16px 14px 16px;
+  }
+
+  #chart-escenarios .giro-chart-title--escenarios{
+    font-size: 1.22rem;
+  }
+
+  .giro-escenarios-table{
+    min-width: 880px;
+  }
+
+  .giro-escenarios-table th,
+  .giro-escenarios-table td{
+    height: 40px;
+    padding: 9px 11px;
+    font-size: .78rem;
+  }
+
+  .giro-escenarios-left{
+    width: 285px;
+    min-width: 285px;
+  }
+
+  .giro-escenarios-label__text{
+    font-size: .76rem;
+  }
+
+  .giro-escenarios-label__icon{
+    width: 24px;
+    min-width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  .giro-escenarios-head{
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .giro-escenarios-head__spacer{
+    display: none;
+  }
+
+  .giro-escenarios-export{
+    width: 100%;
+    justify-self: stretch;
+  }
 }
 
 @media (max-width: 480px){
@@ -2694,24 +3891,28 @@
     padding: .62rem .5rem;
   }
 
-  .giro-chart-card--pareto{
-    padding: 18px 16px 14px;
-    border-radius: 20px;
+  #chart-pareto .giro-chart-card--pareto{
+    padding: 16px 14px 16px;
+    border-radius: 10px;
+  }
+
+  #chart-pareto .giro-chart-title{
+    font-size: 1.22rem;
   }
 
   .giro-chart-canvas-wrap--pareto{
-    height: 330px;
-    padding: 10px 8px 8px;
-    border-radius: 16px;
+    height: 370px;
+    padding: 12px 10px 8px;
+    border-radius: 8px;
   }
 
   .giro-chart-canvas-inner--pareto{
-    height: 300px;
+    height: 330px;
     min-width: 860px;
   }
 
   #mypareto{
-    height: 360px !important;
+    height: 330px !important;
   }
 
   .giro-medidas-pie{
@@ -2749,6 +3950,26 @@
     min-width: 72px;
     font-size: .70rem;
     padding: 4px 9px;
+  }
+
+  .giro-escenarios-table{
+    min-width: 820px;
+  }
+
+  .giro-escenarios-table th,
+  .giro-escenarios-table td{
+    padding: 8px 9px;
+    font-size: .74rem;
+  }
+
+  .giro-escenarios-left{
+    width: 260px;
+    min-width: 260px;
+  }
+
+  .giro-escenarios-note{
+    align-items: flex-start;
+    font-size: .74rem;
   }
 
 }

@@ -4,6 +4,7 @@
   <script src="{{ asset('js/cliente/CatalogoClientes.js') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <script type="text/javascript">
     @php
@@ -22,6 +23,8 @@
     const vulnerabilidadPromedios = {!! json_encode($vulnerabilidadPromedios ?? []) !!};
 
     const riesgosPorCriterioLabels = {!! json_encode($riesgosPorCriterioLabels ?? []) !!};
+    const riesgosPorCriterioIconos = {!! json_encode($riesgosPorCriterioIconos ?? []) !!};
+    const riesgosPorCriterioResumen = {!! json_encode($riesgosPorCriterioResumen ?? []) !!};
     const riesgosPorCriterioMuyAlto = {!! json_encode($riesgosPorCriterioMuyAlto ?? []) !!};
     const riesgosPorCriterioAlto = {!! json_encode($riesgosPorCriterioAlto ?? []) !!};
     const riesgosPorCriterioMedio = {!! json_encode($riesgosPorCriterioMedio ?? []) !!};
@@ -713,261 +716,375 @@
         });
       }
 
-      /* ========= 4. Distribución de riesgos por criterio (AGRUPADO) ========= */
+      /* ========= 4. Distribución de riesgos por criterio (AGRUPADO + FILTRO MULTISELECT) ========= */
       var canvasRiesgos = document.getElementById('myriesgosporcriterio');
+
       if (canvasRiesgos) {
         var ctx4 = canvasRiesgos.getContext('2d');
+        var chartRiesgos = null;
 
-        function makeGrad(ctx, c1, c2) {
-          var g = ctx.createLinearGradient(0, 0, 0, 380);
-          g.addColorStop(0, c1);
-          g.addColorStop(1, c2);
-          return g;
-        }
+        var riskOrder = ['muy_bajo', 'bajo', 'medio', 'alto', 'muy_alto'];
 
-        function roundRect(ctx, x, y, w, h, r) {
-          ctx.beginPath();
-          ctx.moveTo(x + r, y);
-          ctx.lineTo(x + w - r, y);
-          ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-          ctx.lineTo(x + w, y + h - r);
-          ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-          ctx.lineTo(x + r, y + h);
-          ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-          ctx.lineTo(x, y + r);
-          ctx.quadraticCurveTo(x, y, x + r, y);
-          ctx.closePath();
-        }
-
-        var gradMuyBajo = makeGrad(ctx4, 'rgba(255,255,255,0.98)', 'rgba(236,236,236,0.96)');
-        var gradBajo    = makeGrad(ctx4, 'rgba(179, 244, 182, 0.98)', 'rgba(123, 223, 129, 0.96)');
-        var gradMedio   = makeGrad(ctx4, 'rgba(255, 232, 92, 0.98)', 'rgba(255, 205, 0, 0.96)');
-        var gradAlto    = makeGrad(ctx4, 'rgba(255, 90, 90, 0.98)', 'rgba(255, 18, 18, 0.96)');
-        var gradMuyAlto = makeGrad(ctx4, 'rgba(228, 40, 40, 0.98)', 'rgba(176, 0, 0, 0.98)');
-
-        /* Fondo suave del área de trazado */
-        Chart.plugins.register({
-          beforeDraw: function(chart) {
-            if (chart.canvas.id !== 'myriesgosporcriterio') return;
-            var area = chart.chartArea;
-            if (!area) return;
-
-            var ctx = chart.ctx;
-            ctx.save();
-
-            roundRect(
-              ctx,
-              area.left - 8,
-              area.top - 6,
-              (area.right - area.left) + 16,
-              (area.bottom - area.top) + 12,
-              18
-            );
-
-            var bg = ctx.createLinearGradient(0, area.top, 0, area.bottom);
-            bg.addColorStop(0, 'rgba(255,255,255,0.92)');
-            bg.addColorStop(1, 'rgba(249,246,240,0.90)');
-
-            ctx.fillStyle = bg;
-            ctx.fill();
-            ctx.restore();
+        var riskConfig = {
+          muy_bajo: {
+            label: 'Muy Bajo',
+            color: '#b7b7b7',
+            border: 'rgba(185,185,185,.95)'
+          },
+          bajo: {
+            label: 'Bajo',
+            color: '#7fb24d',
+            border: 'rgba(127,178,77,.95)'
+          },
+          medio: {
+            label: 'Medio',
+            color: '#f1b51c',
+            border: 'rgba(241,181,28,.95)'
+          },
+          alto: {
+            label: 'Alto',
+            color: '#ff2a23',
+            border: 'rgba(255,42,35,.95)'
+          },
+          muy_alto: {
+            label: 'Muy Alto',
+            color: '#9b0f0f',
+            border: 'rgba(155,15,15,.95)'
           }
-        });
+        };
 
-        /* Etiquetas tipo “badge” arriba de cada barra */
-        Chart.plugins.register({
+        var riskDataMap = {
+          muy_bajo: riesgosPorCriterioMuyBajo,
+          bajo: riesgosPorCriterioBajo,
+          medio: riesgosPorCriterioMedio,
+          alto: riesgosPorCriterioAlto,
+          muy_alto: riesgosPorCriterioMuyAlto
+        };
+
+        function renderRiskAxis() {
+          var axis = document.getElementById('riskCriteriaAxis');
+          if (!axis) return;
+
+          axis.innerHTML = '';
+
+          (riesgosPorCriterioLabels || []).forEach(function(label, index){
+            var item = document.createElement('div');
+            item.className = 'giro-risk-axis__item';
+
+            var icon = document.createElement('i');
+            icon.className = (riesgosPorCriterioIconos && riesgosPorCriterioIconos[index])
+              ? riesgosPorCriterioIconos[index]
+              : 'la la-shield-alt';
+
+            var text = document.createElement('span');
+            text.textContent = label || '-';
+
+            item.appendChild(icon);
+            item.appendChild(text);
+            axis.appendChild(item);
+          });
+        }
+
+        function getSelectedRiskLevels() {
+          var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.risk-level-checkbox'));
+
+          return checkboxes
+            .filter(function(cb){ return cb.checked; })
+            .map(function(cb){ return cb.value; });
+        }
+
+        function buildRiskDatasets(selectedRisks) {
+          return riskOrder
+            .filter(function(key){
+              return selectedRisks.indexOf(key) !== -1;
+            })
+            .map(function(key){
+              return {
+                label: riskConfig[key].label,
+                data: riskDataMap[key],
+                backgroundColor: riskConfig[key].color,
+                borderColor: riskConfig[key].border,
+                borderWidth: 1,
+                hoverBackgroundColor: riskConfig[key].color,
+                hoverBorderColor: '#ffffff',
+                hoverBorderWidth: 2,
+                categoryPercentage: selectedRisks.length === riskOrder.length ? 0.62 : 0.52,
+                barPercentage: selectedRisks.length === riskOrder.length ? 0.78 : 0.68
+              };
+            });
+        }
+
+        function updateRiskStats(selectedRisks) {
+          var totalCriteriosEl = document.getElementById('riskStatCriterios');
+          var totalRiesgosEl = document.getElementById('riskStatTotal');
+          var altosEl = document.getElementById('riskStatAltos');
+          var concentracionEl = document.getElementById('riskStatConcentracion');
+
+          var resumen = riesgosPorCriterioResumen || [];
+
+          var totalCriterios = 0;
+          var totalRiesgos = 0;
+          var totalAltos = 0;
+          var maxValor = 0;
+          var mayores = [];
+
+          resumen.forEach(function(row){
+            var valor = 0;
+
+            selectedRisks.forEach(function(key){
+              valor += Number(row[key] || 0);
+            });
+
+            if (valor > 0) totalCriterios++;
+            totalRiesgos += valor;
+
+            if (selectedRisks.indexOf('alto') !== -1) {
+              totalAltos += Number(row.alto || 0);
+            }
+
+            if (selectedRisks.indexOf('muy_alto') !== -1) {
+              totalAltos += Number(row.muy_alto || 0);
+            }
+
+            if (valor > maxValor) {
+              maxValor = valor;
+              mayores = [row.label];
+            } else if (valor === maxValor && valor > 0) {
+              mayores.push(row.label);
+            }
+          });
+
+          var pctAltos = totalRiesgos > 0 ? ((totalAltos / totalRiesgos) * 100).toFixed(1) : '0.0';
+
+          if (totalCriteriosEl) totalCriteriosEl.textContent = totalCriterios;
+          if (totalRiesgosEl) totalRiesgosEl.textContent = totalRiesgos;
+          if (altosEl) altosEl.innerHTML = totalAltos + ' <span>(' + pctAltos + '%)</span>';
+          if (concentracionEl) concentracionEl.textContent = mayores.length ? mayores.slice(0, 2).join(', ') : '-';
+        }
+
+        var riskValueBadgePlugin = {
           afterDatasetsDraw: function(chart) {
-            if (chart.canvas.id !== 'myriesgosporcriterio') return;
+            if (!chart || chart.canvas.id !== 'myriesgosporcriterio') return;
 
             var ctx = chart.ctx;
             ctx.save();
-            ctx.font = "700 12px Poppins, Arial, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
+            ctx.font = '800 11px Poppins, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
 
-            chart.data.datasets.forEach(function(dataset, datasetIndex) {
+            chart.data.datasets.forEach(function(dataset, datasetIndex){
               var meta = chart.getDatasetMeta(datasetIndex);
+              if (!meta || meta.hidden) return;
 
-              meta.data.forEach(function(bar, index) {
+              meta.data.forEach(function(bar, index){
                 var value = Number(dataset.data[index] || 0);
-                var text = String(value);
 
                 var x = bar._model.x;
-                var y = value > 0 ? (bar._model.y - 12) : (bar._model.base - 12);
+                var y = value > 0 ? bar._model.y - 13 : bar._model.base - 14;
 
-                var tw = ctx.measureText(text).width;
-                var bw = tw + 16;
-                var bh = 22;
+                var text = String(value);
+                var width = Math.max(20, ctx.measureText(text).width + 12);
+                var height = 20;
+                var radius = 5;
 
-                roundRect(ctx, x - (bw / 2), y - bh, bw, bh, 8);
-                ctx.fillStyle = 'rgba(255,255,255,0.97)';
-                ctx.shadowColor = 'rgba(0,0,0,0.10)';
-                ctx.shadowBlur = 8;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 3;
+                ctx.beginPath();
+                ctx.moveTo(x - width / 2 + radius, y - height / 2);
+                ctx.lineTo(x + width / 2 - radius, y - height / 2);
+                ctx.quadraticCurveTo(x + width / 2, y - height / 2, x + width / 2, y - height / 2 + radius);
+                ctx.lineTo(x + width / 2, y + height / 2 - radius);
+                ctx.quadraticCurveTo(x + width / 2, y + height / 2, x + width / 2 - radius, y + height / 2);
+                ctx.lineTo(x - width / 2 + radius, y + height / 2);
+                ctx.quadraticCurveTo(x - width / 2, y + height / 2, x - width / 2, y + height / 2 - radius);
+                ctx.lineTo(x - width / 2, y - height / 2 + radius);
+                ctx.quadraticCurveTo(x - width / 2, y - height / 2, x - width / 2 + radius, y - height / 2);
+                ctx.closePath();
+
+                ctx.fillStyle = 'rgba(255,255,255,.16)';
                 ctx.fill();
 
-                ctx.shadowColor = 'transparent';
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(194,164,118,0.24)';
-                ctx.stroke();
-
-                ctx.fillStyle = '#121212';
-                ctx.fillText(text, x, y - (bh / 2));
+                ctx.fillStyle = 'rgba(255,255,255,.90)';
+                ctx.fillText(text, x, y + 1);
               });
             });
 
             ctx.restore();
           }
+        };
+
+        function renderRiskChart() {
+          var selectedRisks = getSelectedRiskLevels();
+
+          if (chartRiesgos) {
+            chartRiesgos.destroy();
+          }
+
+          chartRiesgos = new Chart(ctx4, {
+            type: 'bar',
+            plugins: [riskValueBadgePlugin],
+            data: {
+              labels: riesgosPorCriterioLabels,
+              datasets: buildRiskDatasets(selectedRisks)
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              animation: {
+                duration: 900,
+                easing: 'easeOutQuart'
+              },
+              legend: {
+                display: false
+              },
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: 'rgba(7,10,15,.96)',
+                titleFontColor: '#ffffff',
+                bodyFontColor: '#ffffff',
+                titleFontStyle: 'bold',
+                bodyFontStyle: 'bold',
+                xPadding: 12,
+                yPadding: 10,
+                cornerRadius: 8,
+                callbacks: {
+                  title: function(items, data) {
+                    var index = items && items[0] ? items[0].index : 0;
+                    return data.labels[index] || '';
+                  },
+                  label: function(tooltipItem, data) {
+                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                    return ' ' + label + ': ' + tooltipItem.yLabel;
+                  }
+                }
+              },
+              layout: {
+                padding: {
+                  top: 28,
+                  right: 12,
+                  bottom: 6,
+                  left: 8
+                }
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    precision: 0,
+                    stepSize: 1,
+                    fontColor: 'rgba(255,255,255,.74)',
+                    fontStyle: 'bold',
+                    fontSize: 12,
+                    padding: 8
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Cantidad de riesgos',
+                    fontColor: 'rgba(255,255,255,.72)',
+                    fontStyle: 'bold',
+                    fontSize: 11
+                  },
+                  gridLines: {
+                    color: 'rgba(255,255,255,.11)',
+                    zeroLineColor: 'rgba(255,255,255,.20)',
+                    borderDash: [4, 4],
+                    drawBorder: false
+                  }
+                }],
+                xAxes: [{
+                  ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0,
+                    fontColor: 'transparent',
+                    fontSize: 1,
+                    callback: function() {
+                      return '';
+                    }
+                  },
+                  gridLines: {
+                    display: false,
+                    drawBorder: false
+                  }
+                }]
+              }
+            }
+          });
+
+          renderRiskAxis();
+          updateRiskStats(selectedRisks);
+        }
+
+        function updateRiskLevelSummary() {
+          var triggerSummary = document.getElementById('riskLevelSummary');
+          var allCheckbox = document.getElementById('riskLevelAll');
+          var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.risk-level-checkbox'));
+          var selected = checkboxes.filter(function(cb){ return cb.checked; });
+
+          if (!triggerSummary || !allCheckbox) return;
+
+          if (selected.length === checkboxes.length) {
+            triggerSummary.textContent = 'Todos los niveles';
+            allCheckbox.checked = true;
+            allCheckbox.indeterminate = false;
+          } else if (selected.length === 0) {
+            triggerSummary.textContent = 'Sin niveles seleccionados';
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = false;
+          } else if (selected.length === 1) {
+            triggerSummary.textContent = selected[0].parentNode.querySelector('span').textContent.trim();
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = true;
+          } else {
+            triggerSummary.textContent = selected.length + ' niveles seleccionados';
+            allCheckbox.checked = false;
+            allCheckbox.indeterminate = true;
+          }
+        }
+
+        function applyRiskLevelFilter() {
+          updateRiskLevelSummary();
+          renderRiskChart();
+        }
+
+        var riskLevelTrigger = document.getElementById('riskLevelTrigger');
+        var riskLevelMenu = document.getElementById('riskLevelMenu');
+        var riskLevelFilter = document.getElementById('riskLevelFilter');
+        var riskLevelAll = document.getElementById('riskLevelAll');
+        var riskLevelCheckboxes = Array.prototype.slice.call(document.querySelectorAll('.risk-level-checkbox'));
+
+        if (riskLevelTrigger && riskLevelMenu) {
+          riskLevelTrigger.addEventListener('click', function(e){
+            e.stopPropagation();
+            riskLevelMenu.classList.toggle('is-open');
+            riskLevelTrigger.classList.toggle('is-open');
+          });
+
+          document.addEventListener('click', function(e){
+            if (riskLevelFilter && !riskLevelFilter.contains(e.target)) {
+              riskLevelMenu.classList.remove('is-open');
+              riskLevelTrigger.classList.remove('is-open');
+            }
+          });
+        }
+
+        if (riskLevelAll) {
+          riskLevelAll.addEventListener('change', function(){
+            riskLevelCheckboxes.forEach(function(cb){
+              cb.checked = riskLevelAll.checked;
+            });
+
+            applyRiskLevelFilter();
+          });
+        }
+
+        riskLevelCheckboxes.forEach(function(cb){
+          cb.addEventListener('change', function(){
+            applyRiskLevelFilter();
+          });
         });
 
-        new Chart(ctx4, {
-          type: 'bar',
-          data: {
-            labels: riesgosPorCriterioLabels,
-            datasets: [
-              {
-                label: 'Muy Bajo',
-                data: riesgosPorCriterioMuyBajo,
-                backgroundColor: gradMuyBajo,
-                borderColor: 'rgba(188, 188, 188, 1)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(245,245,245,1)',
-                hoverBorderColor: 'rgba(160,160,160,1)',
-                categoryPercentage: 0.58,
-                barPercentage: 0.76
-              },
-              {
-                label: 'Bajo',
-                data: riesgosPorCriterioBajo,
-                backgroundColor: gradBajo,
-                borderColor: 'rgba(108, 204, 114, 1)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(146,235,152,1)',
-                hoverBorderColor: 'rgba(96,188,102,1)',
-                categoryPercentage: 0.58,
-                barPercentage: 0.76
-              },
-              {
-                label: 'Medio',
-                data: riesgosPorCriterioMedio,
-                backgroundColor: gradMedio,
-                borderColor: 'rgba(220, 180, 0, 1)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(255,221,45,1)',
-                hoverBorderColor: 'rgba(206,168,0,1)',
-                categoryPercentage: 0.58,
-                barPercentage: 0.76
-              },
-              {
-                label: 'Alto',
-                data: riesgosPorCriterioAlto,
-                backgroundColor: gradAlto,
-                borderColor: 'rgba(220, 0, 0, 1)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(255,55,55,1)',
-                hoverBorderColor: 'rgba(190,0,0,1)',
-                categoryPercentage: 0.58,
-                barPercentage: 0.76
-              },
-              {
-                label: 'Muy Alto',
-                data: riesgosPorCriterioMuyAlto,
-                backgroundColor: gradMuyAlto,
-                borderColor: 'rgba(150, 0, 0, 1)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(200, 0, 0, 1)',
-                hoverBorderColor: 'rgba(120, 0, 0, 1)',
-                categoryPercentage: 0.58,
-                barPercentage: 0.76
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-              duration: 1200,
-              easing: 'easeOutQuart'
-            },
-            layout: {
-              padding: {
-                top: 32,
-                right: 12,
-                bottom: 32,
-                left: 12
-              }
-            },
-            legend: {
-              display: true,
-              position: 'bottom',
-              labels: {
-                boxWidth: 12,
-                fontSize: 13,
-                fontStyle: 'bold',
-                fontColor: '#121212',
-                padding: 20,
-                usePointStyle: true
-              }
-            },
-            tooltips: {
-              mode: 'index',
-              intersect: false,
-              backgroundColor: 'rgba(18,18,18,0.94)',
-              titleFontStyle: 'bold',
-              bodyFontStyle: 'bold',
-              xPadding: 12,
-              yPadding: 10,
-              cornerRadius: 10,
-              callbacks: {
-                label: function(tooltipItem, data) {
-                  var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                  return ' ' + label + ': ' + tooltipItem.yLabel;
-                }
-              }
-            },
-            hover: {
-              mode: 'nearest',
-              intersect: false
-            },
-            scales: {
-              xAxes: [{
-                stacked: false,
-                ticks: {
-                  autoSkip: false,
-                  maxRotation: 0,
-                  minRotation: 0,
-                  fontColor: '#48699b',
-                  fontStyle: 'bold',
-                  fontSize: 11,
-                  padding: 8
-                },
-                gridLines: {
-                  display: false,
-                  drawBorder: false
-                }
-              }],
-              yAxes: [{
-                stacked: false,
-                ticks: {
-                  beginAtZero: true,
-                  precision: 0,
-                  stepSize: 1,
-                  fontColor: '#4a4a4a',
-                  fontStyle: 'bold',
-                  fontSize: 12,
-                  padding: 8
-                },
-                gridLines: {
-                  color: 'rgba(0,0,0,0.055)',
-                  zeroLineColor: 'rgba(0,0,0,0.12)',
-                  drawBorder: false,
-                  borderDash: [4, 4]
-                }
-              }]
-            }
-          }
-        });
+        updateRiskLevelSummary();
+        renderRiskChart();
       }
 
       /* ========= 5. Distribución de Medidas de Seguridad ========= */
@@ -1209,53 +1326,163 @@
         var ctxP = canvasPareto.getContext('2d');
 
         var pl = (paretoLabels || []);
-        var pi = (paretoIPD || []);
-        var pa = (paretoAcum || []);
+        var pi = (paretoIPD || []).map(function(v){ return Number(v || 0); });
+        var pa = (paretoAcum || []).map(function(v){ return Number(v || 0); });
 
-        function barGradient(ctx) {
-          var g = ctx.createLinearGradient(0, 0, 0, 340);
-          g.addColorStop(0, 'rgba(194, 164, 118, 0.58)'); // camel
-          g.addColorStop(0.55, 'rgba(155, 124, 78, 0.56)'); // camel-700
-          g.addColorStop(1, 'rgba(127, 101, 63, 0.54)'); // camel-800
-          return g;
+        var paretoInner = document.getElementById('paretoInner');
+        if (paretoInner) {
+          var minWidthPareto = Math.max(880, pl.length * 44);
+          paretoInner.style.minWidth = minWidthPareto + 'px';
         }
-        var gradBar = barGradient(ctxP);
 
-        var paretoPointPctPlugin = {
+        function makeParetoBarColors(ctx, data) {
+          return data.map(function(value){
+            var v = Number(value || 0);
+
+            if (v < 20) {
+              return 'rgba(105, 112, 120, 0.72)';
+            }
+
+            var g = ctx.createLinearGradient(0, 0, 0, 340);
+            g.addColorStop(0, 'rgba(226, 178, 72, 0.98)');
+            g.addColorStop(0.50, 'rgba(199, 150, 54, 0.94)');
+            g.addColorStop(1, 'rgba(143, 105, 38, 0.92)');
+            return g;
+          });
+        }
+
+        function makeParetoBarBorders(data) {
+          return data.map(function(value){
+            return Number(value || 0) < 20
+              ? 'rgba(125, 132, 141, 0.88)'
+              : 'rgba(224, 176, 69, 0.98)';
+          });
+        }
+
+        var paretoLabelsPlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mypareto') return;
+
+            var ctx = chart.ctx;
+            var area = chart.chartArea;
+
+            ctx.save();
+
+            /* Valores arriba de barras */
+            var barMeta = chart.getDatasetMeta(0);
+            if (barMeta && !barMeta.hidden) {
+              ctx.font = "900 11px Poppins, Arial, sans-serif";
+              ctx.fillStyle = "rgba(255,255,255,0.88)";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "bottom";
+
+              barMeta.data.forEach(function(bar, i){
+                var value = Number(chart.data.datasets[0].data[i] || 0);
+                if (!value) return;
+
+                var x = bar._model.x;
+                var y = Math.max(area.top + 14, bar._model.y - 8);
+
+                ctx.fillText(String(value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)), x, y);
+              });
+            }
+
+            /* Porcentajes arriba de la línea acumulada */
+            var lineMeta = chart.getDatasetMeta(1);
+            if (lineMeta && !lineMeta.hidden) {
+              ctx.font = "900 11px Poppins, Arial, sans-serif";
+              ctx.fillStyle = "#D7A73F";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "bottom";
+
+              lineMeta.data.forEach(function(pt, i){
+                var value = Number(chart.data.datasets[1].data[i] || 0);
+                if (!value) return;
+
+                var x = pt._model.x;
+                var y = Math.max(area.top + 14, pt._model.y - 10);
+
+                ctx.fillText(value.toFixed(0) + "%", x, y);
+              });
+            }
+
+            ctx.restore();
+          }
+        };
+
+        var paretoEightyLinePlugin = {
+          afterDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'mypareto') return;
+
+            var yPct = chart.scales.yPct;
+            var area = chart.chartArea;
+            var ctx = chart.ctx;
+
+            if (!yPct || !area) return;
+
+            var y = yPct.getPixelForValue(80);
+
+            ctx.save();
+
+            /* línea roja 80% */
+            ctx.beginPath();
+            ctx.setLineDash([6, 4]);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(255, 43, 43, 0.90)';
+            ctx.moveTo(area.left, y);
+            ctx.lineTo(area.right, y);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            /* badge 80% */
+            var text = '80%';
+            var fontSize = 12;
+            ctx.font = "900 " + fontSize + "px Poppins, Arial, sans-serif";
+            var tw = ctx.measureText(text).width;
+            var padX = 8;
+            var bw = tw + padX * 2;
+            var bh = 22;
+            var bx = area.right + 6;
+            var by = y - (bh / 2);
+
+            ctx.fillStyle = 'rgba(255, 43, 43, 0.95)';
+            ctx.beginPath();
+            ctx.moveTo(bx + 6, by);
+            ctx.lineTo(bx + bw - 6, by);
+            ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + 6);
+            ctx.lineTo(bx + bw, by + bh - 6);
+            ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - 6, by + bh);
+            ctx.lineTo(bx + 6, by + bh);
+            ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - 6);
+            ctx.lineTo(bx, by + 6);
+            ctx.quadraticCurveTo(bx, by, bx + 6, by);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, bx + bw / 2, by + bh / 2 + 1);
+
+            ctx.restore();
+          }
+        };
+
+        var paretoLineFrontPlugin = {
           afterDatasetsDraw: function(chart) {
             if (!chart || chart.canvas.id !== 'mypareto') return;
 
             var meta = chart.getDatasetMeta(1);
             if (!meta || meta.hidden) return;
 
-            var ctx = chart.ctx;
-            var area = chart.chartArea;
-
-            ctx.save();
-            ctx.font = "800 11px Poppins, Arial, sans-serif";
-            ctx.fillStyle = "rgba(18,18,18,0.78)";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "bottom";
-
-            meta.data.forEach(function(pt, i){
-              var v = Number(chart.data.datasets[1].data[i] || 0);
-              if (!v) return;
-
-              var x = pt._model.x;
-              var y = pt._model.y - 10;
-              var safeTop = area.top + 14;
-              if (y < safeTop) y = safeTop;
-
-              ctx.fillText(v.toFixed(0) + "%", x, y);
-            });
-
-            ctx.restore();
+            meta.controller.draw();
           }
         };
 
         function renderParetoLegend(chart){
           var el = document.getElementById('paretoLegend');
-          if (!el) return;
+          if (!el || !chart || !chart.data || !chart.data.datasets) return;
 
           var d0 = chart.data.datasets[0];
           var d1 = chart.data.datasets[1];
@@ -1266,6 +1493,7 @@
                 <span class="giro-pareto-legend__swatch giro-pareto-legend__swatch--bar"></span>
                 <span class="giro-pareto-legend__text">${d0.label}</span>
               </div>
+
               <div class="giro-pareto-legend__item">
                 <span class="giro-pareto-legend__swatch giro-pareto-legend__swatch--line"></span>
                 <span class="giro-pareto-legend__text">${d1.label}</span>
@@ -1274,54 +1502,48 @@
           `;
         }
 
-        var paretoLineFrontPlugin = {
-          afterDatasetsDraw: function(chart) {
-            if (!chart || chart.canvas.id !== 'mypareto') return;
-            var meta = chart.getDatasetMeta(1);
-            if (!meta || meta.hidden) return;
-            meta.controller.draw();
-          }
-        };
-
-        var isMobile = window.innerWidth <= 480;
-
         var paretoChart = new Chart(ctxP, {
           type: 'bar',
-          plugins: [paretoPointPctPlugin, paretoLineFrontPlugin],
+          plugins: [
+            paretoEightyLinePlugin,
+            paretoLineFrontPlugin,
+            paretoLabelsPlugin
+          ],
           data: {
             labels: pl,
             datasets: [
               {
                 type: 'bar',
-                label: 'IPD',
+                label: 'IPD (Frecuencia)',
                 data: pi,
-                backgroundColor: gradBar,
-                borderColor: 'rgba(18,18,18,0.75)',
-                borderWidth: 2,
-                hoverBackgroundColor: 'rgba(127, 101, 63, 0.98)',
-                hoverBorderColor: 'rgba(18,18,18,0.95)',
+                backgroundColor: makeParetoBarColors(ctxP, pi),
+                borderColor: makeParetoBarBorders(pi),
+                borderWidth: 1,
+                hoverBackgroundColor: makeParetoBarColors(ctxP, pi),
+                hoverBorderColor: '#ffffff',
                 hoverBorderWidth: 2,
-                barThickness: isMobile ? 14 : 20,
-                maxBarThickness: isMobile ? 16 : 24,
-                categoryPercentage: 0.70,
-                barPercentage: 0.62,
-                order: 1
+                barThickness: 22,
+                maxBarThickness: 26,
+                categoryPercentage: 0.74,
+                barPercentage: 0.70,
+                order: 1,
+                yAxisID: 'yIPD'
               },
               {
                 type: 'line',
-                label: 'Riesgo Acumulado',
+                label: 'Riesgo Acumulado (%)',
                 data: pa,
                 yAxisID: 'yPct',
-                borderColor: 'rgba(255,0,0,0.92)',
+                borderColor: '#D7A73F',
                 backgroundColor: 'transparent',
-                borderWidth: 3,
+                borderWidth: 2,
                 pointRadius: 4,
-                pointHoverRadius: 5,
-                pointBackgroundColor: 'rgba(255,255,255,1)',
-                pointBorderColor: 'rgba(255,0,0,0.92)',
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#F2C766',
+                pointBorderColor: '#7F653F',
                 pointBorderWidth: 2,
                 fill: false,
-                lineTension: 0.25,
+                lineTension: 0.28,
                 order: 99
               }
             ]
@@ -1329,14 +1551,24 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: { duration: 900, easing: 'easeOutQuart' },
-            legend: { display: false },
+            animation: {
+              duration: 900,
+              easing: 'easeOutQuart'
+            },
+            legend: {
+              display: false
+            },
             tooltips: {
               mode: 'index',
               intersect: false,
-              backgroundColor: 'rgba(18,18,18,0.92)',
+              backgroundColor: 'rgba(8,13,20,0.97)',
+              titleFontColor: '#ffffff',
+              bodyFontColor: '#ffffff',
               titleFontStyle: 'bold',
               bodyFontStyle: 'bold',
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 8,
               callbacks: {
                 title: function(items, data){
                   var i = items && items[0] ? items[0].index : 0;
@@ -1344,8 +1576,11 @@
                 },
                 label: function(t, d){
                   var label = d.datasets[t.datasetIndex].label || '';
-                  if (t.datasetIndex === 1) return ' ' + label + ': ' + Number(t.yLabel).toFixed(2) + '%';
-                  return ' ' + label + ': ' + t.yLabel;
+                  if (t.datasetIndex === 1) {
+                    return ' ' + label + ': ' + Number(t.yLabel || 0).toFixed(2) + '%';
+                  }
+
+                  return ' ' + label + ': ' + Number(t.yLabel || 0).toFixed(2);
                 },
                 afterBody: function(items){
                   var i = items && items[0] ? items[0].index : 0;
@@ -1355,40 +1590,97 @@
                     return ['Evento de riesgo: -'];
                   }
 
-                  var limite = 70;
-                  var corto = evento.length > limite ? evento.substring(0, limite).trim() + '...' : evento;
+                  var limite = 85;
+                  var corto = evento.length > limite
+                    ? evento.substring(0, limite).trim() + '...'
+                    : evento;
 
-                  var salida = ['Evento de riesgo: ' + corto];
-
-                  if (evento.length > limite) {
-                    salida.push('Ver más en detalle');
-                  }
-
-                  return salida;
+                  return ['Evento de riesgo: ' + corto];
                 }
               }
             },
-            hover: { mode: 'nearest', intersect: false },
-            layout: { padding: { top: 22, right: 16, bottom: 6, left: 10 } },
+            hover: {
+              mode: 'nearest',
+              intersect: false
+            },
+            layout: {
+              padding: {
+                top: 34,
+                right: 58,
+                bottom: 8,
+                left: 10
+              }
+            },
             scales: {
               yAxes: [
                 {
                   id: 'yIPD',
                   position: 'left',
-                  ticks: { beginAtZero: true, precision: 0, fontStyle: 'bold' },
-                  gridLines: { color: 'rgba(0,0,0,0.06)' }
+                  ticks: {
+                    beginAtZero: true,
+                    precision: 0,
+                    fontColor: 'rgba(255,255,255,.72)',
+                    fontStyle: 'bold',
+                    fontSize: 12,
+                    padding: 8
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'IPD (Frecuencia)',
+                    fontColor: 'rgba(255,255,255,.76)',
+                    fontStyle: 'bold',
+                    fontSize: 11
+                  },
+                  gridLines: {
+                    color: 'rgba(255,255,255,.08)',
+                    zeroLineColor: 'rgba(255,255,255,.18)',
+                    borderDash: [4, 4],
+                    drawBorder: false
+                  }
                 },
                 {
                   id: 'yPct',
                   position: 'right',
-                  ticks: { beginAtZero: true, max: 100, callback: function(v){ return v + '%'; }, fontStyle: 'bold' },
-                  gridLines: { drawOnChartArea: false }
+                  ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100,
+                    stepSize: 10,
+                    callback: function(v){ return v + '%'; },
+                    fontColor: '#D7A73F',
+                    fontStyle: 'bold',
+                    fontSize: 12,
+                    padding: 8
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Riesgo Acumulado (%)',
+                    fontColor: '#D7A73F',
+                    fontStyle: 'bold',
+                    fontSize: 11
+                  },
+                  gridLines: {
+                    drawOnChartArea: false,
+                    drawBorder: true,
+                    color: 'rgba(215,167,63,.32)'
+                  }
                 }
               ],
               xAxes: [
                 {
-                  ticks: { fontStyle: 'bold', maxRotation: 0, minRotation: 0, padding: 10 },
-                  gridLines: { display: false }
+                  ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0,
+                    fontColor: 'rgba(255,255,255,.78)',
+                    fontStyle: 'bold',
+                    fontSize: 11,
+                    padding: 10
+                  },
+                  gridLines: {
+                    display: false,
+                    drawBorder: false
+                  }
                 }
               ]
             }
@@ -1402,7 +1694,6 @@
           paretoChart.update(0);
         });
       }
-
 
       /* ========= 8. Matriz de evaluación de riesgos (filtro + nuevo perfil) ========= */
       var canvasMatrix = document.getElementById('mymatrizriesgos');
@@ -1749,13 +2040,21 @@
       }
 
       /* ========= 9. Avance de Consecución ========= */
-      // Gauge semicircular
+
+      var avancePct = Number(avanceConsecucionPorcentaje || 0);
+      var restantePct = Math.max(0, 100 - avancePct);
+
+      function avanceColor(pct){
+        if (pct >= 90) return '#00B050';
+        if (pct >= 80) return '#92D050';
+        if (pct >= 70) return '#FFC000';
+        return '#E00012';
+      }
+
+      /* Gauge semicircular */
       var gaugeCanvas = document.getElementById('myavanceconsecuciongauge');
       if (gaugeCanvas) {
         var gctx = gaugeCanvas.getContext('2d');
-
-        var avancePct = Number(avanceConsecucionPorcentaje || 0);
-        var restantePct = Math.max(0, 100 - avancePct);
 
         new Chart(gctx, {
           type: 'doughnut',
@@ -1763,20 +2062,17 @@
             datasets: [{
               data: [avancePct, restantePct],
               backgroundColor: [
-                (avancePct >= 90) ? '#00B050'
-                  : (avancePct >= 80) ? '#92D050'
-                  : (avancePct >= 70) ? '#FFC000'
-                  : '#FF0000',
-                '#E7E7E7'
+                avanceColor(avancePct),
+                'rgba(255,255,255,.12)'
               ],
-              borderColor: '#ffffff',
-              borderWidth: 2,
+              borderColor: [
+                avanceColor(avancePct),
+                'rgba(255,255,255,.05)'
+              ],
+              borderWidth: 1,
               hoverBackgroundColor: [
-                (avancePct >= 90) ? '#00B050'
-                  : (avancePct >= 80) ? '#92D050'
-                  : (avancePct >= 70) ? '#FFC000'
-                  : '#FF0000',
-                '#E7E7E7'
+                avanceColor(avancePct),
+                'rgba(255,255,255,.16)'
               ]
             }]
           },
@@ -1785,12 +2081,17 @@
             maintainAspectRatio: false,
             rotation: Math.PI,
             circumference: Math.PI,
-            cutoutPercentage: 62,
+            cutoutPercentage: 70,
             legend: { display: false },
             tooltips: {
-              enabled: true,
+              backgroundColor: 'rgba(8,13,20,0.97)',
+              titleFontColor: '#ffffff',
+              bodyFontColor: '#ffffff',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              displayColors: false,
               callbacks: {
-                label: function(tooltipItem, data) {
+                label: function(tooltipItem) {
                   return tooltipItem.index === 0
                     ? 'Avance: ' + avancePct.toFixed(2) + '%'
                     : 'Pendiente: ' + restantePct.toFixed(2) + '%';
@@ -1805,34 +2106,80 @@
         });
       }
 
-      // Barra estados no aceptables
+      /* Barra estados no aceptables */
       var barCanvas = document.getElementById('myavanceconsecucionbar');
       if (barCanvas) {
         var bctx = barCanvas.getContext('2d');
 
+        var avanceBarData = [
+          Number((avanceNoAceptables && avanceNoAceptables.abierta) || 0),
+          Number((avanceNoAceptables && avanceNoAceptables.proceso) || 0),
+          Number((avanceNoAceptables && avanceNoAceptables.ejecutada) || 0)
+        ];
+
+        var maxAvance = Math.max.apply(null, avanceBarData);
+        var suggestedAvanceMax = Math.max(3, maxAvance + 1);
+
+        var gradOpen = bctx.createLinearGradient(0, 0, 0, 250);
+        gradOpen.addColorStop(0, 'rgba(255, 38, 38, .98)');
+        gradOpen.addColorStop(1, 'rgba(150, 0, 15, .96)');
+
+        var gradProcess = bctx.createLinearGradient(0, 0, 0, 250);
+        gradProcess.addColorStop(0, 'rgba(242, 198, 92, .98)');
+        gradProcess.addColorStop(1, 'rgba(160, 111, 20, .95)');
+
+        var gradDone = bctx.createLinearGradient(0, 0, 0, 250);
+        gradDone.addColorStop(0, 'rgba(143, 189, 60, .98)');
+        gradDone.addColorStop(1, 'rgba(74, 115, 25, .96)');
+
+        var avanceValuePlugin = {
+          afterDatasetsDraw: function(chart) {
+            if (!chart || chart.canvas.id !== 'myavanceconsecucionbar') return;
+
+            var ctx = chart.ctx;
+            var meta = chart.getDatasetMeta(0);
+            var area = chart.chartArea;
+
+            if (!meta || meta.hidden) return;
+
+            ctx.save();
+            ctx.font = '950 12px Poppins, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+
+            meta.data.forEach(function(bar, i){
+              var value = Number(chart.data.datasets[0].data[i] || 0);
+              var x = bar._model.x;
+              var y = Math.max(area.top + 16, bar._model.y - 8);
+
+              ctx.fillStyle = i === 1 ? '#D7A73F' : (i === 2 ? '#8FBD3C' : 'rgba(255,255,255,.92)');
+              ctx.fillText(String(value), x, y);
+            });
+
+            ctx.restore();
+          }
+        };
+
         new Chart(bctx, {
           type: 'bar',
+          plugins: [avanceValuePlugin],
           data: {
             labels: ['Abierta', 'Proceso', 'Ejecutada'],
             datasets: [{
-              data: [
-                Number((avanceNoAceptables && avanceNoAceptables.abierta) || 0),
-                Number((avanceNoAceptables && avanceNoAceptables.proceso) || 0),
-                Number((avanceNoAceptables && avanceNoAceptables.ejecutada) || 0)
-              ],
-              backgroundColor: [
-                'rgba(255, 0, 0, 0.92)',
-                'rgba(255, 192, 0, 0.92)',
-                'rgba(0, 176, 80, 0.92)'
-              ],
+              data: avanceBarData,
+              backgroundColor: [gradOpen, gradProcess, gradDone],
               borderColor: [
-                'rgba(210, 0, 0, 1)',
-                'rgba(214, 157, 0, 1)',
-                'rgba(0, 140, 62, 1)'
+                'rgba(255, 38, 38, .98)',
+                'rgba(215, 167, 63, .98)',
+                'rgba(143, 189, 60, .98)'
               ],
-              borderWidth: 2,
-              categoryPercentage: 0.58,
-              barPercentage: 0.7
+              borderWidth: 1,
+              hoverBackgroundColor: [gradOpen, gradProcess, gradDone],
+              hoverBorderColor: '#ffffff',
+              hoverBorderWidth: 2,
+              categoryPercentage: 0.52,
+              barPercentage: 0.68,
+              maxBarThickness: 135
             }]
           },
           options: {
@@ -1844,12 +2191,30 @@
               easing: 'easeOutQuart'
             },
             tooltips: {
-              backgroundColor: 'rgba(18,18,18,0.94)',
+              backgroundColor: 'rgba(8,13,20,0.97)',
+              titleFontColor: '#ffffff',
+              bodyFontColor: '#ffffff',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
               displayColors: false,
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 8,
               callbacks: {
                 label: function(tooltipItem) {
-                  return 'Total: ' + tooltipItem.yLabel;
+                  var total = Number((avanceNoAceptables && avanceNoAceptables.total) || 0);
+                  var value = Number(tooltipItem.yLabel || 0);
+                  var pct = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+                  return 'Total: ' + value + ' (' + pct + '%)';
                 }
+              }
+            },
+            layout: {
+              padding: {
+                top: 22,
+                right: 8,
+                bottom: 0,
+                left: 8
               }
             },
             scales: {
@@ -1858,21 +2223,29 @@
                   beginAtZero: true,
                   precision: 0,
                   stepSize: 1,
+                  suggestedMax: suggestedAvanceMax,
+                  fontColor: 'rgba(255,255,255,.72)',
                   fontStyle: 'bold',
-                  fontColor: '#4a4a4a'
+                  fontSize: 12,
+                  padding: 8
                 },
                 gridLines: {
-                  color: 'rgba(0,0,0,0.06)',
-                  zeroLineColor: 'rgba(0,0,0,0.12)'
+                  color: 'rgba(255,255,255,.09)',
+                  zeroLineColor: 'rgba(255,255,255,.20)',
+                  borderDash: [4, 4],
+                  drawBorder: false
                 }
               }],
               xAxes: [{
                 ticks: {
+                  fontColor: 'rgba(255,255,255,.82)',
                   fontStyle: 'bold',
-                  fontColor: '#303030'
+                  fontSize: 12,
+                  padding: 10
                 },
                 gridLines: {
-                  display: false
+                  display: false,
+                  drawBorder: false
                 }
               }]
             }
@@ -1880,6 +2253,42 @@
         });
       }
 
+
+      /* ========= Exportar Distribución % de Escenarios ========= */
+      var btnExportEscenarios = document.getElementById('btnExportEscenarios');
+
+      if (btnExportEscenarios) {
+        btnExportEscenarios.addEventListener('click', function(){
+          var table = document.getElementById('tablaDistribucionEscenarios');
+
+          if (!table) return;
+
+          var filename = 'distribucion_escenarios.xlsx';
+
+          if (typeof XLSX === 'undefined') {
+            alert('No se pudo cargar la librería de exportación.');
+            return;
+          }
+
+          var wb = XLSX.utils.book_new();
+          var ws = XLSX.utils.table_to_sheet(table, {
+            raw: false
+          });
+
+          ws['!cols'] = [
+            { wch: 42 }, // Categoría
+            { wch: 14 }, // Muy Bajo
+            { wch: 14 }, // Bajo
+            { wch: 14 }, // Medio
+            { wch: 14 }, // Alto
+            { wch: 14 }, // Muy Alto
+            { wch: 14 }  // Total
+          ];
+
+          XLSX.utils.book_append_sheet(wb, ws, 'Distribución Escenarios');
+          XLSX.writeFile(wb, filename);
+        });
+      }
 
     });
   </script>
@@ -2493,13 +2902,141 @@
 
                 {{-- 6. Distribución de riesgos por criterio --}}
                 <div class="giro-chart-panel" id="chart-security">
-                  <div class="giro-chart-card">
-                    <h5 class="giro-chart-title">Distribución de los riesgos por criterio</h5>
+                  <div class="giro-chart-card giro-chart-card--risk-criteria">
+
+                    <div class="giro-risk-head">
+                      <div class="giro-risk-filter">
+                        <label>Filtrar por nivel de riesgo</label>
+
+                        <div class="giro-risk-multiselect" id="riskLevelFilter">
+                          <button type="button" class="giro-risk-multiselect__trigger" id="riskLevelTrigger">
+                            <span id="riskLevelSummary">Todos los niveles</span>
+                            <span class="giro-risk-multiselect__arrow">▼</span>
+                          </button>
+
+                          <div class="giro-risk-multiselect__menu" id="riskLevelMenu">
+                            <label class="giro-risk-multiselect__option giro-risk-multiselect__option--all">
+                              <input type="checkbox" id="riskLevelAll" checked>
+                              <span>Seleccionar todos</span>
+                            </label>
+
+                            <label class="giro-risk-multiselect__option">
+                              <input type="checkbox" class="risk-level-checkbox" value="muy_bajo" checked>
+                              <span>Muy Bajo</span>
+                            </label>
+
+                            <label class="giro-risk-multiselect__option">
+                              <input type="checkbox" class="risk-level-checkbox" value="bajo" checked>
+                              <span>Bajo</span>
+                            </label>
+
+                            <label class="giro-risk-multiselect__option">
+                              <input type="checkbox" class="risk-level-checkbox" value="medio" checked>
+                              <span>Medio</span>
+                            </label>
+
+                            <label class="giro-risk-multiselect__option">
+                              <input type="checkbox" class="risk-level-checkbox" value="alto" checked>
+                              <span>Alto</span>
+                            </label>
+
+                            <label class="giro-risk-multiselect__option">
+                              <input type="checkbox" class="risk-level-checkbox" value="muy_alto" checked>
+                              <span>Muy Alto</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h5 class="giro-chart-title giro-chart-title--risk">
+                        Distribución de los riesgos por criterio
+                      </h5>
+
+                      <div class="giro-risk-head-spacer"></div>
+                    </div>
+
                     <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--security">
                       <div class="giro-chart-canvas-inner giro-chart-canvas-inner--security">
                         <canvas id="myriesgosporcriterio"></canvas>
                       </div>
+
+                      <div class="giro-risk-axis" id="riskCriteriaAxis"></div>
+
+                      <div class="giro-risk-html-legend">
+                        <div class="giro-risk-html-legend__item">
+                          <span class="giro-risk-html-legend__dot giro-risk-html-legend__dot--muy-bajo"></span>
+                          <span>Muy Bajo</span>
+                        </div>
+
+                        <div class="giro-risk-html-legend__item">
+                          <span class="giro-risk-html-legend__dot giro-risk-html-legend__dot--bajo"></span>
+                          <span>Bajo</span>
+                        </div>
+
+                        <div class="giro-risk-html-legend__item">
+                          <span class="giro-risk-html-legend__dot giro-risk-html-legend__dot--medio"></span>
+                          <span>Medio</span>
+                        </div>
+
+                        <div class="giro-risk-html-legend__item">
+                          <span class="giro-risk-html-legend__dot giro-risk-html-legend__dot--alto"></span>
+                          <span>Alto</span>
+                        </div>
+
+                        <div class="giro-risk-html-legend__item">
+                          <span class="giro-risk-html-legend__dot giro-risk-html-legend__dot--muy-alto"></span>
+                          <span>Muy Alto</span>
+                        </div>
+                      </div>
                     </div>
+
+                    <div class="giro-risk-summary">
+                      <div class="giro-risk-summary__item">
+                        <div class="giro-risk-summary__icon giro-risk-summary__icon--gold">
+                          <i class="la la-shield-alt"></i>
+                        </div>
+                        <div>
+                          <span>Total criterios analizados</span>
+                          <strong id="riskStatCriterios">0</strong>
+                        </div>
+                      </div>
+
+                      <div class="giro-risk-summary__item">
+                        <div class="giro-risk-summary__icon">
+                          <i class="la la-file-alt"></i>
+                        </div>
+                        <div>
+                          <span>Total de riesgos identificados</span>
+                          <strong id="riskStatTotal">0</strong>
+                        </div>
+                      </div>
+
+                      <div class="giro-risk-summary__item">
+                        <div class="giro-risk-summary__icon giro-risk-summary__icon--danger">
+                          <i class="la la-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                          <span>Riesgos altos y muy altos</span>
+                          <strong class="is-danger" id="riskStatAltos">0 <span>(0.0%)</span></strong>
+                        </div>
+                      </div>
+
+                      <div class="giro-risk-summary__item">
+                        <div class="giro-risk-summary__icon giro-risk-summary__icon--success">
+                          <i class="la la-check-circle"></i>
+                        </div>
+                        <div>
+                          <span>Criterios con mayor concentración</span>
+                          <strong class="is-gold" id="riskStatConcentracion">-</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="giro-risk-note">
+                      <i class="la la-info-circle"></i>
+                      <span>La distribución muestra la cantidad de riesgos por criterio y nivel de riesgo.</span>
+                    </div>
+
                   </div>
                 </div>
 
@@ -2520,14 +3057,25 @@
 
                 {{-- 8. Distribución % de Escenarios --}}
                 <div class="giro-chart-panel" id="chart-escenarios">
-                  <div class="giro-chart-card">
-                    <h5 class="giro-chart-title">Distribución % de Escenarios</h5>
+                  <div class="giro-chart-card giro-chart-card--escenarios">
+                    <div class="giro-escenarios-head">
+                      <div class="giro-escenarios-head__spacer"></div>
+
+                      <h5 class="giro-chart-title giro-chart-title--escenarios">
+                        Distribución % de Escenarios
+                      </h5>
+
+                      <button type="button" class="giro-escenarios-export" id="btnExportEscenarios">
+                        <i class="la la-download"></i>
+                        <span>Exportar</span>
+                      </button>
+                    </div>
 
                     <div class="giro-escenarios-wrap">
-                      <table class="giro-escenarios-table">
+                      <table class="giro-escenarios-table" id="tablaDistribucionEscenarios">
                         <thead>
                           <tr>
-                            <th rowspan="2" class="giro-escenarios-left"></th>
+                            <th rowspan="2" class="giro-escenarios-left">Categoría</th>
                             <th colspan="2" class="giro-th-group giro-th-group--ok">Tolerables</th>
                             <th colspan="3" class="giro-th-group giro-th-group--risk">No tolerables</th>
                             <th rowspan="2" class="giro-th-total">Total</th>
@@ -2540,44 +3088,87 @@
                             <th class="giro-th-muy-alto">Muy Alto</th>
                           </tr>
                         </thead>
+
                         <tbody>
                           @forelse($escenariosFilas as $fila)
                             <tr>
-                              <td class="giro-escenarios-label">{{ $fila['label'] }}</td>
-                              <td class="giro-td-muy-bajo">{{ ($fila['muy_bajo'] ?? 0) == 0 ? '' : $fila['muy_bajo'] }}</td>
-                              <td class="giro-td-bajo">{{ ($fila['bajo'] ?? 0) == 0 ? '' : $fila['bajo'] }}</td>
-                              <td class="giro-td-medio">{{ ($fila['medio'] ?? 0) == 0 ? '' : $fila['medio'] }}</td>
-                              <td class="giro-td-alto">{{ ($fila['alto'] ?? 0) == 0 ? '' : $fila['alto'] }}</td>
-                              <td class="giro-td-muy-alto">{{ ($fila['muy_alto'] ?? 0) == 0 ? '' : $fila['muy_alto'] }}</td>
-                              <td class="giro-td-total">{{ ($fila['total'] ?? 0) == 0 ? '' : $fila['total'] }}</td>
+                              <td class="giro-escenarios-label">
+                                <span class="giro-escenarios-label__icon">
+                                  <i class="{{ $fila['icono'] ?? 'la la-shield-alt' }}"></i>
+                                </span>
+
+                                <span class="giro-escenarios-label__text">
+                                  {{ $fila['label'] }}
+                                </span>
+                              </td>
+
+                              <td class="giro-td-muy-bajo">
+                                {{ ($fila['muy_bajo'] ?? 0) == 0 ? '–' : $fila['muy_bajo'] }}
+                              </td>
+
+                              <td class="giro-td-bajo">
+                                {{ ($fila['bajo'] ?? 0) == 0 ? '–' : $fila['bajo'] }}
+                              </td>
+
+                              <td class="giro-td-medio">
+                                {{ ($fila['medio'] ?? 0) == 0 ? '–' : $fila['medio'] }}
+                              </td>
+
+                              <td class="giro-td-alto">
+                                {{ ($fila['alto'] ?? 0) == 0 ? '–' : $fila['alto'] }}
+                              </td>
+
+                              <td class="giro-td-muy-alto">
+                                {{ ($fila['muy_alto'] ?? 0) == 0 ? '–' : $fila['muy_alto'] }}
+                              </td>
+
+                              <td class="giro-td-total">
+                                {{ ($fila['total'] ?? 0) == 0 ? '–' : $fila['total'] }}
+                              </td>
                             </tr>
                           @empty
                             <tr>
-                              <td colspan="7" class="text-center py-4">Sin datos</td>
+                              <td colspan="7" class="giro-escenarios-empty">
+                                Sin datos
+                              </td>
                             </tr>
                           @endforelse
 
                           <tr class="giro-row-total">
-                            <td class="giro-escenarios-label"><strong>Total</strong></td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['muy_bajo'] ?? 0 }}</td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['bajo'] ?? 0 }}</td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['medio'] ?? 0 }}</td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['alto'] ?? 0 }}</td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['muy_alto'] ?? 0 }}</td>
-                            <td class="giro-td-total">{{ $totalesEscenarios['total'] ?? 0 }}</td>
+                            <td class="giro-escenarios-label">
+                              <span class="giro-escenarios-label__text">Total (cantidad de riesgos)</span>
+                            </td>
+
+                            <td>{{ $totalesEscenarios['muy_bajo'] ?? 0 }}</td>
+                            <td>{{ $totalesEscenarios['bajo'] ?? 0 }}</td>
+                            <td>{{ $totalesEscenarios['medio'] ?? 0 }}</td>
+                            <td>{{ $totalesEscenarios['alto'] ?? 0 }}</td>
+                            <td>{{ $totalesEscenarios['muy_alto'] ?? 0 }}</td>
+                            <td>{{ $totalesEscenarios['total'] ?? 0 }}</td>
                           </tr>
 
                           <tr class="giro-row-percent">
-                            <td class="giro-escenarios-label"><strong>Distribución %</strong></td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['muy_bajo'] ?? 0, 2) }}%</td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['bajo'] ?? 0, 2) }}%</td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['medio'] ?? 0, 2) }}%</td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['alto'] ?? 0, 2) }}%</td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['muy_alto'] ?? 0, 2) }}%</td>
-                            <td class="giro-td-total">{{ number_format($distribucionEscenarios['total'] ?? 0, 2) }}%</td>
+                            <td class="giro-escenarios-label">
+                              <span class="giro-escenarios-label__text">Distribución %</span>
+                            </td>
+
+                            <td>{{ number_format($distribucionEscenarios['muy_bajo'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['bajo'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['medio'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['alto'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['muy_alto'] ?? 0, 2) }}%</td>
+                            <td>{{ number_format($distribucionEscenarios['total'] ?? 0, 2) }}%</td>
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+
+                    <div class="giro-escenarios-note">
+                      <i class="la la-info-circle"></i>
+                      <span>
+                        Los porcentajes representan la distribución de la cantidad total de riesgos
+                        ({{ $totalesEscenarios['total'] ?? 0 }}) por nivel de tolerancia.
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -2585,31 +3176,109 @@
                 {{-- 9. Avance de Consecución --}}
                 <div class="giro-chart-panel" id="chart-avance">
                   <div class="giro-chart-card giro-chart-card--avance">
+
+                    @php
+                      $avanceTotalGeneral = (int) (($avanceNoAceptables['total'] ?? 0) + ($avanceAceptables['total'] ?? 0));
+
+                      $avancePctNoAceptables = $avanceTotalGeneral > 0
+                        ? round((($avanceNoAceptables['total'] ?? 0) / $avanceTotalGeneral) * 100, 2)
+                        : 0;
+
+                      $avancePctAceptables = $avanceTotalGeneral > 0
+                        ? round((($avanceAceptables['total'] ?? 0) / $avanceTotalGeneral) * 100, 2)
+                        : 0;
+
+                      $avancePctAbierta = ($avanceNoAceptables['total'] ?? 0) > 0
+                        ? round((($avanceNoAceptables['abierta'] ?? 0) / ($avanceNoAceptables['total'] ?? 1)) * 100, 2)
+                        : 0;
+
+                      $avancePctProceso = ($avanceNoAceptables['total'] ?? 0) > 0
+                        ? round((($avanceNoAceptables['proceso'] ?? 0) / ($avanceNoAceptables['total'] ?? 1)) * 100, 2)
+                        : 0;
+
+                      $avancePctEjecutada = ($avanceNoAceptables['total'] ?? 0) > 0
+                        ? round((($avanceNoAceptables['ejecutada'] ?? 0) / ($avanceNoAceptables['total'] ?? 1)) * 100, 2)
+                        : 0;
+
+                      $avanceGaugeBadge = 'Sin avance';
+                      if (($avanceConsecucionPorcentaje ?? 0) >= 90) {
+                        $avanceGaugeBadge = 'Avance óptimo';
+                      } elseif (($avanceConsecucionPorcentaje ?? 0) >= 80) {
+                        $avanceGaugeBadge = 'Buen avance';
+                      } elseif (($avanceConsecucionPorcentaje ?? 0) >= 70) {
+                        $avanceGaugeBadge = 'Avance medio';
+                      } elseif (($avanceConsecucionPorcentaje ?? 0) > 0) {
+                        $avanceGaugeBadge = 'Avance bajo';
+                      }
+                    @endphp
+
                     <h5 class="giro-chart-title">Avance de Consecución</h5>
 
-                    <div class="giro-avance-top">
+                    <div class="giro-avance-layout">
+
                       <div class="giro-avance-gauge-card">
-                        <div class="giro-avance-mini-title">Avance de Consecución</div>
-                        <div class="giro-avance-gauge-wrap">
-                          <canvas id="myavanceconsecuciongauge"></canvas>
+                        <div class="giro-avance-mini-title">
+                          Avance de Consecución
+                          <i class="la la-info-circle"></i>
                         </div>
-                        <div class="giro-avance-gauge-value">
-                          {{ number_format((float)($avanceConsecucionPorcentaje ?? 0), 2) }}%
+
+                        <div class="giro-avance-gauge-area">
+                          <canvas id="myavanceconsecuciongauge"></canvas>
+
+                          <div class="giro-avance-gauge-center">
+                            <span class="giro-avance-gauge-pct">
+                              {{ number_format((float)($avanceConsecucionPorcentaje ?? 0), 2) }}%
+                            </span>
+                            <span class="giro-avance-gauge-badge">
+                              {{ $avanceGaugeBadge }}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div class="giro-avance-gauge-copy">
+                          Este indicador mide el avance de los riesgos clasificados como
+                          <strong>Amarillo</strong> (Medio), <strong>Rojo</strong> (Alto)
+                          y <strong>Rojo Oscuro</strong> (Muy Alto).<br>
+                          Los riesgos en verde (<strong>Bajo</strong> y <strong>Muy Bajo</strong>)
+                          se contabilizan, pero no forman parte del cálculo de avance.
                         </div>
                       </div>
 
                       <div class="giro-avance-bar-card">
-                        <div class="giro-avance-mini-title">Estado de las Acciones de los Riesgos No Aceptables</div>
+                        <div class="giro-avance-mini-title">
+                          Estado de las Acciones de los Riesgos No Aceptables
+                          <i class="la la-info-circle"></i>
+                        </div>
+
                         <div class="giro-avance-bar-wrap">
                           <canvas id="myavanceconsecucionbar"></canvas>
                         </div>
+
+                        <div class="giro-avance-bar-legend">
+                          <div class="giro-avance-bar-legend__item">
+                            <span class="giro-avance-bar-legend__dot giro-avance-bar-legend__dot--open"></span>
+                            <span>Abierta: {{ $avanceNoAceptables['abierta'] ?? 0 }} ({{ number_format($avancePctAbierta, 2) }}%)</span>
+                          </div>
+
+                          <div class="giro-avance-bar-legend__item">
+                            <span class="giro-avance-bar-legend__dot giro-avance-bar-legend__dot--process"></span>
+                            <span>En Proceso: {{ $avanceNoAceptables['proceso'] ?? 0 }} ({{ number_format($avancePctProceso, 2) }}%)</span>
+                          </div>
+
+                          <div class="giro-avance-bar-legend__item">
+                            <span class="giro-avance-bar-legend__dot giro-avance-bar-legend__dot--done"></span>
+                            <span>Ejecutada: {{ $avanceNoAceptables['ejecutada'] ?? 0 }} ({{ number_format($avancePctEjecutada, 2) }}%)</span>
+                          </div>
+                        </div>
                       </div>
+
                     </div>
 
                     <div class="giro-avance-bottom">
-                      <div class="giro-avance-table-card giro-avance-table-card--na">
+
+                      <div class="giro-avance-table-card">
                         <div class="giro-avance-table-head giro-avance-table-head--danger">
-                          No aceptables
+                          No aceptables (Medio, Alto y Muy Alto)
                         </div>
 
                         <div class="giro-avance-table-wrap">
@@ -2621,31 +3290,54 @@
                                 <th>Alto</th>
                                 <th>Medio</th>
                                 <th>Total Esc.</th>
+                                <th>% del Total</th>
                               </tr>
                             </thead>
+
                             <tbody>
                               <tr>
-                                <td>Abierta</td>
+                                <td>
+                                  <span class="giro-avance-row-label">
+                                    <span class="giro-avance-dot giro-avance-dot--open"></span>
+                                    Abierta
+                                  </span>
+                                </td>
                                 <td>{{ $avanceDetalleNoAceptables['abierta']['muy_alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['abierta']['alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['abierta']['medio'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['abierta']['total'] ?? 0 }}</td>
+                                <td>{{ number_format($avancePctAbierta, 2) }}%</td>
                               </tr>
+
                               <tr>
-                                <td>Proceso</td>
+                                <td>
+                                  <span class="giro-avance-row-label">
+                                    <span class="giro-avance-dot giro-avance-dot--process"></span>
+                                    En Proceso
+                                  </span>
+                                </td>
                                 <td>{{ $avanceDetalleNoAceptables['proceso']['muy_alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['proceso']['alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['proceso']['medio'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['proceso']['total'] ?? 0 }}</td>
+                                <td>{{ number_format($avancePctProceso, 2) }}%</td>
                               </tr>
+
                               <tr>
-                                <td>Ejecutada</td>
+                                <td>
+                                  <span class="giro-avance-row-label">
+                                    <span class="giro-avance-dot giro-avance-dot--done"></span>
+                                    Ejecutada
+                                  </span>
+                                </td>
                                 <td>{{ $avanceDetalleNoAceptables['ejecutada']['muy_alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['ejecutada']['alto'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['ejecutada']['medio'] ?? 0 }}</td>
                                 <td>{{ $avanceDetalleNoAceptables['ejecutada']['total'] ?? 0 }}</td>
+                                <td>{{ number_format($avancePctEjecutada, 2) }}%</td>
                               </tr>
                             </tbody>
+
                             <tfoot>
                               <tr>
                                 <td>Total</td>
@@ -2665,39 +3357,119 @@
                                     + ($avanceDetalleNoAceptables['ejecutada']['medio'] ?? 0) }}
                                 </td>
                                 <td>{{ $avanceNoAceptables['total'] ?? 0 }}</td>
+                                <td>100.00%</td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+
+                        <div class="giro-avance-note">
+                          <i class="la la-info-circle"></i>
+                          <span>Solo se consideran para avance los riesgos clasificados como Medio, Alto y Muy Alto.</span>
+                        </div>
+                      </div>
+
+                      <div class="giro-avance-table-card">
+                        <div class="giro-avance-table-head giro-avance-table-head--success">
+                          Aceptables (Bajo y Muy bajo)
+                          <small>
+                            Conteo general sin estado de acciones.<br>
+                            Este bloque resume únicamente los riesgos Bajo y Muy Bajo; se contabilizan,
+                            pero no impactan el avance.
+                          </small>
+                        </div>
+
+                        <div class="giro-avance-table-wrap">
+                          <table class="giro-avance-table giro-avance-table--accept">
+                            <thead>
+                              <tr>
+                                <th>Nivel</th>
+                                <th>Cantidad</th>
+                                <th>% del Total General</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                              <tr>
+                                <td>Bajo</td>
+                                <td>{{ $avanceAceptables['bajo'] ?? 0 }}</td>
+                                <td>
+                                  {{ ($avanceAceptables['total'] ?? 0) > 0
+                                    ? number_format((($avanceAceptables['bajo'] ?? 0) / ($avanceAceptables['total'] ?? 1)) * 100, 2)
+                                    : '0.00' }}%
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td>Muy Bajo</td>
+                                <td>{{ $avanceAceptables['muy_bajo'] ?? 0 }}</td>
+                                <td>
+                                  {{ ($avanceAceptables['total'] ?? 0) > 0
+                                    ? number_format((($avanceAceptables['muy_bajo'] ?? 0) / ($avanceAceptables['total'] ?? 1)) * 100, 2)
+                                    : '0.00' }}%
+                                </td>
+                              </tr>
+                            </tbody>
+
+                            <tfoot>
+                              <tr>
+                                <td>Total</td>
+                                <td>{{ $avanceAceptables['total'] ?? 0 }}</td>
+                                <td>100.00%</td>
                               </tr>
                             </tfoot>
                           </table>
                         </div>
                       </div>
 
-                      <div class="giro-avance-table-card giro-avance-table-card--ok">
-                        <div class="giro-avance-table-head giro-avance-table-head--success">
-                          Aceptables
-                          <small>Conteo general sin estado de acciones</small>
-                        </div>
+                    </div>
 
-                        <div class="giro-avance-accept-note">
-                          Este bloque resume únicamente los riesgos <strong>Bajo</strong> y <strong>Muy Bajo</strong>.
+                    <div class="giro-avance-summary">
+                      <div class="giro-avance-summary__item">
+                        <div class="giro-avance-summary__icon">
+                          <i class="la la-shield-alt"></i>
                         </div>
+                        <div>
+                          <span class="giro-avance-summary__label">Total de riesgos analizados</span>
+                          <strong class="giro-avance-summary__value">{{ $avanceTotalGeneral }}</strong>
+                        </div>
+                      </div>
 
-                        <div class="giro-avance-table-wrap giro-avance-table-wrap--accept">
-                          <table class="giro-avance-table giro-avance-table--accept">
-                            <thead>
-                              <tr>
-                                <th>Bajo</th>
-                                <th>Muy Bajo</th>
-                                <th>Total</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>{{ $avanceAceptables['bajo'] ?? 0 }}</td>
-                                <td>{{ $avanceAceptables['muy_bajo'] ?? 0 }}</td>
-                                <td>{{ $avanceAceptables['total'] ?? 0 }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      <div class="giro-avance-summary__item">
+                        <div class="giro-avance-summary__icon giro-avance-summary__icon--danger">
+                          <i class="la la-shield"></i>
+                        </div>
+                        <div>
+                          <span class="giro-avance-summary__label">No aceptables (Medio, Alto, Muy Alto)</span>
+                          <strong class="giro-avance-summary__value is-danger">
+                            {{ $avanceNoAceptables['total'] ?? 0 }}
+                            <small>({{ number_format($avancePctNoAceptables, 2) }}%)</small>
+                          </strong>
+                        </div>
+                      </div>
+
+                      <div class="giro-avance-summary__item">
+                        <div class="giro-avance-summary__icon giro-avance-summary__icon--success">
+                          <i class="la la-check-circle"></i>
+                        </div>
+                        <div>
+                          <span class="giro-avance-summary__label">Aceptables (Bajo, Muy Bajo)</span>
+                          <strong class="giro-avance-summary__value is-success">
+                            {{ $avanceAceptables['total'] ?? 0 }}
+                            <small>({{ number_format($avancePctAceptables, 2) }}%)</small>
+                          </strong>
+                        </div>
+                      </div>
+
+                      <div class="giro-avance-summary__item">
+                        <div class="giro-avance-summary__icon giro-avance-summary__icon--target">
+                          <i class="la la-bullseye"></i>
+                        </div>
+                        <div>
+                          <span class="giro-avance-summary__label">Avance de consecución</span>
+                          <strong class="giro-avance-summary__value is-target">
+                            {{ number_format((float)($avanceConsecucionPorcentaje ?? 0), 2) }}%
+                          </strong>
                         </div>
                       </div>
                     </div>

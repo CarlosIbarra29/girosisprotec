@@ -333,16 +333,20 @@ class AnalisisRiesgosController extends Controller
         foreach ($data as $item) {
             $criterioId = $item->libror_barreras_perimetrales_id ?? 'sin_criterio';
             $criterioNombre = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
-            $riesgo = $item->nivel_riesgo ?? 0;
+            $criterioIcono = optional($item->BarrerasPerimetrales)->icono ?? 'la la-shield-alt';
+            $riesgo = (float) ($item->nivel_riesgo ?? 0);
 
             if (!isset($riesgosPorCriterioTmp[$criterioId])) {
                 $riesgosPorCriterioTmp[$criterioId] = [
+                    'id'        => $criterioId,
                     'label'     => $criterioNombre,
+                    'icono'     => $criterioIcono ?: 'la la-shield-alt',
                     'muy_alto'  => 0,
                     'alto'      => 0,
                     'medio'     => 0,
                     'bajo'      => 0,
                     'muy_bajo'  => 0,
+                    'total'     => 0,
                 ];
             }
 
@@ -357,22 +361,39 @@ class AnalisisRiesgosController extends Controller
             } else {
                 $riesgosPorCriterioTmp[$criterioId]['muy_bajo']++;
             }
+
+            $riesgosPorCriterioTmp[$criterioId]['total']++;
         }
 
         $riesgosPorCriterioLabels = [];
+        $riesgosPorCriterioIconos = [];
         $riesgosPorCriterioMuyAlto = [];
         $riesgosPorCriterioAlto = [];
         $riesgosPorCriterioMedio = [];
         $riesgosPorCriterioBajo = [];
         $riesgosPorCriterioMuyBajo = [];
+        $riesgosPorCriterioResumen = [];
 
         foreach ($riesgosPorCriterioTmp as $grupo) {
             $riesgosPorCriterioLabels[]   = $grupo['label'];
+            $riesgosPorCriterioIconos[]   = $grupo['icono'];
             $riesgosPorCriterioMuyAlto[]  = $grupo['muy_alto'];
             $riesgosPorCriterioAlto[]     = $grupo['alto'];
             $riesgosPorCriterioMedio[]    = $grupo['medio'];
             $riesgosPorCriterioBajo[]     = $grupo['bajo'];
             $riesgosPorCriterioMuyBajo[]  = $grupo['muy_bajo'];
+
+            $riesgosPorCriterioResumen[] = [
+                'id'       => $grupo['id'],
+                'label'    => $grupo['label'],
+                'icono'    => $grupo['icono'],
+                'muy_bajo' => $grupo['muy_bajo'],
+                'bajo'     => $grupo['bajo'],
+                'medio'    => $grupo['medio'],
+                'alto'     => $grupo['alto'],
+                'muy_alto' => $grupo['muy_alto'],
+                'total'    => $grupo['total'],
+            ];
         }
 
         /*
@@ -393,11 +414,13 @@ class AnalisisRiesgosController extends Controller
         foreach ($data as $item) {
             $criterioId = $item->libror_barreras_perimetrales_id ?? 'sin_criterio';
             $criterioNombre = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+            $criterioIcono = optional($item->BarrerasPerimetrales)->icono ?? 'la la-shield-alt';
             $riesgo = $item->nivel_riesgo ?? 0;
 
             if (!isset($escenariosFilas[$criterioId])) {
                 $escenariosFilas[$criterioId] = [
                     'label'     => $criterioNombre,
+                    'icono'     => $criterioIcono ?: 'la la-shield-alt',
                     'muy_bajo'  => 0,
                     'bajo'      => 0,
                     'medio'     => 0,
@@ -848,6 +871,8 @@ class AnalisisRiesgosController extends Controller
             'vulnerabilidadLabels',
             'vulnerabilidadPromedios',
             'riesgosPorCriterioLabels',
+            'riesgosPorCriterioIconos',
+            'riesgosPorCriterioResumen',
             'riesgosPorCriterioMuyAlto',
             'riesgosPorCriterioAlto',
             'riesgosPorCriterioMedio',

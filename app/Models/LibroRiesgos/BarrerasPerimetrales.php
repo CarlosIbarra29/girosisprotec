@@ -28,7 +28,7 @@ class BarrerasPerimetrales extends Model
     /**
      * @var array
      */
-    protected $fillable = ['status_delete', 'alcance', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
+    protected $fillable = ['status_delete', 'alcance', 'icono', 'created_at', 'updated_at', 'iduserCreated', 'iduserUpdated'];
 
 
     public function Statusdelete()
