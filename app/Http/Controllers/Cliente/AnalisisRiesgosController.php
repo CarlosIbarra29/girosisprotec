@@ -653,9 +653,13 @@ class AnalisisRiesgosController extends Controller
         $matrixRows   = [];
         $matrixCriteriaMap = [];
 
-        foreach ($data as $unid) {
+        foreach ($data as $index => $unid) {
 
-            $id = (int) ($unid->id ?? 0);
+            // $id = (int) ($unid->id ?? 0);
+            $dbId = (int) ($unid->id ?? 0);
+
+            $escenarioNumero = $index + 1;
+            $escenarioLabel = 'E.' . $escenarioNumero;
 
             $criterioId = (int) ($unid->libror_barreras_perimetrales_id ?? 0);
             $criterioLabel = optional($unid->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
@@ -723,8 +727,15 @@ class AnalisisRiesgosController extends Controller
             }
 
             $matrixPoints[] = [
-                'id'            => $id,
-                'label'         => 'E.' . $id,
+                // 'id'            => $id,
+                // 'label'         => 'E.' . $id,
+
+                // 'criterio_id'   => $criterioId,
+                // 'criterio'      => $criterioLabel,
+
+                'id'            => $escenarioNumero,
+                'db_id'         => $dbId,
+                'label'         => $escenarioLabel,
 
                 'criterio_id'   => $criterioId,
                 'criterio'      => $criterioLabel,
@@ -745,8 +756,13 @@ class AnalisisRiesgosController extends Controller
             ];
 
             $matrixRows[] = [
-                'id'            => $id,
-                'label'         => 'E.' . $id,
+                // 'id'            => $id,
+                // 'label'         => 'E.' . $id,
+                // 'criterio_id'   => $criterioId,
+                // 'criterio'      => $criterioLabel,
+                'id'            => $escenarioNumero,
+                'db_id'         => $dbId,
+                'label'         => $escenarioLabel,
                 'criterio_id'   => $criterioId,
                 'criterio'      => $criterioLabel,
 

@@ -1,550 +1,566 @@
 @extends('layouts.app')
 
 @section('title')
-    Tablero
+    Dashboard Análisis de riesgos
 @endsection
 
 @push('scripts')
     <script src="{{ asset('js/tablero/Notificaciones.js') }}"></script>
-    {{-- Chart.js para las gráficas del tablero (datos simulados) --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/tablero.css?v=1.0.2') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/tablero.css?v=1.0.5') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
 
-<div class="dashboard-shell">
-    <div class="dashboard-header">
-        <div class="dashboard-title-block">
-            <div class="dashboard-title">Tablero de análisis de riesgo</div>
-            <div class="dashboard-subchip">
-                <i class="fas fa-chart-pie"></i>
-                Visión general de los análisis de riesgos de tu cliente.
+@php
+    $totalDash = max((int)($dashStats['total'] ?? 0), 1);
+
+    $pctMuyAlto = round((($riskCounts['muy_alto'] ?? 0) / $totalDash) * 100, 1);
+    $pctAlto = round((($riskCounts['alto'] ?? 0) / $totalDash) * 100, 1);
+    $pctMedio = round((($riskCounts['medio'] ?? 0) / $totalDash) * 100, 1);
+    $pctBajo = round((($riskCounts['bajo'] ?? 0) / $totalDash) * 100, 1);
+    $pctMuyBajo = round((($riskCounts['muy_bajo'] ?? 0) / $totalDash) * 100, 1);
+
+    $riesgosCriticos = ($riskCounts['muy_alto'] ?? 0) + ($riskCounts['alto'] ?? 0);
+    $pctCriticos = round(($riesgosCriticos / $totalDash) * 100, 1);
+@endphp
+
+<div class="dashboard-shell dashboard-shell--dark">
+
+    <div class="dashboard-topbar">
+        <div>
+            <div class="dashboard-eyebrow">¡Hola, {{ auth()->user()->name ?? 'ADMIN' }}!</div>
+            <h1 class="dashboard-title">Dashboard Análisis de riesgos</h1>
+            <p class="dashboard-subtitle">
+                Gestiona y monitorea el comportamiento general de los análisis de riesgo social.
+            </p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="{{ route('cliente.nuevocliente') }}" class="dashboard-btn dashboard-btn--primary">
+                <i class="la la-plus"  style="color: #000;"></i>
+                Nuevo Análisis de Riesgo
+            </a>
+        </div>
+    </div>
+
+    {{-- KPIS --}}
+    <div class="dashboard-kpi-row">
+        <div class="risk-kpi-card risk-kpi-card--total">
+            <div class="risk-kpi-icon">
+                <i class="la la-file-text"></i>
+            </div>
+            <div>
+                <span>Análisis totales</span>
+                <strong>{{ $dashStats['total'] ?? 0 }}</strong>
+                <small>Todos los análisis registrados</small>
             </div>
         </div>
-        <div class="dashboard-chips">
-            <div class="dash-chip">
-                <span class="dash-chip-dot"></span> Datos simulados
+
+        <div class="risk-kpi-card risk-kpi-card--muy-alto">
+            <div class="risk-kpi-icon">
+                <i class="la la-shield"></i>
             </div>
-            <div class="dash-chip dash-chip--ghost">
-                Hoy
+            <div>
+                <span>Riesgos muy altos</span>
+                <strong>{{ $dashStats['muy_alto'] ?? 0 }}</strong>
+                <small>Atención inmediata</small>
             </div>
-            <div class="dash-chip dash-chip--ghost">
-                Últimos 30 días
+        </div>
+
+        <div class="risk-kpi-card risk-kpi-card--alto">
+            <div class="risk-kpi-icon">
+                <i class="la la-warning"></i>
+            </div>
+            <div>
+                <span>Riesgos altos</span>
+                <strong>{{ $dashStats['alto'] ?? 0 }}</strong>
+                <small>Prioridad operativa</small>
+            </div>
+        </div>
+
+        <div class="risk-kpi-card risk-kpi-card--medio">
+            <div class="risk-kpi-icon">
+                <i class="la la-balance-scale"></i>
+            </div>
+            <div>
+                <span>Riesgos medios</span>
+                <strong>{{ $dashStats['medio'] ?? 0 }}</strong>
+                <small>Seguimiento preventivo</small>
+            </div>
+        </div>
+
+        <div class="risk-kpi-card risk-kpi-card--bajo">
+            <div class="risk-kpi-icon">
+                <i class="la la-check-circle"></i>
+            </div>
+            <div>
+                <span>Riesgos bajos</span>
+                <strong>{{ $dashStats['bajo'] ?? 0 }}</strong>
+                <small>Controlados</small>
+            </div>
+        </div>
+
+        <div class="risk-kpi-card risk-kpi-card--muy-bajo">
+            <div class="risk-kpi-icon">
+                <i class="la la-leaf"></i>
+            </div>
+            <div>
+                <span>Riesgos muy bajos</span>
+                <strong>{{ $dashStats['muy_bajo'] ?? 0 }}</strong>
+                <small>Aceptables</small>
             </div>
         </div>
     </div>
 
-    {{-- FILA 1 --}}
-    <div class="row">
-        {{-- Alertas recientes --}}
-        <div class="col-xl-7 col-lg-7 mb-5">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Alertas recientes de riesgo</div>
-                    <div class="dash-card-tag">Últimas 5 revisiones</div>
-                </div>
-                <div class="dash-card-body">
-                    <div class="table-responsive">
-                        <table class="alerts-table">
-                            <thead>
-                                <tr>
-                                    <th>Cliente</th>
-                                    <th>Categoría</th>
-                                    <th>Descripción</th>
-                                    <th>Nivel</th>
-                                    <th>Fecha</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Planta Norte</td>
-                                    <td>Riesgo Social</td>
-                                    <td>Incremento de incidentes en acceso principal.</td>
-                                    <td><span class="alerts-badge badge-alta">Alto</span></td>
-                                    <td>01-12-2025</td>
-                                    <td><a href="#" class="alerts-link">Ver detalle</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Centro Logístico</td>
-                                    <td>Riesgo Tecnológico</td>
-                                    <td>Fallas intermitentes en CCTV perimetral.</td>
-                                    <td><span class="alerts-badge badge-media">Medio</span></td>
-                                    <td>29-11-2025</td>
-                                    <td><a href="#" class="alerts-link">Ver detalle</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Sucursal Sur</td>
-                                    <td>Riesgo Natural</td>
-                                    <td>Zona identificada con riesgo de inundación.</td>
-                                    <td><span class="alerts-badge badge-alta">Alto</span></td>
-                                    <td>28-11-2025</td>
-                                    <td><a href="#" class="alerts-link">Ver detalle</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Edificio Corporativo</td>
-                                    <td>Riesgo Social</td>
-                                    <td>Reportes de accesos no autorizados nocturnos.</td>
-                                    <td><span class="alerts-badge badge-media">Medio</span></td>
-                                    <td>27-11-2025</td>
-                                    <td><a href="#" class="alerts-link">Ver detalle</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Almacén SAT</td>
-                                    <td>Riesgo Tecnológico</td>
-                                    <td>Servidor de monitoreo con capacidad al 90%.</td>
-                                    <td><span class="alerts-badge badge-baja">Bajo</span></td>
-                                    <td>26-11-2025</td>
-                                    <td><a href="#" class="alerts-link">Ver detalle</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    {{-- MAIN GRID --}}
+    <div class="dashboard-main-grid">
+
+        {{-- DISTRIBUCIÓN --}}
+        <div class="dash-card dash-card--distribution">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Distribución de riesgos por nivel</h3>
+                    <span>Matriz general de criticidad</span>
                 </div>
             </div>
-        </div>
 
-        {{-- Resumen rápido --}}
-        <div class="col-xl-5 col-lg-5 mb-5">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Resumen rápido</div>
-                    <div class="dash-card-tag">Hoy</div>
-                </div>
-                <div class="dash-card-body">
-                    <div class="kpi-grid">
-                        <div class="kpi-item" style="--kpi-percent: 82%;">
-                            <div class="kpi-indicator">
-                                <span>82%</span>
-                            </div>
-                            <div>
-                                <div class="kpi-label">Análisis concluidos</div>
-                                <div class="kpi-value">148</div>
-                            </div>
+            <div class="dash-card-body">
+                <div class="risk-distribution-layout">
+                    <div class="risk-donut-wrap">
+                        <canvas id="riskDonutChart"></canvas>
+                        <div class="risk-donut-center">
+                            <strong>{{ $dashStats['total'] ?? 0 }}</strong>
+                            <span>Total</span>
                         </div>
-                        <div class="kpi-item" style="--kpi-percent: 36%;">
-                            <div class="kpi-indicator">
-                                <span>36</span>
-                            </div>
-                            <div>
-                                <div class="kpi-label">En proceso</div>
-                                <div class="kpi-value">36</div>
-                            </div>
+                    </div>
+
+                    <div class="risk-donut-legend">
+                        <div class="risk-legend-row risk-legend-row--muy-alto">
+                            <span><i></i> Muy Alto</span>
+                            <strong>{{ $riskCounts['muy_alto'] ?? 0 }}</strong>
                         </div>
-                        <div class="kpi-item" style="--kpi-percent: 18%;">
-                            <div class="kpi-indicator">
-                                <span>18</span>
-                            </div>
-                            <div>
-                                <div class="kpi-label">Pendientes por iniciar</div>
-                                <div class="kpi-value">18</div>
-                            </div>
+                        <div class="risk-legend-row risk-legend-row--alto">
+                            <span><i></i> Alto</span>
+                            <strong>{{ $riskCounts['alto'] ?? 0 }}</strong>
                         </div>
-                        <div class="kpi-item" style="--kpi-percent: 64%;">
-                            <div class="kpi-indicator">
-                                <span>64%</span>
-                            </div>
-                            <div>
-                                <div class="kpi-label">Planes de acción con seguimiento</div>
-                                <div class="kpi-value">64</div>
-                            </div>
+                        <div class="risk-legend-row risk-legend-row--medio">
+                            <span><i></i> Medio</span>
+                            <strong>{{ $riskCounts['medio'] ?? 0 }}</strong>
+                        </div>
+                        <div class="risk-legend-row risk-legend-row--bajo">
+                            <span><i></i> Bajo</span>
+                            <strong>{{ $riskCounts['bajo'] ?? 0 }}</strong>
+                        </div>
+                        <div class="risk-legend-row risk-legend-row--muy-bajo">
+                            <span><i></i> Muy Bajo</span>
+                            <strong>{{ $riskCounts['muy_bajo'] ?? 0 }}</strong>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    {{-- FILA 2 --}}
-    <div class="row">
-        {{-- Análisis por tipo --}}
-        <div class="col-xl-4 col-lg-6 mb-5">
-            <div class="dash-card dash-card--types">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Análisis por tipo de riesgo</div>
-                    <div class="dash-card-tag">Últimos 30 días</div>
-                </div>
-                <div class="dash-card-body">
+                <div class="dashboard-insight-box">
                     <div>
-                        <div class="risk-type-row">
-                            <div class="risk-type-label">
-                                <span class="risk-type-dot" style="background:#4f46e5;"></span> Sociales
-                            </div>
-                            <div class="flex-grow-1 mx-2">
-                                <div class="risk-type-bar-wrap">
-                                    <div class="risk-type-bar" style="--risk-percent: 72%; background:linear-gradient(90deg,#4f46e5,#a855f7);"></div>
-                                </div>
-                            </div>
-                            <div class="risk-type-count">72</div>
-                        </div>
-                        <div class="risk-type-row">
-                            <div class="risk-type-label">
-                                <span class="risk-type-dot" style="background:#059669;"></span> Tecnológicos
-                            </div>
-                            <div class="flex-grow-1 mx-2">
-                                <div class="risk-type-bar-wrap">
-                                    <div class="risk-type-bar" style="--risk-percent: 54%; background:linear-gradient(90deg,#059669,#22c55e);"></div>
-                                </div>
-                            </div>
-                            <div class="risk-type-count">54</div>
-                        </div>
-                        <div class="risk-type-row">
-                            <div class="risk-type-label">
-                                <span class="risk-type-dot" style="background:#f97316;"></span> Naturales
-                            </div>
-                            <div class="flex-grow-1 mx-2">
-                                <div class="risk-type-bar-wrap">
-                                    <div class="risk-type-bar" style="--risk-percent: 38%; background:linear-gradient(90deg,#f97316,#ef4444);"></div>
-                                </div>
-                            </div>
-                            <div class="risk-type-count">38</div>
-                        </div>
-                        <div class="risk-type-row">
-                            <div class="risk-type-label">
-                                <span class="risk-type-dot" style="background:#6b7280;"></span> Otros
-                            </div>
-                            <div class="flex-grow-1 mx-2">
-                                <div class="risk-type-bar-wrap">
-                                    <div class="risk-type-bar" style="--risk-percent: 26%; background:linear-gradient(90deg,#6b7280,#9ca3af);"></div>
-                                </div>
-                            </div>
-                            <div class="risk-type-count">26</div>
-                        </div>
+                        <span>Riesgos no aceptables</span>
+                        <strong>{{ $dashStats['no_aceptables'] ?? 0 }}</strong>
                     </div>
-
-                    <div class="risk-type-summary">
-                                <span>Sociales 38%</span>
-                                <span>Tecnológicos 28%</span>
-                                <span>Naturales 20%</span>
-                                <span>Otros 14%</span>
-                            </div>
-
-                    <div class="risk-type-footer">
-                        <div>
-                            <div>Total análisis: <strong>190</strong></div>
-                            
-                        </div>
-                        <span>Actualizado al día de hoy</span>
+                    <div>
+                        <span>Riesgos aceptables</span>
+                        <strong>{{ $dashStats['aceptables'] ?? 0 }}</strong>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Planes de acción --}}
-        <div class="col-xl-4 col-lg-6 mb-5">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Planes de acción</div>
-                    <div class="dash-card-tag">Seguimiento operativo</div>
+        {{-- ANÁLISIS RECIENTES --}}
+        <div class="dash-card dash-card--recent">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Análisis recientes</h3>
+                    <span>Últimos registros capturados</span>
                 </div>
-                <div class="dash-card-body">
-                    <div class="plan-chip">
-                        <span><span class="dot" style="--bg:#22c55e;"></span> Ejecutados en tiempo</span>
-                        <strong>46</strong>
-                    </div>
-                    <div class="plan-chip">
-                        <span><span class="dot" style="--bg:#facc15;"></span> En curso</span>
-                        <strong>29</strong>
-                    </div>
-                    <div class="plan-chip">
-                        <span><span class="dot" style="--bg:#fb923c;"></span> Con retraso</span>
-                        <strong>12</strong>
-                    </div>
-                    <div class="plan-chip">
-                        <span><span class="dot" style="--bg:#ef4444;"></span> Sin iniciar</span>
-                        <strong>7</strong>
+            </div>
+
+            <div class="dash-card-body">
+                <div class="recent-list">
+                    @forelse($recentAnalyses as $item)
+                        <a href="{{ $item['cliente_id'] ? route('analisis.analisiscliente', $item['cliente_id']) : 'javascript:void(0)' }}"
+                           class="recent-analysis-item">
+                            <div class="recent-analysis-icon recent-analysis-icon--{{ $item['tipo_class'] }}">
+                                <i class="la la-file-text"></i>
+                            </div>
+
+                            <div class="recent-analysis-content">
+                                <strong>{{ $item['cliente'] }}</strong>
+                                <span>{{ $item['tipo'] }} · {{ $item['fecha'] }}</span>
+                                <small>{{ Str::limit($item['evento'], 78) }}</small>
+                            </div>
+
+                            <div class="recent-analysis-right">
+                                <span class="risk-badge risk-badge--{{ $item['nivel_key'] }}">
+                                    {{ $item['nivel'] }}
+                                </span>
+                                <em>{{ $item['hace'] }}</em>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="empty-state">
+                            <i class="la la-folder-open"></i>
+                            <span>No hay análisis recientes</span>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        {{-- ACTIVIDAD --}}
+        <div class="dash-card dash-card--activity">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Actividad reciente</h3>
+                    <span>Movimientos del sistema</span>
+                </div>
+            </div>
+
+            <div class="dash-card-body">
+                <div class="activity-list">
+                    @forelse($recentActivity as $activity)
+                        <div class="activity-item">
+                            <div class="activity-icon activity-icon--{{ $activity['tipo_class'] }}">
+                                <i class="la la-history"></i>
+                            </div>
+                            <div>
+                                <strong>{{ $activity['text'] }}</strong>
+                                <span>{{ $activity['subtext'] }}</span>
+                            </div>
+                            <em>{{ $activity['hace'] }}</em>
+                        </div>
+                    @empty
+                        <div class="empty-state">
+                            <i class="la la-bell-slash"></i>
+                            <span>Sin actividad reciente</span>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        {{-- SEMÁFORO OPERATIVO --}}
+        <div class="dash-card dash-card--priority">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Semáforo operativo</h3>
+                    <span>Prioridad de atención social</span>
+                </div>
+            </div>
+
+            <div class="dash-card-body">
+                <div class="priority-hero">
+                    <div class="priority-ring" style="--priority-percent: {{ $pctCriticos }}%;">
+                        <span>{{ $pctCriticos }}%</span>
                     </div>
 
-                    <hr class="my-3">
+                    <div class="priority-copy">
+                        <strong>{{ $riesgosCriticos }}</strong>
+                        <span>riesgos críticos</span>
+                        <small>Muy altos y altos que requieren seguimiento prioritario.</small>
+                    </div>
+                </div>
 
-                    <div style="font-size:.8rem; color:var(--muted); margin-bottom:.25rem;">
-                        Porcentaje de controles asegurados
+                <div class="priority-bars">
+                    <div class="priority-row priority-row--muy-alto">
+                        <div><i></i> Muy Alto</div>
+                        <span>{{ $riskCounts['muy_alto'] ?? 0 }}</span>
+                        <b><em style="width: {{ $pctMuyAlto }}%;"></em></b>
                     </div>
-                    <div class="risk-type-bar-wrap mb-1" style="height:11px;">
-                        <div class="risk-type-bar" style="--risk-percent:68%; background:linear-gradient(90deg,var(--camel),var(--camel-700));"></div>
+
+                    <div class="priority-row priority-row--alto">
+                        <div><i></i> Alto</div>
+                        <span>{{ $riskCounts['alto'] ?? 0 }}</span>
+                        <b><em style="width: {{ $pctAlto }}%;"></em></b>
                     </div>
-                    <div class="d-flex justify-content-between" style="font-size:.8rem; color:var(--muted);">
-                        <span>Objetivo: 80%</span>
-                        <span><strong>68%</strong> actual</span>
+
+                    <div class="priority-row priority-row--medio">
+                        <div><i></i> Medio</div>
+                        <span>{{ $riskCounts['medio'] ?? 0 }}</span>
+                        <b><em style="width: {{ $pctMedio }}%;"></em></b>
+                    </div>
+
+                    <div class="priority-row priority-row--bajo">
+                        <div><i></i> Bajo</div>
+                        <span>{{ $riskCounts['bajo'] ?? 0 }}</span>
+                        <b><em style="width: {{ $pctBajo }}%;"></em></b>
+                    </div>
+
+                    <div class="priority-row priority-row--muy-bajo">
+                        <div><i></i> Muy Bajo</div>
+                        <span>{{ $riskCounts['muy_bajo'] ?? 0 }}</span>
+                        <b><em style="width: {{ $pctMuyBajo }}%;"></em></b>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Evolución mensual --}}
-        <div class="col-xl-4 col-lg-12 mb-5">
-            <div class="dash-card dash-card--line">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Evolución mensual de análisis</div>
-                    <div class="dash-card-tag">Últimos 6 meses</div>
+        {{-- EVOLUCIÓN --}}
+        <div class="dash-card dash-card--evolution">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Evolución mensual</h3>
+                    <span>Últimos 6 meses</span>
                 </div>
-                <div class="dash-card-body">
-                    <canvas id="evolucionChart"></canvas>
+            </div>
+
+            <div class="dash-card-body">
+                <canvas id="monthlyRiskChart"></canvas>
+            </div>
+        </div>
+
+        {{-- ACCIONES RÁPIDAS --}}
+        <div class="dash-card dash-card--quick">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Acciones rápidas</h3>
+                    <span>Atajos operativos</span>
+                </div>
+            </div>
+
+            <div class="dash-card-body">
+                <div class="quick-actions-grid">
+                    <a href="{{ route('cliente.nuevocliente') }}" class="quick-action-card">
+                        <i class="la la-plus-circle"></i>
+                        <strong>Nuevo Análisis</strong>
+                        <span>Crear análisis</span>
+                    </a>
+
+                    <a href="{{ route('cliente.agregarcliente') }}" class="quick-action-card">
+                        <i class="la la-users"></i>
+                        <strong>Nuevo Cliente</strong>
+                        <span>Registrar cliente</span>
+                    </a>
+
+                    <a href="{{ route('cliente.listadocliente') }}" class="quick-action-card">
+                        <i class="la la-list"></i>
+                        <strong>Mis Clientes</strong>
+                        <span>Ver clientes</span>
+                    </a>
+
+                    <a href="{{ route('hd.parametros') }}" class="quick-action-card">
+                        <i class="la la-cog"></i>
+                        <strong>Parámetros</strong>
+                        <span>Configurar sistema</span>
+                    </a>
                 </div>
             </div>
         </div>
+
+        {{-- CLIENTES --}}
+        <div class="dash-card dash-card--clients">
+            <div class="dash-card-header">
+                <div>
+                    <h3>Clientes registrados</h3>
+                    <span>Resumen operativo</span>
+                </div>
+
+                <a href="{{ route('cliente.listadocliente') }}" class="dash-header-link">
+                    Ver todos mis clientes
+                    <i class="la la-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="dash-card-body">
+                <div class="client-table-wrap">
+                    <table class="client-table">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nombre comercial</th>
+                                <th>Razón social</th>
+                                <th>Contacto</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Análisis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($clientesPreview as $clienteRow)
+                                <tr>
+                                    <td>{{ $clienteRow['no'] }}</td>
+                                    <td>{{ $clienteRow['nombre'] }}</td>
+                                    <td>{{ $clienteRow['razon_social'] }}</td>
+                                    <td>{{ $clienteRow['contacto'] }}</td>
+                                    <td>{{ $clienteRow['telefono'] }}</td>
+                                    <td>{{ $clienteRow['email'] }}</td>
+                                    <td>
+                                        <span class="client-count-pill">
+                                            {{ $clienteRow['analisis'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">No hay clientes registrados</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="client-table-footer">
+                    <span>Mostrando clientes principales</span>
+                    <strong>{{ $dashStats['clientes'] ?? 0 }} clientes registrados</strong>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    {{-- FILA 3 --}}
-    <div class="row">
-        {{-- Criticidad --}}
-        <div class="col-xl-4 col-lg-6 mb-5">
-            <div class="dash-card dash-card--donut">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Distribución por nivel de criticidad</div>
-                    <div class="dash-card-tag">Matriz general</div>
-                </div>
-                <div class="dash-card-body">
-                    <div class="donut-wrapper">
-                        <canvas id="criticidadChart"></canvas>
-                        <div class="donut-center-text">
-                            <span>Total análisis</span>
-                            <strong>190</strong>
-                        </div>
-                    </div>
-                    <div class="donut-legend">
-                        <div class="donut-pill">
-                            <span class="dot" style="--bg:#e5e7eb;"></span> Muy bajo (8)
-                        </div>
-                        <div class="donut-pill">
-                            <span class="dot" style="--bg:#bbf7d0;"></span> Bajo (24)
-                        </div>
-                        <div class="donut-pill">
-                            <span class="dot" style="--bg:#fde68a;"></span> Medio (36)
-                        </div>
-                        <div class="donut-pill">
-                            <span class="dot" style="--bg:#fed7aa;"></span> Alto (18)
-                        </div>
-                        <div class="donut-pill">
-                            <span class="dot" style="--bg:#fecaca;"></span> Muy alto (14)
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Cumpleaños del mes --}}
-        <div class="col-xl-4 col-lg-6 mb-5">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Cumpleaños del mes</div>
-                    <div class="dash-card-tag">Equipo clave</div>
-                </div>
-                <div class="dash-card-body">
-                    <div class="birthday-item">
-                        <div class="birthday-left">
-                            <div class="birthday-avatar">AL</div>
-                            <div>
-                                <div class="birthday-name">Ana López</div>
-                                <div class="birthday-role">Coordinadora de riesgos</div>
-                            </div>
-                        </div>
-                        <div class="birthday-date">03 Dic</div>
-                    </div>
-                    <div class="birthday-item">
-                        <div class="birthday-left">
-                            <div class="birthday-avatar">JR</div>
-                            <div>
-                                <div class="birthday-name">José Ramírez</div>
-                                <div class="birthday-role">Analista social</div>
-                            </div>
-                        </div>
-                        <div class="birthday-date">11 Dic</div>
-                    </div>
-                    <div class="birthday-item">
-                        <div class="birthday-left">
-                            <div class="birthday-avatar">MC</div>
-                            <div>
-                                <div class="birthday-name">Mariana Cruz</div>
-                                <div class="birthday-role">Analista tecnológico</div>
-                            </div>
-                        </div>
-                        <div class="birthday-date">21 Dic</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Calendario --}}
-        <div class="col-xl-4 col-lg-12 mb-5">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <div class="dash-card-title">Calendario</div>
-                    <div class="dash-card-tag">Vista mensual</div>
-                </div>
-                <div class="dash-card-body">
-                    <div class="calendar-wrapper">
-                        <div class="calendar-header">
-                            <button class="calendar-nav-btn" id="calPrev">&lsaquo;</button>
-                            <div id="calMonthLabel"></div>
-                            <button class="calendar-nav-btn" id="calNext">&rsaquo;</button>
-                        </div>
-                        <div class="calendar-grid" id="calendarGrid">
-                            <!-- se llena por JS -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Config global Chart.js
-    if (typeof Chart !== 'undefined') {
-        Chart.defaults.font.family = '"Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-        Chart.defaults.color = '#4b5563';
-    }
+    if (typeof Chart === 'undefined') return;
 
-    // Donut criticidad
-    const criticidadCtx = document.getElementById('criticidadChart');
-    if (criticidadCtx && typeof Chart !== 'undefined') {
-        new Chart(criticidadCtx.getContext('2d'), {
+    Chart.defaults.font.family = '"Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    Chart.defaults.color = 'rgba(255,255,255,.70)';
+
+    const riskCounts = @json($riskCounts ?? []);
+    const monthlyEvolution = @json($monthlyEvolution ?? []);
+
+    const riskDonut = document.getElementById('riskDonutChart');
+
+    if (riskDonut) {
+        new Chart(riskDonut.getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: ['Muy bajo', 'Bajo', 'Medio', 'Alto', 'Muy alto'],
+                labels: ['Muy Alto', 'Alto', 'Medio', 'Bajo', 'Muy Bajo'],
                 datasets: [{
-                    data: [8, 24, 36, 18, 14],
-                    backgroundColor: [
-                        '#e5e7eb',
-                        '#bbf7d0',
-                        '#fde68a',
-                        '#fed7aa',
-                        '#fecaca'
+                    data: [
+                        riskCounts.muy_alto || 0,
+                        riskCounts.alto || 0,
+                        riskCounts.medio || 0,
+                        riskCounts.bajo || 0,
+                        riskCounts.muy_bajo || 0
                     ],
-                    borderWidth: 0
+                    backgroundColor: [
+                        '#ef1d1d',
+                        '#f97316',
+                        '#facc15',
+                        '#22c55e',
+                        '#86efac'
+                    ],
+                    borderColor: '#11161d',
+                    borderWidth: 4,
+                    hoverOffset: 8
                 }]
             },
             options: {
-                plugins: {
-                    legend: { display: false }
-                },
+                responsive: true,
+                maintainAspectRatio: false,
                 cutout: '72%',
-                maintainAspectRatio: false
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(8,13,20,.96)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(194,164,118,.25)',
+                        borderWidth: 1
+                    }
+                }
             }
         });
     }
 
-    // Línea evolución mensual
-    const evoCtx = document.getElementById('evolucionChart');
-    if (evoCtx && typeof Chart !== 'undefined') {
-        new Chart(evoCtx.getContext('2d'), {
+    const monthlyChart = document.getElementById('monthlyRiskChart');
+
+    if (monthlyChart) {
+        new Chart(monthlyChart.getContext('2d'), {
             type: 'line',
             data: {
-                labels: ['Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                labels: monthlyEvolution.map(row => row.label),
                 datasets: [
                     {
-                        label: 'Análisis concluidos',
-                        data: [18, 24, 30, 28, 34, 39],
+                        label: 'Análisis registrados',
+                        data: monthlyEvolution.map(row => row.total),
                         tension: 0.35,
-                        borderColor: '#C2A476',
-                        backgroundColor: 'rgba(194,164,118,0.25)',
+                        borderColor: '#D7A73F',
+                        backgroundColor: 'rgba(215,167,63,.16)',
                         fill: true,
-                        pointRadius: 3,
-                        pointHoverRadius: 4
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#D7A73F',
+                        pointBorderColor: '#0b1119',
+                        borderWidth: 3
                     },
                     {
-                        label: 'Nuevos riesgos',
-                        data: [10, 14, 16, 19, 17, 21],
+                        label: 'Riesgos altos / muy altos',
+                        data: monthlyEvolution.map(row => row.criticos),
                         tension: 0.35,
-                        borderColor: '#6b7280',
-                        backgroundColor: 'rgba(148,163,184,0.2)',
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239,68,68,.10)',
                         fill: true,
-                        pointRadius: 3,
-                        pointHoverRadius: 4
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#ef4444',
+                        pointBorderColor: '#0b1119',
+                        borderWidth: 3
                     }
                 ]
             },
             options: {
-                plugins: {
-                    legend: { display: false }
-                },
+                responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(255,255,255,.72)',
+                            usePointStyle: true,
+                            boxWidth: 8,
+                            font: {
+                                weight: '700'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(8,13,20,.96)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(194,164,118,.25)',
+                        borderWidth: 1
+                    }
+                },
                 scales: {
                     x: {
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: {
+                            color: 'rgba(255,255,255,.62)',
+                            font: { weight: '700' }
+                        }
                     },
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(148,163,184,.25)' },
-                        ticks: { stepSize: 10 }
+                        grid: {
+                            color: 'rgba(255,255,255,.075)',
+                            borderDash: [4, 4]
+                        },
+                        ticks: {
+                            precision: 0,
+                            color: 'rgba(255,255,255,.62)',
+                            font: { weight: '700' }
+                        }
                     }
                 }
             }
         });
-    }
-
-    // Calendario simple
-    const grid  = document.getElementById('calendarGrid');
-    const label = document.getElementById('calMonthLabel');
-    const btnPrev = document.getElementById('calPrev');
-    const btnNext = document.getElementById('calNext');
-
-    if (grid && label && btnPrev && btnNext) {
-        let current = new Date();
-
-        const dayNames = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
-        function renderCalendar() {
-            grid.innerHTML = '';
-            // cabecera días
-            dayNames.forEach(d => {
-                const el = document.createElement('div');
-                el.className = 'calendar-day-name';
-                el.textContent = d;
-                grid.appendChild(el);
-            });
-
-            const year  = current.getFullYear();
-            const month = current.getMonth();
-            const first = new Date(year, month, 1);
-            const last  = new Date(year, month + 1, 0);
-            const startDay = (first.getDay() + 6) % 7; // Lunes = 0
-
-            label.textContent = first.toLocaleDateString('es-MX', {
-                month: 'long',
-                year: 'numeric'
-            });
-
-            // días previos
-            for (let i = 0; i < startDay; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'calendar-cell calendar-cell--muted';
-                cell.textContent = '';
-                grid.appendChild(cell);
-            }
-
-            const today = new Date();
-            for (let d = 1; d <= last.getDate(); d++) {
-                const cellDate = new Date(year, month, d);
-                const cell = document.createElement('div');
-                cell.className = 'calendar-cell';
-                cell.textContent = d;
-
-                if (today.toDateString() === cellDate.toDateString()) {
-                    cell.classList.add('calendar-cell--today');
-                }
-
-                grid.appendChild(cell);
-            }
-        }
-
-        btnPrev.addEventListener('click', () => {
-            current.setMonth(current.getMonth() - 1);
-            renderCalendar();
-        });
-        btnNext.addEventListener('click', () => {
-            current.setMonth(current.getMonth() + 1);
-            renderCalendar();
-        });
-
-        renderCalendar();
     }
 });
 </script>

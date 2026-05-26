@@ -1,37 +1,122 @@
-.btn.btn-login {
+/* =========================================================
+   PRINCIPAL.CSS - GIRO BY SISPROTEC
+   Layout oscuro limpio sin romper tablas/vistas internas
+   ========================================================= */
+
+/* =========================
+   VARIABLES
+   ========================= */
+
+:root{
+    --giro-body: #2b2b2b;
+    --giro-body-2: #242424;
+
+    --giro-black: #050505;
+    --giro-black-2: #0a0a0a;
+    --giro-black-3: #101010;
+
+    --giro-white: #ffffff;
+    --giro-text: rgba(255,255,255,.92);
+    --giro-text-soft: rgba(255,255,255,.75);
+    --giro-muted: rgba(255,255,255,.50);
+
+    --giro-gold: #c79a2f;
+    --giro-gold-2: #8a651d;
+    --giro-gold-3: #f0c868;
+    --giro-gold-soft: rgba(199,154,47,.16);
+
+    --giro-red: #ff4f4f;
+    --giro-red-soft: rgba(239,68,68,.13);
+
+    --giro-border: rgba(255,255,255,.09);
+    --giro-border-soft: rgba(255,255,255,.055);
+
+    --giro-sidebar-collapsed: 70px;
+}
+
+/* =========================
+   BASE GENERAL
+   ========================= */
+
+html,
+body{
+    font-size: 14px !important;
+    font-weight: 400;
+}
+
+body#kt_body{
+    background: var(--giro-body) !important;
+}
+
+body#kt_body.aside-enabled{
+    background:
+        radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 28%),
+        linear-gradient(135deg, var(--giro-body) 0%, var(--giro-body-2) 100%) !important;
+    color: #111827;
+}
+
+body#kt_body.aside-enabled .page,
+body#kt_body.aside-enabled #kt_wrapper,
+body#kt_body.aside-enabled #kt_content,
+body#kt_body.aside-enabled .content{
+    background: transparent !important;
+}
+
+body#kt_body.aside-enabled #kt_content{
+    padding-top: 20px !important;
+    padding-bottom: 12px !important;
+}
+
+body#kt_body.aside-enabled #kt_content > .d-flex.flex-column-fluid{
+    background: transparent !important;
+}
+
+body#kt_body.aside-enabled #kt_content .container-fluid{
+    background: transparent !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+/* =========================
+   BOTONES LOGIN / LEGACY
+   ========================= */
+
+.btn.btn-login{
     color: #ffffff;
     background-color: #cc0c73;
     border-color: #cc0c73;
 }
 
-.btn.btn-login-green {
+.btn.btn-login-green{
     color: #ffffff;
     background-color: #669900;
     border-color: #89cb06;
 }
 
-.btn.btn-login i {
+.btn.btn-login i,
+.btn.btn-login-green i{
     color: #ffffff;
 }
 
-.btn.btn-login .svg-icon svg g [fill] {
-    -webkit-transition: fill 0.3s ease;
+.btn.btn-login .svg-icon svg g [fill],
+.btn.btn-login-green .svg-icon svg g [fill]{
     transition: fill 0.3s ease;
     fill: #ffffff;
 }
 
-.btn.btn-login .svg-icon svg:hover g [fill] {
-    -webkit-transition: fill 0.3s ease;
+.btn.btn-login .svg-icon svg:hover g [fill],
+.btn.btn-login-green .svg-icon svg:hover g [fill]{
     transition: fill 0.3s ease;
 }
 
-.btn.btn-login.dropdown-toggle:after {
+.btn.btn-login.dropdown-toggle:after,
+.btn.btn-login-green.dropdown-toggle:after{
     color: #ffffff;
 }
 
 .btn.btn-login:hover:not(.btn-text):not(:disabled):not(.disabled),
 .btn.btn-login:focus:not(.btn-text),
-.btn.btn-login.focus:not(.btn-text) {
+.btn.btn-login.focus:not(.btn-text){
     color: #ffffff;
     background-color: rgba(204, 12, 118, 0.85);
     border-color: #d71a7f;
@@ -39,32 +124,17 @@
 
 .btn.btn-login-green:hover:not(.btn-text):not(:disabled):not(.disabled),
 .btn.btn-login-green:focus:not(.btn-text),
-.btn.btn-login-green.focus:not(.btn-text) {
+.btn.btn-login-green.focus:not(.btn-text){
     color: #ffffff;
     background-color: #669900;
     border-color: #89cb06;
 }
 
-.btn.btn-login-green i {
-    color: #ffffff;
-}
+/* =========================
+   UTILIDADES / LEGACY
+   ========================= */
 
-.btn.btn-login-green .svg-icon svg g [fill] {
-    -webkit-transition: fill 0.3s ease;
-    transition: fill 0.3s ease;
-    fill: #ffffff;
-}
-
-.btn.btn-login-green .svg-icon svg:hover g [fill] {
-    -webkit-transition: fill 0.3s ease;
-    transition: fill 0.3s ease;
-}
-
-.btn.btn-login-green.dropdown-toggle:after {
-    color: #ffffff;
-}
-
-.contenedor-video {
+.contenedor-video{
     position: relative;
     background-color: black;
     /*height: 75vh;*/
@@ -73,7 +143,7 @@
     overflow: hidden;
 }
 
-.color-gerencia {
+.color-gerencia{
     /*color: mediumvioletred !important;*/
     /*color: #73DE60 !important;*/
     /*color: #FFEF67 !important;*/
@@ -81,7 +151,7 @@
     color: #3699FF !important;
 }
 
-.video-login {
+.video-login{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -90,177 +160,637 @@
     width: auto;
     height: auto;
     z-index: 0;
-    -ms-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 }
 
-.sinpadding [class*="col-"] {
+.sinpadding [class*="col-"]{
     padding: 0;
 }
 
-.uppercase {
+.uppercase{
     text-transform: uppercase;
 }
 
-.fv-plugins-message-container .fv-help-block {
+.fv-plugins-message-container .fv-help-block{
     font-size: 0.95rem !important;
 }
 
-.aside-menu .menu-nav>.menu-item>.menu-heading .menu-icon.svg-icon svg g [fill],
-.aside-menu .menu-nav>.menu-item>.menu-link .menu-icon.svg-icon svg g [fill] {
+/* =========================
+   ASIDE / SIDEBAR NEGRO
+   ========================= */
+
+body#kt_body.aside-enabled #kt_aside{
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    overflow: visible !important; /* IMPORTANTE: permite que la flecha no se corte */
+    background: linear-gradient(180deg, var(--giro-black) 0%, var(--giro-black-2) 100%) !important;
+    border-right: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: 18px 0 55px rgba(0,0,0,.45) !important;
+    z-index: 98 !important;
+}
+
+/* =========================
+   BRAND / LOGO
+   ========================= */
+
+body#kt_body.aside-enabled #kt_brand{
+    height: 78px !important;
+    min-height: 78px !important;
+    padding: 0 14px !important;
+    background: var(--giro-black) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: inset 0 -1px 0 rgba(199,154,47,.16) !important;
+    position: relative !important;
+    overflow: visible !important; /* IMPORTANTE: permite que la flecha salga */
+    z-index: 120 !important;
+}
+
+body#kt_body.aside-enabled #kt_brand .brand-logo{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
+    max-width: 180px !important;
+}
+
+body#kt_body.aside-enabled #kt_brand img.brand-logo{
+    max-height: 54px !important;
+    max-width: 170px !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+/* Botón colapsar */
+body#kt_body.aside-enabled #kt_aside_toggle{
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 999px !important;
+    background: #151515 !important;
+    border: 1px solid rgba(255,255,255,.16) !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,.42) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    z-index: 160 !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_toggle:hover{
+    background: rgba(199,154,47,.20) !important;
+    border-color: rgba(199,154,47,.55) !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_toggle .svg-icon{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_toggle svg{
+    width: 20px !important;
+    height: 20px !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_toggle svg g [fill]{
+    fill: #ffffff !important;
+}
+
+/* =========================
+   WRAPPER DEL MENÚ
+   ========================= */
+
+body#kt_body.aside-enabled #kt_aside_menu_wrapper{
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    background: transparent !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu{
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    margin-top: 12px !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 12px !important;
+    background: transparent !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu::-webkit-scrollbar{
+    width: 7px !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu::-webkit-scrollbar-thumb{
+    background: rgba(199,154,47,.32) !important;
+    border-radius: 999px !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu::-webkit-scrollbar-track{
+    background: transparent !important;
+}
+
+/* =========================
+   MENÚ EXPANDIDO
+   ========================= */
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav{
+    padding: 0 12px !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item{
+    margin: 4px 0 !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-heading{
+    min-height: 46px !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    color: var(--giro-text) !important;
+    background: transparent !important;
+    transition: all .18s ease !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-text,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-text{
+    color: inherit !important;
+    font-size: .94rem !important;
+    font-weight: 750 !important;
+    text-transform: initial !important;
+    white-space: nowrap !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-icon,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-icon{
+    color: rgba(255,255,255,.88) !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    font-size: 1.12rem !important;
+    margin-right: 10px !important;
+}
+
+/* Icons SVG */
+body#kt_body.aside-enabled #kt_aside_menu .menu-icon.svg-icon svg g [fill]{
     transition: fill 0.3s ease;
-    fill: #f2f2f5;
+    fill: rgba(255,255,255,.88) !important;
 }
 
-.aside-menu .menu-nav>.menu-item>.menu-heading .menu-text,
-.aside-menu .menu-nav>.menu-item>.menu-link .menu-text {
-    font-weight: 400;
-    font-size: 1rem;
-    text-transform: initial;
+/* Hover / activo */
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link:hover,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-heading:hover,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item.menu-item-active > .menu-link,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item.menu-item-open > .menu-link,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link.active,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link.bg-primary{
+    background: linear-gradient(90deg, rgba(199,154,47,.94), rgba(116,83,25,.82)) !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 22px rgba(199,154,47,.15) !important;
 }
 
-.aside-menu .menu-nav>.menu-item>.menu-heading .menu-text,
-.aside-menu .menu-nav>.menu-item>.menu-link .menu-text {
-    color: #e5e5eb;
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link:hover .menu-text,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link:hover .menu-icon,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-text,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-icon,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link.active .menu-text,
+body#kt_body.aside-enabled #kt_aside_menu .menu-nav > .menu-item > .menu-link.active .menu-icon{
+    color: #ffffff !important;
 }
 
-.aside-menu .menu-nav>.menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover>.menu-heading,
-.aside-menu .menu-nav>.menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover>.menu-link {
-    background-color: #ffffff20;
+body#kt_body.aside-enabled #kt_aside_menu .menu-link:hover .menu-icon.svg-icon svg g [fill],
+body#kt_body.aside-enabled #kt_aside_menu .menu-link.active .menu-icon.svg-icon svg g [fill],
+body#kt_body.aside-enabled #kt_aside_menu .menu-link.bg-primary .menu-icon.svg-icon svg g [fill]{
+    fill: #ffffff !important;
 }
 
-.aside-menu .menu-nav>.menu-item.menu-item-active>.menu-heading,
-.aside-menu .menu-nav>.menu-item.menu-item-active>.menu-link {
-    background-color: #ffffff20;
+/* Submenus */
+body#kt_body.aside-enabled #kt_aside_menu .menu-submenu .menu-item > .menu-link .menu-text,
+body#kt_body.aside-enabled #kt_aside_menu .menu-submenu .menu-item > .menu-heading .menu-text{
+    color: var(--giro-text-soft) !important;
+    font-weight: 500 !important;
+    font-size: .92rem !important;
+    text-transform: initial !important;
 }
 
-.aside-menu .menu-nav>.menu-item.menu-item-open>.menu-heading,
-.aside-menu .menu-nav>.menu-item.menu-item-open>.menu-link {
-    background-color: #ffffff20;
+body#kt_body.aside-enabled #kt_aside_menu .menu-submenu .menu-item > .menu-link:hover,
+body#kt_body.aside-enabled #kt_aside_menu .menu-submenu .menu-item.menu-item-active > .menu-link,
+body#kt_body.aside-enabled #kt_aside_menu .menu-submenu .menu-item.menu-item-open > .menu-link{
+    background-color: rgba(255,255,255,.08) !important;
 }
 
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-heading .menu-text,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-link .menu-text {
-    color: #e5e5eb;
+body#kt_body.aside-enabled #kt_aside_menu .menu-bullet.menu-bullet-dot > span{
+    background-color: #ffffff !important;
 }
 
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item.menu-item-open>.menu-heading,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item.menu-item-open>.menu-link {
-    background-color: #ffffff10;
+/* Separadores */
+body#kt_body.aside-enabled #kt_aside_menu hr.border-secondary{
+    border-color: rgba(255,255,255,.12) !important;
+    margin: 13px 2px !important;
 }
 
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-heading .menu-bullet.menu-bullet-dot>span,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-link .menu-bullet.menu-bullet-dot>span {
-    background-color: #ffffff;
+/* Usuario sidebar */
+body#kt_body.aside-enabled #kt_aside_menu .sidebar-user{
+    margin: 10px 0 12px !important;
 }
 
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover>.menu-heading,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover>.menu-link {
-    background-color: #ffffff20;
+body#kt_body.aside-enabled #kt_aside_menu .sidebar-user .menu-link{
+    min-height: 58px !important;
+    background: rgba(255,255,255,.045) !important;
+    border: 1px solid rgba(255,255,255,.075) !important;
+    border-radius: 16px !important;
 }
 
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-heading .menu-text,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item>.menu-link .menu-text {
-    font-weight: 400;
-    font-size: 1rem;
-    text-transform: initial;
+body#kt_body.aside-enabled #kt_aside_menu .sidebar-user .symbol img,
+body#kt_body.aside-enabled #kt_aside_menu .sidebar-user .symbol-label{
+    border-radius: 14px !important;
+    border: 2px solid rgba(199,154,47,.45) !important;
+    box-shadow: 0 0 0 4px rgba(199,154,47,.09) !important;
 }
 
-html,
-body {
-    font-size: 14px !important;
-    font-weight: 400;
+body#kt_body.aside-enabled #kt_aside_menu .sidebar-user .menu-text{
+    color: #ffffff !important;
+    font-weight: 800 !important;
 }
 
-.dataTables_wrapper .dataTable tfoot th,
-.dataTables_wrapper .dataTable thead th {
-    font-weight: 600;
-    color: #575962;
+/* Logout */
+body#kt_body.aside-enabled #kt_aside_menu .menu-item.logout .menu-link{
+    color: #ff6969 !important;
 }
 
-.form-group label {
+body#kt_body.aside-enabled #kt_aside_menu .menu-item.logout .menu-link:hover{
+    background: var(--giro-red-soft) !important;
+    color: #ff8b8b !important;
+}
+
+body#kt_body.aside-enabled #kt_aside_menu .menu-item.logout .menu-link .menu-icon{
+    color: #ff4f4f !important;
+}
+
+/* =========================
+   FOOTER VISUAL DEL SIDEBAR
+   ========================= */
+
+body#kt_body.aside-enabled #kt_aside .giro-aside-footer{
+    flex: 0 0 auto !important;
+    display: block !important;
+    margin-top: auto !important;
+    padding: 14px 16px 16px !important;
+    border-top: 1px solid rgba(255,255,255,.10) !important;
+    background: #080808 !important;
+    position: relative !important;
+    z-index: 20 !important;
+}
+
+body#kt_body.aside-enabled #kt_aside .giro-aside-footer-brand{
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #ffffff !important;
+}
+
+body#kt_body.aside-enabled #kt_aside .giro-aside-footer-brand strong{
+    display: block !important;
+    color: #ffffff !important;
+    font-size: .86rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: .03em !important;
+}
+
+body#kt_body.aside-enabled #kt_aside .giro-aside-footer-brand small{
+    display: block !important;
+    color: rgba(255,255,255,.46) !important;
+    font-size: .67rem !important;
+    line-height: 1.15 !important;
+    margin-top: 2px !important;
+}
+
+body#kt_body.aside-enabled #kt_aside .giro-shield-dot{
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(199,154,47,.14) !important;
+    border: 1px solid rgba(199,154,47,.35) !important;
+    color: var(--giro-gold-3) !important;
+}
+
+body#kt_body.aside-enabled #kt_aside .giro-shield-dot i{
+    color: var(--giro-gold-3) !important;
+    font-size: 15px !important;
+}
+
+/* =========================
+   MENÚ COLAPSADO LIMPIO
+   ========================= */
+
+/* Estados que usa Metronic al colapsar */
+body#kt_body.aside-minimize #kt_aside,
+body#kt_body.aside-minimize-hover #kt_aside{
+    width: var(--giro-sidebar-collapsed) !important;
+    background: var(--giro-black) !important;
+    overflow: visible !important;
+}
+
+/* Brand colapsado */
+body#kt_body.aside-minimize #kt_brand,
+body#kt_body.aside-minimize-hover #kt_brand{
+    height: 74px !important;
+    min-height: 74px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    background: var(--giro-black) !important;
+    overflow: visible !important;
+}
+
+/* Oculta logo grande para que no se corte horrible */
+body#kt_body.aside-minimize #kt_brand .brand-logo,
+body#kt_body.aside-minimize-hover #kt_brand .brand-logo{
+    width: 100% !important;
+    max-width: 70px !important;
+    height: 74px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: visible !important;
+}
+
+body#kt_body.aside-minimize #kt_brand img.brand-logo,
+body#kt_body.aside-minimize-hover #kt_brand img.brand-logo{
+    display: none !important;
+}
+
+/* Marca compacta cuando colapsa */
+body#kt_body.aside-minimize #kt_brand .brand-logo::before,
+body#kt_body.aside-minimize-hover #kt_brand .brand-logo::before{
+    content: "G";
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(199,154,47,.15) !important;
+    border: 1px solid rgba(199,154,47,.40) !important;
+    color: var(--giro-gold-3) !important;
+    font-weight: 900 !important;
+    font-size: 1.1rem !important;
+}
+
+/* Botón/flecha colapsar en modo chico */
+body#kt_body.aside-minimize #kt_aside_toggle,
+body#kt_body.aside-minimize-hover #kt_aside_toggle{
+    position: absolute !important;
+    right: -17px !important;
+    top: 20px !important;
+    z-index: 999 !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #151515 !important;
+    border: 1px solid rgba(199,154,47,.42) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.55) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_toggle svg,
+body#kt_body.aside-minimize-hover #kt_aside_toggle svg{
+    width: 20px !important;
+    height: 20px !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_toggle svg g [fill],
+body#kt_body.aside-minimize-hover #kt_aside_toggle svg g [fill]{
+    fill: #ffffff !important;
+}
+
+/* Menú colapsado */
+body#kt_body.aside-minimize #kt_aside_menu,
+body#kt_body.aside-minimize-hover #kt_aside_menu{
+    margin-top: 8px !important;
+    overflow-x: hidden !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav{
+    padding: 0 8px !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item{
+    margin: 8px 0 !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-link,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-link,
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-heading,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-heading{
+    width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    border-radius: 15px !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-icon,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-icon,
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-icon,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-icon{
+    margin: 0 !important;
+    width: auto !important;
+    min-width: auto !important;
+    font-size: 1.18rem !important;
+    line-height: 1 !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-text,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-link .menu-text,
+body#kt_body.aside-minimize #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-text,
+body#kt_body.aside-minimize-hover #kt_aside_menu .menu-nav > .menu-item > .menu-heading .menu-text{
+    display: none !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu hr.border-secondary,
+body#kt_body.aside-minimize-hover #kt_aside_menu hr.border-secondary{
+    margin: 12px 8px !important;
+}
+
+/* Usuario colapsado */
+body#kt_body.aside-minimize #kt_aside_menu .sidebar-user .menu-link,
+body#kt_body.aside-minimize-hover #kt_aside_menu .sidebar-user .menu-link{
+    width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    border-radius: 15px !important;
+    justify-content: center !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .sidebar-user .symbol,
+body#kt_body.aside-minimize-hover #kt_aside_menu .sidebar-user .symbol{
+    margin: 0 !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .sidebar-user .symbol img,
+body#kt_body.aside-minimize-hover #kt_aside_menu .sidebar-user .symbol img{
+    width: 34px !important;
+    height: 34px !important;
+}
+
+body#kt_body.aside-minimize #kt_aside_menu .sidebar-user .menu-text,
+body#kt_body.aside-minimize-hover #kt_aside_menu .sidebar-user .menu-text{
+    display: none !important;
+}
+
+/* Footer lateral oculto colapsado */
+body#kt_body.aside-minimize #kt_aside .giro-aside-footer,
+body#kt_body.aside-minimize-hover #kt_aside .giro-aside-footer{
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+/* =========================
+   HEADER SUPERIOR
+   ========================= */
+
+body#kt_body.aside-enabled #kt_header{
+    background: var(--giro-black) !important;
+    border-bottom: 1px solid rgba(255,255,255,.075) !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.35) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+body#kt_body.aside-enabled #kt_header .container-fluid,
+body#kt_body.aside-enabled #kt_header_menu_wrapper,
+body#kt_body.aside-enabled #kt_header_menu{
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body#kt_body.aside-enabled #scroll_title{
+    color: rgba(255,255,255,.92) !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+}
+
+/* Topbar */
+body#kt_body.aside-enabled #kt_header .topbar .btn.btn-icon{
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    background: rgba(255,255,255,.055) !important;
+    border: 1px solid rgba(255,255,255,.09) !important;
+    transition: all .18s ease !important;
+}
+
+body#kt_body.aside-enabled #kt_header .topbar .btn.btn-icon:hover{
+    background: rgba(199,154,47,.14) !important;
+    border-color: rgba(199,154,47,.35) !important;
+}
+
+body#kt_body.aside-enabled #kt_header .topbar .svg-icon svg g [fill]{
+    fill: #ffffff !important;
+}
+
+body#kt_body.aside-enabled #kt_header .topbar .svg-icon.svg-icon-primary svg g [fill]{
+    /*fill: var(--giro-gold-3) !important;*/
+}
+
+/* Dropdowns superiores */
+body#kt_body.aside-enabled .dropdown-menu{
+    background: #0f0f0f !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    box-shadow: 0 18px 44px rgba(0,0,0,.35) !important;
+    color: #ffffff !important;
+}
+
+body#kt_body.aside-enabled .dropdown-menu .text-dark-75,
+body#kt_body.aside-enabled .dropdown-menu .text-dark-50,
+body#kt_body.aside-enabled .dropdown-menu .text-muted{
+    color: rgba(255,255,255,.72) !important;
+}
+
+/* =========================
+   BOTONES BASE DEL SISTEMA
+   ========================= */
+
+body#kt_body.aside-enabled .btn.btn-primary,
+body#kt_body.aside-enabled .btn.btn-success{
+    background: linear-gradient(135deg, var(--giro-gold), var(--giro-gold-2)) !important;
+    border: 1px solid rgba(240,200,104,.28) !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 22px rgba(199,154,47,.16) !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+}
+
+body#kt_body.aside-enabled .btn.btn-primary:hover,
+body#kt_body.aside-enabled .btn.btn-success:hover{
+    transform: translateY(-1px) !important;
+    box-shadow: 0 14px 28px rgba(199,154,47,.24) !important;
+}
+
+body#kt_body.aside-enabled .btn.btn-secondary,
+body#kt_body.aside-enabled .btn.btn-light-primary{
+    /*background: rgba(255,255,255,.055) !important;*/
+    border: 1px solid rgba(199,154,47,.36) !important;
+    /*color: #ffffff !important;*/
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+}
+
+body#kt_body.aside-enabled .btn.btn-secondary:hover,
+body#kt_body.aside-enabled .btn.btn-light-primary:hover{
+    background: rgba(199,154,47,.17) !important;
+    color: #ffffff !important;
+}
+
+body#kt_body.aside-enabled .btn i{
+    color: inherit !important;
+}
+
+/* =========================
+   FORMULARIOS GENERALES LEGACY
+   NO SE OSCURECEN PARA NO ROMPER VISTAS INTERNAS
+   ========================= */
+
+.form-group label{
     font-size: 1rem;
     font-weight: 500;
     color: #3F4254;
 }
 
-.form-control {
+.form-control{
     color: #16191f;
     border: 1px solid #c1c5cd;
 }
 
-.form-control:focus {
+.form-control:focus{
     color: #16191f;
 }
 
-.select2-container--default .select2-selection--single,
-.select2-container--default .select2-selection--multiple {
-    border: 1px solid #c1c5cd;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__placeholder,
-.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
-    color: #90909b;
-}
-
-.dataTables_wrapper .dataTable th,
-.dataTables_wrapper .dataTable td {
-    color: #2F3941;
-}
-
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item.menu-item-active>.menu-heading,
-.aside-menu .menu-nav>.menu-item .menu-submenu .menu-item.menu-item-active>.menu-link {
-    background-color: #ffffff20;
-}
-
-.menu-icon {
-    color: white !important;
-}
-
-.menu-bullet-dot>span {
-    color: white !important;
-}
-
-.menu-link .menu-bullet.menu-bullet-dot>span {
-    background-color: white !important;
-}
-
-@media (max-width: 967px) {
-    .hidden-mobile {
-        display: none !important;
-    }
-
-    .block-mobile {
-        display: block !important;
-    }
-}
-
-.chat-content {
-    background-repeat: repeat;
-}
-
-.bg-chat-secondary {
-    background-color: #f0f0f0; /* color de fondo gris */
-    color: black; /* texto negro */
-    box-shadow: 0 4px 7px 0 rgba(31, 38, 135, 0.100);
-    backdrop-filter: blur(1.4px);
-    -webkit-backdrop-filter: blur(3.5px);
-    border: 1px solid rgba(255, 255, 255, 0.215);
-}
-
-.bg-chat-primary {
-    background-color: #0084ff; /* color de fondo azul */
-    color: white !important; /* texto blanco */
-    box-shadow: 0 4px 7px 0 rgba(31, 38, 135, 0.100);
-    backdrop-filter: blur(1.4px);
-    -webkit-backdrop-filter: blur(3.5px);
-    border-radius: 10px;
-    border: 1px solid #ffffff84;
-}
-
-.select2-container {
+.select2-container{
     box-sizing: border-box;
     display: block !important;
     margin: 0;
@@ -268,8 +798,33 @@ body {
     vertical-align: middle;
 }
 
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple{
+    border: 1px solid #c1c5cd;
+}
 
-.dataTables_filter input[type="search"] {
+.select2-container--default .select2-selection--single .select2-selection__placeholder,
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder{
+    color: #90909b;
+}
+
+/* =========================
+   DATATABLES / TABLAS GENERALES
+   NO SE OSCURECEN PARA NO ROMPER TABLAS
+   ========================= */
+
+.dataTables_wrapper .dataTable tfoot th,
+.dataTables_wrapper .dataTable thead th{
+    font-weight: 600;
+    color: #575962;
+}
+
+.dataTables_wrapper .dataTable th,
+.dataTables_wrapper .dataTable td{
+    color: #2F3941;
+}
+
+.dataTables_filter input[type="search"]{
     background-color: white;
     border: 1px solid #41414137;
     border-radius: 10px;
@@ -279,24 +834,482 @@ body {
     font-size: 16px;
 }
 
-.dataTables_filter input[type="search"]:hover {
+.dataTables_filter input[type="search"]:hover{
     background-color: #ffffff;
 }
 
-.dataTables_filter input[type="search"]:focus {
+.dataTables_filter input[type="search"]:focus{
     border-color: #459cff;
     box-shadow: 0 0 8px rgba(33, 100, 176, 0.3);
 }
 
-.chat-list-item {
+/* =========================
+   FOOTER GENERAL
+   ========================= */
+
+body#kt_body.aside-enabled #kt_footer{
+    background: transparent !important;
+    border-top: 1px solid rgba(255,255,255,.06) !important;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+
+body#kt_body.aside-enabled #kt_footer .text-dark,
+body#kt_body.aside-enabled #kt_footer .text-dark-75,
+body#kt_body.aside-enabled #kt_footer .text-muted,
+body#kt_body.aside-enabled #kt_footer a{
+    color: rgba(255,255,255,.64) !important;
+}
+
+body#kt_body.aside-enabled #kt_footer a:hover{
+    color: var(--giro-gold-3) !important;
+}
+
+/* =========================
+   CHAT / LEGACY
+   ========================= */
+
+.chat-content{
+    background-repeat: repeat;
+}
+
+.bg-chat-secondary{
+    background-color: #f0f0f0; /* color de fondo gris */
+    color: black; /* texto negro */
+    box-shadow: 0 4px 7px 0 rgba(31, 38, 135, 0.100);
+    backdrop-filter: blur(1.4px);
+    -webkit-backdrop-filter: blur(3.5px);
+    border: 1px solid rgba(255, 255, 255, 0.215);
+}
+
+.bg-chat-primary{
+    background-color: #0084ff; /* color de fondo azul */
+    color: white !important; /* texto blanco */
+    box-shadow: 0 4px 7px 0 rgba(31, 38, 135, 0.100);
+    backdrop-filter: blur(1.4px);
+    -webkit-backdrop-filter: blur(3.5px);
+    border-radius: 10px;
+    border: 1px solid #ffffff84;
+}
+
+.chat-list-item{
     cursor: pointer;
     padding: 5px;
     border-radius: 5px;
 }
 
-.chat-list-hoverable {
+.chat-list-hoverable{
     background-color: #f5f5f560;
 }
-.chat-list-hoverable:hover {
+
+.chat-list-hoverable:hover{
     background-color: #70707025;
+}
+
+/* =========================
+   HEADER MOBILE
+   ========================= */
+
+body#kt_body.aside-enabled #kt_header_mobile{
+    background: var(--giro-black) !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+body#kt_body.aside-enabled #kt_header_mobile .brand-logo{
+    max-height: 48px !important;
+}
+
+body#kt_body.aside-enabled .burger-icon span,
+body#kt_body.aside-enabled .burger-icon span::before,
+body#kt_body.aside-enabled .burger-icon span::after{
+    background-color: #ffffff !important;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 991.98px){
+    body#kt_body.aside-enabled #kt_content{
+        padding-top: 14px !important;
+    }
+
+    body#kt_body.aside-enabled #kt_content .container-fluid{
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+    }
+}
+
+@media (max-width: 967px){
+    .hidden-mobile{
+        display: none !important;
+    }
+
+    .block-mobile{
+        display: block !important;
+    }
+}
+
+/* =========================================================
+   FIX DEFINITIVO MOBILE GIRO / SISPROTEC
+   Aside móvil + Topbar usuario móvil
+   ========================================================= */
+
+@media (max-width: 991.98px){
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESET DEL FIX ANTERIOR / EVITAR BLOQUEOS DE CLIC
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-on #kt_wrapper,
+    body#kt_body.aside-on #kt_content,
+    body#kt_body.aside-on .content,
+    body#kt_body.aside-on .dashboard-shell,
+    body#kt_body.aside-mobile-on #kt_wrapper,
+    body#kt_body.aside-mobile-on #kt_content,
+    body#kt_body.aside-mobile-on .content,
+    body#kt_body.aside-mobile-on .dashboard-shell{
+        pointer-events: auto !important;
+    }
+
+    body#kt_body.aside-enabled #kt_content,
+    body#kt_body.aside-enabled #kt_content .container-fluid{
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HEADER MOBILE
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-enabled #kt_header_mobile{
+        position: relative !important;
+        z-index: 1500 !important;
+        height: 64px !important;
+        min-height: 64px !important;
+        padding: 0 14px !important;
+        background: #050505 !important;
+        border-bottom: 1px solid rgba(255,255,255,.08) !important;
+        box-shadow: 0 10px 28px rgba(0,0,0,.35) !important;
+        overflow: visible !important;
+        pointer-events: auto !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header_mobile .brand-logo{
+        max-height: 54px !important;
+        max-width: 240px !important;
+        object-fit: contain !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header_mobile .btn,
+    body#kt_body.aside-enabled #kt_header_mobile .btn.btn-icon,
+    body#kt_body.aside-enabled #kt_header_mobile #kt_header_mobile_toggle,
+    body#kt_body.aside-enabled #kt_header_mobile #kt_header_mobile_topbar_toggle{
+        position: relative !important;
+        z-index: 1510 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header_mobile .burger-icon span,
+    body#kt_body.aside-enabled #kt_header_mobile .burger-icon span::before,
+    body#kt_body.aside-enabled #kt_header_mobile .burger-icon span::after{
+        background-color: #ffffff !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header_mobile #kt_header_mobile_topbar_toggle i,
+    body#kt_body.aside-enabled #kt_header_mobile #kt_header_mobile_topbar_toggle .svg-icon svg g [fill]{
+        color: #2f7df6 !important;
+        fill: #2f7df6 !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ASIDE MÓVIL
+    |--------------------------------------------------------------------------
+    | Metronic puede abrirlo con aside-on, aside-mobile-on o clases directas.
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-enabled #kt_aside{
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 295px !important;
+        max-width: 86vw !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        z-index: 2000 !important;
+
+        transform: translateX(-105%) !important;
+        transition: transform .24s ease !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%) !important;
+        border-right: 1px solid rgba(255,255,255,.10) !important;
+        box-shadow: 22px 0 60px rgba(0,0,0,.55) !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+    }
+
+    body#kt_body.aside-on #kt_aside,
+    body#kt_body.aside-mobile-on #kt_aside,
+    body#kt_body.aside-enabled.aside-on #kt_aside,
+    body#kt_body.aside-enabled.aside-mobile-on #kt_aside,
+    body#kt_body #kt_aside.aside-on,
+    body#kt_body #kt_aside.offcanvas-on{
+        transform: translateX(0) !important;
+    }
+
+    body#kt_body.aside-enabled #kt_aside *,
+    body#kt_body.aside-enabled #kt_aside_menu,
+    body#kt_body.aside-enabled #kt_aside_menu_wrapper,
+    body#kt_body.aside-enabled #kt_aside_menu .menu-link,
+    body#kt_body.aside-enabled #kt_aside_menu .menu-heading,
+    body#kt_body.aside-enabled #kt_aside_menu .menu-text,
+    body#kt_body.aside-enabled #kt_aside_menu .menu-icon{
+        pointer-events: auto !important;
+    }
+
+    body#kt_body.aside-enabled #kt_aside_menu_wrapper{
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    body#kt_body.aside-enabled #kt_aside_menu{
+        height: calc(100vh - 78px) !important;
+        max-height: calc(100vh - 78px) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-bottom: 18px !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | OVERLAY DEL ASIDE
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-on .offcanvas-overlay,
+    body#kt_body.aside-mobile-on .offcanvas-overlay,
+    body#kt_body.aside-on .aside-overlay,
+    body#kt_body.aside-mobile-on .aside-overlay,
+    body#kt_body.aside-on .drawer-overlay,
+    body#kt_body.aside-mobile-on .drawer-overlay{
+        z-index: 1990 !important;
+        pointer-events: auto !important;
+        background: rgba(0,0,0,.52) !important;
+        backdrop-filter: blur(3px) !important;
+        -webkit-backdrop-filter: blur(3px) !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HEADER DESKTOP EN MÓVIL
+    |--------------------------------------------------------------------------
+    | Debe estar oculto por defecto para que los iconos NO queden fijos.
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-enabled #kt_header{
+        position: static !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        pointer-events: none !important;
+        z-index: 1400 !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header .container,
+    body#kt_body.aside-enabled #kt_header .container-fluid{
+        height: 0 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        pointer-events: none !important;
+    }
+
+    body#kt_body.aside-enabled #kt_header .topbar{
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TOPBAR MÓVIL AL TOCAR EL ICONO DE USUARIO
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.topbar-mobile-on #kt_header{
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        pointer-events: auto !important;
+        z-index: 2100 !important;
+    }
+
+    body#kt_body.topbar-mobile-on #kt_header .container,
+    body#kt_body.topbar-mobile-on #kt_header .container-fluid{
+        height: auto !important;
+        min-height: 0 !important;
+        pointer-events: auto !important;
+        overflow: visible !important;
+    }
+
+    body#kt_body.topbar-mobile-on #kt_header .topbar{
+        position: fixed !important;
+        top: -70px !important;
+        right: 14px !important;
+        left: auto !important;
+        width: auto !important;
+        min-width: 174px !important;
+        max-width: calc(100vw - 28px) !important;
+        min-height: 52px !important;
+
+        padding: 8px 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        z-index: 2110 !important;
+
+        background:
+            radial-gradient(circle at top right, rgba(199,154,47,.20), transparent 42%),
+            rgba(8,8,8,.98) !important;
+        border: 1px solid rgba(199,154,47,.28) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 18px 44px rgba(0,0,0,.48) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+
+    body#kt_body.topbar-mobile-on #kt_header .topbar .btn.btn-icon{
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        border-radius: 12px !important;
+        background: rgba(255,255,255,.065) !important;
+        border: 1px solid rgba(255,255,255,.11) !important;
+        box-shadow: none !important;
+        pointer-events: auto !important;
+    }
+
+    body#kt_body.topbar-mobile-on #kt_header .topbar .btn.btn-icon:hover,
+    body#kt_body.topbar-mobile-on #kt_header .topbar .btn.btn-icon.active,
+    body#kt_body.topbar-mobile-on #kt_header .topbar .btn.btn-icon.show{
+        background: rgba(199,154,47,.18) !important;
+        border-color: rgba(199,154,47,.40) !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DROPDOWNS DEL TOPBAR MÓVIL
+    |--------------------------------------------------------------------------
+    | Corrige el panel azul de "Accesos Directos" para que no tape raro el dashboard.
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.topbar-mobile-on .dropdown-menu,
+    body#kt_body.topbar-mobile-on .dropdown-menu.show,
+    body#kt_body.topbar-mobile-on .dropdown-menu.dropdown-menu-right.show{
+        position: fixed !important;
+        top: 60px !important;
+        right: 6px !important;
+        left: auto !important;
+
+        width: min(330px, calc(100vw - 28px)) !important;
+        max-width: calc(100vw - 28px) !important;
+        max-height: calc(100vh - 150px) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+
+        transform: none !important;
+        margin: 0 !important;
+
+        z-index: 2120 !important;
+        pointer-events: auto !important;
+
+        background: #0d0d0d !important;
+        border: 1px solid rgba(255,255,255,.12) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 22px 54px rgba(0,0,0,.55) !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .dropdown-menu,
+    body#kt_body.topbar-mobile-on .dropdown-menu.show .dropdown-menu{
+        position: static !important;
+        transform: none !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .bgi-no-repeat,
+    body#kt_body.topbar-mobile-on .dropdown-menu [style*="background-image"]{
+        border-radius: 16px 16px 0 0 !important;
+        overflow: hidden !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .text-white{
+        color: #ffffff !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .navi,
+    body#kt_body.topbar-mobile-on .dropdown-menu .quick-search,
+    body#kt_body.topbar-mobile-on .dropdown-menu .scroll{
+        max-height: none !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SI EL DROPDOWN ES DE ACCESOS DIRECTOS, QUE SE VEA COMO GRID LIMPIO
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .row{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .col,
+    body#kt_body.topbar-mobile-on .dropdown-menu [class*="col-"]{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    body#kt_body.topbar-mobile-on .dropdown-menu .navi-item,
+    body#kt_body.topbar-mobile-on .dropdown-menu .navi-link{
+        border-radius: 12px !important;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | EVITAR QUE EL CONTENIDO DEL DASHBOARD QUEDE ENCIMA
+    |--------------------------------------------------------------------------
+    */
+
+    body#kt_body.aside-on .dashboard-shell,
+    body#kt_body.aside-mobile-on .dashboard-shell,
+    body#kt_body.topbar-mobile-on .dashboard-shell{
+        position: relative !important;
+        z-index: 1 !important;
+    }
 }

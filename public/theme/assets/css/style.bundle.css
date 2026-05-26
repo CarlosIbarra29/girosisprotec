@@ -77900,7 +77900,9 @@ body {
 }
 @media (max-width: 991.98px) {
   .header-mobile-fixed .wrapper {
-    padding-top: 55px;
+    /*padding-top: 55px;*/
+    padding-top: 5px;
+
   }
   .header-mobile-fixed.subheader-mobile-fixed.subheader-enabled .wrapper {
     padding-top: 120px;

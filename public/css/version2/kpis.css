@@ -421,7 +421,7 @@
    ============================== */
 
 #chart-indice .giro-chart-card--indice{
-  max-width: 100%;
+  max-width: 90%;
   padding: 18px 20px 20px;
   border-radius: 8px;
   background:
@@ -611,7 +611,7 @@
    ============================== */
 
   #chart-vulnerabilidad .giro-chart-card--vuln{
-    max-width: 100%;
+    max-width: 90%;
     padding: 22px 22px 20px;
     border-radius: 10px;
     background:
@@ -917,7 +917,7 @@
    07. RIESGOS POR CRITERIO
    ============================== */
   #chart-security .giro-chart-card--risk-criteria{
-    max-width: 100%;
+    max-width: 90%;
     padding: 20px 22px 18px;
     border-radius: 10px;
     background:
@@ -1362,7 +1362,7 @@
    ============================== */
 
 #chart-escenarios .giro-chart-card--escenarios{
-  max-width: 100%;
+  max-width: 90%;
   padding: 22px 24px 22px;
   border-radius: 10px;
   background:
@@ -1764,7 +1764,7 @@
    ============================== */
 
 #chart-medidas .giro-chart-card{
-  max-width: 100%;
+  max-width: 90%;
   padding: 20px 22px 22px;
   border-radius: 10px;
   background:
@@ -1968,7 +1968,7 @@
    ============================== */
 
   #chart-dano .giro-chart-card--dano{
-    max-width: 100%;
+    max-width: 90%;
     padding: 20px 22px 22px;
     border-radius: 10px;
     background:
@@ -2126,7 +2126,7 @@
    ============================== */
 
   #chart-pareto .giro-chart-card--pareto{
-    max-width: 100%;
+    max-width: 90%;
     padding: 22px 24px 22px;
     border-radius: 10px;
     background:
@@ -2291,7 +2291,7 @@
    ============================== */
 
   #chart-origen .giro-chart-card--matrix{
-    max-width: 100%;
+    max-width: 90%;
     padding: 22px 24px 24px !important;
     border-radius: 10px !important;
     background:
@@ -2958,7 +2958,7 @@
    ============================== */
 
 #chart-avance .giro-chart-card--avance{
-  max-width: 100%;
+  max-width: 90%;
   padding: 22px 24px 18px;
   border-radius: 10px;
   background:
@@ -3532,6 +3532,7 @@
   }
 
   #chart-indice .giro-chart-card--indice{
+    max-width: 100%;
     padding: 15px 14px 16px;
   }
 
@@ -3577,6 +3578,7 @@
   }
 
   #chart-vulnerabilidad .giro-chart-card--vuln{
+    max-width: 100%;
     padding: 16px 14px 16px;
   }
 
@@ -3618,6 +3620,7 @@
   }
 
   #chart-dano .giro-chart-card--dano{
+    max-width: 100%;
     padding: 16px 14px 16px;
   }
 
@@ -3641,6 +3644,7 @@
   }
 
   #chart-avance .giro-chart-card--avance{
+    max-width: 100%;
     padding: 16px 14px 16px;
     border-radius: 18px;
   }
@@ -3654,6 +3658,7 @@
   }
 
   #chart-medidas .giro-chart-card{
+    max-width: 100%;
     padding: 16px 14px 16px;
   }
 
@@ -3689,6 +3694,7 @@
   }
 
   #chart-origen .giro-chart-card--matrix{
+    max-width: 100%;
     padding: 16px 14px 16px !important;
   }
 
@@ -3759,6 +3765,7 @@
   }
 
   #chart-security .giro-chart-card--risk-criteria{
+    max-width: 100%;
     padding: 16px 14px 16px;
   }
 
@@ -3821,6 +3828,7 @@
   }
 
   #chart-escenarios .giro-chart-card--escenarios{
+    max-width: 100%;
     padding: 16px 14px 16px;
   }
 
@@ -3892,6 +3900,7 @@
   }
 
   #chart-pareto .giro-chart-card--pareto{
+    max-width: 100%;
     padding: 16px 14px 16px;
     border-radius: 10px;
   }
@@ -3972,4 +3981,268 @@
     font-size: .74rem;
   }
 
+}
+
+
+/* ==============================
+   RADAR DE VULNERABILIDAD
+   ============================== */
+
+#chart-radar-vulnerabilidad .giro-chart-card--radar-vuln{
+  max-width: 90%;
+  padding: 22px 22px 20px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,.06), transparent 40%),
+    linear-gradient(180deg, #0a1119 0%, #081019 100%);
+  border: 1px solid rgba(194,164,118,.20);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 18px 38px rgba(0,0,0,.22);
+}
+
+#chart-radar-vulnerabilidad .giro-chart-title--radar-vuln{
+  position: relative;
+  margin: 0 0 20px;
+  color: rgba(255,255,255,.90);
+  font-size: 1.45rem;
+  font-weight: 950;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#chart-radar-vulnerabilidad .giro-chart-title--radar-vuln::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+  width: 72px;
+  height: 3px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #8e671d 0%, #f1c65c 52%, #8e671d 100%);
+  box-shadow: 0 0 18px rgba(241,198,92,.18);
+}
+
+.giro-radar-title-icon{
+  width: 27px;
+  height: 27px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 1.25rem;
+}
+
+.giro-radar-layout{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 18px;
+}
+
+.giro-chart-canvas-wrap--radar-vuln{
+  position: relative;
+  height: 430px;
+  border-radius: 10px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at center, rgba(215,167,63,.055), transparent 48%),
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
+    #0f171f;
+  border: 1px solid rgba(194,164,118,.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 24px rgba(0,0,0,.16);
+}
+
+#myradarvulnerabilidad{
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.giro-radar-side{
+  min-height: 430px;
+  border-radius: 10px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(215,167,63,.08), transparent 42%),
+    linear-gradient(180deg, #111b26 0%, #0c141d 100%);
+  border: 1px solid rgba(194,164,118,.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 24px rgba(0,0,0,.14);
+}
+
+.giro-radar-side__title{
+  color: rgba(255,255,255,.92);
+  font-size: .88rem;
+  line-height: 1.15;
+  font-weight: 950;
+  margin-bottom: 13px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.giro-radar-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.giro-radar-list::-webkit-scrollbar{
+  width: 7px;
+}
+
+.giro-radar-list::-webkit-scrollbar-thumb{
+  background: rgba(215,167,63,.48);
+  border-radius: 999px;
+}
+
+.giro-radar-list::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.04);
+  border-radius: 999px;
+}
+
+.giro-radar-item{
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012)),
+    #0b121b;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.giro-radar-item__dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #D7A73F;
+  box-shadow: 0 0 0 4px rgba(215,167,63,.10);
+}
+
+.giro-radar-item__body{
+  min-width: 0;
+}
+
+.giro-radar-item__label{
+  color: rgba(255,255,255,.88);
+  font-size: .78rem;
+  line-height: 1.15;
+  font-weight: 900;
+  margin-bottom: 6px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.giro-radar-item__meta{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.giro-radar-item__meta strong{
+  color: #F2C766;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.giro-radar-item__meta span{
+  min-height: 21px;
+  padding: 0 9px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: .66rem;
+  line-height: 1;
+  font-weight: 950;
+  background: rgba(215,167,63,.74);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.giro-radar-item--sin-control .giro-radar-item__dot,
+.giro-radar-item--sin-control .giro-radar-item__meta span{
+  background: #b90f0f;
+}
+
+.giro-radar-item--deficiente .giro-radar-item__dot,
+.giro-radar-item--deficiente .giro-radar-item__meta span{
+  background: #e4423f;
+}
+
+.giro-radar-item--regular .giro-radar-item__dot,
+.giro-radar-item--regular .giro-radar-item__meta span{
+  background: #d9a42d;
+}
+
+.giro-radar-item--eficiente .giro-radar-item__dot,
+.giro-radar-item--eficiente .giro-radar-item__meta span{
+  background: #8aa83c;
+}
+
+.giro-radar-item--optimo .giro-radar-item__dot,
+.giro-radar-item--optimo .giro-radar-item__meta span{
+  background: #9fbd3f;
+}
+
+.giro-radar-empty{
+  width: 100%;
+  padding: 18px;
+  border-radius: 10px;
+  text-align: center;
+  color: rgba(255,255,255,.62);
+  font-size: .82rem;
+  font-weight: 800;
+  background: rgba(255,255,255,.035);
+  border: 1px dashed rgba(255,255,255,.12);
+}
+
+@media (max-width: 991px){
+
+  #chart-radar-vulnerabilidad .giro-chart-card--radar-vuln{
+    max-width: 100%;
+  }
+  .giro-radar-layout{
+    grid-template-columns: 1fr;
+  }
+
+  .giro-radar-side{
+    min-height: auto;
+  }
+
+  .giro-chart-canvas-wrap--radar-vuln{
+    height: 390px;
+  }
+}
+
+@media (max-width: 576px){
+  .giro-chart-canvas-wrap--radar-vuln{
+    height: 340px;
+    padding: 12px;
+  }
+
+  #chart-radar-vulnerabilidad .giro-chart-title--radar-vuln{
+    font-size: 1.18rem;
+  }
 }

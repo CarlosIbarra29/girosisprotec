@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('scripts')
-    <script src="{{ asset('js/cliente/NuevoCliente.js?v=1.0.3') }}"></script>
-    <link href="{{ asset('/css/version2/nuevocliente.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('js/cliente/NuevoCliente.js?v=4.1.1') }}"></script>
+    <link href="{{ asset('/css/version2/nuevocliente.css?v=2.1.1') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('title')
     Agregar cliente
@@ -35,25 +35,71 @@
                                 </select>
                             </div>
                         </div>
+
+                        {{-- 
+                            ==========================================================
+                            SEDE - PREPARADO PARA SIGUIENTE ETAPA
+                            Actualmente queda oculto y deshabilitado para no afectar
+                            productivo ni el guardado actual.
+                            Cuando ya esté lista la BD, quitar d-none y disabled.
+                            ==========================================================
+                        --}}
+                        <div class="col-lg-4 d-none" id="wrap_sede_select">
+                            <label class="form-label"><b>Sede</b></label>
+                            <div class="input-group">
+                                <select class="form-control" id="sede_select" name="sede_select" disabled>
+                                    <option value="" disabled selected>Selecciona un cliente primero</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!--begin::Form-->
                 <form action="{{ route('cliente.guardarclientenuevo') }}" method="post" id="submit_cliente">
                     @csrf
+
+                    {{-- Hidden preparado para sede. Ahorita deshabilitado para que no afecte --}}
+                    <input type="hidden" name="sede_id" id="sede_id" value="" disabled>
+
                     <div class="card-body gi-tabs">
 
-                        <ul class="nav nav-tabs nav-tabs-line">
+                        <ul class="nav nav-tabs nav-tabs-line" id="giClienteTabs">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Información del Cliente</a>
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1" data-step="1">
+                                    Información del Cliente
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Contacto por parte del cliente</a>
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2" data-step="2">
+                                    Contacto por parte del cliente
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3" data-step="3">
+                                    Alcance
+                                </a>
                             </li>
                         </ul>
 
                         <div class="tab-content mt-5" id="myTabContent">
+
+                            {{-- TAB 1 --}}
                             <div class="tab-pane fade show active mt-10" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
+
+                                {{-- 
+                                    Nombre de sede preparado para siguiente etapa.
+                                    Oculto y deshabilitado por ahora.
+                                --}}
+                                <div class="form-group row gi-row-gap d-none" id="wrap_sede_nombre">
+                                    <div class="col-lg-6">
+                                        <div class="f-field">
+                                            <input type="text" class="form-control f-control" name="sede_nombre" id="sede_nombre" placeholder=" " disabled>
+                                            <label for="sede_nombre" class="f-label">Nombre sede</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
@@ -63,7 +109,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion }}" id="organizacion" required/> -->
+                                            <!-- <input type="text" class="form-control" name="organizacion" value="{{ $datacl->organizacion ?? '' }}" id="organizacion" required/> -->
                                             <input type="text" class="form-control f-control" name="organizacion" id="organizacion" placeholder=" " required>
                                             <label for="organizacion" class="f-label">Razón Social</label>
                                         </div>
@@ -125,11 +171,12 @@
                                 </div>
                             </div>
 
+                            {{-- TAB 2 --}}
                             <div class="tab-pane fade mt-10" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                                 <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <input type="text" class="form-control f-control" name="contacto_principal" id="contacto_principal" placeholder=" ">
+                                            <input type="text" class="form-control f-control" name="contacto_principal" id="contacto_principal" placeholder=" " required>
                                             <label for="contacto_principal" class="f-label">Contacto principal</label>
                                         </div>
                                     </div>
@@ -144,7 +191,7 @@
                                 <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <input type="number" class="form-control f-control" name="telefono" id="telefono" placeholder=" ">
+                                            <input type="text" class="form-control f-control js-phone-10" name="telefono" id="telefono" placeholder=" " maxlength="10" inputmode="numeric" pattern="[0-9]{10}" required>
                                             <label for="telefono" class="f-label">Telefono</label>
                                         </div>
                                     </div>
@@ -176,7 +223,7 @@
                                 <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
-                                            <input type="number" class="form-control f-control" name="telefono_atiende" id="telefono_atiende" placeholder=" ">
+                                            <input type="text" class="form-control f-control js-phone-10" name="telefono_atiende" id="telefono_atiende" placeholder=" " maxlength="10" inputmode="numeric" pattern="[0-9]{10}">
                                             <label for="telefono_atiende" class="f-label">Telefono</label>
                                         </div>
                                     </div>
@@ -187,8 +234,182 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            {{-- TAB 3 - ALCANCE --}}
+                            <div class="tab-pane fade mt-10" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">1. Descripción General de la Instalación</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-6">
+                                            <div class="f-field">
+                                                <input type="text" class="form-control f-control" name="alcance_nombre_instalacion" id="alcance_nombre_instalacion" placeholder=" ">
+                                                <label for="alcance_nombre_instalacion" class="f-label">Nombre de la instalación</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="f-field">
+                                                <input type="text" class="form-control f-control" name="alcance_procesos_clave" id="alcance_procesos_clave" placeholder=" ">
+                                                <label for="alcance_procesos_clave" class="f-label">Procesos Clave</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-4">
+                                            <div class="f-field">
+                                                <input type="number" class="form-control f-control" name="alcance_empleados_administrativos" id="alcance_empleados_administrativos" placeholder=" ">
+                                                <label for="alcance_empleados_administrativos" class="f-label">Número de empleados administrativos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="f-field">
+                                                <input type="number" class="form-control f-control" name="alcance_empleados_operativos" id="alcance_empleados_operativos" placeholder=" ">
+                                                <label for="alcance_empleados_operativos" class="f-label">Número de empleados operativos</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="f-field f-field-select">
+                                                <select class="form-control f-control" name="alcance_horario_operacion" id="alcance_horario_operacion">
+                                                    <option value="" selected>Selecciona una opción</option>
+                                                    <option value="diurno">Diurno</option>
+                                                    <option value="nocturno">Nocturno</option>
+                                                    <option value="24_horas">24 horas</option>
+                                                </select>
+                                                <label for="alcance_horario_operacion" class="f-label">Horarios de operación</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="gi-hr">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">2. Entorno externo</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-6">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_nivel_inseguridad">Nivel de inseguridad de la zona</label>
+                                                <textarea
+                                                    class="form-control gi-textarea"
+                                                    name="alcance_nivel_inseguridad"
+                                                    id="alcance_nivel_inseguridad"
+                                                    placeholder="Ejemplo: robos, asaltos, crimen organizado"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_accesibilidad">Accesibilidad</label>
+                                                <textarea
+                                                    class="form-control gi-textarea"
+                                                    name="alcance_accesibilidad"
+                                                    id="alcance_accesibilidad"
+                                                    placeholder="Ejemplo: carreteras, rutas críticas"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-6">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_presencia_autoridades">Presencia de autoridades</label>
+                                                <textarea
+                                                    class="form-control gi-textarea"
+                                                    name="alcance_presencia_autoridades"
+                                                    id="alcance_presencia_autoridades"
+                                                    placeholder="Describe la presencia de autoridades en la zona"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_factores_sociales_politicos">Factores sociales o políticos</label>
+                                                <textarea
+                                                    class="form-control gi-textarea"
+                                                    name="alcance_factores_sociales_politicos"
+                                                    id="alcance_factores_sociales_politicos"
+                                                    placeholder="Describe factores sociales o políticos relevantes"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="gi-hr">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">3. Activos críticos para proteger</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-12">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_activos_criticos">Activos críticos para proteger</label>
+                                                <textarea
+                                                    class="form-control gi-textarea gi-textarea-large"
+                                                    name="alcance_activos_criticos"
+                                                    id="alcance_activos_criticos"
+                                                    placeholder="Personas: empleados, operadores, custodios&#10;Activos físicos: instalación, vehículos, equipo&#10;Mercancía: alto valor, sensible, regulada&#10;Información: rutas, clientes, operaciones"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="gi-hr">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">4. Certificaciones actuales en seguridad</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-12">
+                                            <div class="gi-checkbox-grid">
+                                                <label class="gi-check-option">
+                                                    <input type="checkbox" name="alcance_certificaciones[]" value="ISO 28000">
+                                                    <span>ISO 28000</span>
+                                                </label>
+
+                                                <label class="gi-check-option">
+                                                    <input type="checkbox" name="alcance_certificaciones[]" value="C-TPAT">
+                                                    <span>C-TPAT</span>
+                                                </label>
+
+                                                <label class="gi-check-option">
+                                                    <input type="checkbox" name="alcance_certificaciones[]" value="OEA">
+                                                    <span>OEA</span>
+                                                </label>
+
+                                                <label class="gi-check-option">
+                                                    <input type="checkbox" name="alcance_certificaciones[]" value="BASC">
+                                                    <span>BASC</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="gi-hr">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">5. Antecedentes de seguridad en el último año</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-12">
+                                            <div class="gi-simple-field">
+                                                <label for="alcance_antecedentes_seguridad">Antecedentes de seguridad en el último año</label>
+                                                <textarea
+                                                    class="form-control gi-textarea gi-textarea-large"
+                                                    name="alcance_antecedentes_seguridad"
+                                                    id="alcance_antecedentes_seguridad"
+                                                    placeholder="Describe incidentes, eventos, pérdidas, robos, intrusiones o cualquier antecedente relevante del último año"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
+
                         </div>
 
                     </div>
@@ -208,38 +429,5 @@
         </div>
     </div>
     <!--end::Card-->
-
-    <!-- Script mínimo para habilitar botón según select y soporte de etiquetas flotantes con datos precargados -->
-    <script>
-      (function(){
-        const sel = document.getElementById('cliente_select');
-        const btn = document.getElementById('btnGuardar');
-
-        function toggleButton(){
-          // Habilita si hay un valor seleccionado (incluye "0")
-          btn.disabled = (sel.value === "" || sel.value === null);
-        }
-        sel.addEventListener('change', toggleButton);
-        document.addEventListener('DOMContentLoaded', toggleButton);
-
-        // Mantener "flotante" si hay valores precargados
-        function markFilled(el){
-          if(!el) return;
-          const hasValue = el.value != null && String(el.value).trim() !== '';
-          el.classList.toggle('filled', hasValue);
-        }
-        function scanAll(){
-          document.querySelectorAll('.f-control').forEach(markFilled);
-        }
-        document.addEventListener('input', function(e){
-          if(e.target && e.target.classList && e.target.classList.contains('f-control')){
-            markFilled(e.target);
-          }
-        });
-        document.addEventListener('DOMContentLoaded', scanAll);
-        // Por si llenas vía JS externo al elegir cliente existente
-        document.addEventListener('cliente-datos-cargados', scanAll);
-      })();
-    </script>
 
 @endsection

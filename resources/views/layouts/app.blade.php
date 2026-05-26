@@ -28,7 +28,7 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{ asset('theme/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/style.bundle.css?v=1.0.2') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/style.bundle.css?v=1.0.4') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
 
     <!--begin::Layout Themes(used by all pages)-->

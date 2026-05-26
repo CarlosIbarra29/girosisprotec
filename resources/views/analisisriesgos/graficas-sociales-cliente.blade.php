@@ -598,9 +598,9 @@
         var ctx3 = cVul.getContext('2d');
 
         var gradVul = ctx3.createLinearGradient(0, 0, 0, 420);
-        gradVul.addColorStop(0, 'rgba(95, 116, 142, 0.98)');
-        gradVul.addColorStop(0.48, 'rgba(58, 75, 98, 0.96)');
-        gradVul.addColorStop(1, 'rgba(31, 42, 59, 0.98)');
+            gradVul.addColorStop(0, 'rgba(226, 178, 72, 0.98)');
+            gradVul.addColorStop(0.50, 'rgba(199, 150, 54, 0.94)');
+            gradVul.addColorStop(1, 'rgba(143, 105, 38, 0.92)');
 
         new Chart(ctx3, {
           type: 'bar',
@@ -610,10 +610,10 @@
               label: 'Promedio de nivel de control',
               data: vulnerabilidadPromedios,
               backgroundColor: gradVul,
-              borderColor: 'rgba(118, 142, 171, 0.55)',
+              borderColor: 'rgba(224, 176, 69, 0.98)',
               borderWidth: 1,
-              hoverBackgroundColor: 'rgba(88, 111, 140, 0.98)',
-              hoverBorderColor: 'rgba(215,167,63,0.9)',
+              hoverBackgroundColor: 'rgba(226, 178, 72, 1)',
+              hoverBorderColor: '#ffffff',
               hoverBorderWidth: 2,
               categoryPercentage: 0.58,
               barPercentage: 0.68
@@ -715,6 +715,129 @@
           }
         });
       }
+
+      /* ========= 3.1 Radar de Vulnerabilidad ========= */
+      var cRadarVul = document.getElementById('myradarvulnerabilidad');
+
+      if (cRadarVul) {
+        var ctxRadarVul = cRadarVul.getContext('2d');
+
+        function wrapRadarLabel(label) {
+          var text = String(label || '');
+
+          if (text.length <= 18) return text;
+
+          var words = text.split(' ');
+          var lines = [];
+          var line = '';
+
+          words.forEach(function(word) {
+            if ((line + ' ' + word).trim().length > 16) {
+              if (line.trim()) lines.push(line.trim());
+              line = word;
+            } else {
+              line += ' ' + word;
+            }
+          });
+
+          if (line.trim()) lines.push(line.trim());
+
+          return lines.slice(0, 3);
+        }
+
+        var radarData = (vulnerabilidadPromedios || []).map(function(v) {
+          return Number(v || 0);
+        });
+
+        var radarLabels = (vulnerabilidadLabels || []);
+
+        new Chart(ctxRadarVul, {
+          type: 'radar',
+          data: {
+            labels: radarLabels,
+            datasets: [{
+              label: 'Promedio de nivel de control',
+              data: radarData,
+              backgroundColor: 'rgba(215, 167, 63, 0.18)',
+              borderColor: '#D7A73F',
+              borderWidth: 3,
+              pointBackgroundColor: '#F2C766',
+              pointBorderColor: '#7F653F',
+              pointBorderWidth: 2,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              pointHoverBackgroundColor: '#ffffff',
+              pointHoverBorderColor: '#D7A73F'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+              duration: 1100,
+              easing: 'easeOutQuart'
+            },
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                fontColor: 'rgba(255,255,255,.86)',
+                fontStyle: 'bold',
+                fontSize: 12,
+                boxWidth: 12,
+                padding: 16,
+                usePointStyle: true
+              }
+            },
+            tooltips: {
+              backgroundColor: 'rgba(8,13,20,0.97)',
+              titleFontColor: '#ffffff',
+              bodyFontColor: '#ffffff',
+              titleFontStyle: 'bold',
+              bodyFontStyle: 'bold',
+              displayColors: false,
+              xPadding: 12,
+              yPadding: 10,
+              cornerRadius: 10,
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  var value = Number(tooltipItem.yLabel || 0);
+                  return ' Puntaje: ' + value.toFixed(1);
+                }
+              }
+            },
+            scale: {
+              ticks: {
+                beginAtZero: true,
+                min: 0,
+                max: 10,
+                stepSize: 2,
+                backdropColor: 'transparent',
+                fontColor: 'rgba(255,255,255,.68)',
+                fontStyle: 'bold',
+                fontSize: 11
+              },
+              gridLines: {
+                color: 'rgba(255,255,255,.10)',
+                circular: false
+              },
+              angleLines: {
+                color: 'rgba(215,167,63,.22)',
+                lineWidth: 1
+              },
+              pointLabels: {
+                fontColor: 'rgba(255,255,255,.88)',
+                fontStyle: 'bold',
+                fontSize: window.innerWidth <= 768 ? 10 : 12,
+                callback: function(label) {
+                  return wrapRadarLabel(label);
+                }
+              }
+            }
+          }
+        });
+      }
+
 
       /* ========= 4. Distribución de riesgos por criterio (AGRUPADO + FILTRO MULTISELECT) ========= */
       var canvasRiesgos = document.getElementById('myriesgosporcriterio');
@@ -2472,6 +2595,13 @@
                   <span class="giro-kpi-tab__text">Avance de<br>Consecución</span>
                 </button>
 
+                <button type="button" class="giro-kpi-tab" data-chart-target="chart-radar-vulnerabilidad">
+                  <span class="giro-kpi-tab__icon">
+                    <i class="flaticon2-graph"></i>
+                  </span>
+                  <span class="giro-kpi-tab__text">Radar de<br>Vulnerabilidad</span>
+                </button>
+
               </div>
 
               {{-- Área central: solo se muestra una gráfica a la vez --}}
@@ -3103,27 +3233,27 @@
                               </td>
 
                               <td class="giro-td-muy-bajo">
-                                {{ ($fila['muy_bajo'] ?? 0) == 0 ? '–' : $fila['muy_bajo'] }}
+                                {{ ($fila['muy_bajo'] ?? 0) == 0 ? '' : $fila['muy_bajo'] }}
                               </td>
 
                               <td class="giro-td-bajo">
-                                {{ ($fila['bajo'] ?? 0) == 0 ? '–' : $fila['bajo'] }}
+                                {{ ($fila['bajo'] ?? 0) == 0 ? '' : $fila['bajo'] }}
                               </td>
 
                               <td class="giro-td-medio">
-                                {{ ($fila['medio'] ?? 0) == 0 ? '–' : $fila['medio'] }}
+                                {{ ($fila['medio'] ?? 0) == 0 ? '' : $fila['medio'] }}
                               </td>
 
                               <td class="giro-td-alto">
-                                {{ ($fila['alto'] ?? 0) == 0 ? '–' : $fila['alto'] }}
+                                {{ ($fila['alto'] ?? 0) == 0 ? '' : $fila['alto'] }}
                               </td>
 
                               <td class="giro-td-muy-alto">
-                                {{ ($fila['muy_alto'] ?? 0) == 0 ? '–' : $fila['muy_alto'] }}
+                                {{ ($fila['muy_alto'] ?? 0) == 0 ? '' : $fila['muy_alto'] }}
                               </td>
 
                               <td class="giro-td-total">
-                                {{ ($fila['total'] ?? 0) == 0 ? '–' : $fila['total'] }}
+                                {{ ($fila['total'] ?? 0) == 0 ? '' : $fila['total'] }}
                               </td>
                             </tr>
                           @empty
@@ -3477,7 +3607,47 @@
                   </div>
                 </div>
 
+                {{-- 3.1 Radar de Vulnerabilidad --}}
+                <div class="giro-chart-panel" id="chart-radar-vulnerabilidad">
+                  <div class="giro-chart-card giro-chart-card--radar-vuln">
 
+                    <h5 class="giro-chart-title giro-chart-title--radar-vuln">
+                      <span class="giro-radar-title-icon">
+                        <i class="flaticon2-graph"></i>
+                      </span>
+                      Radar de Vulnerabilidad 
+                    </h5>
+
+                    <div class="giro-radar-layout">
+                      <div class="giro-chart-canvas-wrap giro-chart-canvas-wrap--radar-vuln">
+                        <canvas id="myradarvulnerabilidad"></canvas>
+                      </div>
+
+                      <div class="giro-radar-side">
+                        <div class="giro-radar-side__title">Puntos de control evaluados</div>
+
+                        <div class="giro-radar-list">
+                          @forelse($vulnerabilidadCards as $card)
+                            <div class="giro-radar-item giro-radar-item--{{ $card['class'] }}">
+                              <div class="giro-radar-item__dot"></div>
+
+                              <div class="giro-radar-item__body">
+                                <div class="giro-radar-item__label">{{ $card['label'] }}</div>
+                                <div class="giro-radar-item__meta">
+                                  <strong>{{ number_format($card['value'], 1) }}</strong>
+                                  <span>{{ $card['nivel'] }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          @empty
+                            <div class="giro-radar-empty">Sin datos de vulnerabilidad</div>
+                          @endforelse
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
 
             </div>
