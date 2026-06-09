@@ -59,9 +59,115 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-      /* ========= Tabs / mostrar solo una gráfica ========= */
+      /* ========= Tabs / mostrar solo una gráfica + animar al entrar ========= */
       const tabs = document.querySelectorAll('.giro-kpi-tab');
       const panels = document.querySelectorAll('.giro-chart-panel');
+
+      function giroCloneData(data) {
+        return JSON.parse(JSON.stringify(data || []));
+      }
+
+      function giroZeroValue(value) {
+        if (value === null || value === undefined) return value;
+
+        if (typeof value === 'number') {
+          return 0;
+        }
+
+        if (typeof value === 'object') {
+          var copy = Object.assign({}, value);
+
+          /*
+           * Para líneas tipo {x, y}: conserva x y baja y a cero.
+           * Para matriz/scatter con rawX/rawY: baja x/y a cero para que entre desde origen.
+           */
+          if (copy.rawX !== undefined || copy.rawY !== undefined || copy.isNew !== undefined) {
+            if (copy.x !== undefined) copy.x = 0;
+            if (copy.y !== undefined) copy.y = 0;
+          } else {
+            if (copy.y !== undefined) copy.y = 0;
+          }
+
+          return copy;
+        }
+
+        return value;
+      }
+
+      function giroGetChartByCanvas(canvas) {
+        if (!canvas || !window.Chart || !Chart.instances) return null;
+
+        for (var id in Chart.instances) {
+          if (!Object.prototype.hasOwnProperty.call(Chart.instances, id)) continue;
+
+          var chart = Chart.instances[id];
+          var chartCanvas = chart.canvas || (chart.chart && chart.chart.canvas);
+
+          if (chartCanvas === canvas) {
+            return chart;
+          }
+        }
+
+        return null;
+      }
+
+      function giroAnimateChartFromZero(chart) {
+        if (!chart || !chart.data || !chart.data.datasets) return;
+
+        if (typeof chart.stop === 'function') {
+          chart.stop();
+        }
+
+        /*
+         * Guardamos los datos finales actuales.
+         * Así también respeta filtros si alguna gráfica cambió antes.
+         */
+        var finalData = chart.data.datasets.map(function(dataset) {
+          return giroCloneData(dataset.data);
+        });
+
+        /*
+         * Bajamos los datos a cero y pintamos sin animación.
+         */
+        chart.data.datasets.forEach(function(dataset) {
+          dataset.data = giroCloneData(dataset.data).map(giroZeroValue);
+        });
+
+        if (typeof chart.update === 'function') {
+          chart.update(0);
+        }
+
+        /*
+         * Restauramos datos finales y ahora sí animamos.
+         */
+        setTimeout(function() {
+          chart.data.datasets.forEach(function(dataset, index) {
+            dataset.data = giroCloneData(finalData[index]);
+          });
+
+          if (typeof chart.resize === 'function') {
+            chart.resize();
+          }
+
+          if (typeof chart.update === 'function') {
+            chart.update(1000);
+          }
+        }, 80);
+      }
+
+      function giroAnimateChartsInPanel(panel) {
+        if (!panel) return;
+
+        var canvases = panel.querySelectorAll('canvas');
+
+        canvases.forEach(function(canvas) {
+          var chart = giroGetChartByCanvas(canvas);
+
+          if (!chart) return;
+
+          giroAnimateChartFromZero(chart);
+        });
+      }
 
       tabs.forEach(function(tab){
         tab.addEventListener('click', function(){
@@ -80,6 +186,10 @@
           const selectedPanel = document.getElementById(target);
           if (selectedPanel) {
             selectedPanel.classList.add('is-active');
+
+            setTimeout(function() {
+              giroAnimateChartsInPanel(selectedPanel);
+            }, 120);
           }
         });
       });
@@ -303,7 +413,7 @@
                   precision: 0,
                   stepSize: 1,
                   fontColor: 'rgba(255,255,255,0.76)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   fontSize: 13
                 },
                 gridLines: {
@@ -315,7 +425,7 @@
               xAxes: [{
                 ticks: {
                   fontColor: 'rgba(255,255,255,0.84)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   fontSize: 13
                 },
                 gridLines: {
@@ -432,7 +542,7 @@
             ctx.save();
 
             /* texto */
-            ctx.font = (isMobile ? '700 ' : '800 ') + fontSize + 'px Poppins, Arial, sans-serif';
+            ctx.font = (isMobile ? '400 ' : '400 ') + fontSize + 'px Poppins, Arial, sans-serif';
             ctx.fillStyle = '#D7A73F';
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -557,7 +667,7 @@
                   suggestedMax: 100,
                   callback: function(v){ return v + '%'; },
                   fontColor: 'rgba(255,255,255,0.86)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   fontSize: 12,
                   padding: 8
                 },
@@ -575,7 +685,7 @@
                   max: 4,
                   stepSize: 1,
                   fontColor: 'rgba(255,255,255,0.86)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   padding: 10,
                   callback: function(value){
                     var i = Math.round(value);
@@ -782,7 +892,7 @@
               position: 'bottom',
               labels: {
                 fontColor: 'rgba(255,255,255,.86)',
-                fontStyle: 'bold',
+                fontStyle: 'normal',
                 fontSize: 12,
                 boxWidth: 12,
                 padding: 16,
@@ -827,7 +937,7 @@
               },
               pointLabels: {
                 fontColor: 'rgba(255,255,255,.88)',
-                fontStyle: 'bold',
+                fontStyle: 'normal',
                 fontSize: window.innerWidth <= 768 ? 10 : 12,
                 callback: function(label) {
                   return wrapRadarLabel(label);
@@ -1299,7 +1409,7 @@
             legend: {
               position: isMobile ? 'bottom' : 'right',
               labels: {
-                fontStyle: 'bold',
+                fontStyle: 'normal',
                 fontColor: 'rgba(255,255,255,0.88)',
                 boxWidth: isMobile ? 9 : 10,
                 fontSize: isMobile ? 10 : 12,
@@ -1351,7 +1461,7 @@
                   precision: 0,
                   stepSize: 1,
                   fontColor: 'rgba(255,255,255,0.88)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   suggestedMax: (typeof maxX === 'number' ? maxX : undefined)
                 },
                 gridLines: { color: 'rgba(255,255,255,0.075)' }
@@ -1360,7 +1470,7 @@
                 gridLines: { display: false },
                 ticks: {
                   fontColor: 'rgba(255,255,255,0.92)',
-                  fontStyle: 'bold',
+                  fontStyle: 'normal',
                   fontSize: isMobile ? 10 : 10,
                   padding: isMobile ? 6 : 4
                 }
@@ -1959,7 +2069,7 @@
                   if (!d) return;
                   if (d.isNew && !showNuevoPerfil) return; // doble seguridad
 
-                  ctx.font = "900 10px Poppins, Arial, sans-serif";
+                  ctx.font = "500 11px Poppins, Arial, sans-serif";
                   ctx.fillStyle = d.isNew ? "#111111" : "#ffffff";
                   ctx.fillText(String(d.id || ''), pt._model.x, pt._model.y);
                 });
@@ -2021,8 +2131,8 @@
               },
               tooltips: {
                 backgroundColor: 'rgba(25,25,25,0.88)',
-                titleFontStyle: 'bold',
-                bodyFontStyle: 'bold',
+                titleFontStyle: 'normal',
+                bodyFontStyle: 'normal',
                 displayColors: false,
                 xPadding: 14,
                 yPadding: 12,
@@ -2513,12 +2623,25 @@
                 <h3 class="card-label">KPIs de riesgos sociales ({{ $cliente->organizacion }})</h3>
               </div>
 
-              <div class="card-toolbar giro-card-toolbar">
-                <a href="{{ route('analisis.analisiscliente', $id_cliente) }}" class="giro-back-btn">
-                    <i class="la la-arrow-left giro-back-btn__icon"></i>
-                    <span class="giro-back-btn__text">Regresar</span>
-                </a>
-            </div>
+                <div class="card-toolbar giro-card-toolbar">
+                  <a href="{{ route('analisis.generaranalisis', [$id_cliente, 1, 0, 1]) }}"
+                     class="btn giro-back-btn font-weight-bolder mr-3 ml-3">
+                      <i class="la la-calculator"></i> Calcular Riesgo
+                  </a>
+
+                  <a href="#"
+                     class="btn giro-back-btn font-weight-bolder mr-3 ml-3 active disabled"
+                     aria-disabled="true"
+                     tabindex="-1"
+                     style="pointer-events: none; opacity: 1;  border-color: #ced4da; box-shadow: none;">
+                      <i class="la la-tachometer"></i> KPI's
+                  </a>
+
+                  <a href="{{ route('analisis.analisiscliente', $id_cliente) }}"
+                     class="btn giro-back-btn font-weight-bolder mr-3 ml-3">
+                      <i class="la la-project-diagram"></i> Analisis de Escenarios
+                  </a>
+              </div>
             </div>
 
             <div class="card-body">
@@ -3036,7 +3159,7 @@
 
                     <div class="giro-risk-head">
                       <div class="giro-risk-filter">
-                        <label>Filtrar por nivel de riesgo</label>
+                        <label style="font-weight: 850;">Filtrar por nivel de riesgo</label>
 
                         <div class="giro-risk-multiselect" id="riskLevelFilter">
                           <button type="button" class="giro-risk-multiselect__trigger" id="riskLevelTrigger">

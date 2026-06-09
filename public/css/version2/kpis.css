@@ -529,7 +529,7 @@
   color: rgba(255,255,255,.86);
   font-size: .95rem;
   line-height: 1.1;
-  font-weight: 800;
+  /*font-weight: 800;*/
   margin-bottom: 6px;
 }
 
@@ -802,7 +802,7 @@
     color: rgba(255,255,255,.90);
     font-size: .78rem;
     line-height: 1.15;
-    font-weight: 900;
+    /*font-weight: 900;*/
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -948,7 +948,7 @@
     margin: 0;
     color: rgba(255,255,255,.82);
     font-size: .78rem;
-    font-weight: 850;
+    /*font-weight: 600;*/
   }
 
   .giro-risk-select{
@@ -996,7 +996,7 @@
       #0d141d;
     color: rgba(255,255,255,.92);
     font-size: .82rem;
-    font-weight: 800;
+    /*font-weight: 800;*/
     outline: none !important;
     cursor: pointer;
     display: flex;
@@ -1052,7 +1052,7 @@
     border-radius: 7px;
     color: rgba(255,255,255,.88);
     font-size: .78rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     cursor: pointer;
     margin: 0;
   }
@@ -1169,7 +1169,7 @@
     color: rgba(255,255,255,.78);
     font-size: .74rem;
     line-height: 1.12;
-    font-weight: 800;
+    /*font-weight: 800;*/
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -1201,7 +1201,7 @@
     gap: 7px;
     color: rgba(255,255,255,.82);
     font-size: .78rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     white-space: nowrap;
   }
 
@@ -1308,7 +1308,7 @@
     color: rgba(255,255,255,.66);
     font-size: .78rem;
     line-height: 1.18;
-    font-weight: 750;
+    /*font-weight: 750;*/
   }
 
   .giro-risk-summary__item strong{
@@ -1445,7 +1445,7 @@
   border-bottom: 1px solid rgba(255,255,255,.08);
   font-size: .86rem;
   line-height: 1.1;
-  font-weight: 850;
+  /*font-weight: 850;*/
 }
 
 .giro-escenarios-table th:last-child,
@@ -1456,7 +1456,7 @@
 .giro-escenarios-table thead th{
   color: rgba(255,255,255,.92);
   font-size: .82rem;
-  font-weight: 950;
+  /*font-weight: 950;*/
   letter-spacing: -.01em;
 }
 
@@ -1529,7 +1529,7 @@
     linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.006)),
     #101720;
   color: rgba(255,255,255,.84) !important;
-  font-weight: 850 !important;
+  /*font-weight: 850 !important;*/
   white-space: nowrap;
 }
 
@@ -1564,7 +1564,7 @@
   vertical-align: middle;
   color: rgba(255,255,255,.84);
   font-size: .84rem;
-  font-weight: 850;
+  /*font-weight: 850;*/
 }
 
 .giro-td-muy-bajo,
@@ -1573,7 +1573,7 @@
 .giro-td-alto,
 .giro-td-muy-alto{
   color: rgba(255,255,255,.92) !important;
-  font-weight: 900 !important;
+  /*font-weight: 900 !important;*/
   font-variant-numeric: tabular-nums;
 }
 
@@ -1613,7 +1613,7 @@
     linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.008)),
     #101720 !important;
   color: rgba(255,255,255,.88) !important;
-  font-weight: 900 !important;
+  /*font-weight: 900 !important;*/
   font-variant-numeric: tabular-nums;
 }
 
@@ -1623,7 +1623,7 @@
     #0c121a !important;
   color: rgba(255,255,255,.92) !important;
   font-size: .90rem;
-  font-weight: 950 !important;
+  /*font-weight: 950 !important;*/
 }
 
 .giro-row-total td:first-child{
@@ -1636,7 +1636,7 @@
     #0b1119 !important;
   color: rgba(255,255,255,.88) !important;
   font-size: .88rem;
-  font-weight: 900 !important;
+  /*font-weight: 900 !important;*/
   border-bottom: 0 !important;
 }
 
@@ -2051,7 +2051,7 @@
     border-bottom: 1px solid rgba(194,164,118,.16);
     padding: 13px 12px;
     text-align: center;
-    font-weight: 950;
+    /*font-weight: 950;*/
     letter-spacing: -.01em;
     color: rgba(255,255,255,.88);
     white-space: nowrap;
@@ -2067,7 +2067,7 @@
     text-align: center;
     border-bottom: 1px solid rgba(255,255,255,.06);
     font-size: .94rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     color: rgba(255,255,255,.86);
     font-variant-numeric: tabular-nums;
   }
@@ -2075,7 +2075,7 @@
   #chart-dano .giro-dano-table tbody td:first-child{
     text-align: left;
     padding-left: 18px;
-    font-weight: 950;
+    /*font-weight: 950;*/
     color: rgba(255,255,255,.92);
     white-space: nowrap;
   }
@@ -2237,7 +2237,7 @@
     gap: 8px;
     color: rgba(255,255,255,.88);
     font-size: .82rem;
-    font-weight: 900;
+    /*font-weight: 900;*/
     white-space: nowrap;
     line-height: 1;
   }
@@ -2245,7 +2245,7 @@
   .giro-pareto-legend__text{
     color: rgba(255,255,255,.88);
     font-size: .82rem;
-    font-weight: 900;
+    /*font-weight: 900;*/
     line-height: 1;
   }
 
@@ -2367,7 +2367,7 @@
       #0f1722;
     color: rgba(255,255,255,.92);
     font-size: .86rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2432,7 +2432,7 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 750;
+    /*font-weight: 750;*/
     color: rgba(255,255,255,.84);
   }
 
@@ -2565,7 +2565,7 @@
     padding: 0 12px 0 22px;
     color: rgba(255,255,255,.82);
     font-size: .88rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     border-bottom: 1px solid rgba(255,255,255,.075);
   }
 
@@ -2706,7 +2706,7 @@
     color: rgba(255,255,255,.88);
     font-size: .82rem;
     line-height: 1.1;
-    font-weight: 850;
+    /*font-weight: 850;*/
     padding: 0 4px;
   }
 
@@ -2751,7 +2751,7 @@
     gap: 9px;
     color: rgba(255,255,255,.84);
     font-size: .92rem;
-    font-weight: 850;
+    /*font-weight: 850;*/
     white-space: nowrap;
   }
 
@@ -2877,7 +2877,7 @@
     text-align: center;
     color: rgba(255,255,255,.82);
     font-size: .9rem;
-    font-weight: 800;
+    /*font-weight: 800;*/
     border-bottom: 1px solid rgba(255,255,255,.065);
     border-right: 1px solid rgba(255,255,255,.055);
     font-variant-numeric: tabular-nums;
@@ -3116,7 +3116,7 @@
   color: rgba(255,255,255,.60);
   font-size: .80rem;
   line-height: 1.35;
-  font-weight: 700;
+  /*font-weight: 700;*/
   text-align: center;
 }
 
@@ -3156,7 +3156,7 @@
   color: rgba(255,255,255,.78);
   font-size: .82rem;
   line-height: 1;
-  font-weight: 850;
+  /*font-weight: 850;*/
   white-space: nowrap;
 }
 
@@ -3225,7 +3225,7 @@
   color: rgba(255,255,255,.58);
   font-size: .76rem;
   line-height: 1.3;
-  font-weight: 750;
+  /*font-weight: 750;*/
 }
 
 .giro-avance-table-wrap{
@@ -3254,7 +3254,7 @@
   border-bottom: 1px solid rgba(255,255,255,.075);
   font-size: .86rem;
   line-height: 1.1;
-  font-weight: 850;
+  /*font-weight: 850;*/
   font-variant-numeric: tabular-nums;
 }
 
@@ -3285,7 +3285,7 @@
   background:
     linear-gradient(180deg, rgba(194,164,118,.070), rgba(194,164,118,.020)),
     #0c121a;
-  font-weight: 950;
+  font-weight: 700;
   border-bottom: 0;
 }
 
@@ -3431,7 +3431,7 @@
   color: rgba(255,255,255,.66);
   font-size: .78rem;
   line-height: 1.18;
-  font-weight: 750;
+  /*font-weight: 750;*/
 }
 
 .giro-avance-summary__value{
@@ -4143,7 +4143,7 @@
   color: rgba(255,255,255,.88);
   font-size: .78rem;
   line-height: 1.15;
-  font-weight: 900;
+  /*font-weight: 900;*/
   margin-bottom: 6px;
 
   display: -webkit-box;
@@ -4246,3 +4246,4 @@
     font-size: 1.18rem;
   }
 }
+

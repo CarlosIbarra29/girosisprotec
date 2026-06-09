@@ -67,7 +67,7 @@ var Tabla = (function () {
               full.id +
               '" class="btn btn-sm btn-outline-success btn-icon mr-2" title="Editar cliente" data-theme="dark" data-toggle="tooltip" data-placement="top">' +
               '<span class="svg-icon svg-icon-md"><i class="flaticon-edit"></i></span></a>' +
-              '<button class="btn btn-clean btn-sm btn-icon btn-outline-success mt-1" onClick="deletecliente(' +
+              '<button class="btn btn-clean btn-sm btn-icon btn-outline-success mt-1" onClick="deleteanalisis(' +
               full.id +
               "," +
               full.id +
@@ -319,17 +319,17 @@ jQuery(document).ready(function () {
 /* ============================
  * Acciones (SweetAlert)
  * ============================ */
-function deletecliente(nombre, id) {
+function deleteanalisis(nombre, id) {
   Swal.fire({
-    title: "Estas seguro de desactivar el registro " + nombre,
+    title: "Estas seguro de eliminar el registro " + nombre,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Si, Desactivarlo!",
+    confirmButtonText: "Si, Eliminarlo!",
     cancelButtonText: "No, Cancelar!",
     reverseButtons: true,
   }).then(function (result) {
     if (result.value) {
-      document.getElementById("id_cliente_delete").value = id;
+      document.getElementById("id_delete_analisis").value = id;
 
       Swal.fire({
         position: "top-center",
@@ -338,7 +338,7 @@ function deletecliente(nombre, id) {
         showConfirmButton: false,
       });
 
-      document.getElementById("cliente_delete_form").submit();
+      document.getElementById("analisis_delete_form").submit();
     } else if (result.dismiss === "cancel") {
       Swal.fire("Cancelada", "La acción fue cancelada", "error");
     }

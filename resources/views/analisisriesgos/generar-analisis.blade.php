@@ -21,9 +21,23 @@
                     <h3 class="card-title">Evaluación del Riesgo ({{ $cliented->nombre_comercial }})</h3>
 
                     <div style="margin-top: 16px;">
-                        <!-- <a class="btn btn-success btn-xs disabled"  href="#"><i class="la la-exclamation-triangle"></i> Evaluación del Riesgo</a> -->
-                        <a href="{{ route('analisis.graficassociales', $cliente) }}" class="btn btn-success btn-xs "  href="#"><i class="la la-tachometer"></i>KPI's</a>
-                        <a class="btn btn-success btn-xs"  href="{{ route('analisis.analisiscliente', $cliente ) }}"><i class="la la-project-diagram"></i></i> Evaluación del Riesgo</a>
+                        <a href="#"
+                           class="btn btn-success btn-xs active disabled"
+                           aria-disabled="true"
+                           tabindex="-1"
+                           style="pointer-events: none; box-shadow: none !important; border-color: #ced4da !important;">
+                            <i class="la la-calculator"></i> Calcular Riesgo
+                        </a>
+
+                        <a href="{{ route('analisis.graficassociales', $cliente) }}"
+                           class="btn btn-success btn-xs">
+                            <i class="la la-tachometer"></i> KPI's
+                        </a>
+
+                        <a href="{{ route('analisis.analisiscliente', $cliente) }}"
+                           class="btn btn-success btn-xs">
+                            <i class="la la-project-diagram"></i> Analisis de Escenarios
+                        </a>
                     </div>
 
                 </div>
@@ -33,6 +47,9 @@
 
                         
                         @if($alcance_social== "Vacio" || $id_alcance == 0)
+                        <div class="row  hr-container">
+                                <span><h3><b>Identificación del riesgo</b></h3></span>
+                            </div>
                         @else
                             <div class="row  hr-container">
                                 <span><h3><b>Identificación del riesgo</b></h3></span>
@@ -103,23 +120,23 @@
                                 <input type="hidden" name="tipo" id="id_tipo" value="{{ $tipo }}">
                                 <input type="hidden" name="punto_normativo" id="id_alcance" value="{{ $id_alcance }}">
                                 <input type="hidden" name="alcances" id="num" value="{{ $num }}">
-                                @if($alcance_social== "Vacio" || $id_alcance == 0)
+                                @if($alcance_social== "Vacio" )
                                     
-                                    @if($alcance_social== "Vacio")
-                                        <div class="row">
-                                            <div class="col-lg-6 text-center">
-                                                <img  src="{{ asset('img/sin-informacion.webp') }}" width="300" />
-                                            </div>
-                                            <div class="col-lg-6 text-center mt-4">
-                                                <h1>¡Lo sentimos!</h1>
-                                                <h4>El punto normativo seleccionado no contiene información</h4>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6 text-center">
+                                            <img  src="{{ asset('img/sin-informacion.webp') }}" width="300" />
+                                        </div>
+                                        <div class="col-lg-6 text-center mt-4">
+                                            <h1>¡Lo sentimos!</h1>
+                                            <h4>El punto normativo seleccionado no contiene información</h4>
 
-                                                <div class="row mt-4">
-                                                    <h5>Para continar dirigete a la sección de libros de riesgos sociales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
-                                                </div>
+                                            <div class="row mt-4">
+                                                <h5>Para continar dirigete a la sección de libros de riesgos sociales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
                                             </div>
                                         </div>
-                                    @endif
+                                    </div>
+                              
 
 
                                 @else

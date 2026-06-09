@@ -1,0 +1,526 @@
+/* =========================================================
+   MÉTODOS / CLASIFICACIÓN DE RIESGOS
+   Estilo dark/gold alineado a KPIs y Matriz
+   ========================================================= */
+
+:root{
+  --camel: #C2A476;
+  --camel-700: #9B7C4E;
+  --camel-800: #7F653F;
+  --gold: #D7A73F;
+  --gold-soft: #F2C766;
+
+  --dark-950: #05080d;
+  --dark-900: #080d14;
+  --dark-850: #0a111b;
+  --dark-800: #0d1520;
+  --dark-750: #111b29;
+
+  --dark-line: rgba(255,255,255,.09);
+  --dark-line-gold: rgba(194,164,118,.22);
+}
+
+/* ==============================
+   CARD GENERAL
+   ============================== */
+
+.giro-methods-page{
+  margin: 0;
+}
+
+.giro-methods-card.card.card-custom{
+  overflow: hidden;
+  border: 1px solid rgba(194,164,118,.22);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at top center, rgba(194,164,118,.08), transparent 36%),
+    linear-gradient(180deg, #0b1119 0%, #05080d 100%);
+  box-shadow:
+    0 22px 48px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.giro-methods-card.card.card-custom .card-header,
+.giro-methods-header{
+  min-height: 74px;
+  background:
+    radial-gradient(circle at top left, rgba(194,164,118,.12), transparent 34%),
+    linear-gradient(180deg, #151515 0%, #0c0c0c 100%) !important;
+  border-bottom: 2px solid rgba(194,164,118,.78) !important;
+}
+
+.giro-methods-header .card-label{
+  color: #ffffff !important;
+  font-weight: 900;
+  letter-spacing: -.025em;
+}
+
+.giro-methods-header .card-icon i{
+  color: var(--gold-soft) !important;
+}
+
+.giro-methods-toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.giro-methods-card .btn-light-primary{
+  min-height: 42px;
+  border-radius: 12px !important;
+  border: 1px solid rgba(194,164,118,.65) !important;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.10), transparent 45%),
+    linear-gradient(180deg, #fffaf0 0%, #f4efe7 100%) !important;
+  color: #111111 !important;
+  font-weight: 900 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    0 10px 22px rgba(0,0,0,.16);
+}
+
+.giro-methods-card .btn-light-primary i{
+  color: #111111 !important;
+  font-size: 1.25rem;
+}
+
+.giro-methods-card .btn-light-primary:hover{
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.13), transparent 45%),
+    linear-gradient(180deg, #caa967 0%, #9b7c4e 100%) !important;
+  border-color: rgba(242,199,102,.95) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.giro-methods-card .btn-light-primary:hover i{
+  color: #ffffff !important;
+}
+
+/* ==============================
+   BODY / HERO
+   ============================== */
+
+.giro-methods-body{
+  padding: 24px 26px 22px !important;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(215,167,63,.08), transparent 28%),
+    radial-gradient(circle at 86% 6%, rgba(255,255,255,.035), transparent 26%),
+    linear-gradient(180deg, #090f17 0%, #05080d 100%) !important;
+}
+
+.giro-methods-hero{
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  max-width: 1160px;
+  margin: 0 auto 18px;
+  padding: 17px 18px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at top left, rgba(215,167,63,.13), transparent 36%),
+    linear-gradient(180deg, #111b29 0%, #0b121c 100%);
+  border: 1px solid rgba(194,164,118,.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 14px 28px rgba(0,0,0,.22);
+}
+
+.giro-methods-hero__icon{
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,.22), transparent 56%),
+    linear-gradient(180deg, #d7a73f 0%, #85642b 100%);
+  color: #ffffff;
+  font-size: 1.7rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 12px 22px rgba(0,0,0,.24);
+}
+
+.giro-methods-hero__content h4{
+  margin: 0 0 4px;
+  color: rgba(255,255,255,.94);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  font-weight: 950;
+  letter-spacing: -.03em;
+}
+
+.giro-methods-hero__content p{
+  margin: 0;
+  color: rgba(255,255,255,.62);
+  font-size: .88rem;
+  line-height: 1.35;
+}
+
+/* ==============================
+   SECCIONES
+   ============================== */
+
+.giro-method-section{
+  max-width: 1160px;
+  margin: 0 auto 22px;
+  padding: 16px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top center, rgba(215,167,63,.065), transparent 38%),
+    linear-gradient(180deg, #0f1823 0%, #0a111a 100%);
+  border: 1px solid rgba(194,164,118,.20);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 18px 34px rgba(0,0,0,.24);
+}
+
+.giro-method-section:last-child{
+  margin-bottom: 0;
+}
+
+.giro-section-title{
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.giro-section-title h4{
+  margin: 0;
+  color: rgba(255,255,255,.92);
+  font-size: 1.25rem;
+  font-weight: 950;
+  letter-spacing: -.025em;
+}
+
+.giro-section-title h4::after{
+  content: "";
+  display: block;
+  width: 70px;
+  height: 3px;
+  border-radius: 999px;
+  margin: 11px auto 0;
+  background: linear-gradient(90deg, #9c6f1d 0%, #f0c15a 52%, #9c6f1d 100%);
+  box-shadow: 0 0 18px rgba(240,193,90,.22);
+}
+
+/* ==============================
+   TABLAS
+   ============================== */
+
+.giro-table-scroll{
+  overflow-x: auto;
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194,164,118,.55) transparent;
+}
+
+.giro-table-scroll::-webkit-scrollbar{
+  height: 8px;
+}
+
+.giro-table-scroll::-webkit-scrollbar-thumb{
+  background: rgba(194,164,118,.55);
+  border-radius: 999px;
+}
+
+.giro-method-table{
+  width: 100%;
+  min-width: 780px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #0b121b;
+  box-shadow: none;
+}
+
+.giro-method-table th,
+.giro-method-table td{
+  padding: 12px 12px;
+  border: 1px solid rgba(255,255,255,.06);
+  text-align: center;
+  font-size: .88rem;
+  line-height: 1.15;
+  vertical-align: middle;
+}
+
+.giro-method-table thead th{
+  background:
+    radial-gradient(circle at top left, rgba(215,167,63,.10), transparent 44%),
+    linear-gradient(180deg, #093a6c 0%, #062c52 100%);
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.giro-method-table tbody td{
+  background: rgba(255,255,255,.985);
+  color: #1b2230;
+}
+
+.giro-method-table tbody td:first-child{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)),
+    #111922;
+  color: rgba(255,255,255,.90);
+}
+
+.giro-method-table--split th{
+  width: 25%;
+}
+
+.giro-method-table--matrix td:first-child{
+  min-width: 180px;
+}
+
+/* ==============================
+   COLORES RIESGO
+   ============================== */
+
+.risk-muy-bajo{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05)),
+    #c8e6c9 !important;
+  color: #12310b !important;
+}
+
+.risk-bajo{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.04)),
+    #aed581 !important;
+  color: #12310b !important;
+}
+
+.risk-medio{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.04)),
+    #fff176 !important;
+  color: #3d3200 !important;
+}
+
+.risk-alto{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.03)),
+    #ef5350 !important;
+  color: #ffffff !important;
+}
+
+.risk-muy-alto{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02)),
+    #c62828 !important;
+  color: #ffffff !important;
+}
+
+.level-low{
+  color: #7edc91 !important;
+}
+
+.level-success{
+  color: #29eeb9 !important;
+}
+
+.level-medium{
+  color: #eea529 !important;
+}
+
+.level-warning{
+  color: #f2c50e !important;
+}
+
+.level-danger{
+  color: #ff4b55 !important;
+}
+
+.level-low-box{
+  background: #0b0f14 !important;
+}
+
+.level-success-box{
+  background: #29eeb9 !important;
+}
+
+.level-medium-box{
+  background: #eea529 !important;
+}
+
+.level-warning-box{
+  background: #f2c50e !important;
+}
+
+.level-danger-box{
+  background: #c62828 !important;
+}
+
+/* ==============================
+   MATRICES
+   ============================== */
+
+.matrix-none{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.03)),
+    #ffffff !important;
+  color: #111111 !important;
+}
+
+.matrix-very-low{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.04)),
+    #93f476 !important;
+  color: #11340a !important;
+}
+
+.matrix-low{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.04)),
+    #f9c700 !important;
+  color: #3b2d00 !important;
+}
+
+.matrix-medium{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.04)),
+    #eea529 !important;
+  color: #321c00 !important;
+}
+
+.matrix-high{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.03)),
+    #ff0000 !important;
+  color: #ffffff !important;
+}
+
+.matrix-critical{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02)),
+    #c62828 !important;
+  color: #ffffff !important;
+}
+
+/* ==============================
+   LEYENDAS
+   ============================== */
+
+.giro-method-legend{
+  width: fit-content;
+  max-width: 100%;
+  margin: 16px auto 0;
+  padding: 10px 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,.055), transparent 64%),
+    linear-gradient(180deg, rgba(255,255,255,.040), rgba(255,255,255,.014)),
+    #080d14;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 12px 22px rgba(0,0,0,.24);
+}
+
+.legend-item{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.84);
+  font-size: .84rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.box{
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    0 0 0 3px rgba(255,255,255,.035);
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media (max-width: 991px){
+  .giro-methods-header{
+    align-items: flex-start !important;
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+
+  .giro-methods-toolbar{
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px){
+  .giro-methods-body{
+    padding: 16px 14px 16px !important;
+  }
+
+  .giro-methods-hero{
+    grid-template-columns: 46px minmax(0,1fr);
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .giro-methods-hero__icon{
+    width: 44px;
+    height: 44px;
+    font-size: 1.35rem;
+  }
+
+  .giro-methods-hero__content h4{
+    font-size: 1rem;
+  }
+
+  .giro-methods-hero__content p{
+    font-size: .78rem;
+  }
+
+  .giro-method-section{
+    padding: 10px;
+    margin-bottom: 16px;
+  }
+
+  .giro-section-title h4{
+    font-size: 1rem;
+  }
+
+  .giro-method-table{
+    min-width: 760px;
+  }
+
+  .giro-method-table th,
+  .giro-method-table td{
+    padding: 10px 9px;
+    font-size: .78rem;
+  }
+
+  .giro-method-legend{
+    width: 100%;
+    border-radius: 14px;
+    gap: 12px;
+  }
+
+  .legend-item{
+    font-size: .76rem;
+  }
+}
+
+@media (max-width: 576px){
+  .giro-methods-card .btn-light-primary{
+    width: 100%;
+    margin: 0 0 8px !important;
+  }
+}

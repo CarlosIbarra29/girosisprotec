@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('scripts')
-  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.2') }}"></script>
+  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.4') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css"> -->
   <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
@@ -36,14 +36,22 @@
                 </h3>
               </div>
               <div class="card-toolbar">
-                <a href="{{ url()->previous() }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                  <i class="la la-arrow-left"></i>Regresar
+                <a href="{{ route('analisis.generaranalisis', [$cliente->id, 1, 0, 1]) }}"
+                   class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                  <i class="la la-calculator"></i> Calcular Riesgo
                 </a>
-                <a href="{{ route('analisis.graficassociales', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                  <i class="la la-bar-chart"></i>Graficas
+
+                <a href="{{ route('analisis.graficassociales', $cliente->id) }}"
+                   class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                  <i class="la la-tachometer"></i> KPI's
                 </a>
-                <a href="{{ route('analisis.generaranalisis', [$cliente->id, 1, 0, 1]) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                  <i class="la la-plus"></i>Nuevo
+
+                <a href="#"
+                   class="btn btn-light-primary font-weight-bolder mr-3 ml-3 active disabled"
+                   aria-disabled="true"
+                   tabindex="-1"
+                   style="pointer-events: none;  border-color: #ced4da !important; box-shadow: none !important;">
+                  <i class="la la-project-diagram"></i> Analisis de Escenarios
                 </a>
 
                 {{-- Botón modo edición (oculto) --}}
@@ -766,7 +774,9 @@
                               <i class="flaticon-edit"></i>
                             </a>
 
-                            <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1"
+                            <button type="button"
+                                    class="btn btn-sm btn-clean btn-hover-icon-success btn-icon mt-1"
+                                    onclick="deleteanalisis('E.{{ $loop->iteration }}', {{ $unid->id }})"
                                     data-toggle="tooltip"
                                     data-theme="dark"
                                     title="Eliminar analisis del riesgo">
@@ -1437,4 +1447,14 @@
   });
 </script>
 
+
+  <form method="post"
+        id="analisis_delete_form"
+        action="{{ route('analisis.eliminarAnalisis') }}"
+        enctype="multipart/form-data">
+    @csrf
+
+    <input type="hidden" name="id" id="id_delete_analisis" value="">
+    <input type="hidden" name="cliente_id" value="{{ $cliente->id }}">
+  </form>
 @endsection

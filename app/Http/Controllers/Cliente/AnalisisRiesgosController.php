@@ -73,7 +73,8 @@ class AnalisisRiesgosController extends Controller
 
     public function analisiscliente($id_cliente)
     {
-        $data = AnalisisRiesgoSocial::where('cliente_id', $id_cliente)->get();
+        $data = AnalisisRiesgoSocial::where('cliente_id', $id_cliente)->where('status_delete', 1)->get();
+        
         $cliente = Cliente::where('id', $id_cliente)->first();
 
         $nivelesAmenaza = Amenaza::select('id','nivel_amenaza','calculo_nivel_amenaza')
@@ -127,6 +128,20 @@ class AnalisisRiesgosController extends Controller
 
 
     	return view('analisisriesgos.generar-analisis', compact('data', 'cliented','alcances', 'cliente', 'tipo', 'id_alcance', 'alcance_social', 'count_alcance', 'num', 'nivel_control', 'nivel_control'));
+    }
+
+    public function eliminarAnalisis(Request $request)
+    {
+        $data = [
+            'status_delete' => 2,
+            'iduserUpdated' => auth()->user()->id,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        AnalisisRiesgoSocial::where('id', $request->id)->update($data);
+
+        session()->flash('success', 'El registro se desactivo correctamente');
+        return redirect()->route('analisis.analisiscliente', $request->cliente_id);  
     }
 
     public function obteneralcances(Request $request)
@@ -258,7 +273,7 @@ class AnalisisRiesgosController extends Controller
             // NUEVO PERFIL
             'NivelPr2',
             'hdConsecuencia3',
-        ])->where('cliente_id', $id_cliente)->get();
+        ])->where('cliente_id', $id_cliente)->where('status_delete', 1)->get();
 
         // var_dump($data);
 

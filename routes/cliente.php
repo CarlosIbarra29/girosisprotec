@@ -29,6 +29,7 @@
 		Route::get('/graficas-riesgos-sociales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficassociales'])->name('analisis.graficassociales');
 		Route::get('/detalle-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'detalleanalisissocial'])->name('analisis.detalleanalisissocial');
 		Route::get('/editar-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisisanalisissocial'])->name('analisis.analisisanalisissocial');
+		Route::post('/desactivar-analisis', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'eliminarAnalisis'])->name('analisis.eliminarAnalisis');
 
 		//Analisis Tecnologicos
 		Route::get('/analisis-riesgos-tecnologicos-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisistecnologicoscli'])->name('analisis.analisistecnologicoscli');
