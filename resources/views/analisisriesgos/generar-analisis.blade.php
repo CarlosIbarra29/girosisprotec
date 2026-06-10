@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @push('scripts')
-    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.4') }}"></script>
-    <link href="{{ asset('/css/version2/gnranalisis.css?v=1.2.3') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('js/cliente/AnalisisRiesgo.js?v=1.2.5') }}"></script>
+    <link href="{{ asset('/css/version2/gnranalisis.css?v=1.2.8') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -13,19 +13,23 @@
 
 
     <!--begin::Card-->
-    <div class="row">
+    <div class="row giro-eval-page">
         <div class="col-lg-12">
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <div class="card-header" {{-- style="background-color: #afafae !important; color: white!important;" --}}>
-                    <h3 class="card-title">Evaluación del Riesgo ({{ $cliented->nombre_comercial }})</h3>
+            <div class="card card-custom gutter-b giro-eval-card">
+                <div class="card-header giro-eval-header">
+                    <div class="giro-eval-titlebox">
+                        <span class="giro-eval-kicker">Evaluación</span>
+                        <h3 class="card-title">Evaluación del Riesgo</h3>
+                        <p>{{ $cliented->nombre_comercial }}</p>
+                    </div>
 
-                    <div style="margin-top: 16px;">
+                    <div class="giro-eval-nav">
                         <a href="#"
                            class="btn btn-success btn-xs active disabled"
                            aria-disabled="true"
                            tabindex="-1"
-                           style="pointer-events: none; box-shadow: none !important; border-color: #ced4da !important;">
+                           style="pointer-events: none;">
                             <i class="la la-calculator"></i> Calcular Riesgo
                         </a>
 
@@ -43,7 +47,7 @@
                 </div>
                 <input type='hidden' id='url_alcances' value='{{ route('analisis.obteneralcances') }}'>
                 <!--begin::Form-->
-                    <div class="card-body">
+                    <div class="card-body giro-eval-body">
 
                         
                         @if($alcance_social== "Vacio" || $id_alcance == 0)
@@ -56,7 +60,7 @@
                             </div>
                         @endif
 
-                        <div class="card card-custom gutter-b">
+                        <div class="card card-custom gutter-b giro-eval-section">
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-lg-8 fl">
@@ -68,33 +72,62 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-lg-4 mt-2 text-center">
+                                    <div class="col-lg-4 fl giro-options-field">
                                         <label><b>Opciones</b></label>
-                                        <input type="hidden" name="contador_paginador" id="paginador_num" value="{{ $num }}">
-                                        @if($alcance_social== "Vacio" || $id_alcance == 0)
 
-                                        @else
-                                            <p style="margin-bottom: 0px!important">{{ $num }} de {{ $count_alcance }}</p> 
-                                            @if($num == 1)
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_menos" data-toggle="tooltip" data-theme="dark" title="" >
-                                                    <i class="la la-arrow-left"></i>
-                                                </button>
-                                            @else
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_menos" data-toggle="tooltip" data-theme="dark" title="" >
-                                                    <i class="la la-arrow-circle-left"></i>
-                                                </button>
-                                            @endif
+                                        <div class="giro-options-control">
+                                            <input type="hidden" name="contador_paginador" id="paginador_num" value="{{ $num }}">
 
-                                            @if($num == 9)
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1 disabled" id="alcance_mas" data-toggle="tooltip" data-theme="dark" title="" >
-                                                    <i class="la la-arrow-right"></i>
-                                                </button>
+                                            @if($alcance_social== "Vacio" || $id_alcance == 0)
+                                                <span class="giro-options-count">Sin opciones</span>
                                             @else
-                                                <button  class="btn btn-clean btn-icon btn-outline-success mt-1" id="alcance_mas" data-toggle="tooltip" data-theme="dark" title="" >
-                                                    <i class="la la-arrow-circle-right"></i>
-                                                </button>
+                                                <span class="giro-options-count">{{ $num }} de {{ $count_alcance }}</span>
+
+                                                <div class="giro-options-buttons">
+                                                    @if($num <= 1)
+                                                        <button type="button"
+                                                                class="btn btn-clean btn-icon btn-outline-success disabled"
+                                                                id="alcance_menos"
+                                                                disabled
+                                                                aria-disabled="true"
+                                                                data-toggle="tooltip"
+                                                                data-theme="dark"
+                                                                title="No hay opción anterior">
+                                                            <i class="la la-arrow-left"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button"
+                                                                class="btn btn-clean btn-icon btn-outline-success"
+                                                                id="alcance_menos"
+                                                                data-toggle="tooltip"
+                                                                data-theme="dark">
+                                                            <i class="la la-arrow-circle-left"></i>
+                                                        </button>
+                                                    @endif
+
+                                                    @if($num >= $count_alcance)
+                                                        <button type="button"
+                                                                class="btn btn-clean btn-icon btn-outline-success disabled"
+                                                                id="alcance_mas"
+                                                                disabled
+                                                                aria-disabled="true"
+                                                                data-toggle="tooltip"
+                                                                data-theme="dark"
+                                                                title="No hay más opciones">
+                                                            <i class="la la-arrow-right"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button"
+                                                                class="btn btn-clean btn-icon btn-outline-success"
+                                                                id="alcance_mas"
+                                                                data-toggle="tooltip"
+                                                                data-theme="dark">
+                                                            <i class="la la-arrow-circle-right"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
                                             @endif
-                                        @endif
+                                        </div>
                                     </div>
 
                                     <!-- <div class="col-lg-3 mt-2 text-center">
@@ -211,7 +244,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row form-group">
+                                    <div class="row form-group giro-checks-block">
                                         <div class="col-lg-4 degradado-border-right" >
                                             <label for="observaciones"><b style="font-size: 15px;">Vulnerabilidades del Sistema Identificadas</b></label><br>
                                             <div class="row">
@@ -304,9 +337,7 @@
                                                                         <span></span>
                                                                         Tecnológico 
                                                                     </label>
-                                                                </div>
                                                                 
-                                                                <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="8" name="impactos_negocio[]"/>
                                                                         <span></span>
@@ -323,20 +354,18 @@
                                                                         <span></span>
                                                                         Comunidad / social
                                                                     </label>
-                                                                </div>
-                                                            
-                                                                
-                                                            </div>
 
-                                                            <div class="col-lg-2">
-                                                                <div class="checkbox-list">
                                                                     <label class="checkbox">
                                                                         <input type="checkbox" value="10" name="impactos_negocio[]"/>
                                                                         <span></span>
                                                                         Legal / Regulatorio
                                                                     </label>
                                                                 </div>
+                                                            
+                                                                
                                                             </div>
+
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,7 +385,7 @@
                                 <span><h3><b>Vulnerabilidades / Impactos al Negocio</b></h3></span>
                             </div>
 
-                            <div class="card card-custom gutter-b">
+                            <div class="card card-custom gutter-b giro-eval-section">
                                 <div class="card-body">
                                 
                                     Esta seccion ya no se ocupa, si la opupampos descomentar
@@ -367,7 +396,7 @@
                                 <span><h3><b>Análisis del Riesgo</b></h3></span>
                             </div>
                             
-                            <div class="card card-custom gutter-b">
+                            <div class="card card-custom gutter-b giro-eval-section">
                                 <div class="card-body">
 
                                     <div class="row form-group">
@@ -477,7 +506,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 text-center">
+                                        <div class="col-lg-4 text-center giro-risk-panel">
 
                                             <div class="risk-level nivelmma">
                                                 <span class="title">Valoración de Riesgo </span>
@@ -597,7 +626,7 @@
 
 
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer giro-eval-footer">
                         <div class="row text-right">
                             @if($alcance_social== "Vacio" || $id_alcance == 0)
                                 <a href="{{ route('analisis.listadoanalisis') }}"  class="btn btn-secondary">Cancelar</a>
