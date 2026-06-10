@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @push('scripts')
-  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.4') }}"></script>
+  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.8') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css"> -->
   <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/listadoanalisis.css?v=2.2.4') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/listadoanalisis.css?v=4.0.4') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -17,7 +17,7 @@
 
 @section('content')
 
-<div class="d-flex flex-row">
+<div class="d-flex flex-row giro-list-page">
   <!--begin::List-->
   <div class="flex-row-fluid">
     <div class="d-flex flex-column flex-grow-1">
@@ -25,9 +25,9 @@
       <div class="row">
         <div class="col-xl-12">
           <!--begin::Card-->
-          <div class="card card-custom">
-            <div class="card-header">
-              <div class="card-title">
+          <div class="card card-custom giro-list-card">
+            <div class="card-header giro-list-header">
+              <div class="card-title giro-list-titlebox">
                 <span class="card-icon">
                   <i class="flaticon2-file text-primary"></i>
                 </span>
@@ -35,7 +35,7 @@
                   Analisis de riesgos sociales ({{ $cliente->organizacion }})
                 </h3>
               </div>
-              <div class="card-toolbar">
+              <div class="card-toolbar giro-list-toolbar">
                 <a href="{{ route('analisis.generaranalisis', [$cliente->id, 1, 0, 1]) }}"
                    class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                   <i class="la la-calculator"></i> Calcular Riesgo
@@ -55,13 +55,13 @@
                 </a>
 
                 {{-- Botón modo edición (oculto) --}}
-                <button id="btnEditarCeldas" class="btn btn-warning font-weight-bolder mr-3 ml-3 d-none">
+                <!-- <button id="btnEditarCeldas" class="btn btn-warning font-weight-bolder mr-3 ml-3 d-none">
                   <i class="la la-edit"></i> Modo edición
-                </button>
+                </button> -->
               </div>
             </div>
 
-            <div class="edit-legend alert alert-light border mb-3" role="note" aria-label="Ayuda de edición">
+            <div class="edit-legend giro-edit-legend alert alert-light border mb-3" role="note" aria-label="Ayuda de edición">
               <strong class="mr-3">Campos editables</strong>
               <span class="legend-item mr-3">
                 <span class="legend-dot" style="
@@ -74,7 +74,25 @@
               <span class="legend-item"><span class="legend-icon">▾</span> Select (clic)</span>
             </div>
 
-            <div class="card-body">
+            <div class="card-body giro-list-body">
+              <!-- <div class="giro-list-summary" aria-label="Resumen de análisis">
+                <div class="giro-summary-main">
+                  <span class="giro-summary-kicker">Matriz de escenarios</span>
+                  <h4>Libro de análisis social</h4>
+                  <p>Arrastra el borde derecho de cada encabezado para ajustar el ancho de columna como en Excel.</p>
+                </div>
+                <div class="giro-summary-stats">
+                  <div class="giro-stat-pill">
+                    <span>Registros</span>
+                    <strong>{{ count($data) }}</strong>
+                  </div>
+                  <div class="giro-stat-pill">
+                    <span>Columnas</span>
+                    <strong>53</strong>
+                  </div>
+                </div>
+              </div> -->
+
               <!-- <div class="text-center mb-4">
                 <a href="{{ route('analisis.analisiscliente', $cliente->id) }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
                   <i class="fas fa-exclamation-triangle"></i>Riesgos Sociales
@@ -119,9 +137,9 @@
               </div>
 
               <!--begin: Datatable-->
-              <div class="table-filters-wrapper has-floating">
-                <div id="tbl-scroll" class="table-responsive">
-                  <table class="table table-hover table-checkable" id="kdatatable_clientes_inactivos">
+              <div class="table-filters-wrapper has-floating giro-table-zone">
+                <div id="tbl-scroll" class="table-responsive giro-table-scroll">
+                  <table class="table table-hover table-checkable giro-analysis-table" id="kdatatable_clientes_inactivos" data-resizable-table="true">
                     <thead>
                       <tr class="quadrant-row">
                         <th colspan="27" class="quadrant-title quadrant-1"></th>
@@ -395,22 +413,28 @@
                           </td>
 
                           @php
-                            $riesgo = $unid->nivel_riesgo ?? 0;
-                            if ($riesgo >= 36.10)      { $color = '#cc0000'; $nivel = 'Muy Alto'; }
-                            elseif ($riesgo >= 16.10) { $color = '#ff0000'; $nivel = 'Alto'; }
-                            elseif ($riesgo >= 6.50)  { $color = '#ffff00'; $nivel = 'Medio'; }
-                            elseif ($riesgo >= 1.50)  { $color = '#99ff99'; $nivel = 'Bajo'; }
-                            else                      { $color = '';        $nivel = 'Muy Bajo'; }
+                            $riesgo = (float)($unid->nivel_riesgo ?? 0);
+
+                            if ($riesgo >= 36.10) {
+                              $nivel = 'Muy Alto';
+                              $nivelClass = 'risk-level-muyalto';
+                            } elseif ($riesgo >= 16.10) {
+                              $nivel = 'Alto';
+                              $nivelClass = 'risk-level-alto';
+                            } elseif ($riesgo >= 6.50) {
+                              $nivel = 'Medio';
+                              $nivelClass = 'risk-level-medio';
+                            } elseif ($riesgo >= 1.50) {
+                              $nivel = 'Bajo';
+                              $nivelClass = 'risk-level-bajo';
+                            } else {
+                              $nivel = 'Muy Bajo';
+                              $nivelClass = 'risk-level-muybajo';
+                            }
                           @endphp
 
-                          <td
-                            @if($color)
-                              style="background-color: {{ $color }}; text-align:center;"
-                            @else
-                              style="text-align:center;"
-                            @endif
-                          >
-                            {{ $nivel }}
+                          <td class="nowrap-num td-risk-level td-risk-original {{ $nivelClass }}">
+                            <span class="risk-level-label">{{ $nivel }}</span>
                           </td>
 
                           @php
@@ -647,20 +671,35 @@
                                 ->where('max','>=',(float)$ipd2Val)->first();
                               if ($nr) { $nivelR2Txt = $nr->nivel_riesgo; $aceptTxt = $nr->aceptabilidad; }
                             }
+
+                            $nivelR2Norm = trim(mb_strtolower($nivelR2Txt ?? '', 'UTF-8'));
+
                             $nr2Class = '';
-                            switch (strtolower($nivelR2Txt)) {
-                              case 'bajo':    $nr2Class = 'risk2-bajo'; break;
-                              case 'medio':   $nr2Class = 'risk2-medio'; break;
-                              case 'alto':    $nr2Class = 'risk2-alto'; break;
-                              case 'muy alto':$nr2Class = 'risk2-muyalto'; break;
+                            switch ($nivelR2Norm) {
+                              case 'muy bajo':
+                                $nr2Class = 'risk-level-muybajo';
+                                break;
+                              case 'bajo':
+                                $nr2Class = 'risk-level-bajo';
+                                break;
+                              case 'medio':
+                                $nr2Class = 'risk-level-medio';
+                                break;
+                              case 'alto':
+                                $nr2Class = 'risk-level-alto';
+                                break;
+                              case 'muy alto':
+                                $nr2Class = 'risk-level-muyalto';
+                                break;
                             }
+
                             $accClass = '';
                             if (strtolower($aceptTxt) === 'aceptable')      $accClass = 'acc-acept';
                             elseif (strtolower($aceptTxt) === 'no aceptable') $accClass = 'acc-noacept';
                           @endphp
 
-                          <td class="nowrap-num td-nr2 {{ $nr2Class }}">
-                            <span class="nivel2-val" data-id="{{ $unid->id }}">{{ $nivelR2Txt }}</span>
+                          <td class="nowrap-num td-nr2 td-risk-level td-risk-residual {{ $nr2Class }}">
+                            <span class="nivel2-val risk-level-label" data-id="{{ $unid->id }}">{{ $nivelR2Txt }}</span>
                           </td>
 
                           <td class="nowrap-num td-acept {{ $accClass }}">
@@ -939,15 +978,36 @@
     // ===== Colores =====
     function colorNivelRiesgo2(td, txt){
       if (!td) return;
+
+      td.classList.remove(
+        'risk2-bajo',
+        'risk2-medio',
+        'risk2-alto',
+        'risk2-muyalto',
+        'risk-level-muybajo',
+        'risk-level-bajo',
+        'risk-level-medio',
+        'risk-level-alto',
+        'risk-level-muyalto'
+      );
+
       td.style.backgroundColor = '';
       td.style.color = '';
+
+      td.classList.add('td-risk-level', 'td-risk-residual');
+
       const t = _norm(txt);
-      if (t === 'bajo') td.style.backgroundColor = '#99ff99';
-      else if (t === 'medio') td.style.backgroundColor = '#ffe0b2';
-      else if (t === 'alto') td.style.backgroundColor = '#ff9999';
-      else if (t === 'muy alto'){
-        td.style.backgroundColor = '#cc0000';
-        td.style.color = '#fff';
+
+      if (t === 'muy bajo') {
+        td.classList.add('risk-level-muybajo');
+      } else if (t === 'bajo') {
+        td.classList.add('risk-level-bajo');
+      } else if (t === 'medio') {
+        td.classList.add('risk-level-medio');
+      } else if (t === 'alto') {
+        td.classList.add('risk-level-alto');
+      } else if (t === 'muy alto') {
+        td.classList.add('risk-level-muyalto');
       }
     }
 
@@ -1011,29 +1071,42 @@
     function hasRealOverflow(el){
       if (!el) return false;
 
-      const wasClamped = el.classList.contains('clamp-3');
+      const text = (el.textContent || '')
+        .replace(/\u00A0/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
-      if (!wasClamped) {
-        return (
-          el.scrollHeight > el.clientHeight + 1 ||
-          el.scrollWidth > el.clientWidth + 1
-        );
+      // Si está vacío o muy corto, jamás mostrar "Ver más"
+      if (!text || text.length <= 60) return false;
+
+      const hadClamp = el.classList.contains('clamp-3');
+
+      // Forzamos medición estable
+      el.classList.add('clamp-3');
+
+      const computed = window.getComputedStyle(el);
+      let lineHeight = parseFloat(computed.lineHeight);
+
+      if (!isFinite(lineHeight) || lineHeight <= 0) {
+        const fontSize = parseFloat(computed.fontSize) || 12;
+        lineHeight = fontSize * 1.2;
       }
 
+      const maxThreeLinesHeight = (lineHeight * 3) + 4;
+
+      // Medimos el alto completo sin clamp
       el.classList.remove('clamp-3');
 
       const fullHeight = el.scrollHeight;
-      const fullWidth  = el.scrollWidth;
 
-      el.classList.add('clamp-3');
+      // Regresamos el estado anterior
+      if (hadClamp) {
+        el.classList.add('clamp-3');
+      } else {
+        el.classList.remove('clamp-3');
+      }
 
-      const clampedHeight = el.clientHeight;
-      const clampedWidth  = el.clientWidth;
-
-      return (
-        fullHeight > clampedHeight + 1 ||
-        fullWidth > clampedWidth + 1
-      );
+      return fullHeight > maxThreeLinesHeight;
     }
 
     function refreshToggleMore(scope = document){
@@ -1041,40 +1114,40 @@
 
       if (scope instanceof Element && scope.classList.contains('text-long')) {
         cells = [scope];
-      } else {
+      } else if (scope instanceof Element) {
         cells = Array.from(scope.querySelectorAll('.text-long'));
+      } else {
+        cells = Array.from(document.querySelectorAll('.text-long'));
       }
 
       cells.forEach((cell) => {
-        const content = cell.firstElementChild;
+        const content = cell.querySelector('.clamp-3, .cell-edit, div');
         const link = cell.querySelector('.toggle-more');
 
         if (!content || !link) return;
 
-        const wasExpanded = !content.classList.contains('clamp-3');
+        const isExpanded = !content.classList.contains('clamp-3');
 
-        if (wasExpanded) {
-          content.classList.add('clamp-3');
-        }
+        // Para medir siempre cerrado
+        if (isExpanded) content.classList.add('clamp-3');
 
-        requestAnimationFrame(() => {
-          const shouldShow = hasRealOverflow(content);
+        const shouldShow = hasRealOverflow(content);
 
-          if (shouldShow) {
-            link.classList.remove('is-hidden');
+        if (shouldShow) {
+          link.classList.remove('is-hidden');
 
-            if (wasExpanded) {
-              content.classList.remove('clamp-3');
-              link.textContent = 'Ver menos';
-            } else {
-              link.textContent = 'Ver más';
-            }
+          if (isExpanded) {
+            content.classList.remove('clamp-3');
+            link.textContent = 'Ver menos';
           } else {
-            link.classList.add('is-hidden');
             content.classList.add('clamp-3');
             link.textContent = 'Ver más';
           }
-        });
+        } else {
+          link.classList.add('is-hidden');
+          content.classList.add('clamp-3');
+          link.textContent = 'Ver más';
+        }
       });
     }
 

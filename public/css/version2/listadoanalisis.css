@@ -1,817 +1,1406 @@
-/* ==== vista css BLACK / WHITE / CAMEL =================== */
-:root {
-  --camel:      #C2A476;  /* camel base */
-  --camel-700:  #9B7C4E;  /* más oscuro */
-  --camel-800:  #7F653F;  /* hover intenso */
-  --ink:        #121212;  /* negro */
-  --paper:      #ffffff;  /* blanco */
-  --muted:      #F5F1EA;  /* camel muy suave para fondos */
-  --line:       rgba(0,0,0,.08);
+/* =========================================================
+   GIRO / LISTADO ANÁLISIS SOCIAL
+   Diseño compacto premium + tabla redimensionable tipo Excel
+   Archivo ordenado por secciones
+   ========================================================= */
+
+/* =========================================================
+   00. VARIABLES
+   ========================================================= */
+
+:root{
+  --camel:#C2A476;
+  --camel-600:#B7954B;
+  --camel-700:#9B7C4E;
+  --camel-800:#7F653F;
+
+  --camel-soft:#F7F2E8;
+  --camel-softer:#FBF8F1;
+
+  --ink:#111827;
+  --ink-2:#374151;
+  --muted:#6B7280;
+
+  --paper:#FFFFFF;
+  --page:#F4F1EA;
+
+  --line:#E5D9C6;
+  --line-soft:rgba(194,164,118,.28);
+
+  --danger:#DC2626;
+  --success:#16A34A;
+
+  --radius:18px;
+
+  --shadow:0 20px 45px rgba(15,23,42,.12);
+  --shadow-soft:0 8px 20px rgba(15,23,42,.07);
 }
 
-.dataTables_wrapper .dataTables_paginate .pagination .page-item.active > .page-link {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
-  background: var(--camel-800) !important;
-  border-color: var(--camel) !important;
-  color: #fff !important;
-}
-.dataTables_wrapper .dataTables_paginate .pagination .page-item.active > .page-link > i {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
-  color: #ffffff !important;
+
+/* =========================================================
+   01. FONDO GENERAL / LAYOUT / FOOTER
+   Importante: NO pintamos todo el body claro.
+   El fondo claro solo vive dentro de la vista.
+   ========================================================= */
+
+html,
+body{
+  background:#262626 !important;
+  color:inherit !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .pagination .page-item:hover:not(.disabled) > .page-link {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
-  background: var(--camel) !important;
-  color: #fff !important;
-}
-.dataTables_wrapper .dataTables_paginate .pagination .page-item:hover:not(.disabled) > .page-link > i {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
-  color: #ffffff !important;
-}
-
-/* Card */
-.card.card-custom {
-  border: 1px solid var(--line) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 10px 28px rgba(0,0,0,.06) !important;
-  overflow: hidden !important;
-}
-.card.card-custom .card-header {
-  background: var(--paper) !important;
-  border-bottom: 1px solid var(--line) !important;
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-}
-.card.card-custom .card-title .card-icon i { 
-  color: var(--camel) !important; 
-}
-.card.card-custom .card-title h3 { 
-  color: var(--ink) !important; 
+body,
+#kt_body,
+#kt_wrapper,
+#kt_content,
+#kt_content_container,
+.content,
+.content-wrapper,
+.main-content,
+.wrapper{
+  background:#262626 !important;
 }
 
-/* Botones principales */
-.btn-light-primary {
-  background: var(--muted) !important;
-  color: var(--ink) !important;
-  border: 1px solid var(--camel-700) !important;
-  border-radius: 12px !important;
-  transition: all .2s ease !important;
-}
-.btn-light-primary:hover,
-.btn-light-primary:focus {
-  background: var(--camel) !important;
-  border-color: var(--camel-800) !important;
-  color: #fff !important;
+.footer,
+#kt_footer,
+.footer .container,
+.footer .container-fluid{
+  background:transparent !important;
+  color:#F5F5F5 !important;
 }
 
-/* Modo edición */
-.btn-warning {
-  background: var(--ink) !important;
-  border-color: var(--ink) !important;
+.footer a,
+#kt_footer a,
+.footer span,
+#kt_footer span,
+.footer div,
+#kt_footer div{
+  color:#F5F5F5 !important;
+  opacity:.95;
+}
+
+.footer .text-muted,
+#kt_footer .text-muted{
+  color:rgba(255,255,255,.82) !important;
+}
+
+
+/* =========================================================
+   02. CONTENEDOR DE LA VISTA
+   ========================================================= */
+
+.giro-list-page{
+  min-height:auto !important;
+  margin:0 !important;
+  padding:18px 18px 0 !important;
+  border-radius:20px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(194,164,118,.12), transparent 30%),
+    linear-gradient(180deg, #F8F4EC 0%, #ECE6D9 100%) !important;
+}
+
+.giro-list-page .flex-row-fluid,
+.giro-list-page .col-xl-12{
+  min-width:0;
+}
+
+
+/* =========================================================
+   03. CARD PRINCIPAL / HEADER
+   ========================================================= */
+
+.giro-list-card.card.card-custom{
+  overflow:hidden !important;
+  margin-bottom:10px !important;
+  border:1px solid rgba(194,164,118,.36) !important;
+  border-radius:20px !important;
+  background:#fff !important;
+  box-shadow:
+    0 22px 50px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.giro-list-header.card-header{
+  min-height:70px !important;
+  padding:12px 18px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(215,167,63,.13), transparent 34%),
+    linear-gradient(180deg, #FFFDF9 0%, #F8F3E9 100%) !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+}
+
+.giro-list-titlebox.card-title{
+  min-width:260px;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px;
+}
+
+.giro-list-titlebox .card-icon{
+  width:30px;
+  height:30px;
+  min-width:30px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(194,164,118,.12);
+  border:1px solid rgba(194,164,118,.26);
+}
+
+.giro-list-titlebox .card-icon i{
+  color:var(--camel-700) !important;
+  font-size:16px !important;
+}
+
+.giro-list-titlebox .card-label{
+  margin:0 !important;
+  color:var(--ink) !important;
+  font-size:1.05rem !important;
+  line-height:1.15 !important;
+  font-weight:950 !important;
+  letter-spacing:-.025em;
+}
+
+.giro-list-body.card-body{
+  padding:16px 18px 18px !important;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(194,164,118,.09), transparent 28%),
+    linear-gradient(180deg, #FFFDF8 0%, #FBFAF7 100%) !important;
+}
+
+
+/* =========================================================
+   04. BOTONES DEL HEADER
+   ========================================================= */
+
+.giro-list-toolbar.card-toolbar{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  flex-wrap:wrap;
+  gap:8px !important;
+}
+
+.giro-list-toolbar .btn,
+.giro-list-card .btn-light-primary,
+.giro-list-card .btn-warning,
+.giro-list-card .btn-primary,
+.giro-list-card .btn-secondary{
+  min-height:36px !important;
+  padding:0 14px !important;
+  border-radius:12px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px;
+  margin:0 !important;
+  font-weight:900 !important;
+  font-size:.82rem !important;
+  line-height:1 !important;
+  letter-spacing:.005em;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    background .16s ease,
+    border-color .16s ease;
+}
+
+.giro-list-card .btn-light-primary{
+  color:var(--ink) !important;
+  background:rgba(255,255,255,.82) !important;
+  border:1px solid rgba(183,149,75,.45) !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.06) !important;
+}
+
+.giro-list-card .btn-light-primary i{
+  color:var(--camel-700) !important;
+}
+
+.giro-list-card .btn-light-primary:hover,
+.giro-list-card .btn-light-primary:focus{
   color:#fff !important;
-  border-radius: 12px !important;
+  border-color:rgba(142,116,53,.42) !important;
+  background:linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  transform:translateY(-1px);
 }
-.btn-warning:hover {
+
+.giro-list-card .btn-light-primary:hover i,
+.giro-list-card .btn-light-primary:focus i{
+  color:#fff !important;
+}
+
+.giro-list-card .btn-light-primary.active,
+.giro-list-card .btn-light-primary.disabled{
+  color:#8A8F99 !important;
+  background:#F9FAFB !important;
+  border-color:#D8DEE8 !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+
+.giro-list-card .btn-warning{
+  color:#fff !important;
+  background:#111 !important;
+  border:1px solid #111 !important;
+  box-shadow:0 10px 20px rgba(0,0,0,.14) !important;
+}
+
+.giro-list-card .btn-warning:hover{
   background:#000 !important;
   border-color:#000 !important;
+  transform:translateY(-1px);
+}
+
+.giro-list-card .btn-primary{
   color:#fff !important;
+  background:linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  border:1px solid rgba(142,116,53,.32) !important;
 }
 
-.btn-success {
-  background: var(--camel) !important;
-  border-color: var(--camel-800) !important;
-  color:#fff !important;
-  border-radius: 12px !important;
-}
-.btn-success:hover {
-  background: var(--camel-800) !important;
-  border-color: var(--camel-800) !important;
-}
-
-/* Botones secundarios del buscador */
-.btn-primary {
-  background: var(--camel) !important;
-  border-color: var(--camel-800) !important;
-}
-.btn-primary:hover {
-  background: var(--camel-800) !important;
-  border-color: var(--camel-800) !important;
-}
-
-.btn-secondary {
-  background: #fff !important;
-  color: var(--ink) !important;
-  border: 1px solid var(--ink) !important;
-}
-.btn-secondary:hover {
-  background: var(--ink) !important;
-  color:#fff !important;
-}
-
-/* Icon buttons en Acciones */
-.btn-hover-icon-success:hover i,
-.btn-hover-icon-success:hover .svg-icon {
-  color: var(--camel) !important;
-  fill: var(--camel) !important;
-}
-
-.btn.btn-light-primary i {
-  color: var(--camel) !important;
-}
-.btn-light-primary:hover i,
-.btn-light-primary:focus i {
-  border-color: var(--camel-800) !important;
-  color: #fff !important;
-}
-
-/* Inputs y selects */
-.form-control {
-  border-radius: 12px !important;
-  border-color: var(--camel-700) !important;
-  background: #fff !important;
-}
-.form-control:focus {
-  border-color: var(--camel) !important;
-  box-shadow: 0 0 0 .2rem rgba(194,164,118,.25) !important;
-}
-.gray_area:disabled {
-  background: #f3f0ea !important;
-  color:#6b6b6b !important;
-  border-color:#e8e1d6 !important;
-}
-
-/* Tabla */
-#tbl-scroll { 
-  scrollbar-color: var(--camel) #e9e7e3 !important; 
-}
-.table thead th {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 2 !important;
-  background: var(--ink) !important;
-  color: #fff !important;
-  text-transform: uppercase !important;
-  font-size: .78rem !important;
-  letter-spacing: .02em !important;
-  border-bottom: 2px solid var(--camel-700) !important;
-}
-.table tbody tr:nth-child(even) { 
-  background:#faf9f6 !important; 
-}
-.table tbody tr:hover { 
-  background: rgba(194,164,118,.08) !important; 
-}
-
-/* “Ver más” link */
-a.toggle-more { 
-  color: var(--camel) !important; 
-  font-weight: 600 !important; 
-}
-a.toggle-more:hover { 
-  color: var(--camel-800) !important; 
-  text-decoration: underline !important; 
-}
-
-/* Celdas editables */
-.cell-edit[contenteditable="true"] {
-  outline: 2px dashed var(--camel) !important;
-  background: #fffaf3 !important;
-  border-radius: 8px !important;
-  padding: 2px 6px !important;
-}
-@keyframes flashok { 
-  from { background: rgba(194,164,118,.35) !important; } 
-  to { background: transparent !important; } 
-}
-.cell-edit.saved { 
-  animation: flashok 1s ease !important; 
-}
-@keyframes flashred { 
-  from { background:#f8d7da !important; } 
-  to { background:transparent !important; } 
-}
-.cell-edit.error { 
-  animation: flashred 1.2s ease !important; 
-}
-
-/* Paginación DataTables */
-.page-item.active .page-link {
-  background: var(--camel) !important;
-  border-color: var(--camel) !important;
-}
-.page-link { 
-  color: var(--ink) !important; 
-}
-.page-link:hover { 
-  color: var(--camel-800) !important; 
-}
-
-/* Chips de “Riesgo Gestionado / No Gestionado” */
-td[style*="background-color: green"] p,
-td[style*="background-color: red"] p { 
-  margin: 0 !important; 
-  font-weight: 700 !important; 
-  letter-spacing:.2px !important; 
-}
-
-/* Títulos de sección (arriba de los 3 botones) */
-.text-center .btn { 
-  margin-bottom: .4rem !important; 
-}
-
-/* ==== Anchos personalizados de columnas ==== */
-
-/* 5: Factor de riesgo */
-#kdatatable_clientes_inactivos th:nth-child(5),
-#kdatatable_clientes_inactivos td:nth-child(5) { 
-  min-width: 220px !important; 
-}
-
-/* 6: Eventos de riesgo */
-#kdatatable_clientes_inactivos th:nth-child(6),
-#kdatatable_clientes_inactivos td:nth-child(6) { 
-  min-width: 220px !important; 
-}
-
-/* 43: Observaciones */
-#kdatatable_clientes_inactivos th:nth-child(44),
-#kdatatable_clientes_inactivos td:nth-child(44) { 
-  min-width: 150px !important; 
-}
-
-/* 44: Plan de Contingencia */
-#kdatatable_clientes_inactivos th:nth-child(45),
-#kdatatable_clientes_inactivos td:nth-child(45) { 
-  min-width: 150px !important; 
-}
-
-#kdatatable_clientes_inactivos th:nth-child(25),
-#kdatatable_clientes_inactivos td:nth-child(25) { 
-  min-width: 135px !important; 
-}
-
-/* 27: Nivel de control2 (select) */
-#kdatatable_clientes_inactivos th:nth-child(28),
-#kdatatable_clientes_inactivos td:nth-child(28) { 
-  min-width: 140px !important; 
-}
-
-/* Prob (31) */
-#kdatatable_clientes_inactivos th:nth-child(31),
-#kdatatable_clientes_inactivos td:nth-child(31) { 
-  min-width: 120px !important; 
-}
-
-/* SEV (35) */
-#kdatatable_clientes_inactivos th:nth-child(34),
-#kdatatable_clientes_inactivos td:nth-child(34) { 
-  min-width: 150px !important; 
+.giro-list-card .btn-secondary{
+  color:var(--ink) !important;
+  background:#fff !important;
+  border:1px solid rgba(17,24,39,.25) !important;
 }
 
 
-/* 48: Area */
-#kdatatable_clientes_inactivos th:nth-child(48),
-#kdatatable_clientes_inactivos td:nth-child(48) { 
-  min-width: 70px !important; 
+/* =========================================================
+   05. LEYENDA DE EDICIÓN
+   ========================================================= */
+
+.giro-edit-legend.edit-legend{
+  margin:0 !important;
+  padding:9px 18px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:linear-gradient(180deg, #F8FAFC 0%, #F2F5F8 100%) !important;
+  border-bottom:1px solid rgba(15,23,42,.08) !important;
+  color:#667085 !important;
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
 }
 
-/* 48: Area */
-#kdatatable_clientes_inactivos th:nth-child(49),
-#kdatatable_clientes_inactivos td:nth-child(49) { 
-  min-width: 120px !important; 
+.giro-edit-legend strong{
+  color:#667085;
+  font-size:.82rem;
+  font-weight:950;
 }
 
-/* 48: Estatus */
-#kdatatable_clientes_inactivos th:nth-child(50),
-#kdatatable_clientes_inactivos td:nth-child(50) { 
-  min-width: 120px !important; 
+.giro-edit-legend .legend-item{
+  display:inline-flex;
+  align-items:center;
+  margin:0 !important;
+  color:#667085;
+  font-size:.76rem !important;
+  font-weight:750;
 }
 
-/* 49: Controles asegurados */
-#kdatatable_clientes_inactivos th:nth-child(51),
-#kdatatable_clientes_inactivos td:nth-child(51) { 
-  min-width: 80px !important; 
-}
-
-/*/////////////////Edicion de table////////////////////////*/
-.table td.text-long { 
-  max-width: 360px !important; 
-  vertical-align: top !important; 
-}
-.clamp-3 { 
-  display:-webkit-box !important; 
-  -webkit-line-clamp:3 !important; 
-  -webkit-box-orient:vertical !important; 
-  overflow:hidden !important; 
-}
-.nowrap-num { 
-  white-space: nowrap !important; 
-}
-.col-actions { 
-  width:120px !important; 
-  white-space:nowrap !important; 
-  text-align:center !important; 
-}
-
-/* Sticky doble fila encabezado */
-#kdatatable_clientes_inactivos thead tr:nth-child(1) th {
-  top: 0 !important;
-}
-#kdatatable_clientes_inactivos thead tr.filters-row th {
-  top: 0px !important;
-}
-
-/* Selects deshabilitados */
-.sel-nivel-control2:disabled,
-.sel-nivel-probabilidad2:disabled,
-.sel-nivel-sev2:disabled {
-  background:#f5f5f5 !important; 
-  color:#555 !important;
-}
-
-.cell-money { 
-  font-weight: 700 !important; 
-}
-.cell-money.has-value::before { 
-  content: "$ " !important; 
-}
-
-/* Colores Nivel Riesgo2 */
-.td-nr2 { 
-  text-align:center !important; 
-}
-.risk2-bajo    { background:#99ff99 !important; }
-.risk2-medio   { background:#ffe0b2 !important; }
-.risk2-alto    { background:#ff9999 !important; }
-.risk2-muyalto { background:#cc0000 !important; color:#fff !important; }
-
-/* Colores Aceptabilidad */
-/*.td-acept { 
-  text-align:center !important; 
-}
-.acc-acept   { background:#28a745 !important; color:#fff !important; }
-.acc-noacept { background:#dc3545 !important; color:#fff !important; }*/
-
-
-/* Columna Aceptabilidad: sin fondo, solo banderita sutil */
-/* =========================
-   ACEPTABILIDAD CON BANDERITA REAL
-   ========================= */
-.td-acept{
-  position: relative !important;
-  text-align: center !important;
-  background: transparent !important;
-  color: var(--ink) !important;
-  padding-left: 28px !important;
-}
-
-.acc-acept,
-.acc-noacept{
-  background: transparent !important;
-  color: var(--ink) !important;
-}
-
-/* Poste de la banderita */
-.td-acept.acc-acept::before,
-.td-acept.acc-noacept::before{
-  content: "";
-  position: absolute;
-  left: 108px;
-  top: 7px;
-  width: 2px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(17,24,39,.35);
-  box-shadow: 0 0 0 1px rgba(255,255,255,.35);
-}
-
-/* Tela de la banderita */
-.td-acept.acc-acept::after,
-.td-acept.acc-noacept::after{
-  content: "";
-  position: absolute;
-  left: 110px;
-  top: 7px;
-  width: 20px;
-  height: 16px;
-  clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.18);
-}
-
-/* Verde */
-.td-acept.acc-acept::after{
-  background: linear-gradient(180deg, #34d399 0%, #16a34a 100%);
-}
-
-/* Roja */
-.td-acept.acc-noacept::after{
-  background: linear-gradient(180deg, #fb7185 0%, #dc2626 100%);
-}
-
-
-/*==== Buscador filtros ====*/
-
-/* Wrapper general de la tabla */
-.table-filters-wrapper {
-  position: relative !important;
-}
-
-/* Botón de filtros dentro del th de "Esc." */
-.btn-filters-toggle {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 0 0.45rem !important;
-  font-size: 0.7rem !important;
-  border-radius: 999px !important;
-  margin-left: 0.4rem !important;
-}
-
-/* Cuando los filtros están ocultos */
-.btn-filters-toggle.filters-off {
-  opacity: 0.6 !important;
-}
-
-/* Ocultar la fila de filtros cuando el wrapper tenga la clase */
-.dataTables_wrapper.filters-hidden thead tr.filters-row {
-  display: none !important;
-}
-
-
-#kdatatable_clientes_inactivos_wrapper .dataTables_length select{
-  appearance:none; -webkit-appearance:none; -moz-appearance:none;
-  background:var(--paper);
-  border:1.5px solid var(--camel);
-  border-radius:12px;
-  height:36px; line-height:36px;
-  width:72px;
-  padding:0 .75rem;
-  text-align:center; color:var(--ink); font-weight:700;
-}
-
-/* ===== Pistas visuales de campos editables ===== */
-
-/* Leyenda */
-.edit-legend {
-  background: #fff;
-  border-color: var(--line) !important;
-  border-radius: 12px;
-  color: var(--ink);
-}
-.edit-legend .legend-item {
-  display: inline-flex;
-  align-items: center;
-  font-size: .9rem;
-}
-.edit-legend .legend-icon {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:18px; height:18px; margin-right:.35rem;
+.giro-edit-legend .legend-icon{
+  width:18px;
+  height:18px;
+  min-width:18px;
+  margin-right:.35rem;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   border:1px solid var(--camel-700);
   border-radius:50%;
-  font-size:.8rem; line-height:1; color:var(--camel-700);
-}
-
-/* Texto editable (.cell-edit) – muestra ✎ cuando NO está en edición */
-.cell-edit {
-  position: relative;
-  padding-right: 18px;
-  cursor: text;
-}
-.cell-edit[contenteditable="false"]::after {
-  content: "✎";
-  position: absolute;
-  right: 4px; top: 4px;
-  font-size: 11px;
-  color: var(--camel-700);
-  opacity: .55;
-  pointer-events: none;
-}
-.cell-edit[contenteditable="false"]:hover {
-  background: #fffaf3 !important;
-  outline: 1px dashed rgba(194,164,118,.6) !important;
-  border-radius: 8px !important;
-}
-/* Cuando SI está en edición mantenemos tu estilo actual y ocultamos el icono */
-.cell-edit[contenteditable="true"]::after { content: none; }
-
-/* Selects editables (clic en la celda) – usa :has() */
-td:has(select.sel-nivel-control2),
-td:has(select.sel-estatus),
-td:has(select.sel-seg-control),
-td:has(select.sel-nivel-probabilidad2),
-td:has(select.sel-nivel-sev2) {
-  position: relative;
-  cursor: pointer;
-}
-td:has(select.sel-nivel-control2)::after,
-td:has(select.sel-estatus)::after,
-td:has(select.sel-seg-control)::after,
-td:has(select.sel-nivel-probabilidad2)::after,
-td:has(select.sel-nivel-sev2)::after {
-  content: "▾";
-  position: absolute;
-  right: 6px; top: 6px;
-  font-size: 12px;
-  color: var(--camel-700);
-  opacity: .6;
-  pointer-events: none;
-}
-td:has(select.sel-nivel-control2):hover,
-td:has(select.sel-estatus):hover,
-td:has(select.sel-seg-control):hover,
-td:has(select.sel-nivel-probabilidad2):hover,
-td:has(select.sel-nivel-sev2):hover {
-  background: #fffaf3 !important;
-  outline: 1px dashed rgba(194,164,118,.6) !important;
-  border-radius: 8px !important;
-}
-
-/* Fechas editables (clic) – icono 📅 y hover */
-.date-cell {
-  position: relative;
-  cursor: pointer;
-}
-.date-cell::after {
-  content: "📅";
-  position: absolute;
-  right: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  color: var(--camel-700);
-  opacity: .65;
-  pointer-events: none;
-}
-.date-cell:hover {
-  background: #fffaf3 !important;
-  outline: 1px dashed rgba(194,164,118,.6) !important;
-  border-radius: 8px !important;
-}
-
-/* Accesibilidad: foco visible en celdas editables */
-.cell-edit:focus,
-.date-cell:focus-within,
-td:has(select.sel-nivel-control2):focus-within,
-td:has(select.sel-estatus):focus-within,
-td:has(select.sel-seg-control):focus-within,
-td:has(select.sel-nivel-probabilidad2):focus-within,
-td:has(select.sel-nivel-sev2):focus-within {
-  box-shadow: 0 0 0 .2rem rgba(194,164,118,.25) !important;
-  border-radius: 8px !important;
+  color:var(--camel-700);
+  background:#fff;
+  font-size:.72rem;
+  line-height:1;
 }
 
 
-/* ===== Indicador permanente de "editable" (puntito dorado) ===== */
-/* Aplica a: texto editable (.cell-edit), selects y fechas (.date-cell) */
+/* =========================================================
+   06. RESUMEN SUPERIOR
+   ========================================================= */
 
-/* 1) Reservar espacio a la izquierda para el puntito */
+.giro-list-summary{
+  margin:2px 0 14px;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  border:1px solid rgba(194,164,118,.34);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at top left, rgba(215,167,63,.08), transparent 32%),
+    linear-gradient(180deg, #FFFFFF 0%, #FFFCF6 100%);
+  box-shadow:var(--shadow-soft);
+}
+
+.giro-summary-kicker{
+  display:inline-flex;
+  align-items:center;
+  min-height:22px;
+  padding:0 10px;
+  margin-bottom:5px;
+  border-radius:999px;
+  color:var(--camel-800);
+  background:rgba(194,164,118,.14);
+  border:1px solid rgba(194,164,118,.26);
+  font-size:.62rem;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.giro-summary-main h4{
+  margin:0 !important;
+  color:var(--ink);
+  font-size:1rem;
+  font-weight:950;
+  line-height:1.12;
+  letter-spacing:-.025em;
+}
+
+.giro-summary-main p{
+  margin:5px 0 0;
+  color:#667085;
+  font-size:.76rem;
+  font-weight:600;
+}
+
+.giro-summary-stats{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.giro-stat-pill{
+  min-width:94px;
+  min-height:48px;
+  padding:9px 12px;
+  border:1px solid rgba(194,164,118,.34);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 8px 16px rgba(15,23,42,.055);
+}
+
+.giro-stat-pill span{
+  display:block;
+  color:#8A6C35;
+  font-size:.62rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.075em;
+  line-height:1;
+}
+
+.giro-stat-pill strong{
+  display:block;
+  margin-top:5px;
+  color:var(--ink);
+  font-size:1rem;
+  line-height:1;
+  font-weight:950;
+}
+
+
+/* =========================================================
+   07. CONTROLES DATATABLE
+   Mostrar registros / buscar / paginación
+   ========================================================= */
+
+#kdatatable_clientes_inactivos_wrapper{
+  position:relative;
+}
+
+#kdatatable_clientes_inactivos_wrapper .row{
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_length,
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px !important;
+  color:var(--ink);
+  font-size:.78rem;
+  font-weight:700;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter{
+  justify-content:flex-end;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_length label,
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 !important;
+  color:var(--ink);
+  font-size:.78rem;
+  font-weight:700;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_length select,
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter input,
+#kdatatable_clientes_inactivos_wrapper .column-filter{
+  height:34px !important;
+  min-height:34px !important;
+  border:1.5px solid rgba(183,149,75,.48) !important;
+  border-radius:12px !important;
+  background:#fff !important;
+  color:var(--ink) !important;
+  box-shadow:0 6px 14px rgba(15,23,42,.045) !important;
+  font-size:.76rem !important;
+  font-weight:750 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_length select{
+  width:78px !important;
+  padding:0 12px !important;
+  text-align:center;
+  text-align-last:center;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_filter input{
+  width:220px !important;
+  padding:0 12px !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_info{
+  color:#667085 !important;
+  font-size:.76rem !important;
+  font-weight:700 !important;
+  padding-top:10px !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_paginate{
+  padding-top:8px !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .page-link,
+.dataTables_wrapper .dataTables_paginate .pagination .page-item > .page-link{
+  min-width:31px;
+  min-height:31px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px !important;
+  color:var(--ink) !important;
+  border:1px solid rgba(194,164,118,.28) !important;
+  background:#fff !important;
+  font-weight:900 !important;
+  box-shadow:0 6px 12px rgba(15,23,42,.045);
+}
+
+#kdatatable_clientes_inactivos_wrapper .page-item.active .page-link,
+.dataTables_wrapper .dataTables_paginate .pagination .page-item.active > .page-link{
+  color:#fff !important;
+  background:linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  border-color:var(--camel-700) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .pagination .page-item:hover:not(.disabled) > .page-link{
+  color:#fff !important;
+  background:var(--camel) !important;
+  border-color:var(--camel-700) !important;
+}
+
+
+/* =========================================================
+   08. CONTENEDOR / SCROLL DE TABLA
+   ========================================================= */
+
+.giro-table-zone{
+  position:relative !important;
+  padding:10px;
+  border:1px solid rgba(194,164,118,.28);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,252,246,.96));
+  box-shadow:var(--shadow-soft);
+}
+
+.giro-table-scroll,
+#tbl-scroll{
+  width:100%;
+  overflow:auto !important;
+  border-radius:14px;
+  scrollbar-color:var(--camel) #EFEAE0 !important;
+  scrollbar-width:thin;
+}
+
+.giro-table-scroll::-webkit-scrollbar,
+.dataTables_scrollBody::-webkit-scrollbar,
+.dataTables_scrollHead::-webkit-scrollbar{
+  width:12px;
+  height:12px;
+}
+
+.giro-table-scroll::-webkit-scrollbar-track,
+.dataTables_scrollBody::-webkit-scrollbar-track,
+.dataTables_scrollHead::-webkit-scrollbar-track{
+  background:#EFEAE0;
+  border-radius:999px;
+}
+
+.giro-table-scroll::-webkit-scrollbar-thumb,
+.dataTables_scrollBody::-webkit-scrollbar-thumb,
+.dataTables_scrollHead::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg, #C2A476, #9B7C4E);
+  border-radius:999px;
+  border:3px solid #EFEAE0;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scroll{
+  overflow:hidden;
+  border:1px solid rgba(17,24,39,.08);
+  border-radius:14px;
+  background:#fff;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead{
+  overflow:hidden !important;
+  background:#111 !important;
+  border-top-left-radius:14px;
+  border-top-right-radius:14px;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHeadInner{
+  background:#111 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody{
+  border-top:0 !important;
+  background:#fff;
+}
+
+
+/* =========================================================
+   09. TABLA BASE
+   ========================================================= */
+
+#kdatatable_clientes_inactivos,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead table,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollFoot table{
+  margin:0 !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+  table-layout:fixed !important;
+}
+
+#kdatatable_clientes_inactivos th,
+#kdatatable_clientes_inactivos td,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead th,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody td{
+  box-sizing:border-box !important;
+}
+
+#kdatatable_clientes_inactivos thead th,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th{
+  position:relative !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:7px 18px 7px 8px !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+  white-space:normal !important;
+  word-break:normal !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+  background:#111 !important;
+  color:#fff !important;
+  border-right:1px solid rgba(255,255,255,.10) !important;
+  border-bottom:2px solid var(--camel-700) !important;
+  font-size:.66rem !important;
+  line-height:1.12 !important;
+  font-weight:950 !important;
+  letter-spacing:.025em !important;
+  text-transform:uppercase !important;
+}
+
+#kdatatable_clientes_inactivos thead th *,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th *{
+  /*color:inherit !important;*/
+}
+
+#kdatatable_clientes_inactivos thead th.sorting,
+#kdatatable_clientes_inactivos thead th.sorting_asc,
+#kdatatable_clientes_inactivos thead th.sorting_desc,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_asc,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_desc{
+  padding-right:24px !important;
+}
+
+#kdatatable_clientes_inactivos thead th.sorting::before,
+#kdatatable_clientes_inactivos thead th.sorting::after,
+#kdatatable_clientes_inactivos thead th.sorting_asc::before,
+#kdatatable_clientes_inactivos thead th.sorting_asc::after,
+#kdatatable_clientes_inactivos thead th.sorting_desc::before,
+#kdatatable_clientes_inactivos thead th.sorting_desc::after,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting::before,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting::after,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_asc::before,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_asc::after,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_desc::before,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead th.sorting_desc::after{
+  color:rgba(255,255,255,.72) !important;
+  opacity:.9 !important;
+  right:7px !important;
+}
+
+#kdatatable_clientes_inactivos tbody td{
+  height:52px !important;
+  padding:8px 9px !important;
+  color:#111827 !important;
+  background:#fff;
+  border-right:1px solid rgba(194,164,118,.18) !important;
+  border-bottom:1px solid rgba(15,23,42,.075) !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+  font-size:.74rem !important;
+  line-height:1.18 !important;
+  /*font-weight:600;*/
+  overflow:hidden !important;
+}
+
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td{
+  background:#FBFAF7 !important;
+}
+
+#kdatatable_clientes_inactivos tbody tr:hover td{
+  background:#FFF8E8 !important;
+}
+
+
+/* =========================================================
+   10. ENCABEZADOS ESPECIALES
+   Quadrant / Filtros / Header fantasma DataTables
+   ========================================================= */
+
+#kdatatable_clientes_inactivos thead tr.quadrant-row th,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.quadrant-row th{
+  height:30px !important;
+  min-height:30px !important;
+  padding:5px 8px !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+  font-size:.70rem !important;
+  letter-spacing:.08em !important;
+}
+
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-1,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.quadrant-row th.quadrant-1{
+  color:var(--ink) !important;
+  background:linear-gradient(180deg, #FFFFFF 0%, #F8F3E9 100%) !important;
+}
+
+#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-2,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.quadrant-row th.quadrant-2{
+  color:#fff !important;
+  background:linear-gradient(180deg, #7F653F 0%, #4D3D26 100%) !important;
+}
+
+#kdatatable_clientes_inactivos thead tr.filters-row th,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.filters-row th{
+  height:38px !important;
+  min-height:38px !important;
+  padding:5px 6px !important;
+  background:#F8FAFC !important;
+  border-right:1px solid rgba(15,23,42,.06) !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+}
+
+#kdatatable_clientes_inactivos thead tr.filters-row th::before,
+#kdatatable_clientes_inactivos thead tr.filters-row th::after,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.filters-row th::before,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead thead tr.filters-row th::after{
+  display:none !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .column-filter{
+  width:100% !important;
+  padding:0 8px !important;
+  font-size:.68rem !important;
+  font-weight:800 !important;
+}
+
+.dataTables_wrapper.filters-hidden thead tr.filters-row{
+  display:none !important;
+}
+
+
+/* Ocultar thead duplicado que DataTables mete dentro del scrollBody */
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead{
+  visibility:collapse !important;
+  height:0 !important;
+  max-height:0 !important;
+  line-height:0 !important;
+  overflow:hidden !important;
+  clip-path:inset(100%) !important;
+  position:absolute !important;
+  width:0 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead tr,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead th{
+  visibility:collapse !important;
+  height:0 !important;
+  min-height:0 !important;
+  max-height:0 !important;
+  line-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  color:transparent !important;
+  font-size:0 !important;
+  position:static !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead th *,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead th::before,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table thead th::after{
+  visibility:hidden !important;
+  display:none !important;
+  height:0 !important;
+  line-height:0 !important;
+  font-size:0 !important;
+  overflow:hidden !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table tbody{
+  visibility:visible !important;
+  position:relative !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table{
+  margin-top:0 !important;
+  border-top:0 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody tr:first-child td,
+#kdatatable_clientes_inactivos tbody tr:first-child td{
+  border-top:0 !important;
+}
+
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead + .dataTables_scrollBody{
+  border-top:0 !important;
+}
+
+
+/* =========================================================
+   11. RESIZE DE COLUMNAS TIPO EXCEL
+   ========================================================= */
+
+.dt-col-resizer{
+  position:absolute;
+  top:0;
+  right:-4px;
+  width:9px;
+  height:100%;
+  z-index:12;
+  cursor:col-resize;
+  user-select:none;
+  touch-action:none;
+}
+
+.dt-col-resizer::before{
+  content:"";
+  position:absolute;
+  top:7px;
+  bottom:7px;
+  left:4px;
+  width:1px;
+  border-radius:999px;
+  background:rgba(194,164,118,.55);
+  opacity:.55;
+}
+
+.dt-col-resizer:hover::before,
+.dt-col-resizer.is-active::before{
+  left:3px;
+  width:3px;
+  background:#F2C766;
+  opacity:1;
+  box-shadow:0 0 0 2px rgba(242,199,102,.20);
+}
+
+body.giro-is-resizing,
+body.giro-is-resizing *{
+  cursor:col-resize !important;
+  user-select:none !important;
+}
+
+body.giro-is-resizing .dataTables_scrollBody{
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   12. CONTENIDO / TEXTO LARGO
+   ========================================================= */
+
+.table td.text-long,
+#kdatatable_clientes_inactivos td.text-long{
+  max-width:none !important;
+  vertical-align:middle !important;
+}
+
+#kdatatable_clientes_inactivos td.text-long > div,
+#kdatatable_clientes_inactivos td .cell-edit,
+#kdatatable_clientes_inactivos td .clamp-3{
+  max-width:100%;
+  margin:0 auto;
+  text-align:center !important;
+  overflow-wrap:break-word !important;
+  word-break:normal !important;
+}
+
+.clamp-3{
+  display:-webkit-box !important;
+  -webkit-line-clamp:3 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+.nowrap-num{
+  white-space:nowrap !important;
+}
+
+#kdatatable_clientes_inactivos a.toggle-more{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:18px;
+  margin:5px auto 0 !important;
+  padding:0 7px;
+  border-radius:999px;
+  color:var(--camel-800) !important;
+  background:rgba(194,164,118,.10);
+  border:1px solid rgba(194,164,118,.25);
+  font-size:.64rem !important;
+  font-weight:950 !important;
+  text-decoration:none !important;
+}
+
+#kdatatable_clientes_inactivos a.toggle-more:hover{
+  color:#fff !important;
+  background:var(--camel-700);
+  text-decoration:none !important;
+}
+
+#kdatatable_clientes_inactivos a.toggle-more.is-hidden{
+  display:none !important;
+}
+
+
+/* =========================================================
+   13. ACCIONES
+   ========================================================= */
+
+.col-actions{
+  width:125px !important;
+  white-space:nowrap !important;
+  text-align:center !important;
+}
+
+#kdatatable_clientes_inactivos td.col-actions a,
+#kdatatable_clientes_inactivos td.col-actions button{
+  width:28px;
+  height:28px;
+  min-width:28px;
+  margin:0 1px !important;
+  border-radius:9px !important;
+  color:var(--camel-700) !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.28) !important;
+}
+
+#kdatatable_clientes_inactivos td.col-actions a:hover,
+#kdatatable_clientes_inactivos td.col-actions button:hover{
+  color:#fff !important;
+  background:var(--camel-700) !important;
+}
+
+
+/* =========================================================
+   14. EDITABLES / FECHAS / SELECTS
+   ========================================================= */
+
+.cell-edit{
+  position:relative;
+  min-height:22px;
+  padding:2px 16px 2px 4px;
+  cursor:text;
+}
+
+.cell-edit[contenteditable="false"]::after{
+  content:"✎";
+  position:absolute;
+  right:2px;
+  top:2px;
+  color:var(--camel-700);
+  opacity:.55;
+  font-size:10px;
+  pointer-events:none;
+}
+
+.cell-edit[contenteditable="false"]:hover{
+  background:#fffaf3 !important;
+  outline:1px dashed rgba(194,164,118,.65) !important;
+  border-radius:8px !important;
+}
+
+.cell-edit[contenteditable="true"]{
+  outline:2px dashed var(--camel) !important;
+  background:#fffaf3 !important;
+  border-radius:8px !important;
+  padding:4px 7px !important;
+}
+
+.cell-edit[contenteditable="true"]::after{
+  content:none !important;
+}
+
+.cell-edit.is-empty::before,
+.cell-edit[contenteditable="true"].is-empty::before{
+  content:"";
+}
+
+@keyframes flashok{
+  from{ background:rgba(194,164,118,.35) !important; }
+  to{ background:transparent !important; }
+}
+
+@keyframes flashred{
+  from{ background:#F8D7DA !important; }
+  to{ background:transparent !important; }
+}
+
+.cell-edit.saved,
+.form-control.saved,
+.date-input.saved{
+  animation:flashok 1s ease !important;
+}
+
+.cell-edit.error,
+.form-control.error,
+.date-input.error{
+  animation:flashred 1.2s ease !important;
+}
+
+#kdatatable_clientes_inactivos td select.form-control{
+  width:100% !important;
+  height:32px !important;
+  min-height:32px !important;
+  padding:0 22px 0 8px !important;
+  border:1px solid rgba(194,164,118,.38) !important;
+  border-radius:10px !important;
+  color:var(--ink) !important;
+  background:#fff !important;
+  text-align:center !important;
+  text-align-last:center !important;
+  font-size:.70rem !important;
+  font-weight:800 !important;
+  box-shadow:none !important;
+}
+
+#kdatatable_clientes_inactivos td select.form-control:disabled,
+.sel-nivel-control2:disabled,
+.sel-nivel-probabilidad2:disabled,
+.sel-nivel-sev2:disabled{
+  color:#475467 !important;
+  background:#F8FAFC !important;
+  border-color:rgba(194,164,118,.25) !important;
+  opacity:1 !important;
+}
+
+.date-cell{
+  position:relative;
+  cursor:pointer;
+  padding-right:22px !important;
+}
+
+.date-cell::after{
+  content:"📅";
+  position:absolute;
+  right:5px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:11px;
+  opacity:.65;
+  pointer-events:none;
+}
+
+.date-cell:hover{
+  background:#fffaf3 !important;
+  outline:1px dashed rgba(194,164,118,.65) !important;
+  outline-offset:-3px;
+}
+
+.date-input{
+  width:100% !important;
+  height:30px !important;
+  min-height:30px !important;
+  text-align:center !important;
+  font-size:.70rem !important;
+}
+
+
+/* =========================================================
+   15. MARCADOR DE CAMPOS EDITABLES
+   Puntito camel en celdas editables
+   ========================================================= */
+
 #kdatatable_clientes_inactivos td:has(.cell-edit),
 #kdatatable_clientes_inactivos td:has(.date-cell),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-control2),
 #kdatatable_clientes_inactivos td:has(select.sel-estatus),
 #kdatatable_clientes_inactivos td:has(select.sel-seg-control),
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
-  position: relative !important;
-  padding-left: 14px !important; /* espacio para el punto */
+#kdatatable_clientes_inactivos td:has(select.sel-sev2),
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2),
+#kdatatable_clientes_inactivos td:has(select.sel-estrategia){
+  position:relative !important;
+  padding-left:15px !important;
 }
 
-/* 2) Dibujar el puntito */
 #kdatatable_clientes_inactivos td:has(.cell-edit)::before,
 #kdatatable_clientes_inactivos td:has(.date-cell)::before,
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-control2)::before,
 #kdatatable_clientes_inactivos td:has(select.sel-estatus)::before,
 #kdatatable_clientes_inactivos td:has(select.sel-seg-control)::before,
 #kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2)::before,
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2)::before {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 10px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--camel-700);      /* color dorado consistente con tu paleta */
-  box-shadow: 0 0 0 2px #fff;        /* halo blanco para que resalte en filas zebra */
-  opacity: .9;
-  pointer-events: none;
-}
-
-/* 3) Un poquito más de “remarque” al pasar el mouse o cuando hay foco dentro */
-#kdatatable_clientes_inactivos td:has(.cell-edit:hover),
-#kdatatable_clientes_inactivos td:has(.date-cell:hover),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2:hover),
-#kdatatable_clientes_inactivos td:has(select.sel-estatus:hover),
-#kdatatable_clientes_inactivos td:has(select.sel-seg-control:hover),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2:hover),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2:hover),
-#kdatatable_clientes_inactivos td:has(.cell-edit:focus),
-#kdatatable_clientes_inactivos td:has(.date-cell:focus-within),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2:focus),
-#kdatatable_clientes_inactivos td:has(select.sel-estatus:focus),
-#kdatatable_clientes_inactivos td:has(select.sel-seg-control:focus),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2:focus),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2:focus) {
-  outline: 1px dashed rgba(194,164,118,.65) !important;
-  outline-offset: 2px !important;
-  background: #fffaf3 !important; /* igual a tu hover editable */
-  border-radius: 8px !important;
-}
-
-/* 4) (Opcional) Línea tenue a la izquierda para remarcar aún más */
-/*#kdatatable_clientes_inactivos td:has(.cell-edit),
-#kdatatable_clientes_inactivos td:has(.date-cell),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-control2),
-#kdatatable_clientes_inactivos td:has(select.sel-estatus),
-#kdatatable_clientes_inactivos td:has(select.sel-seg-control),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-probabilidad2),
-#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2) {
-  box-shadow: inset 3px 0 0 0 rgba(194,164,118,.12) !important; 
-}*/
-
-#kdatatable_clientes_inactivos tbody td {
-  box-shadow: inset 2px 0 0 0 rgba(194,164,118,.10) !important; 
-}
-
-/* Placeholder visual para celdas editables vacías */
-.cell-edit.is-empty::before{
-  content: "";
-  font-weight: 800;
-  color: #111827;                 /* negro elegante */
-  opacity: .85;
-}
-
-/* Mantener espacio clickeable aunque esté vacío */
-.cell-edit{
-  min-height: 22px;               /* evita “colapso” */
-}
-
-/* Si está en edición, no muestres placeholder */
-.cell-edit[contenteditable="true"].is-empty::before{
-  content: "";
+#kdatatable_clientes_inactivos td:has(select.sel-sev2)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-nivel-sev2)::before,
+#kdatatable_clientes_inactivos td:has(select.sel-estrategia)::before{
+  content:"";
+  position:absolute;
+  left:6px;
+  top:10px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--camel-700);
+  box-shadow:0 0 0 2px #fff;
+  opacity:.78;
+  pointer-events:none;
 }
 
 
-/* =========================
-   CENTRAR ENCABEZADOS Y CONTENIDO DE LA TABLA
-   ========================= */
+/* =========================================================
+   16. COLORES DE RIESGO
+   Aplica para Nivel Riesgo y Nivel Riesgo2
+   ========================================================= */
 
-/* Encabezados */
-#kdatatable_clientes_inactivos thead th,
-#kdatatable_clientes_inactivos tfoot th {
-  text-align: center !important;
-  vertical-align: middle !important;
+.td-risk-level,
+#kdatatable_clientes_inactivos tbody td.td-risk-level,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level{
+  text-align:center !important;
+  vertical-align:middle !important;
+  font-weight:950 !important;
 }
 
-/* Celdas */
-#kdatatable_clientes_inactivos tbody td {
-  text-align: center !important;
-  vertical-align: middle !important;
+/* Muy Bajo */
+#kdatatable_clientes_inactivos tbody td.td-risk-level.risk-level-muybajo,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level.risk-level-muybajo{
+  background:#E8FFF1 !important;
+  color:#065F46 !important;
 }
 
-/* Textos largos que traen clamp / ver más */
-#kdatatable_clientes_inactivos td.text-long,
-#kdatatable_clientes_inactivos td .cell-edit,
-#kdatatable_clientes_inactivos td .clamp-3,
-#kdatatable_clientes_inactivos td .date-text,
-#kdatatable_clientes_inactivos td .nowrap-num,
-#kdatatable_clientes_inactivos td p,
-#kdatatable_clientes_inactivos td span,
-#kdatatable_clientes_inactivos td div {
-  text-align: center !important;
+/* Bajo */
+#kdatatable_clientes_inactivos tbody td.td-risk-level.risk-level-bajo,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level.risk-level-bajo,
+#kdatatable_clientes_inactivos tbody td.risk2-bajo,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.risk2-bajo{
+  background:#99FF99 !important;
+  color:#064E3B !important;
 }
 
-/* "Ver más" centrado y como bloque */
-#kdatatable_clientes_inactivos a.toggle-more {
-  /*display: block !important;*/
-  text-align: center !important;
-  margin-top: .35rem !important;
-  margin-left: 0 !important;
+/* Medio */
+#kdatatable_clientes_inactivos tbody td.td-risk-level.risk-level-medio,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level.risk-level-medio,
+#kdatatable_clientes_inactivos tbody td.risk2-medio,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.risk2-medio{
+  background:#FFE066 !important;
+  color:#5F4300 !important;
 }
 
-.text-long > div,
-.text-long > .cell-edit,
-.text-long > .clamp-3 {
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
+/* Alto */
+#kdatatable_clientes_inactivos tbody td.td-risk-level.risk-level-alto,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level.risk-level-alto,
+#kdatatable_clientes_inactivos tbody td.risk2-alto,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.risk2-alto{
+  background:#FF9999 !important;
+  color:#7F1D1D !important;
 }
 
-/* Selects centrados */
-#kdatatable_clientes_inactivos td select.form-control {
-  text-align: center !important;
-  text-align-last: center !important;
-  padding-left: 0.5rem !important;
-  padding-right: 1.75rem !important;
+/* Muy Alto */
+#kdatatable_clientes_inactivos tbody td.td-risk-level.risk-level-muyalto,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.td-risk-level.risk-level-muyalto,
+#kdatatable_clientes_inactivos tbody td.risk2-muyalto,
+#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody tbody td.risk2-muyalto{
+  background:#CC0000 !important;
+  color:#FFFFFF !important;
 }
 
-/* Inputs de fecha */
-#kdatatable_clientes_inactivos td .date-input {
-  text-align: center !important;
+/* Evita que zebra/hover pisen los colores */
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.td-risk-level.risk-level-muybajo,
+#kdatatable_clientes_inactivos tbody tr:hover td.td-risk-level.risk-level-muybajo{
+  background:#E8FFF1 !important;
+  color:#065F46 !important;
 }
 
-/* Acciones siempre centradas */
-#kdatatable_clientes_inactivos td.col-actions,
-#kdatatable_clientes_inactivos td.col-actions a,
-#kdatatable_clientes_inactivos td.col-actions button {
-  text-align: center !important;
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.td-risk-level.risk-level-bajo,
+#kdatatable_clientes_inactivos tbody tr:hover td.td-risk-level.risk-level-bajo,
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.risk2-bajo,
+#kdatatable_clientes_inactivos tbody tr:hover td.risk2-bajo{
+  background:#99FF99 !important;
+  color:#064E3B !important;
 }
 
-/* Ajuste para columnas editables que antes estaban arriba */
-.table td.text-long {
-  vertical-align: middle !important;
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.td-risk-level.risk-level-medio,
+#kdatatable_clientes_inactivos tbody tr:hover td.td-risk-level.risk-level-medio,
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.risk2-medio,
+#kdatatable_clientes_inactivos tbody tr:hover td.risk2-medio{
+  background:#FFE066 !important;
+  color:#5F4300 !important;
 }
 
-/* =========================
-   CUADRANTES
-   ========================= */
-
-/* Regla base para la fila de cuadrantes en la tabla original
-   y en los clones que crea DataTables / FixedHeader */
-#kdatatable_clientes_inactivos thead tr.quadrant-row th,
-div.dataTables_scrollHead table thead tr.quadrant-row th,
-table.fixedHeader-floating thead tr.quadrant-row th {
-  text-align: center; !important;
-  vertical-align: middle !important;
-  font-size: 1rem !important;
-  font-weight: 800 !important;
-  letter-spacing: .02em !important;
-  text-transform: uppercase !important;
-  /*padding: .45rem .9rem !important;*/
-  border-bottom: 1px solid rgba(0,0,0,.08) !important;
-  background-image: none !important;
-  box-shadow: none !important;
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.td-risk-level.risk-level-alto,
+#kdatatable_clientes_inactivos tbody tr:hover td.td-risk-level.risk-level-alto,
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.risk2-alto,
+#kdatatable_clientes_inactivos tbody tr:hover td.risk2-alto{
+  background:#FF9999 !important;
+  color:#7F1D1D !important;
 }
 
-/* Cuadrante 1: transparente con texto negro */
-#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-1,
-div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-1,
-table.fixedHeader-floating thead tr.quadrant-row th.quadrant-1 {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #121212 !important;
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.td-risk-level.risk-level-muyalto,
+#kdatatable_clientes_inactivos tbody tr:hover td.td-risk-level.risk-level-muyalto,
+#kdatatable_clientes_inactivos tbody tr:nth-child(even) td.risk2-muyalto,
+#kdatatable_clientes_inactivos tbody tr:hover td.risk2-muyalto{
+  background:#CC0000 !important;
+  color:#FFFFFF !important;
 }
 
-/* Cuadrante 2: gris con texto blanco */
-#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-2,
-div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-2,
-table.fixedHeader-floating thead tr.quadrant-row th.quadrant-2 {
-  background: #6b7280 !important;
-  background-color: #6b7280 !important;
-  color: #ffffff !important;
+#kdatatable_clientes_inactivos td.td-risk-level .risk-level-label,
+#kdatatable_clientes_inactivos td.td-risk-level .nivel2-val{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:20px;
+  padding:2px 7px;
+  border-radius:7px;
+  font-weight:950 !important;
+  color:inherit !important;
+  background:rgba(255,255,255,.18);
 }
 
-/* Asegurar que cualquier texto interno respete el color */
-#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-1 *,
-div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-1 *,
-table.fixedHeader-floating thead tr.quadrant-row th.quadrant-1 * {
-  color: #121212 !important;
+
+/* =========================================================
+   17. ACEPTABILIDAD / BANDERAS
+   ========================================================= */
+
+.td-acept{
+  position:relative !important;
+  text-align:center !important;
+  background:transparent !important;
+  color:var(--ink) !important;
+  padding-left:28px !important;
 }
 
-#kdatatable_clientes_inactivos thead tr.quadrant-row th.quadrant-2 *,
-div.dataTables_scrollHead table thead tr.quadrant-row th.quadrant-2 *,
-table.fixedHeader-floating thead tr.quadrant-row th.quadrant-2 * {
-  color: #ffffff !important;
+.acc-acept,
+.acc-noacept{
+  background:transparent !important;
+  color:var(--ink) !important;
 }
 
-/* Que la fila principal de encabezados siga negra */
-#kdatatable_clientes_inactivos thead tr.main-header-row th,
-div.dataTables_scrollHead table thead tr.main-header-row th,
-table.fixedHeader-floating thead tr.main-header-row th {
-  background: var(--ink) !important;
-  color: #ffffff !important;
-  text-align: center !important;
+.td-acept.acc-acept::before,
+.td-acept.acc-noacept::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:50%;
+  width:2px;
+  height:20px;
+  transform:translateY(-50%);
+  border-radius:999px;
+  background:rgba(17,24,39,.35);
 }
 
-/* Estado gestión al lado de Controles Asegurados */
+.td-acept.acc-acept::after,
+.td-acept.acc-noacept::after{
+  content:"";
+  position:absolute;
+  left:12px;
+  top:calc(50% - 10px);
+  width:18px;
+  height:14px;
+  clip-path:polygon(0 0,100% 0,78% 50%,100% 100%,0 100%);
+  border-radius:2px;
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+
+.td-acept.acc-acept::after{
+  background:linear-gradient(180deg, #34D399 0%, #16A34A 100%);
+}
+
+.td-acept.acc-noacept::after{
+  background:linear-gradient(180deg, #FB7185 0%, #DC2626 100%);
+}
+
+
+/* =========================================================
+   18. GESTIÓN / CONTROLES ASEGURADOS
+   ========================================================= */
+
 .td-gestion{
-  text-align: center !important;
+  text-align:center !important;
 }
 
 .td-gestion .gestion-label{
-  margin: 0 !important;
-  font-weight: 700 !important;
-  letter-spacing: .2px !important;
-  color: #fff !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  padding:0 9px;
+  margin:0 !important;
+  border-radius:999px;
+  font-size:.64rem;
+  line-height:1;
+  font-weight:950 !important;
+  letter-spacing:.02em;
+  white-space:nowrap;
 }
 
 .td-gestion.gestion-si{
-  background: green !important;
+  background:rgba(22,163,74,.08) !important;
+}
+
+.td-gestion.gestion-si .gestion-label{
+  color:#fff !important;
+  background:linear-gradient(180deg, #34D399, #16A34A);
 }
 
 .td-gestion.gestion-no{
-  background: red !important;
+  background:rgba(220,38,38,.08) !important;
+}
+
+.td-gestion.gestion-no .gestion-label{
+  color:#fff !important;
+  background:linear-gradient(180deg, #FB7185, #DC2626);
 }
 
 .td-gestion.gestion-na{
-  background: transparent !important;
+  background:transparent !important;
 }
 
 .td-gestion.gestion-na .gestion-label{
-  color: #b8b8b8 !important;
+  color:#98A2B3 !important;
+  background:#F2F4F7;
 }
 
-a.toggle-more.is-hidden{
-  display: none !important;
+
+/* =========================================================
+   19. OTROS ESTADOS
+   ========================================================= */
+
+.cell-money{
+  font-weight:900 !important;
+}
+
+.cell-money.has-value::before{
+  content:"$ " !important;
+}
+
+.td-nr2{
+  text-align:center !important;
+  font-weight:950 !important;
+}
+
+
+/* =========================================================
+   20. RESPONSIVE
+   ========================================================= */
+
+@media (max-width:1200px){
+  .giro-list-header.card-header{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+
+  .giro-list-toolbar.card-toolbar{
+    width:100%;
+    justify-content:flex-start !important;
+  }
+
+  .giro-list-summary{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+@media (max-width:768px){
+  .giro-list-page{
+    padding:12px 10px 0 !important;
+  }
+
+  .giro-list-body.card-body{
+    padding:12px !important;
+  }
+
+  .giro-list-titlebox .card-label{
+    font-size:.95rem !important;
+  }
+
+  .giro-list-toolbar .btn{
+    width:100%;
+  }
+
+  .giro-edit-legend.edit-legend{
+    padding:9px 12px !important;
+  }
+
+  .giro-summary-stats{
+    width:100%;
+  }
+
+  .giro-stat-pill{
+    flex:1;
+  }
+
+  #kdatatable_clientes_inactivos_wrapper .dataTables_length,
+  #kdatatable_clientes_inactivos_wrapper .dataTables_filter,
+  #kdatatable_clientes_inactivos_wrapper .dataTables_length label,
+  #kdatatable_clientes_inactivos_wrapper .dataTables_filter label{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  #kdatatable_clientes_inactivos_wrapper .dataTables_filter input{
+    width:100% !important;
+  }
+}
+
+/* =========================================================
+   FIX VER MÁS
+   Oculto por defecto; JS solo lo muestra si el texto supera 3 líneas
+   ========================================================= */
+
+#kdatatable_clientes_inactivos a.toggle-more{
+  display:none !important;
+}
+
+#kdatatable_clientes_inactivos a.toggle-more:not(.is-hidden){
+  display:inline-flex !important;
 }

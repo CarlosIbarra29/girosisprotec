@@ -150,6 +150,7 @@ jQuery(document).ready(function () {
 /* ===========================================
  * Tabla de ANALISIS (#kdatatable_clientes_inactivos)
  * Scroll X/Y + cabecera visible + filtros por columna ARRIBA
+ * Resize de columnas tipo Excel
  * =========================================== */
 (function () {
   if (!jQuery || !jQuery.fn || !jQuery.fn.DataTable) return;
@@ -159,22 +160,196 @@ jQuery(document).ready(function () {
 
   if (!$tabla.length) return;
 
-  // Ancho mínimo para activar scroll horizontal
-  var minWidthPx = 1400;
-  $tabla.css("min-width", minWidthPx + "px");
+  var STORAGE_KEY = "giro:listadoanalisis:column-widths:v3";
+
+  var defaultWidths = [
+    88, 118, 150, 165, 220, 250, 180, 165, 165, 230,
+    145, 90, 90, 105, 85, 90, 85, 90, 135, 145,
+    130, 125, 190, 205, 145, 230, 135,
+    165, 80, 100, 105, 105, 90, 120, 90, 95,
+    140, 130, 140, 165, 140, 145, 130, 220,
+    220, 160, 100, 125, 125, 150, 155, 145, 125
+  ];
+
+  function getMainHeaderRow() {
+    var $thead = $tabla.find("thead");
+    var $headerRow = $thead.find("tr.main-header-row").first();
+    if (!$headerRow.length) $headerRow = $thead.find("tr").last();
+    return $headerRow;
+  }
+
+  function getColumnCount() {
+    return getMainHeaderRow().find("th").length;
+  }
+
+  function normalizeWidths(widths, count) {
+    var out = [];
+    for (var i = 0; i < count; i++) {
+      var w = parseInt(widths && widths[i], 10);
+      if (!w) w = defaultWidths[i] || 130;
+      if (w < 70) w = 70;
+      if (w > 720) w = 720;
+      out.push(w);
+    }
+    return out;
+  }
+
+  function loadWidths(count) {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return normalizeWidths(defaultWidths, count);
+      return normalizeWidths(JSON.parse(raw), count);
+    } catch (e) {
+      return normalizeWidths(defaultWidths, count);
+    }
+  }
+
+  function saveWidths(widths) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(widths));
+    } catch (e) {}
+  }
+
+  function sumWidths(widths) {
+    return widths.reduce(function (a, b) { return a + b; }, 0);
+  }
+
+  function ensureColgroup($table, count) {
+    var $colgroup = $table.children("colgroup.giro-colgroup");
+    if (!$colgroup.length) {
+      $colgroup = $('<colgroup class="giro-colgroup"></colgroup>');
+      $table.prepend($colgroup);
+    }
+    if ($colgroup.children("col").length !== count) {
+      $colgroup.empty();
+      for (var i = 0; i < count; i++) $colgroup.append("<col>");
+    }
+    return $colgroup;
+  }
+
+  function allTables() {
+    return $(
+      "#kdatatable_clientes_inactivos," +
+      "#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead table," +
+      "#kdatatable_clientes_inactivos_wrapper .dataTables_scrollBody table," +
+      "#kdatatable_clientes_inactivos_wrapper .dataTables_scrollFoot table"
+    );
+  }
+
+  function applyWidths(widths, DT) {
+    var count = widths.length;
+    var total = sumWidths(widths);
+
+    allTables().each(function () {
+      var $t = $(this);
+      $t.css({
+        width: total + "px",
+        minWidth: total + "px",
+        tableLayout: "fixed"
+      });
+
+      var $colgroup = ensureColgroup($t, count);
+      widths.forEach(function (w, i) {
+        $colgroup.children("col").eq(i).css({
+          width: w + "px",
+          minWidth: w + "px"
+        });
+      });
+    });
+
+    if (DT) {
+      try { DT.columns.adjust(); } catch (e) {}
+    }
+  }
+
+  function addResizeHandles(DT, widths) {
+    var $head = $("#kdatatable_clientes_inactivos_wrapper .dataTables_scrollHead table thead tr.main-header-row th");
+    if (!$head.length) $head = $tabla.find("thead tr.main-header-row th");
+
+    $head.find(".dt-col-resizer").remove();
+
+    $head.each(function (index) {
+      var $th = $(this);
+      var $handle = $('<span class="dt-col-resizer" aria-hidden="true" title="Arrastra para ajustar columna"></span>');
+
+      $handle.on("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      $handle.on("dblclick", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        widths[index] = defaultWidths[index] || 130;
+        saveWidths(widths);
+        applyWidths(widths, DT);
+        setTimeout(function () {
+          try { DT.columns.adjust().draw(false); } catch (err) {}
+          applyWidths(widths, DT);
+          addResizeHandles(DT, widths);
+        }, 30);
+      });
+
+      $handle.on("mousedown touchstart", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var startEvent = e.type === "touchstart" ? e.originalEvent.touches[0] : e;
+        var startX = startEvent.pageX;
+        var startWidth = widths[index] || $th.outerWidth();
+        var lastWidth = startWidth;
+
+        $("body").addClass("giro-is-resizing");
+        $handle.addClass("is-active");
+
+        function onMove(ev) {
+          var moveEvent = ev.type === "touchmove" ? ev.originalEvent.touches[0] : ev;
+          var diff = moveEvent.pageX - startX;
+          var nextWidth = startWidth + diff;
+
+          if (nextWidth < 70) nextWidth = 70;
+          if (nextWidth > 720) nextWidth = 720;
+          if (Math.abs(nextWidth - lastWidth) < 1) return;
+
+          lastWidth = nextWidth;
+          widths[index] = nextWidth;
+          applyWidths(widths, null);
+        }
+
+        function onEnd() {
+          $("body").removeClass("giro-is-resizing");
+          $handle.removeClass("is-active");
+          $(document).off(".giroResizeCols");
+
+          saveWidths(widths);
+
+          setTimeout(function () {
+            applyWidths(widths, DT);
+            try { DT.columns.adjust().draw(false); } catch (err) {}
+            applyWidths(widths, DT);
+            addResizeHandles(DT, widths);
+          }, 40);
+        }
+
+        $(document)
+          .on("mousemove.giroResizeCols touchmove.giroResizeCols", onMove)
+          .on("mouseup.giroResizeCols touchend.giroResizeCols touchcancel.giroResizeCols", onEnd);
+      });
+
+      $th.append($handle);
+    });
+  }
+
+  var columnCount = getColumnCount();
+  var columnWidths = loadWidths(columnCount);
+  applyWidths(columnWidths, null);
 
   /* --------------------------------------------------
    * 1) Crear fila de filtros en EL ENCABEZADO (thead)
    *    tomando SOLO la fila real de títulos
    * -------------------------------------------------- */
   var $thead = $tabla.find("thead");
-
-  // Si existe la fila real con clase main-header-row, usamos esa.
-  // Si no, usamos la última fila del thead como respaldo.
-  var $headerRow = $thead.find("tr.main-header-row").first();
-  if (!$headerRow.length) {
-    $headerRow = $thead.find("tr").last();
-  }
+  var $headerRow = getMainHeaderRow();
 
   // Evitar duplicar filtros si el script vuelve a correr
   $thead.find("tr.filters-row").remove();
@@ -186,15 +361,17 @@ jQuery(document).ready(function () {
     .addClass("filters-row")
     .find("th")
     .each(function () {
-      var title = $(this).text().trim().replace(/\s+/g, " ");
+      var $th = $(this);
+      $th.find(".dt-col-resizer, .btn-filters-toggle").remove();
+      var title = $th.text().trim().replace(/\s+/g, " ");
 
       // Sin filtro en "Acciones" o columnas sin título
       if (!title || title.toLowerCase() === "acciones") {
-        $(this).html("");
+        $th.html("");
         return;
       }
 
-      $(this).html(
+      $th.html(
         '<input type="text" class="form-control form-control-sm column-filter" placeholder="' +
           title +
           '" />'
@@ -209,14 +386,14 @@ jQuery(document).ready(function () {
    * -------------------------------------------------- */
   var DT_INACTIVOS = $tabla.DataTable({
     language: {
-      lengthMenu: "Display _MENU_",
+      lengthMenu: "Mostrar _MENU_",
       url: $("#datatable_i18n").val(),
     },
     dom:
-      "<'row'<'col-sm-6 d-flex align-items-center justify-content-start'l>" +
+      "<'row giro-dt-toolbar'<'col-sm-6 d-flex align-items-center justify-content-start'l>" +
       "<'col-sm-6 d-flex align-items-center justify-content-end'f>>" +
       "rt" +
-      "<'row'<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+      "<'row giro-dt-footer'<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
       "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>>",
     scrollX: true,
     scrollY: "60vh",
@@ -228,8 +405,23 @@ jQuery(document).ready(function () {
     ordering: true,
     order: [],
     orderCellsTop: true,
-    fixedHeader: true,
+    fixedHeader: false,
+    stateSave: false,
+    drawCallback: function () {
+      applyWidths(columnWidths, DT_INACTIVOS);
+      addResizeHandles(DT_INACTIVOS, columnWidths);
+      if (window.KTApp && KTApp.initTooltips) KTApp.initTooltips();
+    }
   });
+
+  window.DT_INACTIVOS = DT_INACTIVOS;
+
+  setTimeout(function () {
+    applyWidths(columnWidths, DT_INACTIVOS);
+    addResizeHandles(DT_INACTIVOS, columnWidths);
+    try { DT_INACTIVOS.columns.adjust().draw(false); } catch (e) {}
+    applyWidths(columnWidths, DT_INACTIVOS);
+  }, 150);
 
   // --- Estado inicial: filtros ocultos ---
   setTimeout(function () {
@@ -253,6 +445,7 @@ jQuery(document).ready(function () {
     "#kdatatable_clientes_inactivos_wrapper .btn-filters-toggle",
     function (e) {
       e.preventDefault();
+      e.stopPropagation();
 
       var $wrapper = $("#kdatatable_clientes_inactivos_wrapper");
       if (!$wrapper.length) return;
@@ -275,13 +468,13 @@ jQuery(document).ready(function () {
         .toggleClass("filters-off", ahoraOcultos)
         .attr("title", nuevoTitle);
 
-      try {
-        DT_INACTIVOS.columns().adjust().draw(false);
-      } catch (err) {}
+      setTimeout(function () {
+        try { DT_INACTIVOS.columns().adjust().draw(false); } catch (err) {}
+        applyWidths(columnWidths, DT_INACTIVOS);
+        addResizeHandles(DT_INACTIVOS, columnWidths);
+      }, 40);
     }
   );
-
-  window.DT_INACTIVOS = DT_INACTIVOS;
 
   /* --------------------------------------------------
    * 3) Conectar inputs con la búsqueda de su columna
@@ -305,12 +498,13 @@ jQuery(document).ready(function () {
    * 4) Ajustar columnas cuando cambie el layout
    * -------------------------------------------------- */
   function ajustaColumnas() {
-    try {
-      DT_INACTIVOS.columns().adjust().draw(false);
-    } catch (e) {}
+    try { DT_INACTIVOS.columns().adjust().draw(false); } catch (e) {}
+    applyWidths(columnWidths, DT_INACTIVOS);
+    addResizeHandles(DT_INACTIVOS, columnWidths);
   }
 
-  setTimeout(ajustaColumnas, 0);
+  setTimeout(ajustaColumnas, 350);
+  setTimeout(ajustaColumnas, 900);
 
   $(window).on("resize", ajustaColumnas);
   $(document).on("shown.bs.tab shown.bs.collapse", ajustaColumnas);
