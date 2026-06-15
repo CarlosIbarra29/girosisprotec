@@ -5,7 +5,7 @@
 @endsection
 
 @push('scripts')
-  <script src="{{ asset('js/h_d/NivelControl.js') }}"></script> 
+  <script src="{{ asset('js/h_d/NivelControl.js?v=1.1.2') }}"></script> 
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 @push('styles')
@@ -39,11 +39,11 @@
                                 </a>
 
                                 <!--begin::Button-->
-                                <a href="#" class="btn btn-light-primary font-weight-bolder mr-3 ml-3" data-toggle="modal" data-target="#kt_modal_1">
+                                <!-- <a href="#" class="btn btn-light-primary font-weight-bolder mr-3 ml-3" data-toggle="modal" data-target="#kt_modal_1">
                                     <i class="la la-plus"></i>Nuevo</a>
 
                                 <a href="{{ route('hd.nivelcontrolinactivos') }}" class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                                    <i class="far fa-trash-alt"></i>Nivel de control Inactivos</a>
+                                    <i class="far fa-trash-alt"></i>Nivel de control Inactivos</a> -->
 
                                 <!--end::Button-->
 

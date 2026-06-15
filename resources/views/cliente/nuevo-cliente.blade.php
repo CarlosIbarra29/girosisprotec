@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row gi-row-gap">
+                                <!-- <div class="form-group row gi-row-gap">
                                     <div class="col-lg-6">
                                         <div class="f-field">
                                             <input type="text" class="form-control f-control" name="sector" id="sector" placeholder=" ">
@@ -168,7 +168,7 @@
                                             <label for="no_personal" class="f-label">No. de personas que laboran en la instalación</label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             {{-- TAB 2 --}}

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('scripts')
 
-  <script src="{{ asset('js/cliente/CatalogoClientes.js') }}"></script>
+  <script src="{{ asset('js/cliente/CatalogoClientes2.js?v=1.1.2') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 
@@ -145,7 +145,7 @@
 
                                         <tbody>
                                           @foreach($data as $unid)
-                                            <tr class="tr-clickable"data-href="{{ route('analisis.analisiscliente', $unid->id ) }}">
+                                            <tr class="tr-clickable" data-href="{{ route('analisis.analisiscliente', $unid->id) }}">
                                               <td>{{ $unid->id }}</td>
 
                                               <td>
@@ -237,20 +237,3 @@
 
 @endsection
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    document.querySelectorAll('.tr-clickable').forEach(function(row) {
-        row.addEventListener('click', function(e) {
-
-            // Evita que afecte si algún día vuelves a poner botones dentro
-            if (e.target.closest('a, button, input')) {
-                return;
-            }
-
-            window.location.href = this.dataset.href;
-        });
-    });
-
-});
-</script>

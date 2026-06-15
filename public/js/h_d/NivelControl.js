@@ -53,14 +53,15 @@ var Tabla = function() {
                     targets: -1,
                     title: 'Opciones',
                     orderable: false,
+                    className: 'text-center',
                     render: function(data, type, full, meta) {
 
                             return '\
                                 <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" onClick="editarnivelcontrol(\'' + full.nivelcontrol + '\', '+full.id+', \''+full.exposicion+'\', '+full.nc_calculo+', \''+full.detalle+'\')" data-toggle="modal" data-target="#model_edit_nivelcontrol" data-toggle="tooltip" data-theme="dark" title="Editar Nivel de control">\
-                                    <i class="flaticon-edit"></i></button>\
+                                    <i class="flaticon-edit"></i></button>\<!--\
                                 <button class="btn btn-sm btn-clean btn-hover-icon-success btn-icon" onClick="deletenivelcontrol(\'' + full.nivelcontrol + '\', '+full.id+')" data-toggle="tooltip" data-theme="dark" title="Desactivar Nivel control">\
                                     <i class="flaticon-delete "></i>\
-                                </button>\
+                                </button>\-->\
                             ';
                     },
                 }
