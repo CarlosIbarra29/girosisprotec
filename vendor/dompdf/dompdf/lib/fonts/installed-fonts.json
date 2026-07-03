@@ -1,0 +1,48 @@
+{
+    "poppins": {
+        "300": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_300_2e2883f4cf5280db5a8f5b456d9f76e7",
+        "normal": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_normal_59578db0d134e5107911b0772fcd36b3",
+        "500": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_500_e357e72d1459b7129a703bd036127015",
+        "600": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/poppins_600_7d20ab77d986921f47f6842ca5ca81b1",
+        "bold": "poppins_bold_e92875066bf07ed4e7ee92062224b42c"
+    },
+    "ki": {
+        "normal": "ki_normal_6ff88a5e822d7340064ccb24f9f15c03"
+    },
+    "summernote": {
+        "normal": "summernote_normal_a58e6a7afa355f41458354fd052735d8"
+    },
+    "line awesome brands": {
+        "normal": "line_awesome_brands_normal_93da6ad82f46e37161a7309cc696a20c"
+    },
+    "line awesome free": {
+        "normal": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/line_awesome_free_normal_80f66a860bdaaf351433d297773ad77c",
+        "900": "line_awesome_free_900_71104c23e09a993b03737ca03d91bd59"
+    },
+    "flaticon": {
+        "normal": "flaticon_normal_3832183ed412fa492f06af66fad5d9e4"
+    },
+    "flaticon2": {
+        "normal": "flaticon2_normal_cdeaa3af27af2e6d9141e02fb8af9a33"
+    },
+    "socicon": {
+        "normal": "socicon_normal_a82e97a50a3d3c30020c44d2719e94d6"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_31636509732b4298588040c87c3592c6"
+    },
+    "font awesome 5 free": {
+        "normal": "font_awesome_5_free_normal_1321bfcfa727e01fd6f51a5f5864a82b",
+        "900": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_900_a4b7023c0a078a27002a27fd500f100e"
+    },
+    "font awesome 6 brands": {
+        "normal": "font_awesome_6_brands_normal_31636509732b4298588040c87c3592c6"
+    },
+    "font awesome 6 free": {
+        "normal": "C:\\xampp\\htdocs\\girosisprotec\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_6_free_normal_1321bfcfa727e01fd6f51a5f5864a82b",
+        "900": "font_awesome_6_free_900_a4b7023c0a078a27002a27fd500f100e"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_98ba43c5288785d68524e2de74fccc87"
+    }
+}

@@ -15,7 +15,7 @@
   Analisis de riesgos sociales
 @endsection
 
-@section('content')
+@section('content') 
 
 <div class="d-flex flex-row giro-list-page">
   <!--begin::List-->
@@ -53,6 +53,11 @@
                    style="pointer-events: none;  border-color: #ced4da !important; box-shadow: none !important;">
                   <i class="la la-project-diagram"></i> Analisis de Escenarios
                 </a>
+ 
+                <!-- <a href="{{ route('analisis.documentoejecutivo', $cliente->id) }}"
+                   class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
+                  <i class="la la-file-alt"></i> Generar Documento
+                </a> -->
 
                 {{-- Botón modo edición (oculto) --}}
                 <!-- <button id="btnEditarCeldas" class="btn btn-warning font-weight-bolder mr-3 ml-3 d-none">

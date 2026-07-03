@@ -44,7 +44,7 @@ use App\Models\AnalisisRiesgos\AnalisisRiesgoOtrosImpacto;
 
 
 use App\Models\Hd\NivelRiesgo;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\Hd\NivelControl;
 use App\Models\User;
@@ -1788,6 +1788,174 @@ class AnalisisRiesgosController extends Controller
             \Log::error('updateCell error', ['e' => $e->getMessage()]);
             return response()->json(['ok' => false, 'message' => 'Error interno al guardar'], 500);
         }
+    }
+
+    /* =========================================================
+     * Documento Ejecutivo de Riesgos Sociales
+     * Vista previa web + descarga PDF.
+     * Requiere: composer require barryvdh/laravel-dompdf
+     * ========================================================= */
+
+    private function buildDocumentoEjecutivoData($id_cliente)
+    {
+        $cliente = Cliente::where('id', $id_cliente)->firstOrFail();
+
+        $data = AnalisisRiesgoSocial::with([
+            'BarrerasPerimetrales',
+            'hdNivelControl',
+            'factorExp',
+            'hdProbabilidadif',
+            'hdConsecuencia',
+            'ImpactosSocial',
+            'analisisRiesgoSocialDeficiencias',
+        ])->where('cliente_id', $id_cliente)
+          ->where('status_delete', 1)
+          ->orderBy('libror_barreras_perimetrales_id')
+          ->orderBy('id')
+          ->get();
+
+        $niveles = [
+            'muy_bajo' => 0,
+            'bajo'     => 0,
+            'medio'    => 0,
+            'alto'     => 0,
+            'muy_alto' => 0,
+        ];
+
+        $riesgosPorCriterio = [];
+        $deficienciasConteo = [1=>0, 2=>0, 3=>0, 4=>0];
+        $impactosConteo = [1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0,8=>0,9=>0,10=>0];
+        $riesgosLatentes = [];
+
+        foreach ($data as $item) {
+            $riesgo = (float)($item->nivel_riesgo ?? 0);
+
+            if ($riesgo >= 36.10) {
+                $niveles['muy_alto']++;
+                $nivelKey = 'muy_alto';
+            } elseif ($riesgo >= 16.10) {
+                $niveles['alto']++;
+                $nivelKey = 'alto';
+            } elseif ($riesgo >= 6.50) {
+                $niveles['medio']++;
+                $nivelKey = 'medio';
+            } elseif ($riesgo >= 1.50) {
+                $niveles['bajo']++;
+                $nivelKey = 'bajo';
+            } else {
+                $niveles['muy_bajo']++;
+                $nivelKey = 'muy_bajo';
+            }
+
+            $criterio = optional($item->BarrerasPerimetrales)->alcance ?? 'Sin criterio';
+            if (!isset($riesgosPorCriterio[$criterio])) {
+                $riesgosPorCriterio[$criterio] = [
+                    'criterio'  => $criterio,
+                    'muy_bajo'  => 0,
+                    'bajo'      => 0,
+                    'medio'     => 0,
+                    'alto'      => 0,
+                    'muy_alto'  => 0,
+                    'total'     => 0,
+                ];
+            }
+
+            $riesgosPorCriterio[$criterio][$nivelKey]++;
+            $riesgosPorCriterio[$criterio]['total']++;
+
+            $evento = trim((string)($item->eventos_riesgo ?? ''));
+            if ($evento !== '') {
+                $riesgosLatentes[$evento] = $evento;
+            }
+
+            foreach (($item->analisisRiesgoSocialDeficiencias ?? []) as $def) {
+                $idDef = (int)($def->id_deficiencia ?? 0);
+                if (isset($deficienciasConteo[$idDef])) {
+                    $deficienciasConteo[$idDef]++;
+                }
+            }
+
+            foreach (($item->ImpactosSocial ?? []) as $imp) {
+                $idImp = (int)($imp->id_impacto ?? 0);
+                if (isset($impactosConteo[$idImp])) {
+                    $impactosConteo[$idImp]++;
+                }
+            }
+        }
+
+        $totalRiesgos = $data->count();
+        $porcentajes = [];
+        foreach ($niveles as $key => $valor) {
+            $porcentajes[$key] = $totalRiesgos > 0 ? round(($valor / $totalRiesgos) * 100, 2) : 0;
+        }
+
+        $riesgosPorCriterio = collect(array_values($riesgosPorCriterio))
+            ->sortByDesc('total')
+            ->values();
+
+        $riesgosLatentes = collect(array_values($riesgosLatentes))
+            ->take(12)
+            ->values();
+
+        if ($riesgosLatentes->isEmpty()) {
+            $riesgosLatentes = collect([
+                'Intrusión por controles de acceso',
+                'Intrusión por perímetros',
+                'Robo y hurto de suministros, herramientas y mercancías',
+                'Robo de transporte de carga',
+                'Sabotaje',
+                'Contaminación de la carga',
+            ]);
+        }
+
+        $altoOMuyAlto = ($niveles['alto'] ?? 0) + ($niveles['muy_alto'] ?? 0);
+        $recomendaciones = collect([
+            $altoOMuyAlto > 0
+                ? 'Priorizar la atención de los escenarios clasificados como Alto y Muy Alto, ya que representan la exposición crítica del análisis.'
+                : 'Mantener monitoreo periódico de los escenarios registrados para conservar el nivel de exposición bajo control.',
+            'Formalizar responsables, fechas compromiso y evidencia de cierre para las acciones de mitigación seleccionadas.',
+            'Integrar evidencia fotográfica y ubicación geográfica para fortalecer la trazabilidad del análisis.',
+            'Actualizar el análisis cuando existan cambios relevantes en operación, accesos, perímetro, controles o contexto de seguridad.',
+        ]);
+
+        $fechaEstudio = now()->locale('es')->translatedFormat('d \d\e F \d\e Y');
+
+        return compact(
+            'cliente',
+            'data',
+            'niveles',
+            'porcentajes',
+            'riesgosPorCriterio',
+            'deficienciasConteo',
+            'impactosConteo',
+            'totalRiesgos',
+            'riesgosLatentes',
+            'recomendaciones',
+            'fechaEstudio'
+        );
+    }
+
+    // Reemplaza SOLO estos dos métodos en tu controller.
+    // El método buildDocumentoEjecutivoData($id_cliente) se queda como ya lo tienes.
+
+    public function documentoejecutivo($id_cliente)
+    {
+        $payload = $this->buildDocumentoEjecutivoData($id_cliente);
+
+        $payload['modoPdf'] = false;
+        $payload['autoPrint'] = false;
+
+        return view('analisisriesgos.documento-ejecutivo', $payload);
+    }
+
+    public function descargardocumentoejecutivo($id_cliente)
+    {
+        $payload = $this->buildDocumentoEjecutivoData($id_cliente);
+
+        $payload['modoPdf'] = false;
+        $payload['autoPrint'] = true;
+
+        return view('analisisriesgos.documento-ejecutivo', $payload);
     }
 
 

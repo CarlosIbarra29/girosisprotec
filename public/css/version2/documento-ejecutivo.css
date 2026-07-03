@@ -1,0 +1,1041 @@
+/* =========================================================
+   GIRO / DOCUMENTO EJECUTIVO PREMIUM V4
+   - Vista previa con layout del sistema
+   - PDF solo del documento con el mismo diseño
+   - DomPDF friendly: tablas, medidas fijas y sin flex crítico
+   ========================================================= */
+:root{
+  --doc-ink:#0b1220;
+  --doc-muted:#667085;
+  --doc-gold:#c2a476;
+  --doc-gold-2:#b7954b;
+  --doc-gold-dark:#8e6b27;
+  --doc-blue:#173a5e;
+  --doc-blue-2:#0f2842;
+  --doc-line:#d8ccb6;
+  --doc-paper:#ffffff;
+  --doc-soft:#fbf7ef;
+}
+
+body{ color:var(--doc-ink); }
+
+.doc-preview-shell{
+  min-height:100vh;
+  padding:26px 18px 42px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(194,164,118,.20), transparent 32%),
+    linear-gradient(180deg, #f8f3ea 0%, #e7dfd1 100%);
+}
+
+.doc-preview-toolbar{
+  position:sticky;
+  top:14px;
+  z-index:99999;
+  max-width:1120px;
+  margin:0 auto 22px;
+  padding:16px 20px;
+  border-radius:22px;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(194,164,118,.38);
+  box-shadow:0 18px 42px rgba(15,23,42,.18);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  backdrop-filter:blur(8px);
+}
+
+.doc-toolbar-title span{
+  display:inline-flex;
+  min-height:23px;
+  align-items:center;
+  padding:0 12px;
+  border-radius:999px;
+  color:var(--doc-gold-dark);
+  background:#fbf3e2;
+  border:1px solid rgba(194,164,118,.34);
+  font-size:.68rem;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.doc-toolbar-title h3{ margin:5px 0 0; font-size:1.22rem; line-height:1.12; font-weight:950; color:var(--doc-ink); }
+.doc-toolbar-title p{ margin:2px 0 0; color:#667085; font-weight:800; }
+.doc-toolbar-actions{ display:flex; gap:9px; flex-wrap:wrap; justify-content:flex-end; }
+.doc-toolbar-actions .btn{
+  min-height:44px;
+  border-radius:14px !important;
+  font-weight:950 !important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:0 18px !important;
+}
+.doc-toolbar-actions .btn-primary{
+  color:#fff !important;
+  background:linear-gradient(180deg,#c79f45,#8e6b27) !important;
+  border-color:rgba(142,107,39,.28) !important;
+  box-shadow:0 10px 20px rgba(142,107,39,.22) !important;
+}
+
+.doc-paper-stack{ width:100%; }
+
+.doc-page{
+  position:relative;
+  width:920px;
+  min-height:1056px;
+  margin:0 auto 22px;
+  padding:54px 58px 82px;
+  box-sizing:border-box;
+  background:#fff;
+  color:#121826;
+  overflow:hidden;
+  box-shadow:0 24px 58px rgba(15,23,42,.20);
+  page-break-after:always;
+}
+.doc-page-wide{ width:1020px; }
+.doc-last-page{ page-break-after:auto; }
+
+.doc-page-foot{
+  position:absolute;
+  left:34px;
+  right:34px;
+  bottom:24px;
+  height:24px;
+  background:#b8b8b8;
+}
+.doc-page-foot:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:52%;
+  height:24px;
+  background:var(--doc-blue);
+  clip-path:polygon(0 0, 78% 0, 100% 100%, 0 100%);
+}
+
+.doc-cover{
+  text-align:center;
+  padding-top:110px;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(194,164,118,.16), transparent 34%),
+    linear-gradient(180deg,#ffffff 0%, #fffdfa 100%);
+}
+.doc-cover-band{ position:absolute; left:0; top:0; right:0; height:74px; background:#050505; }
+.doc-cover-band:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:74px;
+  width:96px;
+  height:58px;
+  margin-left:-48px;
+  background:linear-gradient(180deg,#caa64d,#9a762c);
+  border-radius:0 0 28px 28px;
+}
+.doc-cover-watermark{
+  position:absolute;
+  left:300px;
+  bottom:220px;
+  color:rgba(23,58,94,.045);
+  font-size:118px;
+  font-weight:950;
+  letter-spacing:-.06em;
+}
+.doc-cover-logo-wrap{ margin:0 auto 36px; text-align:center; }
+.doc-cover-logo{ display:block; max-width:235px; max-height:110px; margin:0 auto; object-fit:contain; }
+.doc-cover-pill{
+  display:inline-block;
+  padding:10px 24px;
+  border-radius:999px;
+  color:#8e6b27;
+  border:1px solid rgba(194,164,118,.42);
+  background:#fbf3e2;
+  font-size:12px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.doc-cover h1{ margin:58px 0 38px; color:#334155; font-size:34px; line-height:1.1; font-weight:950; letter-spacing:-.04em; }
+.doc-cover-client span,
+.doc-cover-date span{ display:block; color:#334155; font-size:17px; font-weight:950; text-transform:uppercase; }
+.doc-cover-client strong{ display:block; margin-top:8px; color:#eab308; font-size:27px; line-height:1.1; font-weight:950; text-transform:uppercase; }
+.doc-cover-date{ margin-top:58px; }
+.doc-cover-date span{ text-transform:none; font-size:19px; }
+.doc-cover-date strong{ display:block; margin-top:8px; color:#334155; font-size:23px; font-weight:950; }
+.doc-cover-metrics{ position:absolute; left:58px; right:58px; bottom:95px; width:calc(100% - 116px); border-collapse:separate; border-spacing:10px 0; }
+.doc-cover-metrics td{ padding:13px 14px; border-radius:14px; border:1px solid rgba(194,164,118,.34); background:#fffaf1; text-align:left; }
+.doc-cover-metrics span{ display:block; color:#8e6b27; font-size:10px; font-weight:950; text-transform:uppercase; letter-spacing:.08em; }
+.doc-cover-metrics b{ display:block; margin-top:5px; color:#111827; font-size:18px; font-weight:950; }
+
+.doc-page-header{ margin-bottom:26px; padding-bottom:13px; border-bottom:2px solid #c8c8c8; }
+.doc-page-header table{ width:100%; border-collapse:collapse; }
+.doc-page-header td{ vertical-align:bottom; }
+.doc-head-brand{ width:105px; }
+.doc-head-brand img{ width:88px; max-height:48px; object-fit:contain; }
+.doc-page-header h2{ margin:0; color:#1f2937; font-size:22px; font-weight:950; }
+.doc-page-header p{ margin:2px 0 0; color:#d66b1f; font-size:13px; font-weight:950; text-transform:uppercase; }
+.doc-head-section{ width:170px; text-align:right; color:#667085; font-size:12px; font-weight:950; }
+
+.doc-main-title{ margin:0 0 18px; color:#111827; font-size:19px; line-height:1.12; font-weight:950; text-transform:uppercase; }
+.doc-subtitle{ margin:18px 0 10px; color:#334155; font-size:15px; font-weight:950; }
+.doc-paragraph{ margin:0 0 14px; color:#293241; font-size:13px; line-height:1.48; font-weight:650; }
+.doc-mt{ margin-top:16px !important; }
+
+.doc-section-card{ margin-bottom:15px; padding:16px 18px; border-radius:14px; border:1px solid rgba(194,164,118,.34); background:#fffdf8; }
+.doc-section-card h2{ margin:0 0 8px; font-size:17px; font-weight:950; color:#1f2937; }
+.doc-section-card p{ margin:0 0 8px; font-size:13px; line-height:1.45; color:#263041; font-weight:650; }
+
+.doc-index-list{ margin-top:14px; }
+.doc-index-row{ display:table; width:100%; margin-bottom:10px; table-layout:auto; }
+.doc-index-row span{ display:table-cell; white-space:nowrap; color:#253041; font-size:13px; font-weight:850; }
+.doc-index-row em{ display:table-cell; width:100%; border-bottom:1px dashed #9aa0aa; transform:translateY(-4px); }
+.doc-index-row b{ display:table-cell; width:34px; text-align:right; color:#071225; font-weight:950; }
+.doc-note-box{ margin-top:22px; padding:14px; border-radius:12px; background:#fff8e7; border:1px solid rgba(183,149,75,.36); color:#665027; font-size:12px; line-height:1.45; font-weight:750; }
+
+.doc-card-table{ width:100%; border-collapse:separate; border-spacing:12px 0; margin-left:-12px; }
+.doc-card-table > tbody > tr > td{ width:50%; vertical-align:top; padding:15px; border-radius:14px; border:1px solid rgba(194,164,118,.34); background:#fffdf8; }
+.doc-card-table h3{ margin:0 0 10px; color:#1f2937; font-size:15px; font-weight:950; }
+ul{ margin:0; padding-left:18px; } li{ margin:0 0 6px; color:#253041; font-size:12.5px; line-height:1.35; font-weight:700; }
+
+.doc-formula-line{ margin:18px 0; padding:18px 16px; border-radius:14px; border:1px solid #d8dee8; background:#f8fafc; text-align:center; }
+.doc-formula-line span{ display:inline-block; padding:10px 14px; border-radius:10px; background:#fff; border:1px solid #d8dee8; font-weight:950; color:#1f2937; }
+.doc-formula-line b{ display:inline-block; margin:0 8px; color:#8e6b27; font-size:20px; }
+
+.doc-heatmap{ width:100%; border-collapse:collapse; table-layout:fixed; }
+.doc-heatmap th,.doc-heatmap td{ border:1px solid #fff; padding:8px 5px; text-align:center; font-size:10.5px; font-weight:950; }
+.doc-heatmap th{ background:#173a5e; color:#fff; }
+.doc-heatmap td:first-child{ background:#edf2f7; color:#173a5e; text-align:left; }
+.hm-min{ background:#e5e7eb; color:#111827; }.hm-low{ background:#8ed14f; color:#102a0e; }.hm-mid{ background:#ffd11a; color:#111827; }.hm-high{ background:#ff1f1f; color:#fff; }.hm-critical{ background:#b50000; color:#fff; }
+
+.doc-data-table,.doc-mini-table,.doc-scenarios-table{ width:100%; border-collapse:collapse; }
+.doc-data-table th,.doc-data-table td,.doc-mini-table th,.doc-mini-table td,.doc-scenarios-table th,.doc-scenarios-table td{ border:1px solid #d9dee7; padding:8px 9px; vertical-align:top; color:#263041; font-size:11.5px; line-height:1.25; }
+.doc-data-table th,.doc-mini-table th,.doc-scenarios-table th{ background:#173a5e; color:#fff; font-weight:950; }
+.doc-data-table.compact th,.doc-data-table.compact td{ padding:6px 7px; font-size:10.8px; }
+.doc-mini-table th,.doc-mini-table td{ padding:6px; font-size:10.5px; }
+.doc-scenarios-table th,.doc-scenarios-table td{ font-size:10px; padding:6px; }
+.doc-pill{ display:inline-block; min-width:58px; padding:4px 8px; border-radius:999px; text-align:center; font-size:10.5px; font-weight:950; }
+.doc-risk-critical{ background:#990000 !important; color:#fff !important; }.doc-risk-high{ background:#ef4444 !important; color:#fff !important; }.doc-risk-mid{ background:#facc15 !important; color:#111827 !important; }.doc-risk-low{ background:#22c55e !important; color:#fff !important; }.doc-risk-min{ background:#e5e7eb !important; color:#111827 !important; }
+
+.doc-map-box{ height:330px; border-radius:16px; border:1px dashed rgba(23,58,94,.38); background:linear-gradient(135deg, rgba(23,58,94,.07), rgba(194,164,118,.14)); text-align:center; padding-top:102px; box-sizing:border-box; color:#334155; }
+.doc-map-pin{ margin:0 auto 12px; width:50px; height:50px; line-height:50px; border-radius:50%; background:#fff; color:#c1121f; font-size:30px; box-shadow:0 8px 20px rgba(15,23,42,.10); }
+.doc-map-box strong{ display:block; font-size:18px; font-weight:950; }.doc-map-box span{ display:block; margin-top:6px; font-weight:800; }
+.doc-semaforo-table{ width:100%; margin-top:16px; border-collapse:separate; border-spacing:8px; }
+.doc-semaforo-table td{ padding:8px 10px; border-radius:10px; background:#fff; border:1px solid #e2e8f0; font-size:12px; font-weight:850; }
+.red-dot,.yellow-dot{ display:inline-block; float:right; width:16px; height:16px; border-radius:50%; }.red-dot{ background:#ef0000; }.yellow-dot{ background:#facc15; }
+
+.doc-latent-list div{ display:table; width:100%; margin-bottom:10px; padding:11px 12px; border-radius:12px; background:#fffafa; border:1px solid #fde1e1; }
+.doc-latent-list span{ display:table-cell; width:30px; height:30px; border-radius:50%; background:#fff2f2; color:#b91c1c; text-align:center; vertical-align:middle; font-weight:950; border:1px solid #fecaca; }
+.doc-latent-list strong{ display:table-cell; padding-left:10px; vertical-align:middle; color:#1f2937; font-size:12.5px; line-height:1.35; }
+
+.doc-kpi-grid{ width:100%; border-collapse:separate; border-spacing:10px 0; margin-bottom:22px; }
+.doc-kpi-grid td{ padding:14px 13px; border-radius:14px; background:#fffaf1; border:1px solid rgba(194,164,118,.34); box-shadow:0 8px 16px rgba(15,23,42,.04); }
+.doc-kpi-grid span{ display:block; color:#8e6b27; font-size:10px; font-weight:950; text-transform:uppercase; letter-spacing:.08em; }
+.doc-kpi-grid strong{ display:block; margin-top:6px; color:#111827; font-size:20px; font-weight:950; }
+.doc-bars-table{ width:100%; height:245px; border-collapse:collapse; table-layout:fixed; margin-top:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; }
+.doc-bars-table td{ text-align:center; vertical-align:bottom; padding:0 10px; }
+.doc-bars-values td{ height:28px; color:#111827; font-weight:950; font-size:13px; vertical-align:bottom; }
+.doc-bars-row td{ height:170px; vertical-align:bottom; }
+.doc-bar{ display:inline-block; width:54px; min-height:10px; border-radius:12px 12px 0 0; }
+.doc-bars-labels td{ height:34px; vertical-align:top; color:#334155; font-weight:950; font-size:12px; padding-top:8px; }
+.doc-kri-insight{ margin-top:16px; padding:14px 16px; border-radius:13px; background:#f8fafc; border:1px solid #e2e8f0; color:#334155; font-size:13px; font-weight:700; }
+
+.doc-photo-grid{ width:100%; border-collapse:separate; border-spacing:14px; margin-left:-14px; }
+.doc-photo-grid td{ height:170px; width:50%; border-radius:16px; border:1px dashed #b8c0cc; background:#f8fafc; text-align:center; vertical-align:middle; color:#64748b; font-weight:950; }
+.doc-photo-grid span{ color:#94a3b8; }
+.doc-recommendations div{ display:table; width:100%; margin-bottom:12px; padding:12px 14px; border-radius:13px; background:#fffdf8; border:1px solid rgba(194,164,118,.34); }
+.doc-recommendations span{ display:table-cell; width:32px; height:32px; border-radius:50%; background:#173a5e; color:#fff; text-align:center; vertical-align:middle; font-weight:950; }
+.doc-recommendations p{ display:table-cell; padding-left:12px; margin:0; vertical-align:middle; color:#263041; font-size:12.5px; line-height:1.35; font-weight:800; }
+.doc-final-card{ margin-top:28px; padding:18px; text-align:center; border-radius:16px; background:#fff8e7; border:1px solid rgba(183,149,75,.34); }
+.doc-final-card img{ max-width:115px; max-height:58px; display:block; margin:0 auto 8px; }
+.doc-final-card b{ display:block; color:#1f2937; font-weight:950; }.doc-final-card p{ max-width:520px; margin:8px auto 0; color:#374151; font-size:12px; line-height:1.35; font-weight:700; }
+
+/* =========================================================
+   AJUSTES FINALES PDF + VISTA PREVIA
+   ========================================================= */
+.doc-preview-toolbar{
+  position: sticky !important;
+  top: 104px !important;
+  z-index: 20 !important;
+}
+
+.doc-page{
+  width: 920px;
+  max-width: 100%;
+}
+
+.doc-cover{
+  padding-top: 135px !important;
+}
+
+.doc-cover-logo{
+  display:block !important;
+  margin:0 auto 30px !important;
+  max-width:255px !important;
+  max-height:105px !important;
+}
+
+.doc-cover-pill{
+  margin-top:10px;
+}
+
+.doc-cover h1{
+  margin-top:66px !important;
+}
+
+.doc-kpi-grid{
+  width:100%;
+  border-collapse:separate !important;
+  border-spacing:12px 0 !important;
+  margin:4px 0 26px !important;
+  table-layout:fixed;
+}
+.doc-kpi-grid td{
+  padding:16px 14px !important;
+  border-radius:16px !important;
+  background:linear-gradient(180deg,#fffaf1 0%,#ffffff 100%) !important;
+  border:1px solid rgba(194,164,118,.38) !important;
+  box-shadow:0 10px 24px rgba(15,23,42,.06) !important;
+  vertical-align:middle;
+}
+.doc-kpi-grid span{
+  display:block !important;
+  margin-bottom:7px;
+  color:#8e6b27 !important;
+  font-size:10px !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.08em !important;
+}
+.doc-kpi-grid strong{
+  display:block !important;
+  color:#111827 !important;
+  font-size:22px !important;
+  line-height:1.05 !important;
+  font-weight:950 !important;
+}
+
+.doc-bars-table{
+  width:100%;
+  height:auto !important;
+  min-height:250px;
+  table-layout:fixed;
+  border-collapse:separate !important;
+  border-spacing:14px 0 !important;
+  padding:18px 18px 12px;
+  background:linear-gradient(180deg,#f8fafc 0%,#fff 100%);
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+}
+.doc-bars-table td{
+  text-align:center !important;
+  vertical-align:bottom !important;
+  padding:0 4px !important;
+  border:none !important;
+}
+.doc-bars-values td{
+  height:28px !important;
+  color:#111827;
+  font-weight:950;
+  font-size:15px;
+}
+.doc-bars-row td{
+  height:170px !important;
+  vertical-align:bottom !important;
+}
+.doc-bars-labels td{
+  height:38px !important;
+  vertical-align:top !important;
+  padding-top:10px !important;
+  color:#334155;
+  font-weight:950;
+  font-size:12px;
+  line-height:1.12;
+}
+.doc-bar{
+  display:inline-block !important;
+  width:58px !important;
+  min-height:10px !important;
+  border-radius:14px 14px 4px 4px !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 8px 16px rgba(15,23,42,.08);
+}
+
+.doc-kri-insight{
+  margin-top:18px !important;
+  padding:16px 18px !important;
+  border-radius:16px !important;
+  background:#fff8e7 !important;
+  border:1px solid rgba(183,149,75,.36) !important;
+  color:#493a1b !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+}
+
+@media screen and (max-width: 992px){
+  .doc-preview-shell{ padding:14px 8px 28px !important; }
+  .doc-preview-toolbar{ top:12px !important; margin-bottom:14px; align-items:flex-start; flex-direction:column; }
+  .doc-toolbar-actions{ width:100%; justify-content:stretch; }
+  .doc-toolbar-actions .btn{ flex:1 1 auto; }
+  .doc-page,.doc-page-wide{ width:100% !important; min-height:auto !important; padding:38px 22px 70px !important; }
+  .doc-cover{ padding-top:105px !important; }
+  .doc-cover-logo{ max-width:210px !important; }
+  .doc-cover h1{ font-size:2rem !important; margin:42px 0 26px !important; }
+  .doc-cover-metrics{ position:relative !important; left:auto !important; right:auto !important; bottom:auto !important; width:100% !important; margin-top:36px !important; border-spacing:0 8px !important; }
+  .doc-cover-metrics td{ display:block; margin-bottom:8px; }
+  .doc-card-table,
+  .doc-kpi-grid{ border-spacing:0 10px !important; margin-left:0 !important; }
+  .doc-card-table > tbody > tr > td,
+  .doc-kpi-grid td{ display:block; width:100%; margin-bottom:10px; }
+  .doc-heatmap,.doc-data-table,.doc-mini-table,.doc-scenarios-table{ display:block; overflow-x:auto; white-space:nowrap; }
+  .doc-photo-grid td{ display:block; width:100%; margin-bottom:12px; }
+}
+
+/* =========================================================
+   PRINT LIMPIO FINAL - GIRO
+   Importante: solo debe existir un @media print en este CSS.
+   ========================================================= */
+@media print {
+  @page { size: letter portrait; margin: 0; }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-sizing: border-box !important;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #fff !important;
+    background-image: none !important;
+    overflow: visible !important;
+  }
+
+  html::before,
+  html::after,
+  body::before,
+  body::after,
+  #root::before,
+  #root::after,
+  #app::before,
+  #app::after,
+  .doc-preview-shell::before,
+  .doc-preview-shell::after,
+  .doc-paper-stack::before,
+  .doc-paper-stack::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Ocultamos visualmente todo lo que no sea el documento. */
+  body * {
+    visibility: hidden !important;
+  }
+
+  .doc-paper-stack,
+  .doc-paper-stack * {
+    visibility: visible !important;
+  }
+
+  /* Apagar elementos de app/layout sin tocar .doc-page-header. */
+  .doc-preview-toolbar,
+  .doc-preview-toolbar *,
+  body > nav,
+  body > aside,
+  body > footer,
+  body > header:not(.doc-page-header),
+  .navbar,
+  .sidebar,
+  .topbar,
+  .subheader,
+  .main-header,
+  .app-header,
+  .layout-header,
+  .fixed-top,
+  .sticky-top,
+  .position-fixed,
+  .position-sticky,
+  [class*="navbar"],
+  [class*="sidebar"],
+  [class*="topbar"],
+  [class*="app-header"],
+  [class*="layout-header"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #root,
+  #app,
+  .app,
+  .layout,
+  .layout-main,
+  .main,
+  .main-content,
+  .content,
+  .page-content,
+  .doc-preview-shell {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    overflow: visible !important;
+  }
+
+  .doc-paper-stack {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #fff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .doc-page,
+  .doc-page-wide {
+    display: block !important;
+    position: relative !important;
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: 10.98in !important;
+    min-height: 10.98in !important;
+    max-height: 10.98in !important;
+    margin: 0 !important;
+    padding: 0.48in 0.52in 0.78in !important;
+    background: #fff !important;
+    color: #121826 !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    outline: 0 !important;
+    overflow: hidden !important;
+    transform: none !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .doc-paper-stack > .doc-page:last-of-type,
+  .doc-paper-stack > .doc-page-wide:last-of-type,
+  .doc-page:last-of-type,
+  .doc-last-page {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  .doc-paper-stack > .doc-page:empty,
+  .doc-paper-stack > .doc-page-wide:empty {
+    display: none !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* =========================
+     PORTADA
+     ========================= */
+  .doc-cover.doc-page,
+  .doc-page.doc-cover {
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: 10.98in !important;
+    min-height: 10.98in !important;
+    max-height: 10.98in !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    overflow: hidden !important;
+    background:
+      radial-gradient(circle at 50% 16%, rgba(194,164,118,.16), transparent 34%),
+      linear-gradient(180deg,#fff 0%, #fffdfa 100%) !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .doc-cover::before,
+  .doc-cover::after,
+  .doc-page.doc-cover::before,
+  .doc-page.doc-cover::after {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+  }
+
+  .doc-cover-band {
+    display: block !important;
+    position: absolute !important;
+    left: 0.52in !important;
+    right: 0.52in !important;
+    top: 0.58in !important;
+    width: auto !important;
+    height: 0.50in !important;
+    background: #050505 !important;
+    z-index: 5 !important;
+  }
+
+  .doc-cover-band::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .doc-cover-band::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 0.50in !important;
+    width: 0.88in !important;
+    height: 0.48in !important;
+    margin-left: -0.44in !important;
+    background: linear-gradient(180deg,#caa64d,#9a762c) !important;
+    border-radius: 0 0 0.27in 0.27in !important;
+    z-index: 6 !important;
+  }
+
+  .doc-cover-logo-wrap {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 1.52in !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    z-index: 10 !important;
+  }
+
+  .doc-cover-logo {
+    display: block !important;
+    max-width: 2.27in !important;
+    max-height: 0.92in !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+  }
+
+  .doc-cover-pill {
+    display: inline-block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 2.40in !important;
+    margin: 0 !important;
+    padding: 0.09in 0.25in !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    transform: translateX(-50%) !important;
+    z-index: 10 !important;
+  }
+
+  .doc-cover h1 {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 3.22in !important;
+    width: 100% !important;
+    max-width: 6.85in !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    font-size: 30px !important;
+    line-height: 1.1 !important;
+    z-index: 10 !important;
+  }
+
+  .doc-cover-client {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 4.02in !important;
+    width: 100% !important;
+    max-width: 6.85in !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    z-index: 10 !important;
+  }
+
+  .doc-cover-client span { display: block !important; font-size: 15px !important; }
+  .doc-cover-client strong { display: block !important; font-size: 25px !important; }
+
+  .doc-cover-date {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 5.00in !important;
+    width: 100% !important;
+    max-width: 6.85in !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    z-index: 10 !important;
+  }
+
+  .doc-cover-date span { display: block !important; font-size: 17px !important; }
+  .doc-cover-date strong { display: block !important; font-size: 22px !important; }
+
+  .doc-cover-watermark {
+    display: block !important;
+    position: absolute !important;
+    left: -0.45in !important;
+    top: 7.35in !important;
+    bottom: auto !important;
+    font-size: 112px !important;
+    z-index: 1 !important;
+  }
+
+  .doc-cover-metrics {
+    display: table !important;
+    position: absolute !important;
+    left: 0.52in !important;
+    right: auto !important;
+    top: 8.25in !important;
+    bottom: auto !important;
+    width: 7.46in !important;
+    max-width: 7.46in !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 10px 0 !important;
+    z-index: 10 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .doc-cover-metrics td { padding: 12px 12px !important; }
+  .doc-cover-metrics span { display: block !important; font-size: 9px !important; }
+  .doc-cover-metrics b { display: block !important; font-size: 17px !important; }
+
+  .doc-cover .doc-page-foot,
+  .doc-page.doc-cover .doc-page-foot {
+    display: block !important;
+    position: absolute !important;
+    left: 0.52in !important;
+    right: auto !important;
+    top: 9.08in !important;
+    bottom: auto !important;
+    width: 7.46in !important;
+    max-width: 7.46in !important;
+    height: 22px !important;
+    margin: 0 !important;
+    background: #b8b8b8 !important;
+    z-index: 10 !important;
+  }
+
+  .doc-page-foot::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 52% !important;
+    height: 22px !important;
+    background: #173a5e !important;
+    clip-path: polygon(0 0, 78% 0, 100% 100%, 0 100%) !important;
+  }
+
+  /* =========================
+     PAGINAS INTERIORES
+     ========================= */
+  .doc-page:not(.doc-cover) .doc-page-foot {
+    display: block !important;
+    position: absolute !important;
+    left: 0.52in !important;
+    right: 0.52in !important;
+    bottom: 0.58in !important;
+    width: auto !important;
+    height: 22px !important;
+    background: #b8b8b8 !important;
+  }
+
+  .doc-page-header,
+  .doc-page-header * {
+    visibility: visible !important;
+  }
+
+  .doc-page-header {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 0 22px 0 !important;
+    padding: 0 0 11px 0 !important;
+    border-bottom: 2px solid #c8c8c8 !important;
+  }
+
+  .doc-page-header table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+  }
+
+  .doc-page-header tbody { display: table-row-group !important; }
+  .doc-page-header tr { display: table-row !important; }
+  .doc-page-header td { display: table-cell !important; vertical-align: bottom !important; }
+  .doc-head-brand { display: table-cell !important; width: 105px !important; min-width: 105px !important; }
+  .doc-head-brand img { display: block !important; width: 88px !important; max-height: 48px !important; object-fit: contain !important; }
+
+  .doc-page-header h2 {
+    display: block !important;
+    margin: 0 !important;
+    color: #1f2937 !important;
+    font-size: 20px !important;
+    line-height: 1.12 !important;
+    font-weight: 950 !important;
+    white-space: nowrap !important;
+  }
+
+  .doc-page-header p {
+    display: block !important;
+    margin: 2px 0 0 !important;
+    color: #d66b1f !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    font-weight: 950 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+  }
+
+  .doc-head-section {
+    display: table-cell !important;
+    width: 170px !important;
+    min-width: 170px !important;
+    text-align: right !important;
+    color: #667085 !important;
+    font-size: 12px !important;
+    font-weight: 950 !important;
+    white-space: nowrap !important;
+  }
+
+  .doc-main-title { font-size: 18px !important; }
+  .doc-section-card { padding: 14px 16px !important; }
+  .doc-paragraph,
+  .doc-section-card p { font-size: 12px !important; line-height: 1.38 !important; }
+
+  .doc-index-list { display: block !important; width: 100% !important; }
+  .doc-index-row { display: table !important; width: 100% !important; table-layout: auto !important; margin-bottom: 10px !important; }
+  .doc-index-row span { display: table-cell !important; white-space: nowrap !important; width: auto !important; padding-right: 6px !important; }
+  .doc-index-row em { display: table-cell !important; width: 100% !important; border-bottom: 1px dashed #9aa0aa !important; transform: translateY(-4px) !important; }
+  .doc-index-row b { display: table-cell !important; width: 34px !important; min-width: 34px !important; text-align: right !important; padding-left: 6px !important; }
+
+  .doc-data-table th,
+  .doc-data-table td,
+  .doc-mini-table th,
+  .doc-mini-table td,
+  .doc-scenarios-table th,
+  .doc-scenarios-table td { border-color: #d9dee7 !important; }
+
+  .doc-data-table th,
+  .doc-mini-table th,
+  .doc-scenarios-table th { background: #173a5e !important; color: #fff !important; }
+
+  .doc-heatmap,
+  .doc-data-table,
+  .doc-mini-table,
+  .doc-scenarios-table { display: table !important; overflow: visible !important; white-space: normal !important; }
+
+  .doc-kpi-grid { border-collapse: separate !important; border-spacing: 10px 0 !important; table-layout: fixed !important; }
+  .doc-kpi-grid td { padding: 12px 11px !important; box-shadow: none !important; }
+  .doc-kpi-grid strong { font-size: 18px !important; }
+
+  .doc-bars-table {
+    width: 100% !important;
+    min-height: 230px !important;
+    border-collapse: separate !important;
+    border-spacing: 12px 0 !important;
+    padding: 14px 14px 10px !important;
+    background: linear-gradient(180deg,#f8fafc 0%,#fff 100%) !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  .doc-bars-row td { height: 152px !important; }
+  .doc-bar { display: inline-block !important; visibility: visible !important; width: 50px !important; }
+
+  .hm-min { background: #e5e7eb !important; color: #111827 !important; }
+  .hm-low { background: #8ed14f !important; color: #102a0e !important; }
+  .hm-mid { background: #ffd11a !important; color: #111827 !important; }
+  .hm-high { background: #ff1f1f !important; color: #fff !important; }
+  .hm-critical { background: #b50000 !important; color: #fff !important; }
+}
+
+/* =========================================================
+   FIX 24 - SOLO PORTADA / PAGINA BLANCA
+   No toca el diseño de paginas interiores.
+   Causa: una barra externa al documento se estaba imprimiendo antes
+   de la portada y empujaba el cover, generando una pagina blanca.
+   ========================================================= */
+@media print {
+  /* Chrome: apaga cualquier nodo que no sea ancestro del documento
+     ni parte del documento. Esto elimina la barra negra superior externa. */
+  body *:not(.doc-paper-stack):not(.doc-paper-stack *):not(:has(.doc-paper-stack)) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Dentro del contenedor, imprime solamente las hojas reales. */
+  .doc-preview-shell > :not(.doc-paper-stack),
+  .doc-paper-stack > :not(.doc-page):not(.doc-page-wide) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Si existiera una hoja DOM vacia entre portada e indice, se elimina. */
+  .doc-paper-stack > .doc-page:not(.doc-cover):not(:has(.doc-page-header)):not(:has(.doc-index-list)):not(:has(.doc-main-title)):not(:has(.doc-section-card)):not(:has(.doc-data-table)):not(:has(.doc-kpi-grid)):not(:has(.doc-final-card)),
+  .doc-paper-stack > .doc-page-wide:not(.doc-cover):not(:has(.doc-page-header)):not(:has(.doc-index-list)):not(:has(.doc-main-title)):not(:has(.doc-section-card)):not(:has(.doc-data-table)):not(:has(.doc-kpi-grid)):not(:has(.doc-final-card)) {
+    display: none !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  html,
+  body,
+  #root,
+  #app,
+  .app,
+  .layout,
+  .layout-main,
+  .main,
+  .main-content,
+  .content,
+  .page-content,
+  .doc-preview-shell,
+  .doc-paper-stack {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    top: 0 !important;
+    background: #fff !important;
+    background-image: none !important;
+  }
+
+  /* Portada en una sola hoja. La dejamos un poco mas corta para que
+     ningun residuo genere overflow a la pagina 2. */
+  .doc-cover.doc-page,
+  .doc-page.doc-cover {
+    position: relative !important;
+    width: 8.5in !important;
+    min-width: 8.5in !important;
+    max-width: 8.5in !important;
+    height: 10.62in !important;
+    min-height: 10.62in !important;
+    max-height: 10.62in !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Barra REAL de portada: solo esta debe quedar visible. */
+  .doc-cover .doc-cover-band,
+  .doc-page.doc-cover .doc-cover-band {
+    display: block !important;
+    position: absolute !important;
+    top: 0.42in !important;
+    left: 0.52in !important;
+    right: 0.52in !important;
+    width: auto !important;
+    height: 0.50in !important;
+    margin: 0 !important;
+    background: #050505 !important;
+    z-index: 5 !important;
+  }
+
+  .doc-cover .doc-cover-band::before,
+  .doc-page.doc-cover .doc-cover-band::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .doc-cover .doc-cover-band::after,
+  .doc-page.doc-cover .doc-cover-band::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 0.50in !important;
+    width: 0.88in !important;
+    height: 0.48in !important;
+    margin-left: -0.44in !important;
+    background: linear-gradient(180deg,#caa64d,#9a762c) !important;
+    border-radius: 0 0 0.26in 0.26in !important;
+  }
+
+  /* Reacomodo vertical SOLO de portada para compensar que se quito la barra extra. */
+  .doc-cover-logo-wrap { top: 1.38in !important; }
+  .doc-cover-pill { top: 2.25in !important; }
+  .doc-cover h1 { top: 3.08in !important; }
+  .doc-cover-client { top: 3.86in !important; }
+  .doc-cover-date { top: 4.82in !important; }
+  .doc-cover-watermark { top: 7.22in !important; left: -0.45in !important; bottom: auto !important; }
+  .doc-cover-metrics { top: 8.12in !important; left: 0.52in !important; width: 7.46in !important; }
+
+  .doc-cover .doc-page-foot,
+  .doc-page.doc-cover .doc-page-foot {
+    top: 8.95in !important;
+    left: 0.52in !important;
+    width: 7.46in !important;
+  }
+}

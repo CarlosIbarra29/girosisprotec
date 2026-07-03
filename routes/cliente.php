@@ -29,6 +29,8 @@
 		Route::post('/actualizar-riesgo', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'actualizarriesgo'])->name('analisis.actualizarriesgo');
 
 		Route::get('/graficas-riesgos-sociales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficassociales'])->name('analisis.graficassociales');
+		Route::get('/documento-ejecutivo-riesgos/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'documentoejecutivo'])->name('analisis.documentoejecutivo');
+		Route::get('/descargar-documento-ejecutivo-riesgos/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'descargardocumentoejecutivo'])->name('analisis.descargardocumentoejecutivo');		
 		Route::get('/detalle-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'detalleanalisissocial'])->name('analisis.detalleanalisissocial');
 		Route::get('/editar-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisisanalisissocial'])->name('analisis.analisisanalisissocial');
 		Route::post('/desactivar-analisis', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'eliminarAnalisis'])->name('analisis.eliminarAnalisis');
