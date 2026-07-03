@@ -26,6 +26,8 @@
 		Route::get('/generar-analisis-riesgos/{cliente}/{tipo}/{alcance}/{num}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'generaranalisis'])->name('analisis.generaranalisis');
 		Route::post('/obtener-alcances', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'obteneralcances'])->name('analisis.obteneralcances');
 		Route::post('/guardar-riesgo', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'guardarriesgo'])->name('analisis.guardarriesgo');	
+		Route::post('/actualizar-riesgo', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'actualizarriesgo'])->name('analisis.actualizarriesgo');
+
 		Route::get('/graficas-riesgos-sociales-cliente/{cliente}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'graficassociales'])->name('analisis.graficassociales');
 		Route::get('/detalle-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'detalleanalisissocial'])->name('analisis.detalleanalisissocial');
 		Route::get('/editar-analisis-riesgo/{cliente}/{id}', [App\Http\Controllers\Cliente\AnalisisRiesgosController::class, 'analisisanalisissocial'])->name('analisis.analisisanalisissocial');

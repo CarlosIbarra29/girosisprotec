@@ -102,7 +102,7 @@ class AnalisisRiesgosController extends Controller
 
     public function generaranalisis($cliente, $tipo, $id_alcance, $num)
     {
-    	$data = Cliente::where('status_delete', 1)->get();
+        $data = Cliente::where('status_delete', 1)->get();
         $alcances = BarrerasPerimetrales::where('status_delete', 1)->get();
 
         $cliented = Cliente::where('id', $cliente)->first();
@@ -127,7 +127,7 @@ class AnalisisRiesgosController extends Controller
         $nivel_control = NivelControl::where('status_delete', 1)->get();
 
 
-    	return view('analisisriesgos.generar-analisis', compact('data', 'cliented','alcances', 'cliente', 'tipo', 'id_alcance', 'alcance_social', 'count_alcance', 'num', 'nivel_control', 'nivel_control'));
+        return view('analisisriesgos.generar-analisis', compact('data', 'cliented','alcances', 'cliente', 'tipo', 'id_alcance', 'alcance_social', 'count_alcance', 'num', 'nivel_control', 'nivel_control'));
     }
 
     public function eliminarAnalisis(Request $request)
@@ -252,6 +252,88 @@ class AnalisisRiesgosController extends Controller
             session()->flash('success', 'El registro de riesgo social se creo correctamente');
         }
         
+    }
+
+
+    public function actualizarriesgo(Request $request)
+    {
+        if ($request->nivel_control == 2 || $request->nivel_control == 1) {
+            $fac_exp = 1;
+        } elseif ($request->nivel_control == 3) {
+            $fac_exp = 2;
+        } elseif ($request->nivel_control == 4) {
+            $fac_exp = 3;
+        } elseif ($request->nivel_control == 5) {
+            $fac_exp = 4;
+        } elseif ($request->nivel_control == 6) {
+            $fac_exp = 5;
+        } else {
+            $fac_exp = null;
+        }
+
+        $descripcionesControl = [
+            1 => 'Cuenta con los criterios de aplicación pero no funciona',
+            2 => 'Adquirir la licencia de Windows más reciente con el fin de no vulnerar la información de la empresa.',
+            3 => 'Cuenta con los criterios de aplicación pero no son los adecuados para la instalación.',
+            4 => 'Cuenta con los criterios de aplicación pero existen posibilidades de mejora.',
+            5 => 'Los criterios de aplicación son los adecuados a la instalación.',
+            6 => 'Excede los criterios de aplicación.',
+        ];
+
+        $idRiesgo  = $request->id_riesgo;
+        $idCliente = $request->cliente;
+
+        $data = [
+            'punto_control' => $request->punto_control,
+            'factores_riesgo' => $request->factor_riesgo,
+            'eventos_riesgo' => $request->evento_riesgo,
+            'recursos_expuestos' => $request->recursos_expuestos,
+            'fuente_riesgo' => $request->fuente_riesgo,
+            'ubicacion_riesgo' => $request->ubicacion_riesgo,
+            'hd_nivel_control_id' => $request->nivel_control,
+            'medidas_prevencion' => $request->medidas_prevencion,
+            'contramedidas' => $request->contramedidas,
+            'hd_consecuencia_id' => $request->impacto_severidad,
+            'hd_probabilidad_id' => $request->factor_probabilidad,
+            'factor_exposicion' => $fac_exp,
+            'nivel_riesgo' => $request->nivel_riesgo,
+            'descripcion' => $descripcionesControl[(int)$request->nivel_control] ?? $request->descripcion,
+            'iduserUpdated' => auth()->user()->id,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        AnalisisRiesgoSocial::where('id', $idRiesgo)->where('cliente_id', $idCliente)->update($data);
+
+        AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $idRiesgo)->delete();
+        if($request->impactos_negocio != null){
+            foreach ($request->impactos_negocio as $key ) {
+                AnalisisRiesgoSocialImpacto::insert([
+                    'analisis_riesgo_social_id' => $idRiesgo,
+                    'id_impacto' =>$key,
+                    'iduserCreated' =>auth()->user()->id,
+                    'iduserUpdated' =>auth()->user()->id,
+                    'created_at' =>date('Y-m-d H:i:s'),
+                    'updated_at' =>date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        AnalisisRiesgoSocialDeficiencia::where('analisis_riesgo_social_id', $idRiesgo)->delete();
+        if($request->deficiencia_medida_s != null){
+            foreach ($request->deficiencia_medida_s as $key ) {
+                AnalisisRiesgoSocialDeficiencia::insert([
+                    'analisis_riesgo_social_id' => $idRiesgo,
+                    'id_deficiencia' =>$key,
+                    'iduserCreated' =>auth()->user()->id,
+                    'iduserUpdated' =>auth()->user()->id,
+                    'created_at' =>date('Y-m-d H:i:s'),
+                    'updated_at' =>date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        session()->flash('success', 'El análisis de riesgo social se actualizó correctamente');
+        return redirect()->route('analisis.analisiscliente',$idCliente);
     }
 
     public function graficassociales($id_cliente)
@@ -940,6 +1022,7 @@ class AnalisisRiesgosController extends Controller
     public function detalleanalisissocial($id_cliente, $id_riesgo)
     {
         $alcances = BarrerasPerimetrales::where('status_delete', 1)->get();
+        $clienteData = Cliente::where('id', $id_cliente)->first();
         $ana_riesgo = AnalisisRiesgoSocial::where('id', $id_riesgo)->first();
         $ana_impacto = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->get();
         $ana_impacto_if = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->first();
@@ -963,7 +1046,7 @@ class AnalisisRiesgosController extends Controller
         }
 
 
-        return view('analisisriesgos.detalle-sociales', compact('id_cliente', 'id_riesgo', 'ana_riesgo', 'ana_impacto', 'ana_deficiencia', 'alcances', 'array_impacto', 'array_deficiencia'));    
+        return view('analisisriesgos.detalle-sociales', compact('id_cliente', 'id_riesgo', 'ana_riesgo', 'ana_impacto', 'ana_deficiencia', 'alcances', 'array_impacto', 'array_deficiencia', 'clienteData'));    
     }
 
     public function analisisanalisissocial($id_cliente, $id_riesgo)
@@ -971,6 +1054,7 @@ class AnalisisRiesgosController extends Controller
 
 
         $alcances = BarrerasPerimetrales::where('status_delete', 1)->get();
+        $clienteData = Cliente::where('id', $id_cliente)->first();
         $ana_riesgo = AnalisisRiesgoSocial::where('id', $id_riesgo)->first();
         $ana_impacto = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->get();
         $ana_impacto_if = AnalisisRiesgoSocialImpacto::where('analisis_riesgo_social_id', $id_riesgo)->first();
@@ -994,7 +1078,7 @@ class AnalisisRiesgosController extends Controller
         }
 
 
-        return view('analisisriesgos.editar-analisis-social', compact('id_cliente', 'id_riesgo', 'ana_riesgo', 'ana_impacto', 'ana_deficiencia', 'alcances', 'array_impacto', 'array_deficiencia')); 
+        return view('analisisriesgos.editar-analisis-social', compact('id_cliente', 'id_riesgo', 'ana_riesgo', 'ana_impacto', 'ana_deficiencia', 'alcances', 'array_impacto', 'array_deficiencia', 'clienteData')); 
 
     }
 

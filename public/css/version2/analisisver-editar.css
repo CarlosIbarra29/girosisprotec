@@ -1,0 +1,2654 @@
+/* =========================================================
+   GIRO / EDITAR ANÁLISIS DE RIESGO SOCIAL
+   Estilo alineado al formulario inicial, optimizado móvil
+   ========================================================= */
+
+:root{
+  --brand:#B7954B;
+  --brand-2:#8E7435;
+  --brand-3:#C2A476;
+  --gold:#D7A73F;
+  --ink:#071225;
+  --ink-2:#6B7280;
+  --panel:#ffffff;
+  --page:#F4F1EA;
+  --soft:#FBF8F1;
+  --line:#E5D9C6;
+  --shadow:0 18px 42px rgba(12,18,31,.10);
+  --shadow-soft:0 10px 22px rgba(12,18,31,.065);
+  --r:18px;
+}
+
+body{
+  background:
+    radial-gradient(circle at 20% 0%, rgba(194,164,118,.10), transparent 28%),
+    linear-gradient(180deg, #f7f4ee 0%, #ede8dd 100%) !important;
+  color:var(--ink);
+}
+
+.giro-edit-page{ margin:0; }
+
+.giro-edit-card.card.card-custom{
+  overflow:hidden;
+  border-radius:20px !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.32) !important;
+  box-shadow:0 22px 50px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.giro-edit-header{
+  min-height:76px;
+  padding:10px 20px !important;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(215,167,63,.13), transparent 32%),
+    linear-gradient(180deg, #fffdf9 0%, #f8f3e9 100%) !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+}
+
+.giro-edit-titlebox{ min-width:0; }
+
+.giro-edit-kicker{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  padding:0 10px;
+  margin-bottom:2px;
+  border-radius:999px;
+  color:#8E7435;
+  background:rgba(194,164,118,.12);
+  border:1px solid rgba(194,164,118,.26);
+  font-size:.64rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.giro-edit-titlebox .card-title{
+  margin:0 !important;
+  color:#071225 !important;
+  font-size:1.20rem !important;
+  line-height:1.1;
+  font-weight:950 !important;
+  letter-spacing:-.035em;
+}
+
+.giro-edit-titlebox p{
+  margin:1px 0 0;
+  color:#74747d;
+  font-size:.78rem;
+  font-weight:600;
+}
+
+.giro-edit-nav{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.giro-edit-card .btn{
+  border-radius:12px !important;
+  font-weight:900 !important;
+  letter-spacing:.005em;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1 !important;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.giro-edit-card .btn-xs{
+  min-height:38px;
+  padding:.46rem .88rem !important;
+  font-size:.84rem !important;
+}
+
+.giro-edit-card .btn-primary{
+  min-height:40px;
+  padding:0 20px !important;
+  color:#fff !important;
+  background:radial-gradient(circle at top left, rgba(255,255,255,.14), transparent 44%), linear-gradient(180deg, #c79f45 0%, #8e6b27 100%) !important;
+  border:1px solid rgba(142,116,53,.24) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 10px 18px rgba(142,107,39,.20) !important;
+}
+
+.giro-edit-card .btn-secondary{
+  min-height:40px;
+  padding:0 20px !important;
+  color:#10121a !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.38) !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.06) !important;
+}
+
+.giro-edit-card .btn:hover{ transform:translateY(-1px); }
+
+.giro-edit-body,
+.giro-edit-card > .card-body{
+  padding:18px 22px 0 !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(194,164,118,.10), transparent 26%),
+    linear-gradient(180deg, #fffdf8 0%, #fbfaf7 100%) !important;
+}
+
+.giro-edit-section.card.card-custom{
+  overflow:hidden;
+  margin-bottom:14px !important;
+  border-radius:18px !important;
+  background:radial-gradient(circle at top left, rgba(215,167,63,.060), transparent 34%), linear-gradient(180deg, #ffffff 0%, #fffdf9 100%) !important;
+  border:1px solid rgba(194,164,118,.30) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.80), 0 14px 30px rgba(15,23,42,.075) !important;
+}
+
+.giro-edit-section.card.card-custom > .card-body{
+  padding:16px 20px 14px !important;
+  background:transparent !important;
+}
+
+.hr-containers{
+  position:relative;
+  display:flex;
+  align-items:center;
+  margin:0 0 10px !important;
+  padding:0 0 0 12px;
+}
+
+.hr-containers:after{
+  content:"";
+  flex:1;
+  height:1px;
+  margin-left:12px;
+  background:linear-gradient(90deg, rgba(183,149,75,.45), rgba(183,149,75,.05));
+}
+
+.hr-containers span h3{
+  margin:0 !important;
+  color:#071225;
+  font-size:.86rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.015em;
+}
+
+.hr-containers span h3:after{
+  content:"";
+  display:block;
+  width:52px;
+  height:3px;
+  margin-top:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg, #C79F45, #8E6B27);
+}
+
+.giro-edit-card label{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  width:auto;
+  max-width:calc(100% - 18px);
+  min-height:20px;
+  align-items:center;
+  margin:0 0 -9px 10px !important;
+  padding:0 9px;
+  border-radius:999px;
+  color:#071225 !important;
+  background:#fffdf9;
+  border:1px solid rgba(194,164,118,.38);
+  font-size:.68rem !important;
+  font-weight:950 !important;
+  line-height:1;
+  box-shadow:0 6px 12px rgba(15,23,42,.055);
+}
+
+.giro-edit-card .form-group{ margin-bottom:14px !important; }
+.giro-edit-card .fl{ margin-bottom:8px; }
+
+.giro-edit-card .form-control,
+.giro-edit-card .gray_area,
+.giro-readonly-field{
+  width:100%;
+  min-height:40px !important;
+  border-radius:12px !important;
+  border:1.4px solid rgba(183,149,75,.60) !important;
+  background:#fff !important;
+  color:#071225 !important;
+  font-size:.78rem !important;
+  font-weight:650 !important;
+  box-shadow:0 10px 22px rgba(12,18,31,.06) !important;
+  outline:none !important;
+}
+
+.giro-edit-card .form-control,
+.giro-edit-card .gray_area{ padding:10px 12px !important; }
+
+.giro-readonly-field{
+  display:flex;
+  align-items:center;
+  padding:10px 12px;
+  color:#4B5563 !important;
+  background:#fffaf2 !important;
+}
+
+.giro-mode-field{ color:#8E7435 !important; font-weight:900 !important; }
+
+.giro-edit-card textarea.form-control{
+  min-height:48px !important;
+  resize:vertical;
+}
+
+.giro-edit-card textarea[rows="5"]{ min-height:74px !important; }
+
+.giro-edit-card select.form-control{
+  appearance:auto;
+  padding-right:30px !important;
+}
+
+.giro-edit-card .form-control:focus,
+.giro-edit-card .gray_area:focus{
+  border-color:#8E7435 !important;
+  box-shadow:0 0 0 3px rgba(183,149,75,.16), 0 10px 22px rgba(12,18,31,.06) !important;
+}
+
+.giro-checks-block{
+  margin-top:4px;
+  align-items:flex-start;
+}
+
+.degradado-border-right{
+  border-right:1px solid rgba(17,24,39,.26);
+}
+
+.giro-check-grid{
+  display:grid;
+  gap:8px 10px;
+  margin-top:12px;
+}
+
+.giro-check-grid-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+.giro-check-grid-4{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+
+.giro-check-grid label.checkbox{
+  margin:0 !important;
+  min-height:26px;
+  display:flex !important;
+  align-items:center;
+  gap:7px;
+  border-radius:999px;
+  padding:0 10px !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.34) !important;
+  box-shadow:0 6px 12px rgba(15,23,42,.045);
+  font-size:.70rem !important;
+  font-weight:600 !important;
+  white-space:nowrap;
+}
+
+.giro-check-grid input[type="checkbox"]{ margin:0 4px 0 0; }
+.giro-check-grid label.checkbox > span{ display:none !important; }
+
+.oculto{ display:none !important; }
+
+.giro-risk-side{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.giro-risk-card{
+  width:100%;
+  max-width:260px;
+  padding:12px;
+  border-radius:18px;
+  background:linear-gradient(180deg, #fffdf9 0%, #fff 100%);
+  border:1px solid rgba(194,164,118,.34);
+  box-shadow:0 14px 30px rgba(15,23,42,.075);
+  text-align:center;
+}
+
+.risk-level{
+  width:100%;
+  max-width:160px;
+  margin:0 auto 8px;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid rgba(15,23,42,.14);
+  background:#fff;
+}
+
+.risk-level .title{
+  display:block;
+  padding:7px 8px;
+  color:#071225;
+  font-size:.76rem;
+  line-height:1;
+  font-weight:950;
+  background:#f6f0e5;
+}
+
+.risk-color{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:0 8px;
+  color:#fff;
+  font-size:.76rem;
+  font-weight:950;
+  background:#990000;
+}
+
+.risk-alto{ background:#ef4444; }
+.risk-medio{ color:#071225; background:#fde047; }
+.risk-bajo{ background:#22c55e; }
+.risk-muybajo{ color:#071225; background:#f1ebeb; }
+
+.text-centerx{
+  color:#071225;
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.risk-score{
+  color:#071225 !important;
+  font-size:.92rem !important;
+  font-weight:950 !important;
+}
+
+.contimg img{
+  max-width:100%;
+  height:auto;
+}
+
+.giro-edit-footer{
+  padding:12px 20px !important;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  background:#fffdf9 !important;
+  border-top:1px solid rgba(194,164,118,.30) !important;
+}
+
+.is-invalid{
+  border-color:#dc2626 !important;
+  box-shadow:0 0 0 3px rgba(220,38,38,.12) !important;
+}
+
+@media (max-width: 991px){
+  .giro-edit-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .giro-edit-nav{
+    width:100%;
+    justify-content:flex-start;
+  }
+  .giro-check-grid-4{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .degradado-border-right{
+    border-right:0;
+    border-bottom:1px solid rgba(17,24,39,.18);
+    padding-bottom:14px;
+    margin-bottom:14px;
+  }
+}
+
+@media (max-width: 575px){
+  .giro-edit-card.card.card-custom{ border-radius:14px !important; }
+  .giro-edit-header{ padding:14px !important; }
+  .giro-edit-body{ padding:14px 12px 0 !important; }
+  .giro-edit-section.card.card-custom > .card-body{ padding:14px 12px !important; }
+  .giro-edit-titlebox .card-title{ font-size:1.02rem !important; }
+  .giro-edit-titlebox p{ font-size:.72rem; }
+  .giro-check-grid-2,
+  .giro-check-grid-4{ grid-template-columns:1fr; }
+  .giro-check-grid label.checkbox{ white-space:normal; min-height:30px; }
+  .giro-edit-footer{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .giro-edit-footer .btn{ width:100%; }
+  .giro-edit-card label{ font-size:.64rem !important; }
+}
+
+/* =========================================================
+   GAUGE SVG PREMIUM - MISMO ESTILO DEL FORMULARIO INICIAL
+   ========================================================= */
+.gauge2{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  margin-top:0;
+}
+.gauge2 svg{
+  width:300px;
+  max-width:100%;
+  height:134px;
+  display:block;
+}
+.gauge2 text{ user-select:none; }
+.gauge2 .track{
+  fill:none;
+  stroke:#EFE8DB;
+  stroke-width:24;
+  stroke-linecap:round;
+  opacity:.70;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.05));
+}
+.gauge2 .band{
+  fill:none;
+  stroke-width:26;
+  stroke-linecap:round;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.07));
+}
+.gauge2 .tick{
+  stroke:#F5EFE4;
+  stroke-width:3;
+  stroke-linecap:round;
+  opacity:.95;
+}
+.gauge2 .cap{
+  font-weight:900;
+  fill:#1f2937;
+  font-size:13px;
+}
+.gauge2 .value{
+  font-weight:950;
+  fill:#111827;
+  font-size:18px;
+}
+.gauge2 .needle line{
+  stroke:#2b2b2b;
+  stroke-width:7;
+  stroke-linecap:round;
+}
+.gauge2 .needle polygon{ fill:#2b2b2b; opacity:.94; }
+.gauge2 .hub{ fill:#2b2b2b; }
+.contimg{ display:none !important; }
+.contimg img{ display:none !important; }
+@media (max-width: 576px){ .gauge2 svg{ width:260px; } }
+/* =========================================================
+   GIRO / EDITAR ANÁLISIS DE RIESGO SOCIAL
+   Estilo alineado al formulario inicial, optimizado móvil
+   ========================================================= */
+
+:root{
+  --brand:#B7954B;
+  --brand-2:#8E7435;
+  --brand-3:#C2A476;
+  --gold:#D7A73F;
+  --ink:#071225;
+  --ink-2:#6B7280;
+  --panel:#ffffff;
+  --page:#F4F1EA;
+  --soft:#FBF8F1;
+  --line:#E5D9C6;
+  --shadow:0 18px 42px rgba(12,18,31,.10);
+  --shadow-soft:0 10px 22px rgba(12,18,31,.065);
+  --r:18px;
+}
+
+body{
+  background:
+    radial-gradient(circle at 20% 0%, rgba(194,164,118,.10), transparent 28%),
+    linear-gradient(180deg, #f7f4ee 0%, #ede8dd 100%) !important;
+  color:var(--ink);
+}
+
+.giro-edit-page{ margin:0; }
+
+.giro-edit-card.card.card-custom{
+  overflow:hidden;
+  border-radius:20px !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.32) !important;
+  box-shadow:0 22px 50px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.giro-edit-header{
+  min-height:76px;
+  padding:10px 20px !important;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(215,167,63,.13), transparent 32%),
+    linear-gradient(180deg, #fffdf9 0%, #f8f3e9 100%) !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+}
+
+.giro-edit-titlebox{ min-width:0; }
+
+.giro-edit-kicker{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  padding:0 10px;
+  margin-bottom:2px;
+  border-radius:999px;
+  color:#8E7435;
+  background:rgba(194,164,118,.12);
+  border:1px solid rgba(194,164,118,.26);
+  font-size:.64rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.giro-edit-titlebox .card-title{
+  margin:0 !important;
+  color:#071225 !important;
+  font-size:1.20rem !important;
+  line-height:1.1;
+  font-weight:950 !important;
+  letter-spacing:-.035em;
+}
+
+.giro-edit-titlebox p{
+  margin:1px 0 0;
+  color:#74747d;
+  font-size:.78rem;
+  font-weight:600;
+}
+
+.giro-edit-nav{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.giro-edit-card .btn{
+  border-radius:12px !important;
+  font-weight:900 !important;
+  letter-spacing:.005em;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1 !important;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.giro-edit-card .btn-xs{
+  min-height:38px;
+  padding:.46rem .88rem !important;
+  font-size:.84rem !important;
+}
+
+.giro-edit-card .btn-primary{
+  min-height:40px;
+  padding:0 20px !important;
+  color:#fff !important;
+  background:radial-gradient(circle at top left, rgba(255,255,255,.14), transparent 44%), linear-gradient(180deg, #c79f45 0%, #8e6b27 100%) !important;
+  border:1px solid rgba(142,116,53,.24) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 10px 18px rgba(142,107,39,.20) !important;
+}
+
+.giro-edit-card .btn-secondary{
+  min-height:40px;
+  padding:0 20px !important;
+  color:#10121a !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.38) !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.06) !important;
+}
+
+.giro-edit-card .btn:hover{ transform:translateY(-1px); }
+
+.giro-edit-body,
+.giro-edit-card > .card-body{
+  padding:18px 22px 0 !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(194,164,118,.10), transparent 26%),
+    linear-gradient(180deg, #fffdf8 0%, #fbfaf7 100%) !important;
+}
+
+.giro-edit-section.card.card-custom{
+  overflow:hidden;
+  margin-bottom:14px !important;
+  border-radius:18px !important;
+  background:radial-gradient(circle at top left, rgba(215,167,63,.060), transparent 34%), linear-gradient(180deg, #ffffff 0%, #fffdf9 100%) !important;
+  border:1px solid rgba(194,164,118,.30) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.80), 0 14px 30px rgba(15,23,42,.075) !important;
+}
+
+.giro-edit-section.card.card-custom > .card-body{
+  padding:16px 20px 14px !important;
+  background:transparent !important;
+}
+
+.hr-containers{
+  position:relative;
+  display:flex;
+  align-items:center;
+  margin:0 0 10px !important;
+  padding:0 0 0 12px;
+}
+
+.hr-containers:after{
+  content:"";
+  flex:1;
+  height:1px;
+  margin-left:12px;
+  background:linear-gradient(90deg, rgba(183,149,75,.45), rgba(183,149,75,.05));
+}
+
+.hr-containers span h3{
+  margin:0 !important;
+  color:#071225;
+  font-size:.86rem !important;
+  font-weight:950 !important;
+  letter-spacing:-.015em;
+}
+
+.hr-containers span h3:after{
+  content:"";
+  display:block;
+  width:52px;
+  height:3px;
+  margin-top:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg, #C79F45, #8E6B27);
+}
+
+.giro-edit-card label{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  width:auto;
+  max-width:calc(100% - 18px);
+  min-height:20px;
+  align-items:center;
+  margin:0 0 -9px 10px !important;
+  padding:0 9px;
+  border-radius:999px;
+  color:#071225 !important;
+  background:#fffdf9;
+  border:1px solid rgba(194,164,118,.38);
+  font-size:.68rem !important;
+  font-weight:950 !important;
+  line-height:1;
+  box-shadow:0 6px 12px rgba(15,23,42,.055);
+  top: 8px !important;
+}
+
+.giro-edit-card .form-group{ margin-bottom:14px !important; }
+.giro-edit-card .fl{ margin-bottom:8px; }
+
+.giro-edit-card .form-control,
+.giro-edit-card .gray_area,
+.giro-readonly-field{
+  width:100%;
+  min-height:40px !important;
+  border-radius:12px !important;
+  border:1.4px solid rgba(183,149,75,.60) !important;
+  background:#fff !important;
+  color:#071225 !important;
+  font-size:.78rem !important;
+  font-weight:500 !important;
+  box-shadow:0 10px 22px rgba(12,18,31,.06) !important;
+  outline:none !important;
+}
+
+.giro-edit-card .form-control,
+.giro-edit-card .gray_area{ padding:10px 12px !important; }
+
+.giro-readonly-field{
+  display:flex;
+  align-items:center;
+  padding:10px 12px;
+  color:#4B5563 !important;
+  background:#fffaf2 !important;
+}
+
+.giro-mode-field{ color:#8E7435 !important; font-weight:900 !important; }
+
+.giro-edit-card textarea.form-control{
+  min-height:48px !important;
+  resize:vertical;
+}
+
+.giro-edit-card textarea[rows="5"]{ min-height:74px !important; }
+
+.giro-edit-card select.form-control{
+  appearance:auto;
+  padding-right:30px !important;
+}
+
+.giro-edit-card .form-control:focus,
+.giro-edit-card .gray_area:focus{
+  border-color:#8E7435 !important;
+  box-shadow:0 0 0 3px rgba(183,149,75,.16), 0 10px 22px rgba(12,18,31,.06) !important;
+}
+
+.giro-checks-block{
+  margin-top:4px;
+  align-items:flex-start;
+}
+
+.degradado-border-right{
+  border-right:1px solid rgba(17,24,39,.26);
+}
+
+.giro-check-grid{
+  display:grid;
+  gap:8px 10px;
+  margin-top:12px;
+}
+
+.giro-check-grid-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+.giro-check-grid-4{ grid-template-columns:repeat(4, minmax(0, 1fr)); }
+
+.giro-check-grid label.checkbox{
+  margin:0 !important;
+  min-height:26px;
+  display:flex !important;
+  align-items:center;
+  gap:7px;
+  border-radius:999px;
+  padding:0 10px !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.34) !important;
+  box-shadow:0 6px 12px rgba(15,23,42,.045);
+  font-size:.70rem !important;
+  font-weight:600 !important;
+  white-space:nowrap;
+}
+
+.giro-check-grid input[type="checkbox"]{ margin:0 4px 0 0; }
+.giro-check-grid label.checkbox > span{ display:none !important; }
+
+.oculto{ display:none !important; }
+
+.giro-risk-side{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.giro-risk-card{
+  width:100%;
+  max-width:260px;
+  padding:12px;
+  border-radius:18px;
+  background:linear-gradient(180deg, #fffdf9 0%, #fff 100%);
+  border:1px solid rgba(194,164,118,.34);
+  box-shadow:0 14px 30px rgba(15,23,42,.075);
+  text-align:center;
+}
+
+.risk-level{
+  width:100%;
+  max-width:160px;
+  margin:0 auto 8px;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid rgba(15,23,42,.14);
+  background:#fff;
+}
+
+.risk-level .title{
+  display:block;
+  padding:7px 8px;
+  color:#071225;
+  font-size:.76rem;
+  line-height:1;
+  font-weight:950;
+  background:#f6f0e5;
+}
+
+.risk-color{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:0 8px;
+  color:#fff;
+  font-size:.76rem;
+  font-weight:950;
+  background:#990000;
+}
+
+.risk-alto{ background:#ef4444; }
+.risk-medio{ color:#071225; background:#fde047; }
+.risk-bajo{ background:#22c55e; }
+.risk-muybajo{ color:#071225; background:#f1ebeb; }
+
+.text-centerx{
+  color:#071225;
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.risk-score{
+  color:#071225 !important;
+  font-size:.92rem !important;
+  font-weight:950 !important;
+}
+
+.contimg img{
+  max-width:100%;
+  height:auto;
+}
+
+.giro-edit-footer{
+  padding:12px 20px !important;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  background:#fffdf9 !important;
+  border-top:1px solid rgba(194,164,118,.30) !important;
+}
+
+.is-invalid{
+  border-color:#dc2626 !important;
+  box-shadow:0 0 0 3px rgba(220,38,38,.12) !important;
+}
+
+@media (max-width: 991px){
+  .giro-edit-header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .giro-edit-nav{
+    width:100%;
+    justify-content:flex-start;
+  }
+  .giro-check-grid-4{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .degradado-border-right{
+    border-right:0;
+    border-bottom:1px solid rgba(17,24,39,.18);
+    padding-bottom:14px;
+    margin-bottom:14px;
+  }
+}
+
+@media (max-width: 575px){
+  .giro-edit-card.card.card-custom{ border-radius:14px !important; }
+  .giro-edit-header{ padding:14px !important; }
+  .giro-edit-body{ padding:14px 12px 0 !important; }
+  .giro-edit-section.card.card-custom > .card-body{ padding:14px 12px !important; }
+  .giro-edit-titlebox .card-title{ font-size:1.02rem !important; }
+  .giro-edit-titlebox p{ font-size:.72rem; }
+  .giro-check-grid-2,
+  .giro-check-grid-4{ grid-template-columns:1fr; }
+  .giro-check-grid label.checkbox{ white-space:normal; min-height:30px; }
+  .giro-edit-footer{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .giro-edit-footer .btn{ width:100%; }
+  .giro-edit-card label{ font-size:.64rem !important; }
+}
+
+/* =========================================================
+   GIRO / DETALLE ANÁLISIS DE RIESGO SOCIAL
+   ========================================================= */
+.giro-detail-page{ margin:0; }
+.giro-detail-card.card.card-custom{ overflow:hidden; border-radius:20px !important; background:#fff !important; border:1px solid rgba(194,164,118,.32) !important; box-shadow:0 22px 50px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.72) !important; }
+.giro-detail-header{ min-height:76px; padding:10px 20px !important; display:flex; align-items:center; justify-content:space-between; gap:16px; background:radial-gradient(circle at 12% 0%, rgba(215,167,63,.13), transparent 32%), linear-gradient(180deg, #fffdf9 0%, #f8f3e9 100%) !important; border-bottom:1px solid rgba(194,164,118,.34) !important; }
+.giro-detail-titlebox{ min-width:0; }
+.giro-detail-kicker{ display:inline-flex; align-items:center; justify-content:center; min-height:22px; padding:0 10px; margin-bottom:2px; border-radius:999px; color:#8E7435; background:rgba(194,164,118,.12); border:1px solid rgba(194,164,118,.26); font-size:.64rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+.giro-detail-titlebox .card-title{ margin:0 !important; color:#071225 !important; font-size:1.20rem !important; line-height:1.1; font-weight:950 !important; letter-spacing:-.035em; }
+.giro-detail-titlebox p{ margin:1px 0 0; color:#74747d; font-size:.78rem; font-weight:600; }
+.giro-detail-nav{ display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+.giro-detail-card .btn{ border-radius:12px !important; font-weight:900 !important; letter-spacing:.005em; display:inline-flex; align-items:center; justify-content:center; line-height:1 !important; }
+.giro-detail-card .btn-xs{ min-height:38px; padding:.46rem .88rem !important; font-size:.84rem !important; }
+.giro-detail-card .btn-primary{ color:#fff !important; background:linear-gradient(180deg, #c79f45 0%, #8e6b27 100%) !important; border:1px solid rgba(142,116,53,.24) !important; }
+.giro-detail-card .btn-secondary{ color:#10121a !important; background:#fff !important; border:1px solid rgba(194,164,118,.38) !important; }
+.giro-detail-body{ padding:18px 22px 0 !important; background:radial-gradient(circle at 12% 0%, rgba(194,164,118,.10), transparent 26%), linear-gradient(180deg, #fffdf8 0%, #fbfaf7 100%) !important; }
+.giro-detail-section.card.card-custom{ overflow:hidden; margin-bottom:14px !important; border-radius:18px !important; background:radial-gradient(circle at top left, rgba(215,167,63,.060), transparent 34%), linear-gradient(180deg, #ffffff 0%, #fffdf9 100%) !important; border:1px solid rgba(194,164,118,.30) !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.80), 0 14px 30px rgba(15,23,42,.075) !important; }
+.giro-detail-section.card.card-custom > .card-body{ padding:16px 20px 14px !important; background:transparent !important; }
+.giro-info-grid{ display:grid; gap:12px; }
+.giro-info-grid-1{ grid-template-columns:1fr; }
+.giro-info-grid-2{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+.giro-info-grid-3{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+.giro-info-item{ min-height:70px; padding:14px 14px 12px; border-radius:16px; background:#fff; border:1px solid rgba(194,164,118,.32); box-shadow:0 10px 22px rgba(12,18,31,.055); }
+.giro-info-item span{ display:inline-flex; margin-bottom:8px; padding:4px 9px; border-radius:999px; color:#8E7435; background:rgba(194,164,118,.11); border:1px solid rgba(194,164,118,.24); font-size:.66rem; line-height:1; font-weight:950; }
+.giro-info-item strong{ display:block; color:#071225; font-size:.82rem; font-weight:750; line-height:1.38; white-space:pre-wrap; word-break:break-word; }
+.giro-tags-layout{ display:grid; grid-template-columns:1fr 1.35fr; gap:16px; }
+.giro-tags-title{ display:block; color:#071225; font-size:.78rem; font-weight:950; margin-bottom:8px; }
+.giro-tag-list{ display:flex; flex-wrap:wrap; gap:8px; }
+.giro-tag{ display:inline-flex; align-items:center; min-height:28px; padding:0 11px; border-radius:999px; color:#071225; background:#fff; border:1px solid rgba(194,164,118,.34); box-shadow:0 6px 12px rgba(15,23,42,.045); font-size:.72rem; font-weight:850; }
+.giro-tag-empty{ color:#8A8F99; background:#F8FAFC; }
+.giro-risk-side{ display:flex; justify-content:center; align-items:center; }
+.giro-risk-card{ width:100%; max-width:260px; padding:12px; border-radius:18px; background:linear-gradient(180deg, #fffdf9 0%, #fff 100%); border:1px solid rgba(194,164,118,.34); box-shadow:0 14px 30px rgba(15,23,42,.075); text-align:center; }
+.risk-muyalto{ background:#990000 !important; color:#fff !important; }
+.risk-alto{ background:#ef4444 !important; color:#fff !important; }
+.risk-medio{ background:#fde047 !important; color:#071225 !important; }
+.risk-bajo{ background:#22c55e !important; color:#fff !important; }
+.risk-muybajo{ background:#f1ebeb !important; color:#071225 !important; }
+@media (max-width:991px){ .giro-detail-header{ align-items:flex-start; flex-direction:column; } .giro-detail-nav{ width:100%; justify-content:flex-start; } .giro-info-grid-2,.giro-info-grid-3,.giro-tags-layout{ grid-template-columns:1fr; } }
+@media (max-width:575px){ .giro-detail-card.card.card-custom{ border-radius:14px !important; } .giro-detail-header{ padding:14px !important; } .giro-detail-body{ padding:14px 12px 0 !important; } .giro-detail-section.card.card-custom > .card-body{ padding:14px 12px !important; } .giro-detail-titlebox .card-title{ font-size:1.02rem !important; } .giro-detail-nav .btn{ width:100%; } }
+
+/* =========================================================
+   GAUGE SVG PREMIUM - MISMO ESTILO DEL FORMULARIO INICIAL
+   ========================================================= */
+.gauge2{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  margin-top:0;
+}
+.gauge2 svg{
+  width:300px;
+  max-width:100%;
+  height:134px;
+  display:block;
+}
+.gauge2 text{ user-select:none; }
+.gauge2 .track{
+  fill:none;
+  stroke:#EFE8DB;
+  stroke-width:24;
+  stroke-linecap:round;
+  opacity:.70;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.05));
+}
+.gauge2 .band{
+  fill:none;
+  stroke-width:26;
+  stroke-linecap:round;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.07));
+}
+.gauge2 .tick{
+  stroke:#F5EFE4;
+  stroke-width:3;
+  stroke-linecap:round;
+  opacity:.95;
+}
+.gauge2 .cap{
+  font-weight:900;
+  fill:#1f2937;
+  font-size:13px;
+}
+.gauge2 .value{
+  font-weight:950;
+  fill:#111827;
+  font-size:18px;
+}
+.gauge2 .needle line{
+  stroke:#2b2b2b;
+  stroke-width:7;
+  stroke-linecap:round;
+}
+.gauge2 .needle polygon{ fill:#2b2b2b; opacity:.94; }
+.gauge2 .hub{ fill:#2b2b2b; }
+.contimg{ display:none !important; }
+.contimg img{ display:none !important; }
+@media (max-width: 576px){ .gauge2 svg{ width:260px; } }
+
+/* =========================================================
+   AJUSTE FINAL VER / EDITAR
+   - Un solo CSS para ambas vistas
+   - Distribución del análisis igual al formulario inicial
+   - Gauge SVG sin imágenes viejas
+   ========================================================= */
+
+.giro-risk-analysis-layout{
+  display:flex;
+  align-items:stretch !important;
+  margin-left:-10px !important;
+  margin-right:-10px !important;
+}
+
+.giro-risk-analysis-layout > [class*="col-"]{
+  padding-left:10px !important;
+  padding-right:10px !important;
+}
+
+.giro-risk-form-col{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.giro-risk-form-col > .row.form-group{
+  margin-left:-8px !important;
+  margin-right:-8px !important;
+}
+
+.giro-risk-form-col > .row.form-group > [class*="col-"]{
+  padding-left:8px !important;
+  padding-right:8px !important;
+}
+
+.giro-mitigacion-field{
+  min-height:116px !important;
+  resize:vertical;
+}
+
+.giro-bottom-selects{
+  margin-top:auto !important;
+  padding-top:8px;
+}
+
+.giro-risk-panel,
+.giro-risk-side{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+.giro-risk-panel .giro-risk-card,
+.giro-risk-side .giro-risk-card{
+  width:100%;
+  max-width:260px;
+  min-height:270px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px 14px !important;
+}
+
+.giro-risk-card .risk-level{
+  display:block;
+  width:100%;
+  max-width:165px;
+  margin:0 auto 10px !important;
+}
+
+.giro-risk-card .text-centerx{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:4px 0 6px !important;
+}
+
+.giro-risk-card .text-centerx label:first-child{
+  min-height:24px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 10px;
+  border-radius:999px;
+  border:1px solid rgba(194,164,118,.32);
+  background:#fff;
+  box-shadow:0 8px 18px rgba(15,23,42,.05);
+  font-size:.72rem !important;
+  font-weight:950 !important;
+  margin:0 !important;
+}
+
+.giro-risk-card .risk-score{
+  min-height:24px;
+  min-width:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 9px;
+  border-radius:999px;
+  border:1px solid rgba(194,164,118,.32);
+  background:#fff;
+  box-shadow:0 8px 18px rgba(15,23,42,.05);
+  margin:0 !important;
+}
+
+.giro-risk-card .gauge2{
+  width:100%;
+  margin-top:2px !important;
+}
+
+.giro-risk-card .gauge2 svg{
+  width:245px !important;
+  height:155px !important;
+  max-width:100%;
+}
+
+.contimg,
+.contimg img{
+  display:none !important;
+}
+
+.giro-detail-page .giro-risk-card{
+  min-height:270px;
+}
+
+.giro-detail-page .giro-info-grid-3{
+  align-items:stretch;
+}
+
+@media (max-width: 991px){
+  .giro-risk-analysis-layout{
+    gap:14px;
+  }
+
+  .giro-risk-panel,
+  .giro-risk-side{
+    margin-top:8px;
+  }
+
+  .giro-risk-panel .giro-risk-card,
+  .giro-risk-side .giro-risk-card{
+    max-width:360px;
+    min-height:auto;
+  }
+}
+
+@media (max-width: 575px){
+  .giro-risk-analysis-layout{
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  .giro-risk-analysis-layout > [class*="col-"]{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+  .giro-risk-form-col > .row.form-group{
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  .giro-risk-form-col > .row.form-group > [class*="col-"]{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+  .giro-mitigacion-field{
+    min-height:105px !important;
+  }
+
+  .giro-risk-card .gauge2 svg{
+    width:235px !important;
+    height:145px !important;
+  }
+}
+
+/* =========================================================
+   FIX CHECKBOXES - EDITAR / VER ANÁLISIS
+   Se corrige visibilidad de vulnerabilidades e impactos.
+   ========================================================= */
+.giro-edit-card .giro-check-grid label.checkbox,
+.giro-detail-card .giro-check-grid label.checkbox{
+  position:relative !important;
+  min-height:30px !important;
+  padding:0 12px 0 36px !important;
+  justify-content:flex-start !important;
+  cursor:pointer !important;
+  overflow:hidden !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox input[type="checkbox"],
+.giro-detail-card .giro-check-grid label.checkbox input[type="checkbox"]{
+  position:absolute !important;
+  left:12px !important;
+  top:50% !important;
+  width:15px !important;
+  height:15px !important;
+  margin:0 !important;
+  transform:translateY(-50%) !important;
+  opacity:0 !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  pointer-events:none !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox > span,
+.giro-detail-card .giro-check-grid label.checkbox > span{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  position:absolute !important;
+  left:12px !important;
+  top:50% !important;
+  width:15px !important;
+  height:15px !important;
+  min-width:15px !important;
+  border-radius:5px !important;
+  transform:translateY(-50%) !important;
+  background:#fff !important;
+  border:1.5px solid rgba(183,149,75,.55) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.75),
+    0 4px 9px rgba(15,23,42,.07) !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox input[type="checkbox"]:checked + span,
+.giro-detail-card .giro-check-grid label.checkbox input[type="checkbox"]:checked + span{
+  background:linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  border-color:#8E6B27 !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox input[type="checkbox"]:checked + span::after,
+.giro-detail-card .giro-check-grid label.checkbox input[type="checkbox"]:checked + span::after{
+  content:"" !important;
+  width:8px !important;
+  height:5px !important;
+  border-left:2px solid #fff !important;
+  border-bottom:2px solid #fff !important;
+  transform:rotate(-45deg) translate(1px, -1px) !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox:hover > span,
+.giro-detail-card .giro-check-grid label.checkbox:hover > span{
+  border-color:#8E7435 !important;
+  box-shadow:0 0 0 3px rgba(183,149,75,.14) !important;
+}
+
+.giro-edit-card .giro-check-grid label.checkbox input[type="checkbox"]:focus + span,
+.giro-detail-card .giro-check-grid label.checkbox input[type="checkbox"]:focus + span{
+  outline:2px solid rgba(183,149,75,.24) !important;
+  outline-offset:2px !important;
+}
+
+@media (max-width: 575.98px){
+  .giro-edit-card .giro-check-grid label.checkbox,
+  .giro-detail-card .giro-check-grid label.checkbox{
+    min-height:34px !important;
+    padding-left:38px !important;
+    white-space:normal !important;
+  }
+}
+
+
+/* Factor de exposición en editar: calculado por Nivel de control, no seleccionable */
+.giro-edit-card .giro-factor-exposure-readonly,
+.giro-edit-card input#giro-factor-exposure-readonly,
+.giro-edit-card input#factor_exposicion[readonly]{
+  cursor:not-allowed !important;
+  color:#071225 !important;
+  background:
+    radial-gradient(circle at top left, rgba(194,164,118,.08), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #fbfaf7 100%) !important;
+  border-color:rgba(183,149,75,.52) !important;
+  font-weight:500 !important;
+  opacity:1 !important;
+}
+
+.giro-edit-card .giro-factor-exposure-readonly:focus,
+.giro-edit-card input#factor_exposicion[readonly]:focus{
+  box-shadow:0 0 0 3px rgba(183,149,75,.10), 0 10px 18px rgba(15,23,42,.06) !important;
+}
+
+.giro-edit-page b{
+  font-weight: 700;
+}
+
+/* =========================================================
+   GIRO / DETALLE EJECUTIVO DEL ANÁLISIS
+   Vista VER diferente a EDITAR: expediente ejecutivo
+   ========================================================= */
+
+.giro-exec-page{
+  margin:0;
+}
+
+.giro-exec-card.card.card-custom{
+  border-radius:22px !important;
+  overflow:hidden !important;
+}
+
+.giro-exec-header{
+  min-height:82px !important;
+  padding:14px 22px !important;
+}
+
+.giro-exec-titlebox .card-title{
+  font-size:1.25rem !important;
+}
+
+.giro-exec-body{
+  padding:18px 20px 20px !important;
+}
+
+.giro-exec-hero{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 330px;
+  gap:18px;
+  align-items:stretch;
+  margin-bottom:16px;
+  padding:16px;
+  border-radius:22px;
+  border:1px solid rgba(194,164,118,.34);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(215,167,63,.12), transparent 34%),
+    linear-gradient(135deg, #fffdf9 0%, #ffffff 52%, #fbf5e9 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.82),
+    0 18px 38px rgba(15,23,42,.08);
+}
+
+.giro-exec-hero-main{
+  min-width:0;
+  padding:8px 4px 6px;
+}
+
+.giro-exec-hero-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+
+.giro-exec-chip,
+.giro-exec-date{
+  min-height:28px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0 12px;
+  border-radius:999px;
+  color:#8E7435;
+  background:rgba(194,164,118,.12);
+  border:1px solid rgba(194,164,118,.28);
+  font-size:.72rem;
+  font-weight:950;
+  letter-spacing:.02em;
+}
+
+.giro-exec-chip i,
+.giro-exec-date i{
+  font-size:15px;
+}
+
+.giro-exec-hero h2{
+  margin:0 0 16px !important;
+  color:#071225;
+  font-size:1.65rem;
+  line-height:1.08;
+  font-weight:950;
+  letter-spacing:-.045em;
+}
+
+.giro-exec-summary-grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:10px;
+}
+
+.giro-exec-summary-grid > div,
+.giro-exec-kpi,
+.giro-exec-side-card,
+.giro-exec-section,
+.giro-exec-risk-card{
+  background:
+    radial-gradient(circle at top left, rgba(215,167,63,.055), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #fffdf8 100%);
+  border:1px solid rgba(194,164,118,.31);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 12px 26px rgba(15,23,42,.065);
+}
+
+.giro-exec-summary-grid > div{
+  min-height:74px;
+  padding:12px 13px;
+  border-radius:17px;
+}
+
+.giro-exec-summary-grid span,
+.giro-exec-kpi span,
+.giro-exec-side-title,
+.giro-exec-info-item span,
+.giro-exec-note span,
+.giro-exec-control-card span,
+.giro-exec-factor-grid span,
+.giro-exec-timeline span{
+  display:block;
+  margin-bottom:6px;
+  color:#8E7435;
+  font-size:.66rem;
+  font-weight:950;
+  line-height:1.1;
+  letter-spacing:.035em;
+  text-transform:uppercase;
+}
+
+.giro-exec-summary-grid strong,
+.giro-exec-kpi strong,
+.giro-exec-side-card strong,
+.giro-exec-info-item strong,
+.giro-exec-control-card strong,
+.giro-exec-factor-grid strong,
+.giro-exec-timeline strong{
+  display:block;
+  color:#071225;
+  font-size:.88rem;
+  font-weight:900;
+  line-height:1.32;
+  word-break:break-word;
+  white-space:pre-wrap;
+}
+
+.giro-exec-risk-card{
+  min-height:315px;
+  padding:14px 15px;
+  border-radius:22px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.giro-exec-risk-card .risk-level{
+  width:100%;
+  max-width:190px;
+  margin:0 auto 10px !important;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.giro-exec-risk-card .risk-level .title{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.82rem;
+}
+
+.giro-exec-risk-card .risk-color{
+  min-height:38px;
+  font-size:.84rem;
+}
+
+.giro-exec-risk-card .text-centerx{
+  margin:5px 0 6px !important;
+}
+
+.giro-exec-risk-card .gauge2 svg{
+  width:285px !important;
+  height:170px !important;
+}
+
+.giro-exec-kpis{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.giro-exec-kpi{
+  min-height:86px;
+  padding:14px 15px;
+  border-radius:18px;
+  position:relative;
+  overflow:hidden;
+}
+
+.giro-exec-kpi:after{
+  content:"";
+  position:absolute;
+  width:56px;
+  height:56px;
+  right:-18px;
+  bottom:-20px;
+  border-radius:50%;
+  background:rgba(194,164,118,.13);
+}
+
+.giro-exec-kpi strong{
+  font-size:1.02rem;
+  letter-spacing:-.02em;
+}
+
+.giro-exec-layout{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 315px;
+  gap:16px;
+  align-items:start;
+}
+
+.giro-exec-left{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-width:0;
+}
+
+.giro-exec-right{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-width:0;
+}
+
+.giro-exec-section{
+  padding:16px;
+  border-radius:22px;
+}
+
+.giro-exec-section-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:14px;
+}
+
+.giro-exec-section-title i{
+  width:30px;
+  height:30px;
+  min-width:30px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:11px;
+  color:#8E7435;
+  background:rgba(194,164,118,.12);
+  border:1px solid rgba(194,164,118,.28);
+  font-size:17px;
+}
+
+.giro-exec-section-title h4{
+  margin:0 !important;
+  color:#071225;
+  font-size:1rem;
+  font-weight:950;
+  letter-spacing:-.025em;
+}
+
+.giro-exec-info-list{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  border:1px solid rgba(194,164,118,.22);
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.giro-exec-info-item{
+  min-height:96px;
+  display:grid;
+  grid-template-columns:42px minmax(0, 1fr);
+  gap:10px;
+  align-items:flex-start;
+  padding:14px;
+  border-right:1px solid rgba(194,164,118,.18);
+  border-bottom:1px solid rgba(194,164,118,.18);
+}
+
+.giro-exec-info-item:nth-child(2n){
+  border-right:0;
+}
+
+.giro-exec-info-item:nth-last-child(-n+2){
+  border-bottom:0;
+}
+
+.giro-exec-icon{
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  color:#8E7435;
+  background:#fffaf2;
+  border:1px solid rgba(194,164,118,.34);
+  box-shadow:0 8px 16px rgba(15,23,42,.055);
+}
+
+.giro-exec-icon i{
+  font-size:17px;
+}
+
+.giro-exec-note{
+  margin-top:12px;
+  padding:14px 15px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid rgba(194,164,118,.25);
+  box-shadow:0 10px 22px rgba(12,18,31,.05);
+}
+
+.giro-exec-note p,
+.giro-exec-side-card p{
+  margin:0;
+  color:#071225;
+  font-size:.86rem;
+  line-height:1.5;
+  font-weight:750;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.giro-exec-note.is-mitigation{
+  margin-top:0;
+  margin-bottom:12px;
+}
+
+.giro-exec-control-grid{
+  display:grid;
+  grid-template-columns:260px minmax(0, 1fr);
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.giro-exec-control-card{
+  min-height:84px;
+  padding:14px 15px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid rgba(194,164,118,.25);
+}
+
+.giro-exec-tags-box{
+  display:grid;
+  grid-template-columns:1fr 1.35fr;
+  gap:16px;
+  padding:14px 15px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid rgba(194,164,118,.25);
+}
+
+.giro-exec-page .giro-tags-title{
+  display:block;
+  margin:0 0 9px;
+  color:#071225;
+  font-size:.78rem;
+  font-weight:950;
+}
+
+.giro-exec-page .giro-tag-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.giro-exec-page .giro-tag{
+  min-height:29px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:.72rem;
+  font-weight:900;
+  background:#fff;
+  border:1px solid rgba(194,164,118,.34);
+  color:#071225;
+  box-shadow:0 6px 12px rgba(15,23,42,.045);
+}
+
+.giro-exec-page .giro-tag:before{
+  content:"";
+  width:7px;
+  height:7px;
+  margin-right:7px;
+  border-radius:50%;
+  background:#C79F45;
+}
+
+.giro-exec-page .giro-tag-risk{
+  color:#9F1239;
+  background:#FFF1F4;
+  border-color:rgba(225,29,72,.22);
+}
+
+.giro-exec-page .giro-tag-risk:before{
+  background:#E11D48;
+}
+
+.giro-exec-page .giro-tag-impact{
+  color:#365899;
+  background:#F1F6FF;
+  border-color:rgba(37,99,235,.18);
+}
+
+.giro-exec-page .giro-tag-impact:before{
+  background:#2563EB;
+}
+
+.giro-exec-page .giro-tag-empty{
+  color:#8A8F99;
+  background:#F8FAFC;
+}
+
+.giro-exec-page .giro-tag-empty:before{
+  background:#CBD5E1;
+}
+
+.giro-exec-factor-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.giro-exec-factor-grid > div{
+  min-height:82px;
+  padding:14px 15px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid rgba(194,164,118,.25);
+  box-shadow:0 10px 22px rgba(12,18,31,.05);
+}
+
+.giro-exec-side-card{
+  padding:15px;
+  border-radius:20px;
+}
+
+.giro-exec-timeline{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  position:relative;
+  padding-left:16px;
+}
+
+.giro-exec-timeline:before{
+  content:"";
+  position:absolute;
+  left:4px;
+  top:5px;
+  bottom:5px;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(180deg, #C79F45, rgba(194,164,118,.2));
+}
+
+.giro-exec-timeline > div{
+  position:relative;
+}
+
+.giro-exec-timeline > div:before{
+  content:"";
+  position:absolute;
+  left:-16px;
+  top:3px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#C79F45;
+  box-shadow:0 0 0 4px rgba(194,164,118,.14);
+}
+
+@media (max-width: 1199px){
+  .giro-exec-hero{
+    grid-template-columns:minmax(0, 1fr) 300px;
+  }
+
+  .giro-exec-layout{
+    grid-template-columns:1fr;
+  }
+
+  .giro-exec-right{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991px){
+  .giro-exec-hero{
+    grid-template-columns:1fr;
+  }
+
+  .giro-exec-risk-card{
+    max-width:390px;
+    margin:0 auto;
+    width:100%;
+  }
+
+  .giro-exec-summary-grid,
+  .giro-exec-kpis,
+  .giro-exec-right{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .giro-exec-control-grid,
+  .giro-exec-tags-box{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 575px){
+  .giro-exec-body{
+    padding:14px 12px 16px !important;
+  }
+
+  .giro-exec-header{
+    padding:14px !important;
+  }
+
+  .giro-exec-hero{
+    padding:13px;
+    border-radius:18px;
+  }
+
+  .giro-exec-hero h2{
+    font-size:1.25rem;
+  }
+
+  .giro-exec-summary-grid,
+  .giro-exec-kpis,
+  .giro-exec-info-list,
+  .giro-exec-factor-grid,
+  .giro-exec-right{
+    grid-template-columns:1fr;
+  }
+
+  .giro-exec-info-item,
+  .giro-exec-info-item:nth-child(2n),
+  .giro-exec-info-item:nth-last-child(-n+2){
+    border-right:0;
+    border-bottom:1px solid rgba(194,164,118,.18);
+  }
+
+  .giro-exec-info-item:last-child{
+    border-bottom:0;
+  }
+
+  .giro-exec-risk-card .gauge2 svg{
+    width:250px !important;
+    height:155px !important;
+  }
+
+  .giro-exec-nav{
+    width:100%;
+  }
+
+  .giro-exec-nav .btn{
+    flex:1;
+  }
+}
+
+
+/* =========================================================
+   GIRO / VER - EXPEDIENTE EJECUTIVO V2
+   IMPORTANTE: solo aplica a .giro-exec-v2 para no mover EDITAR
+   ========================================================= */
+.giro-exec-v2{
+  margin:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-card.card.card-custom{
+  overflow:hidden !important;
+  border-radius:22px !important;
+  border:1px solid rgba(194,164,118,.34) !important;
+  background:#fff !important;
+  box-shadow:0 22px 50px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.75) !important;
+}
+
+.giro-exec-v2 .giro-exec2-header{
+  min-height:78px !important;
+  padding:14px 22px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:16px !important;
+  background:radial-gradient(circle at 12% 0%, rgba(215,167,63,.14), transparent 34%), linear-gradient(180deg, #fffdf9 0%, #f8f3e9 100%) !important;
+  border-bottom:1px solid rgba(194,164,118,.34) !important;
+}
+
+.giro-exec-v2 .giro-exec2-kicker{
+  display:inline-flex !important;
+  min-height:22px !important;
+  align-items:center !important;
+  padding:0 11px !important;
+  border-radius:999px !important;
+  color:#8E7435 !important;
+  background:rgba(194,164,118,.12) !important;
+  border:1px solid rgba(194,164,118,.28) !important;
+  font-size:.64rem !important;
+  font-weight:950 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+}
+
+.giro-exec-v2 .giro-exec2-titlebox .card-title{
+  margin:2px 0 0 !important;
+  color:#071225 !important;
+  font-size:1.22rem !important;
+  line-height:1.08 !important;
+  font-weight:950 !important;
+  letter-spacing:-.035em !important;
+}
+
+.giro-exec-v2 .giro-exec2-titlebox p{
+  margin:2px 0 0 !important;
+  color:#74747d !important;
+  font-size:.80rem !important;
+  font-weight:700 !important;
+}
+
+.giro-exec-v2 .giro-exec2-nav{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+
+.giro-exec-v2 .giro-exec2-nav .btn{
+  min-height:39px !important;
+  border-radius:13px !important;
+  font-size:.82rem !important;
+  font-weight:950 !important;
+  line-height:1 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+}
+
+.giro-exec-v2 .giro-exec2-body{
+  padding:18px 20px 20px !important;
+  background:radial-gradient(circle at 12% 0%, rgba(194,164,118,.10), transparent 26%), linear-gradient(180deg, #fffdf8 0%, #fbfaf7 100%) !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero{
+  display:grid !important;
+  grid-template-columns:76px minmax(260px, 1fr) minmax(145px, .55fr) minmax(145px, .55fr) minmax(145px, .55fr) 230px !important;
+  align-items:center !important;
+  gap:16px !important;
+  margin-bottom:14px !important;
+  padding:17px 20px !important;
+  border-radius:20px !important;
+  border:1px solid rgba(194,164,118,.34) !important;
+  background:radial-gradient(circle at 8% 0%, rgba(215,167,63,.11), transparent 32%), linear-gradient(135deg, #ffffff 0%, #fffdf8 45%, #fbf5e9 100%) !important;
+  box-shadow:0 16px 34px rgba(15,23,42,.075), inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-icon{
+  width:66px !important;
+  height:66px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:18px !important;
+  color:#fff !important;
+  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.25), transparent 35%), linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  box-shadow:0 14px 26px rgba(142,107,39,.22), inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-icon i{
+  font-size:34px !important;
+  color:#fff !important;
+}
+
+.giro-exec-v2 .giro-exec2-type{
+  display:block !important;
+  color:#B78116 !important;
+  font-size:.70rem !important;
+  line-height:1 !important;
+  font-weight:950 !important;
+  letter-spacing:.075em !important;
+  text-transform:uppercase !important;
+  margin-bottom:6px !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-main h2{
+  margin:0 !important;
+  color:#071225 !important;
+  font-size:1.30rem !important;
+  line-height:1.10 !important;
+  font-weight:950 !important;
+  letter-spacing:-.035em !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-main p{
+  margin:7px 0 0 !important;
+  color:#6B7280 !important;
+  font-size:.82rem !important;
+  font-weight:700 !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-metric{
+  min-height:66px !important;
+  display:grid !important;
+  grid-template-columns:34px 1fr !important;
+  grid-template-rows:auto auto !important;
+  align-content:center !important;
+  gap:2px 10px !important;
+  padding-left:16px !important;
+  border-left:1px solid rgba(194,164,118,.32) !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-metric i{
+  grid-row:1 / 3 !important;
+  width:34px !important;
+  height:34px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:50% !important;
+  color:#B78116 !important;
+  background:#fff !important;
+  border:1px solid rgba(194,164,118,.32) !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.055) !important;
+  font-size:18px !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-metric span,
+.giro-exec-v2 .giro-exec2-hero-risk span{
+  display:block !important;
+  color:#667085 !important;
+  font-size:.64rem !important;
+  font-weight:950 !important;
+  letter-spacing:.065em !important;
+  text-transform:uppercase !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-metric strong{
+  display:block !important;
+  color:#D22626 !important;
+  font-size:.95rem !important;
+  font-weight:950 !important;
+  line-height:1.12 !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-risk{
+  min-height:66px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  padding-left:16px !important;
+  border-left:1px solid rgba(194,164,118,.32) !important;
+}
+
+.giro-exec-v2 .giro-exec2-hero-risk strong{
+  min-height:42px !important;
+  margin-top:6px !important;
+  border-radius:10px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  color:#fff !important;
+  font-size:1.12rem !important;
+  font-weight:950 !important;
+  letter-spacing:.03em !important;
+  box-shadow:0 12px 22px rgba(185,28,28,.18), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+.giro-exec-v2 .giro-exec2-layout{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1fr) 350px !important;
+  gap:16px !important;
+  align-items:start !important;
+}
+
+.giro-exec-v2 .giro-exec2-main{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:14px !important;
+  min-width:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-aside{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:14px !important;
+  min-width:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-panel,
+.giro-exec-v2 .giro-exec2-side-panel{
+  overflow:hidden !important;
+  border-radius:18px !important;
+  border:1px solid rgba(194,164,118,.30) !important;
+  background:radial-gradient(circle at top left, rgba(215,167,63,.05), transparent 34%), linear-gradient(180deg, #ffffff 0%, #fffdf9 100%) !important;
+  box-shadow:0 12px 26px rgba(15,23,42,.065), inset 0 1px 0 rgba(255,255,255,.78) !important;
+}
+
+.giro-exec-v2 .giro-exec2-panel{
+  padding:14px 16px !important;
+}
+
+.giro-exec-v2 .giro-exec2-section-title,
+.giro-exec-v2 .giro-exec2-side-title{
+  display:flex !important;
+  align-items:center !important;
+  gap:9px !important;
+  padding-bottom:8px !important;
+  margin-bottom:8px !important;
+  border-bottom:1px solid rgba(194,164,118,.25) !important;
+}
+
+.giro-exec-v2 .giro-exec2-number{
+  width:20px !important;
+  height:20px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:50% !important;
+  color:#fff !important;
+  background:linear-gradient(180deg, #C79F45 0%, #8E6B27 100%) !important;
+  font-size:.66rem !important;
+  font-weight:950 !important;
+  box-shadow:0 8px 14px rgba(142,107,39,.18) !important;
+}
+
+.giro-exec-v2 .giro-exec2-section-title > i,
+.giro-exec-v2 .giro-exec2-side-title > i{
+  color:#B78116 !important;
+  font-size:20px !important;
+}
+
+.giro-exec-v2 .giro-exec2-section-title h4,
+.giro-exec-v2 .giro-exec2-side-title h4{
+  margin:0 !important;
+  color:#071225 !important;
+  font-size:.92rem !important;
+  line-height:1 !important;
+  font-weight:950 !important;
+  letter-spacing:.025em !important;
+  text-transform:uppercase !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-grid{
+  display:grid !important;
+  gap:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-grid-4{
+  grid-template-columns:repeat(4, minmax(0, 1fr)) !important;
+}
+
+.giro-exec-v2 .giro-exec2-line-top{
+  margin-top:1px !important;
+  padding-top:12px !important;
+  border-top:1px solid rgba(194,164,118,.22) !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-item{
+  min-width:0 !important;
+  min-height:70px !important;
+  display:grid !important;
+  grid-template-columns:40px 1fr !important;
+  gap:10px !important;
+  align-items:center !important;
+  padding:8px 13px !important;
+  border-right:1px solid rgba(194,164,118,.22) !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-item:last-child{
+  border-right:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-icon{
+  width:36px !important;
+  height:36px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:50% !important;
+  background:#fffaf2 !important;
+  border:1px solid rgba(194,164,118,.34) !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.045) !important;
+  color:#B78116 !important;
+  flex:none !important;
+}
+
+.giro-exec-v2 .giro-exec2-icon i{
+  font-size:18px !important;
+  color:#B78116 !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-item small,
+.giro-exec-v2 .giro-exec2-tags-head small,
+.giro-exec-v2 .giro-exec2-factor-row small,
+.giro-exec-v2 .giro-exec2-mitigation small{
+  display:block !important;
+  color:#667085 !important;
+  font-size:.67rem !important;
+  font-weight:850 !important;
+  line-height:1.2 !important;
+  margin-bottom:4px !important;
+}
+
+.giro-exec-v2 .giro-exec2-info-item strong,
+.giro-exec-v2 .giro-exec2-factor-row strong,
+.giro-exec-v2 .giro-exec2-mitigation strong{
+  display:block !important;
+  color:#071225 !important;
+  font-size:.72rem !important;
+  font-weight:500 !important;
+  line-height:1.32 !important;
+  white-space:normal !important;
+  word-break:break-word !important;
+}
+
+.giro-exec-v2 .giro-exec2-control-row{
+  display:grid !important;
+  grid-template-columns:260px minmax(0, 1fr) !important;
+  gap:0 !important;
+  margin-bottom:12px !important;
+}
+
+.giro-exec-v2 .giro-exec2-description-item{
+  border-right:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-tags-row{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-tags-row > article{
+  min-height:76px !important;
+  padding:8px 14px !important;
+  border-right:1px solid rgba(194,164,118,.22) !important;
+}
+
+.giro-exec-v2 .giro-exec2-tags-row > article:last-child{
+  border-right:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-tags-head{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  margin-bottom:8px !important;
+}
+
+.giro-exec-v2 .giro-tag-list{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:7px !important;
+}
+
+.giro-exec-v2 .giro-tag{
+  min-height:25px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  padding:0 10px !important;
+  border-radius:999px !important;
+  font-size:.70rem !important;
+  font-weight:900 !important;
+  box-shadow:0 6px 12px rgba(15,23,42,.04) !important;
+}
+
+.giro-exec-v2 .giro-tag i{
+  width:6px !important;
+  height:6px !important;
+  border-radius:50% !important;
+  display:inline-block !important;
+}
+
+.giro-exec-v2 .giro-tag-risk{
+  color:#B42318 !important;
+  background:#FFF1F3 !important;
+  border:1px solid #FECDD6 !important;
+}
+.giro-exec-v2 .giro-tag-risk i{ background:#E11D48 !important; }
+
+.giro-exec-v2 .giro-tag-impact{
+  color:#175CD3 !important;
+  background:#EFF8FF !important;
+  border:1px solid #B2DDFF !important;
+}
+.giro-exec-v2 .giro-tag-impact i{ background:#2E90FA !important; }
+
+.giro-exec-v2 .giro-tag-empty{
+  color:#667085 !important;
+  background:#F8FAFC !important;
+  border:1px solid #E4E7EC !important;
+}
+.giro-exec-v2 .giro-tag-empty i{ background:#98A2B3 !important; }
+
+.giro-exec-v2 .giro-exec2-mitigation{
+  min-height:64px !important;
+  display:grid !important;
+  grid-template-columns:40px 1fr !important;
+  gap:10px !important;
+  align-items:center !important;
+  padding:8px 13px 13px !important;
+}
+
+.giro-exec-v2 .giro-exec2-factor-row{
+  display:grid !important;
+  grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  gap:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-factor-row article{
+  min-height:64px !important;
+  display:grid !important;
+  grid-template-columns:40px 1fr !important;
+  gap:10px !important;
+  align-items:center !important;
+  padding:8px 13px !important;
+  border-right:1px solid rgba(194,164,118,.22) !important;
+}
+
+.giro-exec-v2 .giro-exec2-factor-row article:last-child{
+  border-right:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-chip-warning,
+.giro-exec-v2 .giro-exec2-chip-danger{
+  display:inline-flex !important;
+  min-height:25px !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 12px !important;
+  border-radius:999px !important;
+  font-size:.74rem !important;
+  font-weight:950 !important;
+}
+
+.giro-exec-v2 .giro-exec2-chip-warning{
+  color:#B54708 !important;
+  background:#FFFAEB !important;
+  border:1px solid #FEDF89 !important;
+}
+
+.giro-exec-v2 .giro-exec2-chip-danger{
+  color:#B42318 !important;
+  background:#FEF3F2 !important;
+  border:1px solid #FECDCA !important;
+}
+
+.giro-exec-v2 .giro-exec2-side-panel{
+  padding:15px 16px !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-panel{
+  position:sticky !important;
+  top:86px !important;
+}
+
+.giro-exec-v2 .giro-exec2-gauge-wrap{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  margin:4px 0 0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-gauge-wrap .gauge2 svg{
+  width:300px !important;
+  height:160px !important;
+  max-width:100% !important;
+}
+
+.giro-exec-v2 .giro-exec2-score-main{
+  margin:-10px auto 10px !important;
+  text-align:center !important;
+}
+
+.giro-exec-v2 .giro-exec2-score-main strong{
+  display:block !important;
+  color:#071225 !important;
+  font-size:1.65rem !important;
+  line-height:1 !important;
+  font-weight:850 !important;
+  letter-spacing:-.04em !important;
+}
+
+.giro-exec-v2 .giro-exec2-score-main span{
+  display:block !important;
+  margin-top:0px !important;
+  color:#344054 !important;
+  font-size:.78rem !important;
+  font-weight:850 !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-badge{
+  min-height:28px !important;
+  width:70% !important;
+  margin:0 auto 12px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:10px !important;
+  color:#fff !important;
+  font-size:.95rem !important;
+  font-weight:950 !important;
+  box-shadow:0 10px 20px rgba(185,28,28,.18), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini,
+.giro-exec-v2 .giro-exec2-risk-range{
+  display:grid !important;
+  grid-template-columns:repeat(3, minmax(0, 1fr)) !important;
+  border:1px solid rgba(194,164,118,.25) !important;
+  border-radius:14px !important;
+  overflow:hidden !important;
+  background:#fff !important;
+  margin-top:6px !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-range{
+  grid-template-columns:1fr 1fr !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini div,
+.giro-exec-v2 .giro-exec2-risk-range div{
+  min-height:46px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:2px !important;
+  padding:8px !important;
+  border-right:1px solid rgba(194,164,118,.22) !important;
+  text-align:center !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini div:last-child,
+.giro-exec-v2 .giro-exec2-risk-range div:last-child{
+  border-right:0 !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini i,
+.giro-exec-v2 .giro-exec2-risk-range i{
+  color:#B78116 !important;
+  font-size:20px !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini span,
+.giro-exec-v2 .giro-exec2-risk-range span{
+  color:#667085 !important;
+  font-size:.61rem !important;
+  font-weight:950 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.045em !important;
+}
+
+.giro-exec-v2 .giro-exec2-risk-mini strong,
+.giro-exec-v2 .giro-exec2-risk-range strong{
+  color:#071225 !important;
+  font-size:.78rem !important;
+  line-height:1.15 !important;
+  font-weight:950 !important;
+}
+
+.giro-exec-v2 .giro-exec2-log-list{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:6px !important;
+}
+
+.giro-exec-v2 .giro-exec2-log-list > div{
+  display:grid !important;
+  grid-template-columns:28px 1fr !important;
+  gap:0 10px !important;
+  align-items:center !important;
+}
+
+.giro-exec-v2 .giro-exec2-log-list i{
+  grid-row:1 / 3 !important;
+  color:#B78116 !important;
+  font-size:20px !important;
+}
+
+.giro-exec-v2 .giro-exec2-log-list span{
+  color:#667085 !important;
+  font-size:.70rem !important;
+  font-weight:750 !important;
+}
+
+.giro-exec-v2 .giro-exec2-log-list strong{
+  color:#071225 !important;
+  font-size:.80rem !important;
+  font-weight:950 !important;
+  line-height:1.2 !important;
+  word-break:break-word !important;
+}
+
+.giro-exec-v2 .giro-exec2-status-row{
+  padding-top:6px !important;
+  border-top:1px dashed rgba(194,164,118,.30) !important;
+}
+
+.giro-exec-v2 .giro-exec2-status-row i{
+  color:#16A34A !important;
+}
+
+.giro-exec-v2 .giro-exec2-status-row strong{
+  width:max-content !important;
+  min-height:25px !important;
+  padding:0 12px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:999px !important;
+  color:#16803A !important;
+  background:#ECFDF3 !important;
+  border:1px solid #ABEFC6 !important;
+}
+
+@media (max-width: 1399px){
+  .giro-exec-v2 .giro-exec2-hero{
+    grid-template-columns:70px minmax(240px, 1fr) repeat(3, minmax(130px, .5fr)) 205px !important;
+    gap:12px !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-layout{
+    grid-template-columns:minmax(0, 1fr) 330px !important;
+  }
+}
+
+@media (max-width: 1199px){
+  .giro-exec-v2 .giro-exec2-hero{
+    grid-template-columns:64px minmax(0, 1fr) 1fr 1fr !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-hero-risk{
+    grid-column:3 / 5 !important;
+    border-left:0 !important;
+    padding-left:0 !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-layout{
+    grid-template-columns:1fr !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-risk-panel{
+    position:static !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-aside{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+  }
+}
+
+@media (max-width: 991px){
+  .giro-exec-v2 .giro-exec2-header{
+    flex-direction:column !important;
+    align-items:flex-start !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-nav{
+    width:100% !important;
+    justify-content:flex-start !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-hero{
+    grid-template-columns:60px 1fr !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-hero-metric,
+  .giro-exec-v2 .giro-exec2-hero-risk{
+    grid-column:1 / -1 !important;
+    border-left:0 !important;
+    border-top:1px solid rgba(194,164,118,.22) !important;
+    padding:12px 0 0 !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-info-grid-4,
+  .giro-exec-v2 .giro-exec2-control-row,
+  .giro-exec-v2 .giro-exec2-tags-row,
+  .giro-exec-v2 .giro-exec2-factor-row{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-info-item,
+  .giro-exec-v2 .giro-exec2-tags-row > article,
+  .giro-exec-v2 .giro-exec2-factor-row article{
+    border-right:0 !important;
+    border-bottom:1px solid rgba(194,164,118,.18) !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-info-item:nth-child(even),
+  .giro-exec-v2 .giro-exec2-factor-row article:nth-child(even){
+    border-left:1px solid rgba(194,164,118,.18) !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-aside{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media (max-width: 575px){
+  .giro-exec-v2 .giro-exec2-header,
+  .giro-exec-v2 .giro-exec2-body{
+    padding:14px 12px !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-titlebox .card-title{
+    font-size:1.04rem !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-nav,
+  .giro-exec-v2 .giro-exec2-nav .btn{
+    width:100% !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-hero{
+    grid-template-columns:1fr !important;
+    padding:15px !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-hero-icon{
+    width:58px !important;
+    height:58px !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-info-grid-4,
+  .giro-exec-v2 .giro-exec2-control-row,
+  .giro-exec-v2 .giro-exec2-tags-row,
+  .giro-exec-v2 .giro-exec2-factor-row,
+  .giro-exec-v2 .giro-exec2-risk-mini,
+  .giro-exec-v2 .giro-exec2-risk-range{
+    grid-template-columns:1fr !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-info-item,
+  .giro-exec-v2 .giro-exec2-info-item:nth-child(even),
+  .giro-exec-v2 .giro-exec2-factor-row article,
+  .giro-exec-v2 .giro-exec2-factor-row article:nth-child(even),
+  .giro-exec-v2 .giro-exec2-tags-row > article{
+    border-left:0 !important;
+    border-right:0 !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-gauge-wrap .gauge2 svg{
+    width:260px !important;
+    height:150px !important;
+  }
+
+  .giro-exec-v2 .giro-exec2-score-main strong{
+    font-size:1.5rem !important;
+  }
+}

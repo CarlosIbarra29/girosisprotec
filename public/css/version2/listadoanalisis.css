@@ -1208,7 +1208,9 @@ body.giro-is-resizing .dataTables_scrollBody{
 
 
 /* =========================================================
-   17. ACEPTABILIDAD / BANDERAS
+   17. ACEPTABILIDAD
+   Mismo estilo visual que Gestión, sin banderita.
+   Ojo: solo cambia presentación; la lógica/clases quedan igual.
    ========================================================= */
 
 .td-acept{
@@ -1216,47 +1218,56 @@ body.giro-is-resizing .dataTables_scrollBody{
   text-align:center !important;
   background:transparent !important;
   color:var(--ink) !important;
-  padding-left:28px !important;
+  padding-left:9px !important;
 }
 
-.acc-acept,
-.acc-noacept{
-  background:transparent !important;
+/* Quitar banderita anterior */
+.td-acept.acc-acept::before,
+.td-acept.acc-noacept::before,
+.td-acept.acc-acept::after,
+.td-acept.acc-noacept::after{
+  content:none !important;
+  display:none !important;
+}
+
+.td-acept .acept-val{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  padding:0 9px;
+  margin:0 !important;
+  border-radius:999px;
+  font-size:.64rem;
+  line-height:1;
+  font-weight:950 !important;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+
+.td-acept.acc-acept{
+  background:rgba(22,163,74,.08) !important;
   color:var(--ink) !important;
 }
 
-.td-acept.acc-acept::before,
-.td-acept.acc-noacept::before{
-  content:"";
-  position:absolute;
-  left:10px;
-  top:50%;
-  width:2px;
-  height:20px;
-  transform:translateY(-50%);
-  border-radius:999px;
-  background:rgba(17,24,39,.35);
+.td-acept.acc-acept .acept-val{
+  color:#fff !important;
+  background:linear-gradient(180deg, #34D399, #16A34A);
 }
 
-.td-acept.acc-acept::after,
-.td-acept.acc-noacept::after{
-  content:"";
-  position:absolute;
-  left:12px;
-  top:calc(50% - 10px);
-  width:18px;
-  height:14px;
-  clip-path:polygon(0 0,100% 0,78% 50%,100% 100%,0 100%);
-  border-radius:2px;
-  box-shadow:0 1px 3px rgba(0,0,0,.18);
+.td-acept.acc-noacept{
+  background:rgba(220,38,38,.08) !important;
+  color:var(--ink) !important;
 }
 
-.td-acept.acc-acept::after{
-  background:linear-gradient(180deg, #34D399 0%, #16A34A 100%);
+.td-acept.acc-noacept .acept-val{
+  color:#fff !important;
+  background:linear-gradient(180deg, #FB7185, #DC2626);
 }
 
-.td-acept.acc-noacept::after{
-  background:linear-gradient(180deg, #FB7185 0%, #DC2626 100%);
+.td-acept:not(.acc-acept):not(.acc-noacept) .acept-val{
+  color:#98A2B3 !important;
+  background:#F2F4F7;
 }
 
 

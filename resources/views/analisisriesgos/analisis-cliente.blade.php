@@ -8,7 +8,7 @@
 @endpush
 
 @push('styles')
-  <link href="{{ asset('/css/version2/listadoanalisis.css?v=4.0.4') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/listadoanalisis.css?v=4.0.6') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
