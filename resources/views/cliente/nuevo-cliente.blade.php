@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('scripts')
-    <script src="{{ asset('js/cliente/NuevoCliente.js?v=5.0.2') }}"></script>
+    <script src="{{ asset('js/cliente/NuevoCliente.js?v=5.0.5') }}"></script>
     <link href="{{ asset('/css/version2/nuevocliente.css?v=2.1.2') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('title')

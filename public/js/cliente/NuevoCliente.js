@@ -698,19 +698,12 @@ var Modulo = function() {
     };
 
     var validarFotosAlcance = function () {
-        const input = document.getElementById('alcance_fotos');
-
-        if (!input) {
-            return true;
-        }
-
-        const archivos = Array.from(input.files || []);
         const formatosPermitidos = [
             'image/jpeg',
             'image/png'
         ];
 
-        if (archivos.length > 3) {
+        if (archivosFotosSeleccionados.length > 3) {
             mostrarErrorFotosAlcance(
                 'Solo puedes agregar un máximo de 3 fotografías.'
             );
@@ -718,7 +711,7 @@ var Modulo = function() {
             return false;
         }
 
-        const invalido = archivos.some(function (archivo) {
+        const invalido = archivosFotosSeleccionados.some(function (archivo) {
             return formatosPermitidos.indexOf(archivo.type) === -1;
         });
 
@@ -758,10 +751,7 @@ var Modulo = function() {
                 });
 
                 if (invalido) {
-                    archivosFotosSeleccionados = [];
                     this.value = '';
-
-                    renderPreviewFotosAlcance();
 
                     mostrarErrorFotosAlcance(
                         'Solo se permiten fotografías JPG, JPEG o PNG.'
@@ -774,11 +764,15 @@ var Modulo = function() {
                     return;
                 }
 
-                if (nuevosArchivos.length > 3) {
-                    archivosFotosSeleccionados = [];
-                    this.value = '';
+                /*
+                 * IMPORTANTE:
+                 * Sumamos las nuevas fotografías a las que ya estaban
+                 * seleccionadas, en lugar de reemplazarlas.
+                 */
+                const fotosAcumuladas = archivosFotosSeleccionados.concat(nuevosArchivos);
 
-                    renderPreviewFotosAlcance();
+                if (fotosAcumuladas.length > 3) {
+                    this.value = '';
 
                     mostrarErrorFotosAlcance(
                         'Solo puedes agregar un máximo de 3 fotografías.'
@@ -791,10 +785,17 @@ var Modulo = function() {
                     return;
                 }
 
-                archivosFotosSeleccionados = nuevosArchivos;
+                archivosFotosSeleccionados = fotosAcumuladas;
 
+                /*
+                 * Volvemos a construir el FileList real del input
+                 * para que al enviar el formulario Laravel reciba
+                 * todas las fotografías acumuladas.
+                 */
                 sincronizarInputFotosAlcance();
+
                 renderPreviewFotosAlcance();
+
                 mostrarErrorFotosAlcance('');
             });
     };
