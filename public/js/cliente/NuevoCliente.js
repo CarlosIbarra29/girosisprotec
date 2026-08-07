@@ -60,7 +60,15 @@ var Modulo = function() {
                                 }
                             }
                         }
-                    }
+                    },
+
+                    alcance_nombre_instalacion: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El nombre comercial es obligatorio'
+                            }
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -144,6 +152,13 @@ var Modulo = function() {
         }
 
         if (activePane === 'kt_tab_pane_3') {
+
+            // NUEVO: validación de fotografías
+            if (!validarFotosAlcance()) {
+                toastr.warning("Por favor, verifica las fotografías seleccionadas.");
+                return;
+            }
+
             if (!validarPasoInformacion()) {
                 mostrarTab('#kt_tab_pane_1');
                 return;
@@ -616,6 +631,174 @@ var Modulo = function() {
         });
     };
 
+
+        // =========================================================
+    // FOTOGRAFÍAS DEL LUGAR DEL ANÁLISIS
+    // =========================================================
+
+    var archivosFotosSeleccionados = [];
+
+    var mostrarErrorFotosAlcance = function (mensaje) {
+        const $error = $('#alcance_fotos_error');
+
+        if (!$error.length) return;
+
+        if (mensaje) {
+            $error.text(mensaje).removeClass('d-none');
+        } else {
+            $error.text('').addClass('d-none');
+        }
+    };
+
+    var renderPreviewFotosAlcance = function () {
+        const preview = document.getElementById('alcance_fotos_preview');
+        if (!preview) return;
+
+        preview.innerHTML = '';
+
+        archivosFotosSeleccionados.forEach(function (archivo, index) {
+            const item = document.createElement('div');
+            item.className = 'gi-photo-preview-item';
+
+            const img = document.createElement('img');
+            img.alt = 'Vista previa fotografía ' + (index + 1);
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(archivo);
+
+            const badge = document.createElement('span');
+            badge.className = 'gi-photo-preview-badge';
+            badge.textContent = (index + 1) + '/3';
+
+            item.appendChild(img);
+            item.appendChild(badge);
+            preview.appendChild(item);
+        });
+    };
+
+    var sincronizarInputFotosAlcance = function () {
+        const input = document.getElementById('alcance_fotos');
+
+        if (!input || typeof DataTransfer === 'undefined') {
+            return;
+        }
+
+        const dataTransfer = new DataTransfer();
+
+        archivosFotosSeleccionados.forEach(function (archivo) {
+            dataTransfer.items.add(archivo);
+        });
+
+        input.files = dataTransfer.files;
+    };
+
+    var validarFotosAlcance = function () {
+        const input = document.getElementById('alcance_fotos');
+
+        if (!input) {
+            return true;
+        }
+
+        const archivos = Array.from(input.files || []);
+        const formatosPermitidos = [
+            'image/jpeg',
+            'image/png'
+        ];
+
+        if (archivos.length > 3) {
+            mostrarErrorFotosAlcance(
+                'Solo puedes agregar un máximo de 3 fotografías.'
+            );
+
+            return false;
+        }
+
+        const invalido = archivos.some(function (archivo) {
+            return formatosPermitidos.indexOf(archivo.type) === -1;
+        });
+
+        if (invalido) {
+            mostrarErrorFotosAlcance(
+                'Solo se permiten fotografías JPG, JPEG o PNG.'
+            );
+
+            return false;
+        }
+
+        mostrarErrorFotosAlcance('');
+
+        return true;
+    };
+
+    var initFotosAlcance = function () {
+        const input = document.getElementById('alcance_fotos');
+
+        if (!input) {
+            return;
+        }
+
+        $(input)
+            .off('change.giFotosAlcance')
+            .on('change.giFotosAlcance', function () {
+
+                const nuevosArchivos = Array.from(this.files || []);
+
+                const formatosPermitidos = [
+                    'image/jpeg',
+                    'image/png'
+                ];
+
+                const invalido = nuevosArchivos.some(function (archivo) {
+                    return formatosPermitidos.indexOf(archivo.type) === -1;
+                });
+
+                if (invalido) {
+                    archivosFotosSeleccionados = [];
+                    this.value = '';
+
+                    renderPreviewFotosAlcance();
+
+                    mostrarErrorFotosAlcance(
+                        'Solo se permiten fotografías JPG, JPEG o PNG.'
+                    );
+
+                    toastr.warning(
+                        'Solo se permiten fotografías JPG, JPEG o PNG.'
+                    );
+
+                    return;
+                }
+
+                if (nuevosArchivos.length > 3) {
+                    archivosFotosSeleccionados = [];
+                    this.value = '';
+
+                    renderPreviewFotosAlcance();
+
+                    mostrarErrorFotosAlcance(
+                        'Solo puedes agregar un máximo de 3 fotografías.'
+                    );
+
+                    toastr.warning(
+                        'Solo puedes agregar un máximo de 3 fotografías.'
+                    );
+
+                    return;
+                }
+
+                archivosFotosSeleccionados = nuevosArchivos;
+
+                sincronizarInputFotosAlcance();
+                renderPreviewFotosAlcance();
+                mostrarErrorFotosAlcance('');
+            });
+    };
+
     var initClienteSelect = function () {
         const inputs = [
             '#organizacion',
@@ -660,7 +843,11 @@ var Modulo = function() {
                 $(id).prop('disabled', disabled);
             });
 
-            $('input[name="alcance_certificaciones[]"]').prop('disabled', disabled);
+            $('input[name="alcance_certificaciones[]"]')
+                .prop('disabled', disabled);
+
+            // NUEVO
+            $('#alcance_fotos').prop('disabled', disabled);
         }
 
         function clearForm() {
@@ -673,7 +860,14 @@ var Modulo = function() {
                 $(id).val('');
             });
 
-            $('input[name="alcance_certificaciones[]"]').prop('checked', false);
+            $('input[name="alcance_certificaciones[]"]')
+                .prop('checked', false);
+
+            // NUEVO: limpiar fotografías
+            archivosFotosSeleccionados = [];
+            $('#alcance_fotos').val('');
+            renderPreviewFotosAlcance();
+            mostrarErrorFotosAlcance('');
 
             scanFloatingLabels();
         }
@@ -694,7 +888,9 @@ var Modulo = function() {
             $('#mail').val(data.mail || '');
             $('#persona_atiende').val(data.persona_atiende || '');
             $('#cargo_atiende').val(data.cargo_atiende || '');
-            $('#telefono_atiende').val(soloDigitos(data.telefono_atiende || ''));
+            $('#telefono_atiende').val(
+                soloDigitos(data.telefono_atiende || '')
+            );
             $('#mail_atiende').val(data.mail_atiende || '');
 
             scanFloatingLabels();
@@ -702,7 +898,11 @@ var Modulo = function() {
 
         function habilitaSiguiente() {
             const v = $('#cliente_select').val();
-            const ok = v !== null && v !== '' && !isNaN(Number(v));
+
+            const ok =
+                v !== null &&
+                v !== '' &&
+                !isNaN(Number(v));
 
             $('#btnGuardar').prop('disabled', !ok);
 
@@ -711,64 +911,92 @@ var Modulo = function() {
             }
         }
 
-        $('.nav-tabs .nav-link').off('click.giTabs').on('click.giTabs', function (e) {
-            if ($(this).hasClass('disabled')) {
-                e.preventDefault();
-                return false;
-            }
-        });
+        $('.nav-tabs .nav-link')
+            .off('click.giTabs')
+            .on('click.giTabs', function (e) {
 
-        $('#cliente_select').off('change.giCliente').on('change.giCliente', async function () {
-            const selectedValue = $(this).val();
+                if ($(this).hasClass('disabled')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
 
-            habilitaSiguiente();
+        $('#cliente_select')
+            .off('change.giCliente')
+            .on('change.giCliente', async function () {
 
-            if (!selectedValue) {
-                clearForm();
-                setDisabled(true);
-                mostrarTab('#kt_tab_pane_1');
-                return;
-            }
+                const selectedValue = $(this).val();
 
-            if (selectedValue === "0") {
-                clearForm();
-                setDisabled(false);
-                $('.nav-tabs .nav-link').removeClass('disabled');
-                mostrarTab('#kt_tab_pane_1');
-                $('#btnGuardar').text('Siguiente');
-                return;
-            }
+                habilitaSiguiente();
 
-            try {
-                $('.nav-tabs .nav-link').removeClass('disabled');
-
-                clearForm();
-                setDisabled(true);
-
-                const resp = await fetch('/api/clientes/' + selectedValue);
-                const json = await resp.json();
-
-                if (!resp.ok || !json.ok) {
-                    throw new Error(json.message || 'No se pudo obtener el cliente');
+                if (!selectedValue) {
+                    clearForm();
+                    setDisabled(true);
+                    mostrarTab('#kt_tab_pane_1');
+                    return;
                 }
 
-                fillForm(json.data);
-                setDisabled(true);
-                mostrarTab('#kt_tab_pane_1');
-                $('#btnGuardar').text('Siguiente');
+                if (selectedValue === "0") {
+                    clearForm();
+                    setDisabled(false);
 
-            } catch (err) {
-                console.error(err);
-                toastr.error('No fue posible cargar los datos del cliente seleccionado.');
+                    $('.nav-tabs .nav-link')
+                        .removeClass('disabled');
 
-                $(this).val('0');
-                clearForm();
-                setDisabled(false);
-                $('.nav-tabs .nav-link').removeClass('disabled');
-                mostrarTab('#kt_tab_pane_1');
-                habilitaSiguiente();
-            }
-        });
+                    mostrarTab('#kt_tab_pane_1');
+
+                    $('#btnGuardar').text('Siguiente');
+
+                    return;
+                }
+
+                try {
+                    $('.nav-tabs .nav-link')
+                        .removeClass('disabled');
+
+                    clearForm();
+                    setDisabled(true);
+
+                    const resp = await fetch(
+                        '/api/clientes/' + selectedValue
+                    );
+
+                    const json = await resp.json();
+
+                    if (!resp.ok || !json.ok) {
+                        throw new Error(
+                            json.message ||
+                            'No se pudo obtener el cliente'
+                        );
+                    }
+
+                    fillForm(json.data);
+                    setDisabled(true);
+
+                    mostrarTab('#kt_tab_pane_1');
+
+                    $('#btnGuardar').text('Siguiente');
+
+                } catch (err) {
+                    console.error(err);
+
+                    toastr.error(
+                        'No fue posible cargar los datos del cliente seleccionado.'
+                    );
+
+                    $(this).val('0');
+
+                    clearForm();
+                    setDisabled(false);
+
+                    $('.nav-tabs .nav-link')
+                        .removeClass('disabled');
+
+                    mostrarTab('#kt_tab_pane_1');
+
+                    habilitaSiguiente();
+                }
+            });
 
         habilitaSiguiente();
     };
@@ -783,6 +1011,10 @@ var Modulo = function() {
             initFloatingLabels();
             initTelefonos10Digitos();
             initClienteSelect();
+
+            // NUEVO
+            initFotosAlcance();
+
             actualizarTextoBoton();
         },
 

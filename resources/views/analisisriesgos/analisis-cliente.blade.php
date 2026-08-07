@@ -187,20 +187,20 @@
                         <th>Costo de Solución</th>
 
                         {{-- Nuevos campos --}}
-                        <th><b>Nivel de control2</b></th>
-                        <th><b>#3</b></th>
-                        <th><b>Exp.3</b></th>
+                        <th><b>Nivel de control</b></th>
+                        <th><b>#</b></th>
+                        <th><b>Exp.</b></th>
                         <th><b>Prob</b></th>
                         <th><b>Amz.</b></th>
-                        <th><b>Fac.2</b></th>
+                        <th><b>Fac.</b></th>
                         <th><b>Sev.</b></th>
-                        <th><b>Fac.3</b></th>
-                        <th><b>IPD2</b></th>
-                        <th><b>Riesgo Marginal2</b></th>
+                        <th><b>Fac.</b></th>
+                        <th><b>IPD</b></th>
+                        <th><b>Riesgo Marginal</b></th>
                         <th><b>Nvo. Perfil</b></th>
                         <th><b>Indice Reducción</b></th>
                         <th><b>Indice Reducción Porcentual</b></th>
-                        <th><b>Nivel Riesgo2</b></th>
+                        <th><b>Nivel Riesgo</b></th>
                         <th><b>Aceptabilidad</b></th>
                         <th><b>Solución Eficaz</b></th>
                         <th><b>Observaciones</b></th>
@@ -868,20 +868,20 @@
                         <th>Contramedidas</th>
                         <th>Costo de Solución</th>
 
-                        <th><b>Nivel de control2</b></th>
-                        <th><b>#3</b></th>
-                        <th><b>Exp.3</b></th>
+                        <th><b>Nivel de control</b></th>
+                        <th><b>#</b></th>
+                        <th><b>Exp.</b></th>
                         <th><b>Prob</b></th>
                         <th><b>Amz.</b></th>
-                        <th><b>Fac.2</b></th>
+                        <th><b>Fac.</b></th>
                         <th><b>Sev.</b></th>
-                        <th><b>Fac.3</b></th>
-                        <th><b>IPD2</b></th>
+                        <th><b>Fac.</b></th>
+                        <th><b>IPD</b></th>
                         <th><b>Riesgo Marginal2</b></th>
                         <th><b>Nvo. Perfil</b></th>
                         <th><b>Indice Reducción</b></th>
                         <th><b>Indice Reducción Porcentual</b></th>
-                        <th><b>Nivel Riesgo2</b></th>
+                        <th><b>Nivel Riesgo</b></th>
                         <th><b>Aceptabilidad</b></th>
                         <th><b>Solución Eficaz</b></th>
                         <th><b>Observaciones</b></th>

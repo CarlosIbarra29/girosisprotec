@@ -6,7 +6,7 @@
 @extends('layouts.app')
 
 @push('styles')
-  <link href="{{ asset('/css/version2/documento-ejecutivo.css?v=4.0.0') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/css/version2/documento-ejecutivo.css?v=4.0.1') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('title')
@@ -30,6 +30,38 @@
 @php
   $clienteNombre = $cliente->organizacion ?? $cliente->nombre_comercial ?? 'Cliente';
   $fechaEstudio = $fechaEstudio ?? now()->locale('es')->translatedFormat('d \d\e F \d\e Y');
+
+  /*
+   * Archivo fotográfico real del cliente.
+   * Se convierte a base64 para que funcione tanto
+   * en la vista previa como en el PDF.
+   */
+  $archivoFotografico = [];
+
+  for ($fotoIndex = 1; $fotoIndex <= 3; $fotoIndex++) {
+    $campoFoto = 'alcance_foto_' . $fotoIndex;
+    $nombreFoto = $cliente->{$campoFoto} ?? null;
+    $fotoSrc = null;
+
+    if (!empty($nombreFoto)) {
+      $fotoStoragePath = 'cliente/' . $cliente->id . '/alcance/' . $nombreFoto;
+
+      if (\Illuminate\Support\Facades\Storage::exists($fotoStoragePath)) {
+        try {
+          $fotoMime = \Illuminate\Support\Facades\Storage::mimeType($fotoStoragePath) ?: 'image/jpeg';
+          $fotoContenido = \Illuminate\Support\Facades\Storage::get($fotoStoragePath);
+          $fotoSrc = 'data:' . $fotoMime . ';base64,' . base64_encode($fotoContenido);
+        } catch (\Throwable $e) {
+          $fotoSrc = null;
+        }
+      }
+    }
+
+    $archivoFotografico[$fotoIndex] = [
+      'nombre' => $nombreFoto,
+      'src' => $fotoSrc,
+    ];
+  }
 
   $logoPath = public_path('img/logos/logogiro.png');
   $logoSrc = file_exists($logoPath)
@@ -484,8 +516,40 @@
         </tr></table>
       </header>
       <h2 class="doc-main-title">9.- Archivo fotográfico</h2>
-      <p class="doc-paragraph">El módulo de fotografías se integrará posteriormente para permitir captura desde móvil o carga desde archivo.</p>
-      <table class="doc-photo-grid"><tr><td>Fotografía 1<br><span>Pendiente</span></td><td>Fotografía 2<br><span>Pendiente</span></td></tr><tr><td>Fotografía 3<br><span>Pendiente</span></td><td>Fotografía 4<br><span>Pendiente</span></td></tr></table>
+      <p class="doc-paragraph">Evidencia fotográfica registrada para el lugar donde se realiza el análisis de riesgos.</p>
+
+      <table class="doc-photo-grid">
+        <tr>
+          @for($fotoIndex = 1; $fotoIndex <= 2; $fotoIndex++)
+            <td>
+              @if(!empty($archivoFotografico[$fotoIndex]['src']))
+                <div class="doc-photo-real">
+                  <img src="{{ $archivoFotografico[$fotoIndex]['src'] }}" alt="Fotografía {{ $fotoIndex }}">
+                  <span>Fotografía {{ $fotoIndex }}</span>
+                </div>
+              @else
+                Fotografía {{ $fotoIndex }}<br><span>Pendiente</span>
+              @endif
+            </td>
+          @endfor
+        </tr>
+        <tr>
+          <td>
+            @if(!empty($archivoFotografico[3]['src']))
+              <div class="doc-photo-real">
+                <img src="{{ $archivoFotografico[3]['src'] }}" alt="Fotografía 3">
+                <span>Fotografía 3</span>
+              </div>
+            @else
+              Fotografía 3<br><span>Pendiente</span>
+            @endif
+          </td>
+          <td>
+            Fotografía 4<br><span>Pendiente</span>
+          </td>
+        </tr>
+      </table>
+
       <div class="doc-page-foot"></div>
     </section>
 

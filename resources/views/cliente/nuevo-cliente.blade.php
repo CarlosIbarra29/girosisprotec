@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('scripts')
-    <script src="{{ asset('js/cliente/NuevoCliente.js?v=4.1.1') }}"></script>
-    <link href="{{ asset('/css/version2/nuevocliente.css?v=2.1.1') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('js/cliente/NuevoCliente.js?v=5.0.2') }}"></script>
+    <link href="{{ asset('/css/version2/nuevocliente.css?v=2.1.2') }}" rel="stylesheet" type="text/css" />
 @endpush
 @section('title')
     Agregar cliente
@@ -56,7 +56,7 @@
                 </div>
 
                 <!--begin::Form-->
-                <form action="{{ route('cliente.guardarclientenuevo') }}" method="post" id="submit_cliente">
+                <form action="{{ route('cliente.guardarclientenuevo') }}" method="post" id="submit_cliente" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Hidden preparado para sede. Ahorita deshabilitado para que no afecte --}}
@@ -404,6 +404,52 @@
                                                     id="alcance_antecedentes_seguridad"
                                                     placeholder="Describe incidentes, eventos, pérdidas, robos, intrusiones o cualquier antecedente relevante del último año"></textarea>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="gi-hr">
+
+                                <div class="gi-scope-section">
+                                    <h5 class="gi-section-title">6. Fotografías del lugar del análisis</h5>
+
+                                    <div class="form-group row gi-row-gap">
+                                        <div class="col-lg-12">
+                                            <div class="gi-photo-upload">
+                                                <div class="gi-photo-upload-icon" aria-hidden="true">
+                                                    <i class="la la-camera"></i>
+                                                </div>
+
+                                                <div class="gi-photo-upload-content">
+                                                    <label for="alcance_fotos" class="gi-photo-upload-title">
+                                                        Agrega hasta 3 fotografías
+                                                    </label>
+                                                    <p class="gi-photo-upload-text">
+                                                        En celular puedes tomar una fotografía o seleccionar imágenes de tu dispositivo.
+                                                        En computadora puedes seleccionar imágenes desde tu equipo.
+                                                    </p>
+
+                                                    <input
+                                                        type="file"
+                                                        class="gi-photo-input"
+                                                        name="alcance_fotos[]"
+                                                        id="alcance_fotos"
+                                                        accept="image/*"
+                                                        multiple>
+
+                                                    <label for="alcance_fotos" class="gi-photo-upload-button">
+                                                        <i class="la la-image"></i>
+                                                        Seleccionar fotografías
+                                                    </label>
+
+                                                    <span class="gi-photo-upload-help">
+                                                        Formatos permitidos: JPG, JPEG y PNG. Máximo 3 fotografías.
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div id="alcance_fotos_error" class="gi-photo-error d-none"></div>
+                                            <div id="alcance_fotos_preview" class="gi-photo-preview"></div>
                                         </div>
                                     </div>
                                 </div>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 use App\Services\Money;
 use App\Models\Cliente\Cliente;
 
@@ -309,6 +310,11 @@ class ClienteController extends Controller
 
     public function guardarclientenuevo(Request $request)
     {
+        $request->validate([
+            'alcance_fotos' => 'nullable|array|max:3',
+            'alcance_fotos.*' => 'image|mimes:jpeg,jpg,png',
+        ]);
+
         $data = [
             'organizacion' => $request->organizacion,
             'nombre_comercial' => $request->nombre_comercial,
@@ -327,6 +333,22 @@ class ClienteController extends Controller
             'cargo_atiende' => $request->cargo_atiende,
             'telefono_atiende' => $request->telefono_atiende,
             'mail_atiende' => $request->mail_atiende,
+
+            'alcance_nombre_instalacion' => $request->alcance_nombre_instalacion,
+            'alcance_procesos_clave' => $request->alcance_procesos_clave,
+            'alcance_empleados_administrativos' => $request->alcance_empleados_administrativos,
+            'alcance_empleados_operativos' => $request->alcance_empleados_operativos,
+            'alcance_horario_operacion' => $request->alcance_horario_operacion,
+            'alcance_nivel_inseguridad' => $request->alcance_nivel_inseguridad,
+            'alcance_accesibilidad' => $request->alcance_accesibilidad,
+            'alcance_presencia_autoridades' => $request->alcance_presencia_autoridades,
+            'alcance_factores_sociales_politicos' => $request->alcance_factores_sociales_politicos,
+            'alcance_activos_criticos' => $request->alcance_activos_criticos,
+            'alcance_certificaciones' => $request->alcance_certificaciones
+                ? json_encode($request->alcance_certificaciones, JSON_UNESCAPED_UNICODE)
+                : null,
+            'alcance_antecedentes_seguridad' => $request->alcance_antecedentes_seguridad,
+
             'status_delete' => 1,
             'created_at' =>date('Y-m-d H:i:s'),
             'updated_at' =>date('Y-m-d H:i:s'),
@@ -335,6 +357,30 @@ class ClienteController extends Controller
         ];
         $id_cliente = Cliente::insertGetId($data);
         // dd($request);
+
+        if ($request->hasFile('alcance_fotos')) {
+            $fotosGuardadas = [];
+
+            foreach (array_slice($request->file('alcance_fotos'), 0, 3) as $archivo) {
+                $archivoNombre = $archivo->hashName();
+
+                Storage::putFileAs(
+                    'cliente/'.$id_cliente.'/alcance/',
+                    $archivo,
+                    $archivoNombre
+                );
+
+                $fotosGuardadas[] = $archivoNombre;
+            }
+
+            Cliente::where('id', $id_cliente)->update([
+                'alcance_foto_1' => $fotosGuardadas[0] ?? null,
+                'alcance_foto_2' => $fotosGuardadas[1] ?? null,
+                'alcance_foto_3' => $fotosGuardadas[2] ?? null,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'iduserUpdated' => auth()->user()->id,
+            ]);
+        }
 
         session()->flash('success', 'El cliente se añadió correctamente');
         return redirect()->route('analisis.generaranalisis',[$id_cliente,1,0,1]);   
