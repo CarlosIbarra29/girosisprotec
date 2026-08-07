@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('scripts')
-  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=2.0.8') }}"></script>
+  <script src="{{ asset('js/cliente/ListadoAnalisis.js?v=3.1.2') }}"></script>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.5.0/css/fixedHeader.bootstrap4.min.css"> -->
   <script src="https://cdn.datatables.net/fixedheader/3.5.0/js/dataTables.fixedHeader.min.js"></script>
@@ -12,7 +12,7 @@
 @endpush
 
 @section('title')
-  Analisis de riesgos sociales
+  Analisis de riesgos
 @endsection
 
 @section('content') 
@@ -32,7 +32,7 @@
                   <i class="flaticon2-file text-primary"></i>
                 </span>
                 <h3 class="card-label">
-                  Analisis de riesgos sociales ({{ $cliente->organizacion }})
+                  Analisis de riesgos ({{ $cliente->organizacion }})
                 </h3>
               </div>
               <div class="card-toolbar giro-list-toolbar">
@@ -54,10 +54,10 @@
                   <i class="la la-project-diagram"></i> Analisis de Escenarios
                 </a>
  
-                <!-- <a href="{{ route('analisis.documentoejecutivo', $cliente->id) }}"
+                <a href="{{ route('analisis.documentoejecutivo', $cliente->id) }}"
                    class="btn btn-light-primary font-weight-bolder mr-3 ml-3">
-                  <i class="la la-file-alt"></i> Generar Documento
-                </a> -->
+                  <i class="la la-file-alt"></i> Generar Documento 
+                </a>
 
                 {{-- Botón modo edición (oculto) --}}
                 <!-- <button id="btnEditarCeldas" class="btn btn-warning font-weight-bolder mr-3 ml-3 d-none">
@@ -639,12 +639,17 @@
                           </td>
 
                           @php
-                            $nvPerfil = '';
-                            $fac2Num  = $unid->fac2;
-                            $fac3Num  = is_numeric($fac3Val) ? (float)$fac3Val : null;
-                            if ($fac2Num !== null && $fac3Num !== null) {
-                              $nvPerfil = '(' . round($fac2Num) . '-' . round($fac3Num) . ')';
-                            }
+                              $nvPerfil = '';
+                              $fac2Num  = $unid->fac2;
+                              $fac3Num  = is_numeric($fac3Val) ? (float)$fac3Val : null;
+
+                              if ($fac2Num !== null && $fac3Num !== null) {
+                                  $nvPerfil = '('
+                                      . number_format((float)$fac2Num, 1, '.', '')
+                                      . '-'
+                                      . number_format((float)$fac3Num, 1, '.', '')
+                                      . ')';
+                              }
                           @endphp
                           <td class="nowrap-num">
                             <span class="perfil2-val" data-id="{{ $unid->id }}">{{ $nvPerfil }}</span>
@@ -977,7 +982,7 @@
       const f3 = (data && data.fac3 != null) ? data.fac3 : toNum(row.querySelector('.fac3-val')?.textContent || '');
 
       if (isNaN(f2) || isNaN(f3)) perfilEl.textContent = '';
-      else perfilEl.textContent = `(${Math.round(f2)}-${Math.round(f3)})`;
+      else perfilEl.textContent = `(${Number(f2).toFixed(1)}-${Number(f3).toFixed(1)})`;
     }
 
     // ===== Colores =====
@@ -1172,6 +1177,29 @@
 
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+    // Cola por fila para los campos residuales.
+    // Garantiza que Nivel de control 2, Probabilidad y Severidad
+    // se guarden y calculen en el mismo orden en que el usuario los cambia.
+    const residualRequestQueue = new Map();
+
+    function enqueueResidualRequest(id, task) {
+      const previous = residualRequestQueue.get(id) || Promise.resolve();
+
+      const next = previous
+        .catch(() => {})
+        .then(task);
+
+      residualRequestQueue.set(id, next);
+
+      next.finally(() => {
+        if (residualRequestQueue.get(id) === next) {
+          residualRequestQueue.delete(id);
+        }
+      });
+
+      return next;
+    }
+
     // =========================================================
     // A) TEXTO: doble-clic para editar
     // =========================================================
@@ -1318,116 +1346,136 @@
       let value   = sel.value;
       value = isNaN(parseInt(value,10)) ? null : parseInt(value,10);
 
+      const isResidualField = ['nivel_control2', 'probabilidad_id2', 'sev2'].includes(field);
+
       sel.classList.add('saving');
 
-      try {
-        const resp = await fetch("{{ route('analisis.updateCell') }}", {
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json',
-            'Accept':'application/json',
-            'X-CSRF-TOKEN': token
-          },
-          credentials:'same-origin',
-          body: JSON.stringify({ id, field, value })
-        });
+      const executeUpdate = async () => {
+        try {
+          const resp = await fetch("{{ route('analisis.updateCell') }}", {
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json',
+              'Accept':'application/json',
+              'X-CSRF-TOKEN': token
+            },
+            credentials:'same-origin',
+            body: JSON.stringify({ id, field, value })
+          });
 
-        const data = await resp.json();
-        sel.classList.remove('saving');
+          const data = await resp.json();
+          sel.classList.remove('saving');
 
-        if (resp.ok && data.ok){
-          sel.classList.add('saved');
-          setTimeout(()=>sel.classList.remove('saved'), 900);
+          if (resp.ok && data.ok){
+            sel.classList.add('saved');
+            setTimeout(()=>sel.classList.remove('saved'), 900);
 
-          const row = sel.closest('tr');
+            const row = sel.closest('tr');
 
-          if (field === 'probabilidad_id2' || field === 'nivel_control2') {
-            const facEl = row && row.querySelector('.fac2-val');
-            if (facEl) facEl.textContent = (data.fac2 == null) ? '' : Number(data.fac2).toFixed(1);
+            if (field === 'probabilidad_id2' || field === 'nivel_control2') {
+              const facEl = row && row.querySelector('.fac2-val');
+              if (facEl) facEl.textContent = (data.fac2 == null) ? '' : Number(data.fac2).toFixed(1);
 
-            const amzEl = row && row.querySelector('.amz2-val');
-            if (amzEl) amzEl.textContent = data.amz2_label || '';
+              const amzEl = row && row.querySelector('.amz2-val');
+              if (amzEl) amzEl.textContent = data.amz2_label || '';
 
-            const ipdEl = row && row.querySelector('.ipd2-val');
-            if (ipdEl) ipdEl.textContent = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
+              const ipdEl = row && row.querySelector('.ipd2-val');
+              if (ipdEl) ipdEl.textContent = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
 
-            const rm2El = row && row.querySelector('.rm2-val');
-            if (rm2El) rm2El.textContent = (data.rm2 == null) ? '' : Number(data.rm2).toFixed(1);
+              const rm2El = row && row.querySelector('.rm2-val');
+              if (rm2El) {
+                const currentIpd2 = toNum(ipdEl?.textContent || '');
+                rm2El.textContent = isFinite(currentIpd2)
+                  ? Math.max(currentIpd2 - 6.4, 0).toFixed(1)
+                  : '';
+              }
 
-            const nc3El = row && row.querySelector('.nc3-val');
-            if (nc3El) nc3El.textContent = (data.nc3 == null) ? '' : data.nc3;
+              const nc3El = row && row.querySelector('.nc3-val');
+              if (nc3El) nc3El.textContent = (data.nc3 == null) ? '' : data.nc3;
 
-            const exp3El = row && row.querySelector('.exp3-val');
-            if (exp3El) exp3El.textContent = (data.exp3 == null) ? '' : data.exp3;
+              const exp3El = row && row.querySelector('.exp3-val');
+              if (exp3El) exp3El.textContent = (data.exp3 == null) ? '' : data.exp3;
 
-            setPerfil(row, data);
-            setIR(row);
-            setIRP(row);
+              setPerfil(row, data);
+              setIR(row);
+              setIRP(row);
 
-            const nr2El = row && row.querySelector('.nivel2-val');
-            if (nr2El){
-              nr2El.textContent = (data.nivel_riesgo2 || '');
-              colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+              const nr2El = row && row.querySelector('.nivel2-val');
+              if (nr2El){
+                nr2El.textContent = (data.nivel_riesgo2 || '');
+                colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+              }
+
+              const aceptEl = row && row.querySelector('.acept-val');
+              if (aceptEl){
+                aceptEl.textContent = (data.aceptabilidad || '');
+                colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
+              }
+
+              const solEl = row && row.querySelector('.sol-eficaz-val');
+              if (solEl){
+                if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
+                else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
+              }
             }
 
-            const aceptEl = row && row.querySelector('.acept-val');
-            if (aceptEl){
-              aceptEl.textContent = (data.aceptabilidad || '');
-              colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
+            if (field === 'sev2') {
+              const fac3El = row && row.querySelector('.fac3-val');
+              if (fac3El) fac3El.textContent = (data.fac3 == null) ? '' : Number(data.fac3).toFixed(1);
+
+              const ipdEl  = row && row.querySelector('.ipd2-val');
+              if (ipdEl) ipdEl.textContent  = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
+
+              const rm2El  = row && row.querySelector('.rm2-val');
+              if (rm2El) {
+                const currentIpd2 = toNum(ipdEl?.textContent || '');
+                rm2El.textContent = isFinite(currentIpd2)
+                  ? Math.max(currentIpd2 - 6.4, 0).toFixed(1)
+                  : '';
+              }
+
+              setPerfil(row, data);
+              setIR(row);
+              setIRP(row);
+
+              const nr2El = row && row.querySelector('.nivel2-val');
+              if (nr2El){
+                nr2El.textContent = (data.nivel_riesgo2 || '');
+                colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
+              }
+
+              const aceptEl = row && row.querySelector('.acept-val');
+              if (aceptEl){
+                aceptEl.textContent = (data.aceptabilidad || '');
+                colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
+              }
+
+              const solEl = row && row.querySelector('.sol-eficaz-val');
+              if (solEl){
+                if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
+                else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
+              }
             }
 
-            const solEl = row && row.querySelector('.sol-eficaz-val');
-            if (solEl){
-              if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
-              else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
+            if (field === 'seg_control') {
+              updateGestionCell(row, value);
             }
+          } else {
+            throw new Error(data.message || 'Error al guardar');
           }
-
-          if (field === 'sev2') {
-            const fac3El = row && row.querySelector('.fac3-val');
-            if (fac3El) fac3El.textContent = (data.fac3 == null) ? '' : Number(data.fac3).toFixed(1);
-
-            const ipdEl  = row && row.querySelector('.ipd2-val');
-            if (ipdEl) ipdEl.textContent  = (data.ipd2 == null) ? '' : Number(data.ipd2).toFixed(1);
-
-            const rm2El  = row && row.querySelector('.rm2-val');
-            if (rm2El) rm2El.textContent  = (data.rm2 == null) ? '' : Number(data.rm2).toFixed(1);
-
-            setPerfil(row, data);
-            setIR(row);
-            setIRP(row);
-
-            const nr2El = row && row.querySelector('.nivel2-val');
-            if (nr2El){
-              nr2El.textContent = (data.nivel_riesgo2 || '');
-              colorNivelRiesgo2(nr2El.closest('td'), nr2El.textContent);
-            }
-
-            const aceptEl = row && row.querySelector('.acept-val');
-            if (aceptEl){
-              aceptEl.textContent = (data.aceptabilidad || '');
-              colorAceptabilidad(aceptEl.closest('td'), aceptEl.textContent);
-            }
-
-            const solEl = row && row.querySelector('.sol-eficaz-val');
-            if (solEl){
-              if (data.sol_eficaz != null) solEl.textContent = data.sol_eficaz;
-              else setSolEficaz(row, (aceptEl && aceptEl.textContent) || '');
-            }
-          }
-
-          if (field === 'seg_control') {
-            updateGestionCell(row, value);
-          }
-        } else {
-          throw new Error(data.message || 'Error al guardar');
+        } catch (err) {
+          sel.classList.remove('saving');
+          sel.classList.add('error');
+          setTimeout(()=>sel.classList.remove('error'), 900);
+          console.error(err);
+          alert('No se pudo guardar el cambio.');
         }
-      } catch (err) {
-        sel.classList.remove('saving');
-        sel.classList.add('error');
-        setTimeout(()=>sel.classList.remove('error'), 900);
-        console.error(err);
-        alert('No se pudo guardar el cambio.');
+      };
+
+      if (isResidualField) {
+        await enqueueResidualRequest(id, executeUpdate);
+      } else {
+        await executeUpdate();
       }
     });
 

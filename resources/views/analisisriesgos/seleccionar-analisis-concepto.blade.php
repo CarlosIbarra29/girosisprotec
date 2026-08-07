@@ -47,7 +47,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-6 div_riesgos_sociales">
-                                        <h4>Vista previa de riesgos sociales</h4>
+                                        <h4>Vista previa de riesgos</h4>
                                         <table class="table table-hover table-checkable" id="kdatatable_clientes_inactivos">
                                             <thead>
                                                 <tr>
@@ -73,7 +73,7 @@
                                     <div class="col-lg-6">
                                         <div class="text-center div_riesgos_sociales">
                                             <a href="{{ route('analisis.generaranalisis', [$id_cliente, $BarrerasPerimetrale[0]->id, 0, 1]) }}" class="btn btn-light-warning font-weight-bolder mr-3 ml-3">
-                                            Crear riesgo social</a>
+                                            Crear riesgo</a>
                                         </div>
 
                                         <img src="{{ asset('img/mapa_analisis.PNG') }}" class="img-responsive">

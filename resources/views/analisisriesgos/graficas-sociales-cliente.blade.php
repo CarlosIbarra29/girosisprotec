@@ -2532,7 +2532,7 @@
 @endpush
 
 @section('title')
-  KPIs de riesgos sociales
+  KPIs de riesgos
 @endsection
 
 @section('content')
@@ -2620,7 +2620,7 @@
                 <span class="card-icon">
                   <i class="flaticon2-file text-primary"></i>
                 </span>
-                <h3 class="card-label">KPIs de riesgos sociales ({{ $cliente->organizacion }})</h3>
+                <h3 class="card-label">KPIs de riesgos ({{ $cliente->organizacion }})</h3>
               </div>
 
                 <div class="card-toolbar giro-card-toolbar">
@@ -2687,7 +2687,7 @@
                   <span class="giro-kpi-tab__icon">
                     <i class="flaticon-grid-menu"></i>
                   </span>
-                  <span class="giro-kpi-tab__text">Matriz de evaluación<br>de riesgos</span>
+                  <span class="giro-kpi-tab__text">Mapa<br>de riesgos</span>
                 </button>
 
                 <button type="button" class="giro-kpi-tab" data-chart-target="chart-security">
@@ -2939,10 +2939,9 @@
                 </div>
 
                 {{-- 5. Matriz de evaluación de riesgos --}}
-                {{-- 5. Matriz de evaluación de riesgos --}}
                 <div class="giro-chart-panel" id="chart-origen">
                   <div class="giro-chart-card giro-chart-card--matrix">
-                    <h5 class="giro-chart-title">Matriz de evaluación de riesgos</h5>
+                    <h5 class="giro-chart-title">Mapa de riesgos</h5>
                     <div class="giro-matrix-toolbar">
                       <div class="giro-matrix-filter">
                         <label class="giro-matrix-filter__label">Filtrar por criterio</label>

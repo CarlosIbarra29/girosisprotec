@@ -10,7 +10,7 @@
 @endpush
 
 @section('title')
-  Documento ejecutivo de riesgos sociales
+  Documento ejecutivo de riesgos
 @endsection
 
 @section('content')
@@ -19,7 +19,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Documento ejecutivo de riesgos sociales</title>
+  <title>Documento ejecutivo de riesgos</title>
   <style>
     {!! file_exists(public_path('css/version2/documento-ejecutivo.css')) ? file_get_contents(public_path('css/version2/documento-ejecutivo.css')) : '' !!}
   </style>
@@ -181,7 +181,7 @@
     <div class="doc-preview-toolbar">
       <div class="doc-toolbar-title">
         <span>Vista previa</span>
-        <h3>Documento ejecutivo de riesgos sociales</h3>
+        <h3>Documento ejecutivo de riesgos</h3>
         <p>{{ $clienteNombre }}</p>
       </div>
       <div class="doc-toolbar-actions">
@@ -205,7 +205,7 @@
         <img src="{{ $logoSrc }}" alt="GIRO" class="doc-cover-logo">
       </div>
       <div class="doc-cover-pill">Análisis ejecutivo de riesgos</div>
-      <h1>Análisis de Riesgos Sociales</h1>
+      <h1>Análisis de Riesgos</h1>
       <div class="doc-cover-client">
         <span>Cliente</span>
         <strong>{{ $clienteNombre }}</strong>

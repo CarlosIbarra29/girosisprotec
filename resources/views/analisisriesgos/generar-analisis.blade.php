@@ -165,7 +165,7 @@
                                             <h4>El punto normativo seleccionado no contiene información</h4>
 
                                             <div class="row mt-4">
-                                                <h5>Para continar dirigete a la sección de libros de riesgos sociales o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
+                                                <h5>Para continar dirigete a la sección de libros de riesgos o <a href="{{ route('libro.listadolibroriesgos') }}">DA CLIC AQUI</a> .</h5>
                                             </div>
                                         </div>
                                     </div>

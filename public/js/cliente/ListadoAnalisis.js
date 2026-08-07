@@ -391,7 +391,8 @@ jQuery(document).ready(function () {
     },
     dom:
       "<'row giro-dt-toolbar'<'col-sm-6 d-flex align-items-center justify-content-start'l>" +
-      "<'col-sm-6 d-flex align-items-center justify-content-end'f>>" +
+      // "<'col-sm-6 d-flex align-items-center justify-content-end'f>>" +
+      "<'col-sm-6 d-flex align-items-center justify-content-end'>>" +
       "rt" +
       "<'row giro-dt-footer'<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
       "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>>",
